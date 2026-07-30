@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="data:image/png;base64,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" alt="" width="32" height="32">
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | Paint It Forward</title>
+<meta name="description" content="Learn more about the team behind Paint It Forward and our mission to support youth, health, and community causes through art.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --matcha:             #7A9E7E;
+    --matcha-dark:        #5F7F63;
+    --soft-matcha:        #B8C9A3;
+    --soft-matcha-light:  #DDE8D4;
+    --beige:              #DCCBB8;
+    --beige-light:        #EDE4D8;
+    --cream:              #F7F3EC;
+    --white:              #FDFBF8;
+    --espresso:           #3E302A;
+    --espresso-mid:       #6B5A52;
+    --espresso-light:     #A08070;
+    --border:             #E0D8CE;
+    --radius-sm: 6px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 2px 12px rgba(62,48,42,0.07);
+    --shadow-md: 0 8px 32px rgba(62,48,42,0.11);
+    --shadow-lg: 0 20px 60px rgba(62,48,42,0.15);
+    --transition: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Dark-mode-safe text variables */
+    --text-heading:   #3E302A;
+    --text-body:      #6B5A52;
+    --text-muted:     #A08070;
+    --text-on-light:  #3E302A;
+    --card-bg:        #FDFBF8;
+    --card-border:    #E0D8CE;
+    --section-alt:    #EDE4D8;
+    --section-green:  #DDE8D4;
+    --involved-1-bg:  #DDE8D4;
+    --involved-2-bg:  #EDE4D8;
+    --involved-3-bg:  #EAF0E5;
+    --involved-4-bg:  #F0EBE5;
+    --involved-border-1: rgba(184,201,163,0.6);
+    --involved-border-2: rgba(220,203,184,0.6);
+    --involved-border-3: rgba(180,205,170,0.5);
+    --involved-border-4: rgba(220,210,200,0.5);
+    --input-bg:       #FDFBF8;
+    --input-border:   #E0D8CE;
+    --input-text:     #3E302A;
+    --contact-bg:     #F7F3EC;
+    --footer-text:    rgba(255,255,255,0.38);
+    --footer-link:    rgba(255,255,255,0.5);
+    --nav-bg:         rgba(247,243,236,0.94);
+  }
+
+  body.dark {
+    --cream:              #1C1812;
+    --white:              #231E18;
+    --beige-light:        #2A2318;
+    --beige:              #2E261A;
+    --border:             #3D3025;
+    --text-heading:       #F0E8DF;
+    --text-body:          #B8A898;
+    --text-muted:         #806A58;
+    --text-on-light:      #F0E8DF;
+    --card-bg:            #231E18;
+    --card-border:        #3D3025;
+    --section-alt:        #211C14;
+    --section-green:      #1C2418;
+    --involved-1-bg:      #1C2A1C;
+    --involved-2-bg:      #2A2418;
+    --involved-3-bg:      #1E2A1C;
+    --involved-4-bg:      #2A201A;
+    --involved-border-1:  rgba(80,120,80,0.4);
+    --involved-border-2:  rgba(120,100,70,0.4);
+    --involved-border-3:  rgba(80,120,80,0.4);
+    --involved-border-4:  rgba(120,100,80,0.4);
+    --input-bg:           #1C1812;
+    --input-border:       #3D3025;
+    --input-text:         #F0E8DF;
+    --contact-bg:         #231E18;
+    --nav-bg:             rgba(28,24,18,0.96);
+    --soft-matcha-light:  #253020;
+    --espresso:           #F0E8DF;
+    --espresso-mid:       #B8A898;
+    --espresso-light:     #806A58;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text-heading);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--text-heading);
+  }
+  h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+  h2 { font-size: clamp(1.9rem, 3.5vw, 3rem); }
+  h3 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+
+  p {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text-body);
+    font-weight: 400;
+  }
+
+  .eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--matcha);
+    display: block;
+    margin-bottom: 0.9rem;
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 2.5rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--card-border);
+    transition: background var(--transition), border-color var(--transition);
+  }
+
+  .nav-inner {
+    max-width: 1320px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.65rem;
+    text-decoration: none; color: var(--text-heading);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 600; flex-shrink: 0;
+    transition: color var(--transition);
+  }
+
+  .nav-logo-mark {
+    width: 36px; height: 36px; border-radius: 50%;
+    overflow: hidden; background: var(--soft-matcha-light);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background var(--transition);
+  }
+  .nav-logo-mark svg { width: 18px; height: 18px; fill: var(--matcha-dark); }
+
+  .nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-body);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    padding: 0.4rem 0.8rem; border-radius: 5px;
+    transition: color var(--transition), background var(--transition);
+  }
+  .nav-links a:hover { color: var(--text-heading); background: var(--beige-light); }
+  .nav-cta {
+    background: var(--espresso) !important;
+    color: var(--cream) !important;
+    padding: 0.45rem 1.1rem !important;
+    border-radius: 4px !important; font-weight: 600 !important;
+  }
+  body.dark .nav-cta { background: var(--matcha) !important; color: white !important; }
+  .nav-cta:hover { background: var(--matcha-dark) !important; color: white !important; }
+
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.4rem; }
+  .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text-heading); margin: 5px 0; border-radius: 2px; transition: var(--transition); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.8rem 1.6rem; border-radius: 4px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: none;
+    letter-spacing: 0.03em; transition: var(--transition);
+  }
+  .btn-primary { background: var(--matcha); color: white; }
+  .btn-primary:hover { background: var(--matcha-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(122,158,126,0.35); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+  .section    { padding: 110px 0; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 50vh; background: #2A1E18;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; padding-top: 100px; padding-bottom: 50px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(140deg, #2A1E18 0%, #3E302A 40%, #5F7F63 100%);
+    opacity: 0.95;
+  }
+  .hero-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.22; animation: blobFloat 9s ease-in-out infinite; }
+  .hero-blob-1 { width: 550px; height: 550px; background: var(--soft-matcha); top: -120px; right: -80px; animation-delay: 0s; }
+  @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(18px,-25px) scale(1.04);} }
+
+  .hero-content { position: relative; z-index: 2; padding: 4rem 2.5rem; max-width: 1280px; margin: 0 auto; width: 100%; text-align: center; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 3px;
+    padding: 0.35rem 0.9rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.65);
+    letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero h1 { color: white; margin-bottom: 1.5rem; }
+  .hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.55); max-width: 600px; margin: 0 auto; line-height: 1.75; }
+
+  /* ── ABOUT SPECIFIC LAYOUTS ── */
+  .about-section { background: var(--cream); transition: background var(--transition); }
+  .about-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; margin-bottom: 8rem; }
+  .about-preview:last-child { margin-bottom: 0; }
+  .about-preview-visual { position: relative; }
+  .about-image { 
+    width: 100%; 
+    height: auto; 
+    border-radius: var(--radius-md); 
+    box-shadow: var(--shadow-lg); 
+    object-fit: cover; 
+    aspect-ratio: 4/5; 
+  }
+  .about-text h2 { margin-bottom: 1.25rem; }
+  .about-text p  { margin-bottom: 1.25rem; }
+
+  /* ── FOOTER ── */
+  footer { background: #2A1E18; padding: 5rem 0 2.5rem; }
+  .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3.5rem; }
+  .footer-brand .footer-logo {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600;
+    color: white; text-decoration: none; margin-bottom: 1rem;
+  }
+  .footer-brand p { font-size: 0.83rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 240px; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.07); }
+  .footer-bottom p { font-size: 0.76rem; color: rgba(255,255,255,0.28); }
+
+  /* ── DARK TOGGLE ── */
+  .dark-toggle {
+    position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 999;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #2A1E18; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-md); transition: transform var(--transition), background var(--transition);
+  }
+  body.dark .dark-toggle { background: var(--matcha); }
+  .dark-toggle:hover { transform: scale(1.1); }
+  .dark-toggle svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.8; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .footer-top  { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  }
+  @media (max-width: 900px) {
+    .about-preview { grid-template-columns: 1fr; gap: 3rem; margin-bottom: 5rem; }
+    .about-preview-visual { height: auto; }
+    .reverse-mobile { order: -1; }
+    .involved-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-mark">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z"/></svg>
+        </div>
+        Paint It Forward
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#auctions">Auctions</a></li>
+        <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-blob hero-blob-1"></div>
+      <div class="hero-content">
+        <span class="hero-tag">Our Story</span>
+        <h1>About Us</h1>
+        <p class="hero-sub">// Briefly introduce the core vision of Paint It Forward and the passionate team driving the initiative forward.</p>
+      </div>
+    </header>
+
+    <section class="section about-section">
+      <div class="container">
+        
+        <div class="about-preview">
+          <div class="about-preview-visual">
+            <img src="IMG_1261 2.jpg" alt="Team Member Profile" class="about-image">
+          </div>
+          <div class="about-text fade-up">
+            <span class="eyebrow">// Co-Founder / Title</span>
+            <h2>// Team Member Name Here</h2>
+            <p>// Use this space to write about their background, their connection to art, and what inspired them to help start Paint It Forward.</p>
+            <p>// You can add a second paragraph detailing their day-to-day role in the initiative, or a personal quote about community and health.</p>
+          </div>
+        </div>
+
+        <div class="about-preview">
+          <div class="about-text fade-up reverse-mobile">
+            <span class="eyebrow">// Co-Founder / Title</span>
+            <h2>// Team Member Name Here</h2>
+            <p>// Tell the story of this team member here. Discuss their personal journey, expertise, and why supporting youth and health causes matters to them.</p>
+            <p>// Expand on their vision for the future of the organization and how they are making an impact in the Greater Toronto Area.</p>
+          </div>
+          <div class="about-preview-visual">
+            <img src="IMG_1269.jpg" alt="Team Member Profile" class="about-image">
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">Paint It Forward</a>
+          <p>A student-led initiative using art to support youth, health, and community causes across the Greater Toronto Area.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Paint It Forward. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <button class="dark-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </button>
+
+  <script>
+    // Simple script to keep the dark mode toggle working across pages
+    const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    // Check local storage for theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      if (body.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>

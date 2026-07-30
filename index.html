@@ -1013,43 +1013,70 @@
         </div>
       </div>
       <div class="contact-form-box fade-up">
+<form id="contactForm">
         <h3>Send us a message</h3>
-        <!-- FLAG: Hook this form up to a backend. Options:
-             A) Formspree — free tier, just set the action URL in handleContact() below.
-             B) Google Apps Script — post to a Sheet.
-             C) Embed a Google Form iframe here instead of this custom form. -->
+
         <div class="form-row">
           <div class="form-group">
             <label for="first-name">First Name</label>
-            <input type="text" id="first-name" placeholder="Jane" autocomplete="given-name">
+            <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name">
           </div>
           <div class="form-group">
             <label for="last-name">Last Name</label>
-            <input type="text" id="last-name" placeholder="Smith" autocomplete="family-name">
+            <input type="text" id="last-name" name="last_name" placeholder="Smith" autocomplete="family-name">
           </div>
         </div>
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="jane@example.com" autocomplete="email">
+          <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email">
         </div>
         <div class="form-group">
           <label for="reason">I am interested in&hellip;</label>
-          <select id="reason">
+          <select id="reason" name="reason">
             <option value="">Select a reason</option>
-            <option>Submitting Artwork</option>
-            <option>Bidding on Artwork</option>
-            <option>Volunteering</option>
-            <option>Sponsorship</option>
-            <option>General Inquiry</option>
+            <option value="Submitting Artwork">Submitting Artwork</option>
+           <option value="Bidding on Artwork">Bidding on Artwork</option> 
+            <option value="Volunteering">Volunteering</option>
+            <option value="Sponsorship">Sponsorship</option>
+            <option value="General Inquiry">General Inquiry</option>
           </select>
         </div>
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea id="message" placeholder="Tell us a bit about yourself and how you'd like to get involved&#8230;"></textarea>
+          <textarea id="message" name="message" placeholder="Tell us a bit about yourself and how you'd like to get involved..."></textarea>
         </div>
-          <button class="btn btn-primary" onclick="handleContact(this)" style="width:100%;justify-content:center;">Send Message</button>
-      </div>
-    </div>
+  
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+    Send Message
+</button> 
+  
+</form>
+</div>
+      <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init({
+    publicKey: "LqatH02y3BQhhyDmA"
+});
+
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    emailjs.sendForm(
+        "service_bzg624p",
+        "template_7fodvw9",
+        this
+    )
+    .then(() => {
+        alert("Message sent successfully!");
+        this.reset();
+    })
+    .catch((error) => {
+        alert("Failed to send message.");
+        console.error(error);
+    });
+});
+</script>
   </div>
 </section>
 
@@ -1257,11 +1284,6 @@ darkBtn.addEventListener("click", () => {
   iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
 });
 
-/* ── CONTACT FORM ───────────────────────────────────────────────────────────
-   FLAG: Currently does not submit anywhere.
-   TODO: Replace with a fetch() call to Formspree, a Google Apps Script, or
-   redirect to a pre-filled Google Form URL.
-──────────────────────────────────────────────────────────────────────────── */
 function handleContact(btn) {
   const first = document.getElementById("first-name").value.trim();
   const email = document.getElementById("email").value.trim();

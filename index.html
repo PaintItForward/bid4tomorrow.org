@@ -255,61 +255,157 @@
   .hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 400; letter-spacing: 0.04em; }
 
   /* ── GALLERY ── */
- <section class="artwork-section" id="gallery">
-  <div class="container">
-    <div class="section-header section-header-center">
-      <span class="eyebrow">Featured Artwork</span>
-      <h2>Student Gallery</h2>
-      <p>Artwork submitted by talented student artists.</p>
-    </div>
+ /* Artwork Carousel */
 
-    <div class="artwork-card">
-      <img src="Gloria Bust Portrait Oil.png" alt="Gloria Bust Portrait Oil">
-      <div class="artwork-info">
-        <h3>Gloria Bust Portrait</h3>
-        <p>Oil on canvas</p>
-      </div>
-    </div>
-  </div>
-</section>
-  .artwork-card {
-  max-width: 420px;
+.artwork-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 950px;
   margin: 0 auto;
+}
+
+
+.carousel-window {
+  overflow: hidden;
+  width: 100%;
+  max-width: 750px;
+}
+
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+
+.artwork-slide {
+  min-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition);
 }
 
-.artwork-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-md);
+
+/* Image */
+
+.artwork-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--section-alt);
+  padding: 1.5rem;
 }
 
-.artwork-card img {
+
+.artwork-image img {
   width: 100%;
-  display: block;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
+  height: 400px;
+  object-fit: contain;
 }
 
-.artwork-info {
-  padding: 1.25rem;
-  text-align: center;
+
+/* Details */
+
+.artwork-details {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.artwork-info h3 {
-  margin-bottom: 0.4rem;
+
+.artwork-details h3 {
   color: var(--text-heading);
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
 }
 
-.artwork-info p {
+
+.artist {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-weight: 600;
 }
 
+
+.medium {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+
+.artwork-description {
+  color: var(--text-body);
+  line-height: 1.7;
+}
+
+
+.status-badge {
+  margin-top: 1.5rem;
+  background: var(--soft-matcha-light);
+  color: var(--matcha-dark);
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  width: fit-content;
+  font-size: 0.85rem;
+}
+
+
+/* Arrows */
+
+.carousel-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--matcha-dark);
+  color: white;
+  font-size: 1.5rem;
+}
+
+
+/* Dots */
+
+.carousel-dots {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--card-border);
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+
+.dot.active {
+  background: var(--matcha-dark);
+}
+
+
+/* Mobile */
+
+@media(max-width:700px) {
+
+  .artwork-slide {
+    grid-template-columns: 1fr;
+  }
+
+  .artwork-image img {
+    height: 300px;
+  }
+
+}
 
   /* ── MISSION & VALUES ── */
   .mission-section { background: var(--section-green); transition: background var(--transition); }

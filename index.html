@@ -704,36 +704,215 @@
 
 
 <!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
-<div class="gallery-coming-soon fade-up">
-  <img
-    src="Gloria Bust Portrait Oil.png"
-    alt="Gloria Bust Portrait Oil"
-    class="gallery-image">
+<!-- Artwork Carousel -->
+<div class="artwork-carousel fade-up">
 
-  <h3>Gloria Bust Portrait</h3>
-  <p>Oil Painting</p>
+  <button class="carousel-btn prev" onclick="moveSlide(-1)">
+    &#10094;
+  </button>
 
-  <br>
+  <div class="carousel-window">
+    <div class="carousel-track">
 
-  <a href="https://form.jotform.com/261786048210052"
-     class="btn btn-primary"
-     target="_blank"
-     rel="noopener">
-     Submit Artwork
-  </a>
+      <!-- Artwork 1 -->
+      <div class="artwork-slide">
+        <img src="Gloria Bust Portrait Oil.png" 
+             alt="Gloria Bust Portrait Oil">
+
+        <div class="artwork-details">
+          <h3>Gloria Bust Portrait</h3>
+
+          <p class="artist">
+            By: Student Artist Name
+          </p>
+
+          <p class="medium">
+            Oil on Canvas
+          </p>
+
+          <p class="artwork-description">
+            A thoughtful oil portrait exploring expression, emotion,
+            and the beauty of human connection. This piece celebrates
+            creativity and the stories that art can share.
+          </p>
+
+          <span class="status-badge">
+            Available for Auction
+          </span>
+        </div>
+      </div>
+
+
+      <!-- Copy this block for future artwork -->
+      <!--
+      <div class="artwork-slide">
+        <img src="another-artwork.png" alt="Artwork Name">
+
+        <div class="artwork-details">
+          <h3>Artwork Name</h3>
+
+          <p class="artist">
+            By: Artist Name
+          </p>
+
+          <p class="medium">
+            Acrylic Painting
+          </p>
+
+          <p class="artwork-description">
+            Short description about the artwork goes here.
+            Explain the inspiration, story, or meaning behind it.
+          </p>
+
+          <span class="status-badge">
+            Available for Auction
+          </span>
+        </div>
+      </div>
+      -->
+
+    </div>
+  </div>
+
+
+  <button class="carousel-btn next" onclick="moveSlide(1)">
+    &#10095;
+  </button>
+
 </div>
 
-.gallery-image {
-    width: 250px;
-    height: 320px;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow-sm);
+
+<!-- Carousel dots -->
+<div class="carousel-dots">
+  <span class="dot active"></span>
+</div>
+
+  .artwork-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
+.carousel-window {
+  overflow: hidden;
+  width: 100%;
+  max-width: 700px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.artwork-slide {
+  min-width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+
+.artwork-slide img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+}
+
+
+.artwork-details {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.artwork-details h3 {
+  color: var(--text-heading);
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.artist {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+
+.medium {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+
+.artwork-description {
+  line-height: 1.6;
+  color: var(--text-body);
+}
+
+
+.status-badge {
+  margin-top: 1rem;
+  background: var(--soft-matcha-light);
+  color: var(--matcha-dark);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 0.85rem;
+}
+
+
+.carousel-btn {
+  background: var(--matcha-dark);
+  color: white;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+
+.carousel-dots {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--card-border);
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.dot.active {
+  background: var(--matcha-dark);
+}
+
+
+/* Mobile layout */
+@media(max-width: 700px) {
+
+  .artwork-slide {
+    grid-template-columns: 1fr;
+  }
+
+  .artwork-slide img {
+    height: 300px;
+  }
+
+}
 
 <!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
 <section class="section about-section" id="about">
@@ -1354,6 +1533,26 @@ function handleNewsletter(btn) {
   setTimeout(() => btn.textContent = "Subscribe", 3500);
 }
 </script>
-<img src="Gloria Bust Portrait Oil.png" width="300" alt="Test">
+<script>
+let currentSlide = 0;
+
+function moveSlide(direction) {
+  const track = document.querySelector(".carousel-track");
+  const slides = document.querySelectorAll(".artwork-slide");
+
+  currentSlide += direction;
+
+  if (currentSlide < 0) {
+    currentSlide = slides.length - 1;
+  }
+
+  if (currentSlide >= slides.length) {
+    currentSlide = 0;
+  }
+
+  track.style.transform = 
+    `translateX(-${currentSlide * 100}%)`;
+}
+</script>
 </body>
 </html>

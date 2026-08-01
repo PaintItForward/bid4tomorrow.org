@@ -704,29 +704,33 @@
 
 
 <!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
-<section class="section artwork-section" id="artwork">
-  <div class="container">
-    <div class="section-header section-header-center fade-up">
-      <span class="eyebrow">Student Artwork</span>
-      <h2>Gallery</h2>
-      <p>Student-created work will be displayed here ahead of each auction.</p>
-    </div>
-    <!-- TODO: Replace this block with artwork cards once student submissions are collected.
-         Each card should include: image, title, artist name, medium, status badge, price. -->
-    <div class="gallery-coming-soon fade-up">
-      <h3>Gallery Opening Soon</h3>
-      <p>Student artwork will be featured here as we prepare for our first auction. Check back closer to the event for previews.</p>
-      <br>
-      <!-- artist submission Form link -->
-      <a href="https://form.jotform.com/261786048210052"
-   class="btn btn-primary"
-   target="_blank"
-   rel="noopener">
-   Submit Artwork
-</a>
-    </div>
-  </div>
-</section>
+<div class="gallery-coming-soon fade-up">
+  <img
+    src="Gloria Bust Portrait Oil.png"
+    alt="Gloria Bust Portrait Oil"
+    class="gallery-image">
+
+  <h3>Gloria Bust Portrait</h3>
+  <p>Oil Painting</p>
+
+  <br>
+
+  <a href="https://form.jotform.com/261786048210052"
+     class="btn btn-primary"
+     target="_blank"
+     rel="noopener">
+     Submit Artwork
+  </a>
+</div>
+
+  .gallery-image {
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  margin: 0 auto 2rem;
+  border-radius: 12px;
+  object-fit: contain;
+}
 
 
 <!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->

@@ -255,148 +255,144 @@
   .hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 400; letter-spacing: 0.04em; }
 
   /* ── GALLERY ── */
- /* Artwork Carousel */
+/* ── GALLERY SECTION ── */
+
+.gallery-section {
+  background: var(--white);
+  transition: background var(--transition);
+}
+
+
+.gallery-section .section-header {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 .artwork-carousel {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  max-width: 650px;
+  gap: 1.5rem;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
 
 .carousel-window {
+  flex: 1;
   overflow: hidden;
-  width: 100%;
-  max-width: 750px;
-}
-
-
-.carousel-track {
-  display: flex;
-  transition: transform 0.5s ease;
 }
 
 
 .artwork-slide {
   min-width: 100%;
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 420px 1fr;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
 }
-  
 
-/* Image */
 
-.artwork-image img {
-  width: 260px;
-  height: 320px;
-  object-fit: contain;
+.artwork-slide:hover {
+  box-shadow: var(--shadow-md);
+}
+
+
+/* Artwork image */
+
+.artwork-image {
+  background: var(--section-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
 
 .artwork-image img {
   width: 100%;
-  height: 400px;
+  height: 420px;
   object-fit: contain;
 }
 
 
-/* Details */
+/* Artwork information */
 
 .artwork-details {
-  padding: 1.5rem;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+
 .artwork-details h3 {
-  color: var(--text-heading);
-  font-size: 1.8rem;
-  margin-bottom: 0.75rem;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 
 .artist {
-  color: var(--text-muted);
   font-weight: 600;
+  color: var(--matcha-dark);
+  margin-bottom: .4rem;
 }
 
 
 .medium {
   color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 1.25rem;
+  font-size: .9rem;
+  margin-bottom: 1.5rem;
 }
 
 
 .artwork-description {
-  color: var(--text-body);
-  line-height: 1.7;
+  margin-bottom: 1.5rem;
 }
 
 
-.status-badge {
-  margin-top: 1.5rem;
-  background: var(--soft-matcha-light);
-  color: var(--matcha-dark);
-  padding: 0.45rem 1rem;
-  border-radius: 50px;
-  width: fit-content;
-  font-size: 0.85rem;
-}
-
-
-/* Arrows */
+/* Carousel buttons */
 
 .carousel-btn {
-  width: 45px;
-  height: 45px;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: var(--matcha-dark);
-  color: white;
-  font-size: 1.5rem;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-heading);
+  transition: var(--transition);
 }
 
 
-/* Dots */
-
-.carousel-dots {
-  text-align: center;
-  margin-top: 1.5rem;
-}
-
-
-.dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: var(--card-border);
-  border-radius: 50%;
-  margin: 0 5px;
-}
-
-
-.dot.active {
-  background: var(--matcha-dark);
+.carousel-btn:hover {
+  background: var(--matcha);
+  color:white;
+  transform: translateY(-2px);
 }
 
 
 /* Mobile */
 
-@media(max-width:700px) {
+@media(max-width:900px){
 
   .artwork-slide {
-    grid-template-columns: 1fr;
+    grid-template-columns:1fr;
   }
 
+
   .artwork-image img {
-    height: 300px;
+    height:320px;
+  }
+
+
+  .artwork-details {
+    padding:2rem;
   }
 
 }
@@ -794,75 +790,80 @@
 
 
 <!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
-<!-- Artwork Gallery Section -->
+<!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
+<section class="section gallery-section" id="artwork">
+  <div class="container">
 
-<div class="section-header section-header-center fade-up">
-  <span class="eyebrow">Student Artwork</span>
-  <h2>Gallery</h2>
-  <p>
-    Explore original pieces created by student artists.
-    Each artwork tells a story and helps support meaningful causes.
-  </p>
-</div>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
+      <span class="eyebrow">Student Artwork</span>
+      <h2>Gallery</h2>
+      <p>
+        Explore original pieces created by student artists.
+        Each artwork tells a story and helps support meaningful causes.
+      </p>
+    </div>
 
-  <!-- Artwork Carousel -->
-<div class="artwork-carousel fade-up">
 
-  <button class="carousel-btn" onclick="moveSlide(-1)">
-    &#10094;
-  </button>
+    <!-- Artwork Carousel -->
+    <div class="artwork-carousel fade-up">
 
-  <div class="carousel-window">
-    <div class="carousel-track">
+      <button class="carousel-btn" onclick="moveSlide(-1)">
+        &#10094;
+      </button>
 
-      <!-- Artwork Card -->
-      <div class="artwork-slide">
 
-        <div class="artwork-image">
-          <img src="Gloria Bust Portrait Oil.png" 
-               alt="Gloria Bust Portrait Oil">
+      <div class="carousel-window">
+        <div class="carousel-track">
+
+          <div class="artwork-slide">
+
+            <div class="artwork-image">
+              <img src="Gloria Bust Portrait Oil.png"
+                   alt="Gloria Bust Portrait Oil">
+            </div>
+
+
+            <div class="artwork-details">
+
+              <h3>Bust Study</h3>
+
+              <p class="artist">
+                By Gloria Xu
+              </p>
+
+              <p class="medium">
+                Oil on Canvas
+              </p>
+
+              <p class="artwork-description">
+                The use of oil paint to analyse hidden colours within light.
+              </p>
+
+              <span class="status-badge">
+                Available for Auction
+              </span>
+
+            </div>
+
+          </div>
+
         </div>
-
-        <div class="artwork-details">
-
-          <h3>Bust study</h3>
-
-          <p class="artist">
-            By: Gloria Xu
-          </p>
-
-          <p class="medium">
-            Oil on Canvas
-          </p>
-
-          <p class="artwork-description">
-            The use of oil paint to analyse hidden colors in light
-          </p>
-
-          <span class="status-badge">
-            Available for Auction
-          </span>
-
-        </div>
-
       </div>
 
-      <!-- Add future artwork cards here -->
+
+      <button class="carousel-btn" onclick="moveSlide(1)">
+        &#10095;
+      </button>
 
     </div>
+
+
+    <div class="carousel-dots">
+      <span class="dot active"></span>
+    </div>
+
   </div>
-
-
-  <button class="carousel-btn" onclick="moveSlide(1)">
-    &#10095;
-  </button>
-
-</div>
-
-
-<div class="carousel-dots">
-  <span class="dot active"></span>
-</div>
+</section>
 
 <!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
 <section class="section about-section" id="about">

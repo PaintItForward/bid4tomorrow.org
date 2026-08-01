@@ -68,7 +68,7 @@
     --beige:              #2E261A;
     --border:             #3D3025;
     --text-heading:       #F0E8DF;
-    --text-:          #B8A898;
+    --text-body:          #B8A898;
     --text-muted:         #806A58;
     --text-on-light:      #F0E8DF;
     --card-bg:            #231E18;
@@ -97,7 +97,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
 
-   {
+   body{
     font-family: 'Source Sans 3', sans-serif;
     color: var(--text-heading);
     background: var(--cream);
@@ -121,7 +121,7 @@
     font-family: 'Source Sans 3', sans-serif;
     font-size: 1rem;
     line-height: 1.75;
-    color: var(--text-);
+    color: var(--text-body);
     font-weight: 400;
   }
 
@@ -173,7 +173,7 @@
 
   .nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
   .nav-links a {
-    text-decoration: none; color: var(--text-);
+    text-decoration: none; color: var(--text-body);
     font-family: 'Source Sans 3', sans-serif;
     font-size: 0.85rem; font-weight: 500;
     padding: 0.4rem 0.8rem; border-radius: 5px;
@@ -186,7 +186,7 @@
     padding: 0.45rem 1.1rem !important;
     border-radius: 4px !important; font-weight: 600 !important;
   }
-  .dark .nav-cta { background: var(--matcha) !important; color: white !important; }
+  body.dark .nav-cta { background: var(--matcha) !important; color: white !important; }
   .nav-cta:hover { background: var(--matcha-dark) !important; color: white !important; }
 
   .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.4rem; }
@@ -204,7 +204,7 @@
   .btn-primary { background: var(--matcha); color: white; }
   .btn-primary:hover { background: var(--matcha-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(122,158,126,0.35); }
   .btn-dark { background: var(--espresso); color: white; }
-  .dark .btn-dark { background: var(--matcha); color: white; }
+  body.dark .btn-dark { background: var(--matcha); color: white; }
   .btn-dark:hover { background: var(--matcha-dark); transform: translateY(-1px); }
   .btn-outline { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.55); }
   .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: white; }
@@ -212,7 +212,7 @@
     background: rgba(255,255,255,0.55); color: var(--text-heading);
     border: 1.5px solid var(--card-border);
   }
-  .dark .btn-ghost { background: rgba(255,255,255,0.08); color: var(--text-heading); border-color: var(--card-border); }
+  body.dark .btn-ghost { background: rgba(255,255,255,0.08); color: var(--text-heading); border-color: var(--card-border); }
   .btn-ghost:hover { background: var(--card-bg); border-color: var(--text-heading); transform: translateY(-1px); }
 
   /* ── LAYOUT ── */
@@ -330,7 +330,7 @@
   }
   .value-icon-wrap svg { width: 20px; height: 20px; stroke: var(--matcha-dark); fill: none; stroke-width: 1.8; }
   .value-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: var(--text-heading); margin-bottom: 0.45rem; }
-  .value-desc { font-size: 0.82rem; color: var(--text-); line-height: 1.65; }
+  .value-desc { font-size: 0.82rem; color: var(--text-body); line-height: 1.65; }
 
   /* ── IMPACT STATS ── */
   .stats-section { background: var(--white); transition: background var(--transition); }
@@ -365,15 +365,15 @@
   }
   .auction-card-header::after { content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(30,20,15,0.7), transparent); }
   .auction-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 600; color: white; position: relative; z-index: 1; }
-  .auction- { padding: 1.5rem; }
+  .auction-body { padding: 1.5rem; }
   .auction-detail {
     display: flex; align-items: center; gap: 0.5rem;
-    font-size: 0.83rem; color: var(--text-);
+    font-size: 0.83rem; color: var(--text-body);
     margin-bottom: 0.45rem; transition: color var(--transition);
   }
   .auction-detail svg { width: 13px; height: 13px; flex-shrink: 0; stroke: var(--text-muted); fill: none; stroke-width: 1.7; }
   .tbd-badge {
-    display: inline-block; background: var(--section-alt); color: var(--text-);
+    display: inline-block; background: var(--section-alt); color: var(--text-body);
     font-family: 'Source Sans 3', sans-serif; font-size: 0.72rem; font-weight: 600;
     letter-spacing: 0.08em; text-transform: uppercase;
     padding: 0.3rem 0.75rem; border-radius: 3px; margin: 1rem 0;
@@ -389,7 +389,7 @@
     padding: 1rem 1.5rem; margin-bottom: 3rem; max-width: 680px;
     transition: background var(--transition);
   }
-  .causes-notice p { font-size: 0.87rem; color: var(--text-); line-height: 1.7; }
+  .causes-notice p { font-size: 0.87rem; color: var(--text-body); line-height: 1.7; }
   .causes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.25rem; }
   .cause-card {
     border: 1.5px solid var(--card-border); border-radius: var(--radius-md);
@@ -405,7 +405,7 @@
   }
   .cause-logo-box svg { width: 22px; height: 22px; stroke: var(--matcha-dark); fill: none; stroke-width: 1.6; }
   .cause-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--text-heading); margin-bottom: 0.4rem; }
-  .cause-desc { font-size: 0.82rem; line-height: 1.65; color: var(--text-); }
+  .cause-desc { font-size: 0.82rem; line-height: 1.65; color: var(--text-body); }
 
   /* ── TESTIMONIALS ── */
   .testimonials-section { background: var(--white); overflow: hidden; transition: background var(--transition); }
@@ -424,7 +424,7 @@
     transition: background var(--transition), border-color var(--transition);
   }
   .testimonial-opener { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--matcha); line-height: 0.9; margin-bottom: 0.8rem; display: block; }
-  .testimonial-text   { font-size: 0.875rem; line-height: 1.75; color: var(--text-); margin-bottom: 1.1rem; font-style: italic; }
+  .testimonial-text   { font-size: 0.875rem; line-height: 1.75; color: var(--text-body); margin-bottom: 1.1rem; font-style: italic; }
   .testimonial-name   { font-size: 0.85rem; font-weight: 600; color: var(--text-heading); }
   .testimonial-role   { font-size: 0.75rem; color: var(--text-muted); }
   .testimonial-avatar-box {
@@ -456,11 +456,11 @@
     display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem;
     transition: background var(--transition);
   }
-  .dark .involved-icon-wrap { background: rgba(255,255,255,0.1); }
+  body.dark .involved-icon-wrap { background: rgba(255,255,255,0.1); }
   .involved-icon-wrap svg { width: 20px; height: 20px; stroke: var(--matcha-dark); fill: none; stroke-width: 1.7; }
-  .dark .involved-icon-wrap svg { stroke: var(--soft-matcha); }
+  body.dark .involved-icon-wrap svg { stroke: var(--soft-matcha); }
   .involved-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: var(--text-heading); margin-bottom: 0.65rem; }
-  .involved-desc  { font-size: 0.87rem; color: var(--text-); line-height: 1.7; margin-bottom: 1.5rem; }
+  .involved-desc  { font-size: 0.87rem; color: var(--text-body); line-height: 1.7; margin-bottom: 1.5rem; }
 
   /* ── FAQ ── */
   .faq-section { background: var(--section-alt); transition: background var(--transition); }
@@ -477,11 +477,11 @@
     width: 22px; height: 22px; flex-shrink: 0;
     border: 1.5px solid var(--card-border); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.85rem; font-weight: 400; color: var(--text-);
+    font-size: 0.85rem; font-weight: 400; color: var(--text-body);
     transition: background var(--transition), border-color var(--transition), transform var(--transition), color var(--transition);
   }
   .faq-item.open .faq-toggle { background: var(--matcha); color: white; border-color: var(--matcha); transform: rotate(45deg); }
-  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 0.875rem; color: var(--text-); line-height: 1.8; }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 0.875rem; color: var(--text-body); line-height: 1.8; }
   .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 1.25rem; }
 
   /* ── NEWSLETTER ── */
@@ -514,7 +514,7 @@
     transition: background var(--transition);
   }
   .contact-item-icon svg { width: 15px; height: 15px; stroke: var(--matcha-dark); fill: none; stroke-width: 1.7; }
-  .contact-item-text { font-size: 0.87rem; color: var(--text-); }
+  .contact-item-text { font-size: 0.87rem; color: var(--text-body); }
   .contact-item-text a { color: var(--matcha-dark); text-decoration: none; }
   .contact-item-text a:hover { text-decoration: underline; }
 
@@ -541,7 +541,7 @@
   .form-group input::placeholder,
   .form-group textarea::placeholder { color: var(--text-muted); }
   .form-group select { cursor: pointer; }
-  .dark .form-group select option { background: #231E18; color: #F0E8DF; }
+  body.dark .form-group select option { background: #231E18; color: #F0E8DF; }
   .form-group textarea { resize: vertical; min-height: 110px; }
 
   /* ── FOOTER ── */
@@ -583,7 +583,7 @@
     display: flex; align-items: center; justify-content: center;
     box-shadow: var(--shadow-md); transition: transform var(--transition), background var(--transition);
   }
-  .dark .dark-toggle { background: var(--matcha); }
+  body.dark .dark-toggle { background: var(--matcha); }
   .dark-toggle:hover { transform: scale(1.1); }
   .dark-toggle svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.8; }
 
@@ -636,7 +636,7 @@
   }
 </style>
 </head>
-<>
+<body>
 
 <!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
 <nav id="main-nav" role="navigation" aria-label="Main navigation">
@@ -1236,7 +1236,7 @@ auctions.forEach(a => {
       <div class="auction-card-header">
         <div class="auction-title">${a.title}</div>
       </div>
-      <div class="auction-">
+      <div class="auction-body">
         <div class="auction-detail">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Date: To Be Determined
@@ -1246,7 +1246,7 @@ auctions.forEach(a => {
           Location: To Be Determined
         </div>
         <div class="tbd-badge">Registration Opening Soon</div>
-        <p style="font-size:0.82rem; color:var(--text-); margin-bottom:1rem;">${a.note}</p>
+        <p style="font-size:0.82rem; color:var(--text-body); margin-bottom:1rem;">${a.note}</p>
         <!-- FLAG: Replace href with event-specific Google Form registration link -->
         <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center;">Express Interest</a>
       </div>

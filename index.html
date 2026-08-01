@@ -261,8 +261,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
-  max-width: 950px;
+  gap: 1rem;
+  max-width: 650px;
   margin: 0 auto;
 }
 
@@ -283,22 +283,20 @@
 .artwork-slide {
   min-width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 300px 1fr;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
-
+  
 
 /* Image */
 
-.artwork-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--section-alt);
-  padding: 1.5rem;
+.artwork-image img {
+  width: 260px;
+  height: 320px;
+  object-fit: contain;
 }
 
 
@@ -312,12 +310,8 @@
 /* Details */
 
 .artwork-details {
-  padding: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 1.5rem;
 }
-
 
 .artwork-details h3 {
   color: var(--text-heading);

@@ -255,19 +255,60 @@
   .hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 400; letter-spacing: 0.04em; }
 
   /* ── GALLERY ── */
-  .artwork-section { background: var(--section-alt); }
-  .section-header { margin-bottom: 3.5rem; }
-  .section-header-center { text-align: center; }
-  .section-header-center p { max-width: 520px; margin: 0.75rem auto 0; }
+ <section class="artwork-section" id="gallery">
+  <div class="container">
+    <div class="section-header section-header-center">
+      <span class="eyebrow">Featured Artwork</span>
+      <h2>Student Gallery</h2>
+      <p>Artwork submitted by talented student artists.</p>
+    </div>
 
-  .gallery-coming-soon {
-    border: 1.5px dashed var(--card-border); border-radius: var(--radius-lg);
-    background: var(--card-bg); padding: 5rem 2rem;
-    text-align: center; max-width: 640px; margin: 0 auto;
-    transition: background var(--transition), border-color var(--transition);
-  }
-  .gallery-coming-soon h3 { font-size: 1.5rem; color: var(--text-heading); margin-bottom: 0.75rem; }
-  .gallery-coming-soon p  { font-size: 0.9rem; color: var(--text-muted); max-width: 400px; margin: 0 auto; }
+    <div class="artwork-card">
+      <img src="Gloria Bust Portrait Oil.png" alt="Gloria Bust Portrait Oil">
+      <div class="artwork-info">
+        <h3>Gloria Bust Portrait</h3>
+        <p>Oil on canvas</p>
+      </div>
+    </div>
+  </div>
+</section>
+  .artwork-card {
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.artwork-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.artwork-card img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.artwork-info {
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.artwork-info h3 {
+  margin-bottom: 0.4rem;
+  color: var(--text-heading);
+}
+
+.artwork-info p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
 
 
   /* ── MISSION & VALUES ── */

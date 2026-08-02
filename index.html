@@ -34,8 +34,6 @@
     --shadow-md: 0 8px 32px rgba(62,48,42,0.11);
     --shadow-lg: 0 20px 60px rgba(62,48,42,0.15);
     --transition: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-
-    /* Dark-mode-safe text variables (reassigned in .dark) */
     --text-heading:   #3E302A;
     --text-body:      #6B5A52;
     --text-muted:     #A08070;
@@ -97,7 +95,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; font-size: 16px; }
 
-   body{
+  body {
     font-family: 'Source Sans 3', sans-serif;
     color: var(--text-heading);
     background: var(--cream);
@@ -166,8 +164,6 @@
     overflow: hidden; background: var(--soft-matcha-light);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     transition: background var(--transition);
-    /* TODO: Replace SVG below with your logo image file:
-       <img src="logo-icon.png" alt="" style="width:100%;height:100%;object-fit:contain;"> */
   }
   .nav-logo-mark svg { width: 18px; height: 18px; fill: var(--matcha-dark); }
 
@@ -217,8 +213,8 @@
 
   /* ── LAYOUT ── */
   .container { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
-  .section    { padding: 110px 0; }
-  .section-sm { padding: 72px 0; }
+  .section    { min-height: 100vh; display: flex; align-items: center; padding: 110px 0; }
+  .section-sm { min-height: 50vh; display: flex; align-items: center; padding: 72px 0; }
 
   /* ── HERO ── */
   .hero {
@@ -255,147 +251,164 @@
   .hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 400; letter-spacing: 0.04em; }
 
   /* ── GALLERY ── */
-/* ── GALLERY SECTION ── */
+  .gallery-section {
+    background: var(--white);
+    transition: background var(--transition);
+  }
 
-.gallery-section {
-  background: var(--white);
-  transition: background var(--transition);
-}
+  .gallery-section .section-header {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
 
+  .artwork-carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
 
-.gallery-section .section-header {
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
+  .carousel-window {
+    flex: 1;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
 
-
-.artwork-carousel {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-
-.carousel-window {
-  flex: 1;
-  overflow: hidden;
-}
-
-
-.artwork-slide {
-  min-width: 100%;
-  display: grid;
-  grid-template-columns: 420px 1fr;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-
-
-.artwork-slide:hover {
-  box-shadow: var(--shadow-md);
-}
-
-
-/* Artwork image */
-
-.artwork-image {
-  background: var(--section-alt);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-
-.artwork-image img {
-  width: 100%;
-  height: 420px;
-  object-fit: contain;
-}
-
-
-/* Artwork information */
-
-.artwork-details {
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-
-.artwork-details h3 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-
-.artist {
-  font-weight: 600;
-  color: var(--matcha-dark);
-  margin-bottom: .4rem;
-}
-
-
-.medium {
-  color: var(--text-muted);
-  font-size: .9rem;
-  margin-bottom: 1.5rem;
-}
-
-
-.artwork-description {
-  margin-bottom: 1.5rem;
-}
-
-
-/* Carousel buttons */
-
-.carousel-btn {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  color: var(--text-heading);
-  transition: var(--transition);
-}
-
-
-.carousel-btn:hover {
-  background: var(--matcha);
-  color:white;
-  transform: translateY(-2px);
-}
-
-
-/* Mobile */
-
-@media(max-width:900px){
+  .carousel-track {
+    display: flex;
+    transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
 
   .artwork-slide {
-    grid-template-columns:1fr;
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: background var(--transition), border-color var(--transition);
   }
 
+  .artwork-image {
+    background: var(--section-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    transition: background var(--transition);
+  }
 
   .artwork-image img {
-    height:320px;
+    width: 100%;
+    height: 420px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
   }
-
 
   .artwork-details {
-    padding:2rem;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
-}
+  .artwork-details h3 {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artist {
+    font-weight: 600;
+    color: var(--matcha-dark);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+  }
+
+  .medium {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .artwork-description {
+    color: var(--text-body);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .status-badge {
+    display: inline-block;
+    background: rgba(122,158,126,0.12);
+    color: var(--matcha-dark);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    align-self: flex-start;
+    border: 1px solid rgba(122,158,126,0.25);
+  }
+
+  .carousel-btn {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text-heading);
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    line-height: 1;
+    padding: 0;
+  }
+
+  .carousel-btn:hover {
+    background: var(--matcha);
+    color: white;
+    border-color: var(--matcha);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s;
+    padding: 0;
+  }
+
+  .dot.active {
+    background: var(--matcha-dark);
+    transform: scale(1.3);
+  }
+
+  body.dark .dot { background: #4A3F35; }
+  body.dark .dot.active { background: var(--matcha); }
 
   /* ── MISSION & VALUES ── */
   .mission-section { background: var(--section-green); transition: background var(--transition); }
@@ -447,7 +460,6 @@
     height: 180px; position: relative; overflow: hidden;
     display: flex; align-items: flex-end; padding: 1.5rem;
     background: linear-gradient(135deg, var(--espresso) 0%, var(--matcha-dark) 100%);
-    /* TODO: Replace with event photo: background: url('event.jpg') center/cover no-repeat; */
   }
   .auction-card-header::after { content:''; position:absolute; inset:0; background: linear-gradient(to top, rgba(30,20,15,0.7), transparent); }
   .auction-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 600; color: white; position: relative; z-index: 1; }
@@ -518,7 +530,6 @@
     background: var(--soft-matcha-light);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     transition: background var(--transition);
-    /* TODO: Replace with real headshots or initial avatars */
   }
   .testimonial-avatar-box svg { width: 16px; height: 16px; stroke: var(--matcha-dark); fill: none; stroke-width: 1.6; }
   .testimonial-author { display: flex; align-items: center; gap: 0.7rem; }
@@ -571,1432 +582,6 @@
   .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 1.25rem; }
 
   /* ── NEWSLETTER ── */
-  .newsletter-section { background: #2A1E18; padding: 5rem 0; text-align: center; }
+  .newsletter-section { background: #2A1E18; padding: 5rem 0; text-align: center; min-height: auto; }
   .newsletter-section .eyebrow { color: rgba(255,255,255,0.45); text-align: center; display: block; margin-bottom: 0.5rem; }
-  .newsletter-section h2 { color: white; margin-bottom: 0.75rem; }
-  .newsletter-section p  { color: rgba(255,255,255,0.55); margin-bottom: 2rem; }
-  .newsletter-form { display: flex; gap: 0.7rem; max-width: 420px; margin: 0 auto; }
-  .newsletter-form input {
-    flex: 1; padding: 0.8rem 1.1rem;
-    border: 1px solid rgba(255,255,255,0.18); border-radius: 4px;
-    background: rgba(255,255,255,0.08); color: white;
-    font-family: 'Source Sans 3', sans-serif; font-size: 0.875rem;
-    outline: none; transition: border-color var(--transition), background var(--transition);
-  }
-  .newsletter-form input::placeholder { color: rgba(255,255,255,0.3); }
-  .newsletter-form input:focus { border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.12); }
-  /* TODO: Connect to Mailchimp / Buttondown / Google Form subscription list */
-
-  /* ── CONTACT ── */
-  .contact-section { background: var(--white); transition: background var(--transition); }
-  .contact-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: start; }
-  .contact-info h2 { margin-bottom: 1rem; }
-  .contact-info > p { margin-bottom: 2rem; }
-  .contact-item { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.9rem; }
-  .contact-item-icon {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--soft-matcha-light);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    transition: background var(--transition);
-  }
-  .contact-item-icon svg { width: 15px; height: 15px; stroke: var(--matcha-dark); fill: none; stroke-width: 1.7; }
-  .contact-item-text { font-size: 0.87rem; color: var(--text-body); }
-  .contact-item-text a { color: var(--matcha-dark); text-decoration: none; }
-  .contact-item-text a:hover { text-decoration: underline; }
-
-  .contact-form-box {
-    background: var(--contact-bg); border: 1px solid var(--card-border);
-    border-radius: var(--radius-lg); padding: 2.25rem;
-    transition: background var(--transition), border-color var(--transition);
-  }
-  .contact-form-box h3 { margin-bottom: 1.5rem; color: var(--text-heading); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .form-group { margin-bottom: 1.1rem; }
-  .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-heading); margin-bottom: 0.4rem; letter-spacing: 0.04em; }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%; background: var(--input-bg); border: 1px solid var(--input-border);
-    border-radius: 4px; padding: 0.7rem 0.9rem; color: var(--input-text);
-    font-family: 'Source Sans 3', sans-serif; font-size: 0.875rem;
-    outline: none; transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus { border-color: var(--matcha); box-shadow: 0 0 0 3px rgba(122,158,126,0.15); }
-  .form-group input::placeholder,
-  .form-group textarea::placeholder { color: var(--text-muted); }
-  .form-group select { cursor: pointer; }
-  body.dark .form-group select option { background: #231E18; color: #F0E8DF; }
-  .form-group textarea { resize: vertical; min-height: 110px; }
-
-  /* ── FOOTER ── */
-  footer { background: #2A1E18; padding: 5rem 0 2.5rem; }
-  .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
-  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3.5rem; }
-  .footer-brand .footer-logo {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600;
-    color: white; text-decoration: none; margin-bottom: 1rem;
-  }
-  .footer-brand p { font-size: 0.83rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 240px; }
-  .footer-note { margin-top: 0.75rem; font-size: 0.75rem !important; color: rgba(255,255,255,0.22) !important; }
-  .footer-col h4 { font-family: 'Source Sans 3', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 1.1rem; }
-  .footer-col ul { list-style: none; }
-  .footer-col li { margin-bottom: 0.55rem; }
-  .footer-col a { text-decoration: none; color: rgba(255,255,255,0.5); font-size: 0.85rem; transition: color var(--transition); }
-  .footer-col a:hover { color: white; }
-  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.07); }
-  .footer-bottom p { font-size: 0.76rem; color: rgba(255,255,255,0.28); }
-  .social-links { display: flex; gap: 0.6rem; }
-  .social-link {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: rgba(255,255,255,0.07);
-    display: flex; align-items: center; justify-content: center;
-    text-decoration: none; transition: background var(--transition);
-  }
-  .social-link:hover { background: rgba(255,255,255,0.16); }
-  .social-link svg { width: 15px; height: 15px; fill: rgba(255,255,255,0.5); transition: fill var(--transition); }
-  .social-link:hover svg { fill: white; }
-  .social-link.email-link svg { fill: none; stroke: rgba(255,255,255,0.5); stroke-width: 1.8; }
-  .social-link.email-link:hover svg { stroke: white; }
-
-  /* ── DARK TOGGLE ── */
-  .dark-toggle {
-    position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 999;
-    width: 44px; height: 44px; border-radius: 50%;
-    background: #2A1E18; border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--shadow-md); transition: transform var(--transition), background var(--transition);
-  }
-  body.dark .dark-toggle { background: var(--matcha); }
-  .dark-toggle:hover { transform: scale(1.1); }
-  .dark-toggle svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.8; }
-
-  /* ── FADE ANIMATIONS ── */
-  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
-  .fade-up-delay-1 { transition-delay: 0.1s; }
-  .fade-up-delay-2 { transition-delay: 0.2s; }
-  .fade-up-delay-3 { transition-delay: 0.3s; }
-  .fade-up-delay-4 { transition-delay: 0.4s; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 1100px) {
-    .values-grid { grid-template-columns: repeat(3, 1fr); }
-    .stats-grid  { grid-template-columns: repeat(3, 1fr); }
-    .stats-grid .stat-item:nth-child(3) { border-right: none; }
-    .stats-grid .stat-item:nth-child(4),
-    .stats-grid .stat-item:nth-child(5) { border-top: 1px solid var(--card-border); }
-    .footer-top  { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-  }
-  @media (max-width: 900px) {
-    .about-preview { grid-template-columns: 1fr; }
-    .about-preview-visual { height: 340px; }
-    .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    .involved-grid { grid-template-columns: 1fr; }
-    .section { padding: 80px 0; }
-    .container { padding: 0 1.5rem; }
-    nav { padding: 0 1.5rem; }
-  }
-  @media (max-width: 768px) {
-    .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: var(--nav-bg); padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--card-border); }
-    .nav-links.open { display: flex; }
-    .nav-toggle { display: block; }
-    .values-grid { grid-template-columns: repeat(2, 1fr); }
-    .stats-grid  { grid-template-columns: repeat(2, 1fr); }
-    .stats-grid .stat-item { border-right: none; border-bottom: 1px solid var(--card-border); }
-    .form-row { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr; }
-    .newsletter-form { flex-direction: column; }
-    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
-    .hero-stats { gap: 2rem; }
-  }
-  @media (max-width: 480px) {
-    .values-grid { grid-template-columns: 1fr; }
-    .hero-buttons { flex-direction: column; }
-    .hero-buttons .btn { justify-content: center; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
-</style>
-</head>
-<body>
-
-<!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-   <a href="#home" class="nav-logo" aria-label="Paint It Forward home">
-      <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-96x96.png" alt="Paint It Forward Logo" style="width: 100%; height: 100%; object-fit: cover;">
-      </div>
-      Paint It Forward
-    </a>
-    <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="#artwork">Gallery</a></li>
-      <li><a href="#auctions">Events</a></li>
-      <li><a href="#impact">Impact</a></li>
-      <li><a href="#causes">Causes</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#Contact">FAQ</a></li>
-    
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
-<section class="hero" id="home" aria-label="Hero">
-  <div class="hero-bg"></div>
-  <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
-  <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
-
-  <div class="hero-content">
-    <div class="hero-tag">Student-Led Initiative &middot; Greater Toronto Area</div>
-    <h1>Turning Creativity<br><em>Into Impact.</em></h1>
-    <p class="hero-sub">A student-led art initiative using auctions to support youth, health, and community causes across the Greater Toronto Area.</p>
-    <div class="hero-buttons">
-      <a href="#artwork"     class="btn btn-primary">View Gallery</a>
-      <a href="#auctions"    class="btn btn-outline">Upcoming Events</a>
-      <!-- FLAG: Replace href below with your artist submission Google Form URL -->
-      <a href="#contact"     class="btn btn-outline">Get Involved</a>
-    </div>
-    <hr class="hero-rule">
-    <div class="hero-stats" aria-label="Organization highlights">
-      <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Number of student artists -->
-        <div class="hero-stat-label">Student Artists</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Number of artworks created -->
-        <div class="hero-stat-label">Artworks Created</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Total funds raised, e.g. $12,400+ -->
-        <div class="hero-stat-label">Funds Raised</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Number of events hosted -->
-        <div class="hero-stat-label">Events Hosted</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="manifest" href="/site.webmanifest" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Paint It Forward · Gallery Carousel</title>
-  <meta name="description" content="Student art gallery carousel for Paint It Forward.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --matcha: #7A9E7E;
-      --matcha-dark: #5F7F63;
-      --soft-matcha: #B8C9A3;
-      --soft-matcha-light: #DDE8D4;
-      --beige: #DCCBB8;
-      --beige-light: #EDE4D8;
-      --cream: #F7F3EC;
-      --white: #FDFBF8;
-      --espresso: #3E302A;
-      --espresso-mid: #6B5A52;
-      --espresso-light: #A08070;
-      --border: #E0D8CE;
-      --radius-sm: 6px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow-sm: 0 2px 12px rgba(62,48,42,0.07);
-      --shadow-md: 0 8px 32px rgba(62,48,42,0.11);
-      --shadow-lg: 0 20px 60px rgba(62,48,42,0.15);
-      --transition: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-      --text-heading: #3E302A;
-      --text-body: #6B5A52;
-      --text-muted: #A08070;
-      --card-bg: #FDFBF8;
-      --card-border: #E0D8CE;
-      --section-alt: #EDE4D8;
-      --section-green: #DDE8D4;
-      --input-bg: #FDFBF8;
-      --input-border: #E0D8CE;
-    }
-
-    body.dark {
-      --cream: #1C1812;
-      --white: #231E18;
-      --beige-light: #2A2318;
-      --border: #3D3025;
-      --text-heading: #F0E8DF;
-      --text-body: #B8A898;
-      --text-muted: #806A58;
-      --card-bg: #231E18;
-      --card-border: #3D3025;
-      --section-alt: #211C14;
-      --section-green: #1C2418;
-      --soft-matcha-light: #253020;
-      --espresso: #F0E8DF;
-      --espresso-mid: #B8A898;
-      --espresso-light: #806A58;
-      --input-bg: #1C1812;
-      --input-border: #3D3025;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Source Sans 3', sans-serif;
-      background: var(--cream);
-      color: var(--text-heading);
-      transition: background 0.3s, color 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 2rem 1rem;
-    }
-
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      color: var(--text-heading);
-    }
-
-    .eyebrow {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--matcha);
-      display: block;
-      margin-bottom: 0.9rem;
-      text-align: center;
-    }
-
-    /* Gallery container — mimics your section style */
-    .gallery-section {
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      padding: 3rem 2rem;
-      transition: background var(--transition);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .section-header h2 {
-      font-size: clamp(1.9rem, 3.5vw, 3rem);
-      margin-bottom: 0.75rem;
-    }
-
-    .section-header p {
-      color: var(--text-body);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* ── CAROUSEL STRUCTURE ── */
-    .artwork-carousel {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .carousel-window {
-      flex: 1;
-      overflow: hidden;
-      border-radius: var(--radius-lg);
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
-    }
-
-    .artwork-slide {
-      min-width: 100%;
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      transition: background var(--transition), border-color var(--transition);
-    }
-
-    .artwork-image {
-      background: var(--section-alt);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      transition: background var(--transition);
-    }
-
-    .artwork-image img {
-      width: 100%;
-      height: 420px;
-      object-fit: contain;
-      border-radius: var(--radius-sm);
-    }
-
-    .artwork-details {
-      padding: 2.5rem 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .artwork-details h3 {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-      color: var(--text-heading);
-    }
-
-    .artist {
-      font-weight: 600;
-      color: var(--matcha-dark);
-      margin-bottom: 0.25rem;
-      font-size: 1rem;
-    }
-
-    .medium {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1.25rem;
-      letter-spacing: 0.02em;
-    }
-
-    .artwork-description {
-      color: var(--text-body);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
-
-    .status-badge {
-      display: inline-block;
-      background: rgba(122,158,126,0.12);
-      color: var(--matcha-dark);
-      font-weight: 600;
-      font-size: 0.8rem;
-      padding: 0.35rem 0.9rem;
-      border-radius: 3px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      align-self: flex-start;
-      border: 1px solid rgba(122,158,126,0.25);
-    }
-
-    /* Carousel buttons */
-    .carousel-btn {
-      flex-shrink: 0;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--card-border);
-      background: var(--card-bg);
-      color: var(--text-heading);
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(4px);
-      line-height: 1;
-      padding: 0;
-    }
-
-    .carousel-btn:hover {
-      background: var(--matcha);
-      color: white;
-      border-color: var(--matcha);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    /* Dots */
-    .carousel-dots {
-      display: flex;
-      justify-content: center;
-      gap: 0.6rem;
-      margin-top: 2rem;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--border);
-      border: none;
-      cursor: pointer;
-      transition: background 0.25s, transform 0.2s;
-      padding: 0;
-    }
-
-    .dot.active {
-      background: var(--matcha-dark);
-      transform: scale(1.3);
-    }
-
-    body.dark .dot {
-      background: #4A3F35;
-    }
-    body.dark .dot.active {
-      background: var(--matcha);
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 900px) {
-      .artwork-slide {
-        grid-template-columns: 1fr;
-      }
-      .artwork-image img {
-        height: 300px;
-      }
-      .artwork-details {
-        padding: 1.8rem;
-      }
-      .gallery-section {
-        padding: 2rem 1rem;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .carousel-btn {
-        width: 38px;
-        height: 38px;
-      }
-      .artwork-details h3 {
-        font-size: 1.6rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="gallery-section" id="artwork">
-    <div class="section-header">
-      <span class="eyebrow">Student Artwork</span>
-      <h2>Gallery</h2>
-      <p>Explore original pieces created by student artists. Each artwork tells a story and helps support meaningful causes.</p>
-    </div>
-
-    <!-- Artwork Carousel -->
-    <div class="artwork-carousel">
-      <button class="carousel-btn" id="prevBtn" aria-label="Previous slide">&#10094;</button>
-
-      <div class="carousel-window">
-        <div class="carousel-track" id="carouselTrack">
-          <!-- Slides will be injected by JavaScript -->
-        </div>
-      </div>
-
-      <button class="carousel-btn" id="nextBtn" aria-label="Next slide">&#10095;</button>
-    </div>
-
-    <!-- Dots container -->
-    <div class="carousel-dots" id="carouselDots"></div>
-  </div>
-
-  <script>
-    (function() {
-      // --------------------------------------------------------------
-      // 1. ARTWORK DATA (easy to update)
-      // --------------------------------------------------------------
-      const artworks = [
-        {
-          title: "Bust Study",
-          artist: "Gloria Xu",
-          medium: "Oil on Canvas",
-          description: "The use of oil paint to analyse hidden colours within light.",
-          image: "Gloria Bust Portrait Oil.png",
-          status: "Available for Auction"
-        },
-        {
-          title: "Marseille",
-          artist: "Student Artist",
-          medium: "Graphite on Paper",
-          description: "A student artwork inspired by the atmosphere and character of Marseille.",
-          image: "Marseille.png",
-          status: "Available for Auction"
-        },
-        {
-          title: "Quiet Morning",
-          artist: "Liam Chen",
-          medium: "Watercolour",
-          description: "A delicate study of light through a window in the early hours.",
-          image: "Marseille.png", // using existing image as placeholder; replace with real one
-          status: "Sold"
-        },
-        {
-          title: "Urban Reflections",
-          artist: "Sofia Reyes",
-          medium: "Acrylic on Canvas",
-          description: "Capturing the rhythm of the city after rain.",
-          image: "Gloria Bust Portrait Oil.png", // placeholder
-          status: "Available for Auction"
-        }
-      ];
-
-      // --------------------------------------------------------------
-      // 2. DOM ELEMENTS
-      // --------------------------------------------------------------
-      const track = document.getElementById('carouselTrack');
-      const dotsContainer = document.getElementById('carouselDots');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-
-      let currentIndex = 0;
-      let autoplayInterval = null;
-      const AUTOPLAY_DELAY = 5500; // 5.5 seconds
-
-      // --------------------------------------------------------------
-      // 3. RENDER SLIDES & DOTS
-      // --------------------------------------------------------------
-      function renderCarousel() {
-        if (!track || !dotsContainer) return;
-        
-        // Clear existing content
-        track.innerHTML = '';
-        dotsContainer.innerHTML = '';
-
-        // Create slides
-        artworks.forEach((art) => {
-          const slide = document.createElement('div');
-          slide.className = 'artwork-slide';
-          slide.innerHTML = `
-            <div class="artwork-image">
-              <img src="${art.image}" alt="${art.title}">
-            </div>
-            <div class="artwork-details">
-              <h3>${art.title}</h3>
-              <p class="artist">By ${art.artist}</p>
-              <p class="medium">${art.medium}</p>
-              <p class="artwork-description">${art.description}</p>
-              <span class="status-badge">${art.status}</span>
-            </div>
-          `;
-          track.appendChild(slide);
-        });
-
-        // Create dots
-        artworks.forEach((_, index) => {
-          const dot = document.createElement('button');
-          dot.className = 'dot';
-          dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-          dot.addEventListener('click', () => goToSlide(index));
-          dotsContainer.appendChild(dot);
-        });
-
-        // Set initial active state
-        updateActiveDot();
-        setSlidePosition();
-      }
-
-      // --------------------------------------------------------------
-      // 4. SLIDE POSITION & NAVIGATION
-      // --------------------------------------------------------------
-      function setSlidePosition() {
-        if (!track) return;
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-      }
-
-      function updateActiveDot() {
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, idx) => {
-          dot.classList.toggle('active', idx === currentIndex);
-        });
-      }
-
-      function goToSlide(index) {
-        if (index < 0) {
-          currentIndex = artworks.length - 1;
-        } else if (index >= artworks.length) {
-          currentIndex = 0;
-        } else {
-          currentIndex = index;
-        }
-        setSlidePosition();
-        updateActiveDot();
-        resetAutoplay();
-      }
-
-      function nextSlide() {
-        goToSlide(currentIndex + 1);
-      }
-
-      function prevSlide() {
-        goToSlide(currentIndex - 1);
-      }
-
-      // --------------------------------------------------------------
-      // 5. AUTOPLAY LOGIC
-      // --------------------------------------------------------------
-      function startAutoplay() {
-        stopAutoplay();
-        autoplayInterval = setInterval(nextSlide, AUTOPLAY_DELAY);
-      }
-
-      function stopAutoplay() {
-        if (autoplayInterval) {
-          clearInterval(autoplayInterval);
-          autoplayInterval = null;
-        }
-      }
-
-      function resetAutoplay() {
-        stopAutoplay();
-        startAutoplay();
-      }
-
-      // --------------------------------------------------------------
-      // 6. EVENT LISTENERS
-      // --------------------------------------------------------------
-      prevBtn.addEventListener('click', prevSlide);
-      nextBtn.addEventListener('click', nextSlide);
-
-      // Pause autoplay when hovering over carousel
-      const carouselContainer = document.querySelector('.artwork-carousel');
-      if (carouselContainer) {
-        carouselContainer.addEventListener('mouseenter', stopAutoplay);
-        carouselContainer.addEventListener('mouseleave', startAutoplay);
-      }
-
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        // Only if gallery is in viewport or focused (basic implementation)
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          prevSlide();
-        } else if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          nextSlide();
-        }
-      });
-
-      // Touch / swipe support
-      let touchStartX = 0;
-      let touchEndX = 0;
-      const windowEl = document.querySelector('.carousel-window');
-      if (windowEl) {
-        windowEl.addEventListener('touchstart', (e) => {
-          touchStartX = e.changedTouches[0].screenX;
-          stopAutoplay();
-        }, { passive: true });
-
-        windowEl.addEventListener('touchend', (e) => {
-          touchEndX = e.changedTouches[0].screenX;
-          handleSwipe();
-          startAutoplay();
-        }, { passive: true });
-      }
-
-      function handleSwipe() {
-        const diff = touchStartX - touchEndX;
-        if (Math.abs(diff) > 50) { // minimum swipe distance
-          if (diff > 0) {
-            nextSlide();
-          } else {
-            prevSlide();
-          }
-        }
-      }
-
-      // --------------------------------------------------------------
-      // 7. INITIALISE EVERYTHING
-      // --------------------------------------------------------------
-      renderCarousel();
-      startAutoplay();
-
-      // Cleanup interval if page is hidden (performance)
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          stopAutoplay();
-        } else {
-          startAutoplay();
-        }
-      });
-
-    })();
-  </script>
-</body>
-</html>
-
-<!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
-<section class="section about-section" id="about">
-  <div class="container">
-    <div class="about-preview">
-      <div class="about-preview-visual" aria-hidden="true">
-        <!-- TODO: Replace frame-fill divs with real photos.
-             Set: background: url('photo.jpg') center/cover no-repeat;
-             or use <img> tags inside each .about-frame div. -->
-        <div class="about-frame about-frame-main">
-          <div class="frame-fill"></div>
-        </div>
-        <div class="about-frame about-frame-accent">
-          <div class="frame-fill" style="background: linear-gradient(135deg, var(--matcha-dark), #2A1E18);"></div>
-          <!--add some stuff between  <div class="frame-fill">______</div> and <div class="frame-fill" style="background: linear-gradient(135deg, var(--matcha-dark), #2A1E18);">_____</div>-->
-        </div>
-      </div>
-      <div class="about-text fade-up">
-        <span class="eyebrow">Our Story</span>
-        <h2>Art as a Force for Good</h2>
-        <p>Paint It Forward was created from the belief that art should connect people, tell stories, and create change. As students, we have seen how creativity can give people a voice, bring communities together, and turn even small acts of kindness into something meaningful.</p>
-        <p>Through student-led art auctions, we sell student-created artwork to raise funds and awareness for causes that support people facing real challenges in the community. Our work focuses on supporting causes connected to youth, creativity, health, and community care.</p>
-        <p>We believe that when young people come together with compassion and creativity, art becomes a powerful way to give back.</p>
-        <div style="margin-top:1.75rem;">
-          <a href="#mission" class="btn btn-primary">Our Mission &amp; Values</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ MISSION & VALUES ═══════════════════════════ -->
-<section class="section mission-section" id="mission">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">What Drives Us</span>
-      <h2>Our Core Values</h2>
-      <p>The principles that guide every artwork, every auction, every act of giving.</p>
-    </div>
-    <div class="values-grid">
-      <div class="value-card fade-up">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M2 20c0-1.1.9-2 2-2h16"/><path d="M20 4c0 2-2 4-4 6s-2 4-2 4H8s0-2-2-4-4-4-4-6a6 6 0 0112 0z"/></svg>
-        </div>
-        <div class="value-name">Creativity</div>
-        <div class="value-desc">We believe imagination is one of the most powerful tools young people have to shape the world around them.</div>
-      </div>
-      <div class="value-card fade-up fade-up-delay-1">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-        </div>
-        <div class="value-name">Compassion</div>
-        <div class="value-desc">Every canvas we paint, every bid placed, is an act of care for people in our community who need support.</div>
-      </div>
-      <div class="value-card fade-up fade-up-delay-2">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
-        <div class="value-name">Community</div>
-        <div class="value-desc">Art is not made in isolation — it is a bridge that connects artists, supporters, and causes in meaningful ways.</div>
-      </div>
-      <div class="value-card fade-up fade-up-delay-3">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div class="value-name">Leadership</div>
-        <div class="value-desc">Young people are not the leaders of tomorrow — they are leading right now, through every brushstroke and bold idea.</div>
-      </div>
-      <div class="value-card fade-up fade-up-delay-4">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 7 17 2 22 2c0 5-5 10-10 10z"/><path d="M12 12C12 7 7 2 2 2c0 5 5 10 10 10z"/></svg>
-        </div>
-        <div class="value-name">Giving Back</div>
-        <div class="value-desc">Every artwork we create, every dollar we raise, goes back to the people and causes that need it most.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
-<section class="section stats-section" id="impact">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Our Impact</span>
-      <h2>By the Numbers</h2>
-      <p>Figures will be updated as our work grows.</p>
-    </div>
-    <div class="stats-grid fade-up" aria-label="Impact statistics">
-      <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Student artists featured -->
-        <div class="stat-label">Student Artists</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Art pieces created / auctioned -->
-        <div class="stat-label">Art Pieces Created</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Events / auctions hosted -->
-        <div class="stat-label">Events Hosted</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Total funds raised, e.g. $12,400+ -->
-        <div class="stat-label">Funds Raised</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Community members reached / attendees -->
-        <div class="stat-label">Community Members Reached</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ EVENTS & AUCTIONS ═══════════════════════════ -->
-<section class="section auctions-section" id="auctions">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Upcoming</span>
-      <h2>Events &amp; Auctions</h2>
-      <p>Auction dates and venues will be announced here. Check back for updates.</p>
-    </div>
-    <div class="auction-cards" id="auction-cards">
-      <!-- Injected by JS — one template card shown until real events are confirmed -->
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ CAUSES ═══════════════════════════ -->
-<section class="section causes-section" id="causes">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2rem;">
-      <span class="eyebrow">Who We Support</span>
-      <h2>Our Supported Causes</h2>
-    </div>
-    <div class="causes-notice fade-up">
-      <p>As Paint It Forward grows, we hope to direct our fundraising toward these impactful organizations. Each cause reflects our commitment to youth, creativity, health, and community care across the Greater Toronto Area and beyond.</p>
-    </div>
-    <div class="causes-grid">
-      <div class="cause-card fade-up">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
-        </div><!-- TODO: Replace icon with org logo if permitted -->
-        <div class="cause-name">Toronto Arts Foundation</div>
-        <div class="cause-desc">Helping artists thrive and making arts accessible to all communities across Toronto through programs and partnerships.</div>
-      </div>
-      <div class="cause-card fade-up fade-up-delay-1">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        <div class="cause-name">SickKids Foundation</div>
-        <div class="cause-desc">Supporting Canada's most research-intensive hospital, giving hope to children and families facing the toughest health challenges.</div>
-      </div>
-      <div class="cause-card fade-up fade-up-delay-2">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        </div>
-        <div class="cause-name">Holland Bloorview Foundation</div>
-        <div class="cause-desc">Canada's largest pediatric rehabilitation hospital, creating a world of belonging for children and youth with disabilities.</div>
-      </div>
-      <div class="cause-card fade-up fade-up-delay-3">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a2 2 0 012-2.18H5a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 6.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-        </div>
-        <div class="cause-name">Kids Help Phone</div>
-        <div class="cause-desc">Canada's only 24/7 e-mental health service offering counselling and information to young people in both official languages.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ TESTIMONIALS ═══════════════════════════ -->
-<section class="section-sm testimonials-section" id="testimonials">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <span class="eyebrow">Voices</span>
-      <h2>From Our Community</h2>
-    </div>
-  </div>
-  <!-- TODO: Replace placeholder testimonials in JS below with real quotes
-       from student artists, attendees, parents, and supporters -->
-  <div class="testimonials-wrapper" aria-label="Testimonials">
-    <div class="testimonials-track" id="testimonials-track"></div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ GET INVOLVED ═══════════════════════════ -->
-<section class="section involved-section" id="get-involved">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Join Us</span>
-      <h2>Get Involved</h2>
-      <p>There are many ways to support Paint It Forward — choose the path that fits you.</p>
-    </div>
-    <div class="involved-grid">
-      <div class="involved-card involved-card-1 fade-up">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        </div>
-        <div class="involved-title">Submit Artwork</div>
-        <div class="involved-desc">Are you a student artist? Apply to feature your work in an upcoming auction. Your art could make a real difference.</div>
-        <a href="https://form.jotform.com/261786048210052"
-   class="btn btn-primary"
-   target="_blank"
-   rel="noopener">
-   Submit Artwork
-</a>
-      </div>
-      <div class="involved-card involved-card-2 fade-up fade-up-delay-1">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        </div>
-        <div class="involved-title">Bid on Artwork</div>
-        <div class="involved-desc">Support young artists while contributing to causes that matter. Every bid helps fund important community initiatives.</div>
-        <!-- auction registration link when event is confirmed -->
-       <a href="https://form.jotform.com/261787329611262"
-   class="btn btn-primary"
-   target="_blank"
-   rel="noopener">
-   Register for Auction
-</a>
-      </div>
-      <div class="involved-card involved-card-3 fade-up fade-up-delay-2">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
-        <div class="involved-title">Volunteer</div>
-        <div class="involved-desc">Help us organize events, coordinate artists, and spread the word. Volunteering with Paint It Forward is a meaningful experience.</div>
-        <!-- FLAG: Replace href with volunteer application Google Form URL when created -->
-        <a href="https://form.jotform.com/261786840237061"
-   class="btn btn-primary"
-   target="_blank"
-   rel="noopener">
-   Apply to Volunteer
-</a>
-      </div>
-      <div class="involved-card involved-card-4 fade-up fade-up-delay-3">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-        </div>
-        <div class="involved-title">Become a Sponsor</div>
-        <div class="involved-desc">Businesses and community organizations can partner with Paint It Forward to amplify our impact and reach.</div>
-        <!-- FLAG: Create a sponsorship deck/PDF and link it here, or direct to the contact section -->
-        <a href="https://form.jotform.com/261786652654267"
-   class="btn btn-primary"
-   target="_blank"
-   rel="noopener">
-   Become a Sponsor
-</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ FAQ ═══════════════════════════ -->
-<section class="section faq-section" id="faq">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Questions</span>
-      <h2>Frequently Asked</h2>
-    </div>
-    <div class="faq-list" id="faq-list" role="list"></div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ NEWSLETTER ═══════════════════════════ -->
-<section class="newsletter-section">
-  <div class="container">
-    <span class="eyebrow">Stay Connected</span>
-    <h2>Stay in the Loop</h2>
-    <p>Get updates on upcoming auctions, new artwork, and impact stories.</p>
-    <!-- FLAG: Connect this input to your mailing list (Mailchimp, Buttondown, Google Form, etc.)
-         Replace handleNewsletter() in the JS with your provider's submission endpoint -->
-    <div class="newsletter-form">
-      <input type="email" placeholder="Your email address" aria-label="Email address for newsletter">
-      <button class="btn btn-primary" type="button" onclick="handleNewsletter(this)">Subscribe</button>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
-<section class="section contact-section" id="contact">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Reach Out</span>
-      <h2>Let's Connect</h2>
-    </div>
-    <div class="contact-inner">
-      <div class="contact-info fade-up">
-        <p>Whether you want to submit artwork, place a bid, volunteer, or partner with us — we would love to hear from you.</p>
-        <div class="contact-item">
-          <div class="contact-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          <div class="contact-item-text"><a href="mailto:paint.it.forward.art@gmail.com">paint.it.forward.art@gmail.com</a></div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="var(--matcha-dark)" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </div>
-          <div class="contact-item-text"><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">@paint_itforward</a></div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="contact-item-text">Greater Toronto Area, Ontario, Canada</div>
-        </div>
-        <div style="margin-top:2rem;">
-          <div class="social-links">
-            <a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
-              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="mailto:paint.it.forward.art@gmail.com" class="social-link email-link" aria-label="Email">
-              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="contact-form-box fade-up">
-<form id="contactForm">
-        <h3>Send us a message</h3>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="first-name">First Name</label>
-            <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name">
-          </div>
-          <div class="form-group">
-            <label for="last-name">Last Name</label>
-            <input type="text" id="last-name" name="last_name" placeholder="Smith" autocomplete="family-name">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email">
-        </div>
-        <div class="form-group">
-          <label for="reason">I am interested in&hellip;</label>
-          <select id="reason" name="reason">
-            <option value="">Select a reason</option>
-            <option value="Submitting Artwork">Submitting Artwork</option>
-           <option value="Bidding on Artwork">Bidding on Artwork</option> 
-            <option value="Volunteering">Volunteering</option>
-            <option value="Sponsorship">Sponsorship</option>
-            <option value="General Inquiry">General Inquiry</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Tell us a bit about yourself and how you'd like to get involved..."></textarea>
-        </div>
-  
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
-    Send Message
-</button> 
-  
-</form>
-</div>
-      <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-<script>
-emailjs.init({
-    publicKey: "LqatH02y3BQhhyDmA"
-});
-
-document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    emailjs.sendForm(
-        "service_bzg624p",
-        "template_7fodvw9",
-        this
-    )
-    .then(() => {
-        alert("Message sent successfully!");
-        this.reset();
-    })
-    .catch((error) => {
-        alert("Failed to send message.");
-        console.error(error);
-    });
-});
-</script>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-<footer role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#home" class="footer-logo" aria-label="Paint It Forward home">
-          <!-- TODO: Insert logo icon here when ready -->
-          Paint It Forward
-        </a>
-        <p>Turning Creativity Into Impact. A student-led initiative empowering young artists to use creativity to make a meaningful difference across the Greater Toronto Area.</p>
-        <p class="footer-note">Nonprofit registration in progress.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#artwork">Gallery</a></li>
-          <li><a href="#auctions">Events</a></li>
-          <li><a href="#impact">Our Impact</a></li>
-          <li><a href="#causes">Causes We Support</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Get Involved</h4>
-        <ul>
-          <!-- FLAG: Replace # hrefs with Google Form links as they become available -->
-          <li><a href="#get-involved">Submit Artwork</a></li>
-          <li><a href="#get-involved">Volunteer</a></li>
-          <li><a href="#auctions">Bid on Artwork</a></li>
-          <li><a href="#contact">Sponsorship</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="mailto:paint.it.forward.art@gmail.com">Email Us</a></li>
-          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          <!-- TODO: Add TikTok, LinkedIn, or other platforms as accounts are created -->
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Paint It Forward. All rights reserved. Student-led initiative, Greater Toronto Area.</p>
-      <div class="social-links">
-        <a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a href="mailto:paint.it.forward.art@gmail.com" class="social-link email-link" aria-label="Email">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- Dark mode toggle -->
-<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-</button>
-
-
-<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
-<script>
-/* ── AUCTION CARD DATA ──────────────────────────────────────────────────────
-   One template card shown until real event details are confirmed.
-   TODO: Add more objects here as new events are planned.
-   Fields: title, note (shown under TBD badge), optionally add date/location strings.
-──────────────────────────────────────────────────────────────────────────── */
-const auctions = [
-  {
-    title: "Summer Auction 2026",
-    note: "Date and venue to be announced. Register your interest below."
-  }
-  /* TODO: Add next events as:
-  { title: "Fall Auction 2026",   note: "Details coming soon." },
-  { title: "Winter Gala 2026",    note: "Details coming soon." },
-  */
-];
-
-/* ── TESTIMONIAL DATA ───────────────────────────────────────────────────────
-   TODO: Replace these placeholders with real quotes once you have them.
-   Ask attendees, student artists, and parents after your first event.
-──────────────────────────────────────────────────────────────────────────── */
-const testimonials = [
-  { text: "Participating in the auction was one of the most meaningful experiences of my year. Knowing my art helped raise funds for a cause I care about was incredibly moving.", name: "Student Artist", role: "Grade 11" },
-  { text: "As a parent, I was struck by the professionalism and passion the students brought to this event. It felt like a real gallery opening.", name: "Parent", role: "Auction Attendee" },
-  { text: "I bid on a watercolour and it now hangs in my office. Every time I look at it, I feel connected to something bigger.", name: "Community Member", role: "Supporter" },
-  { text: "Paint It Forward gave me a platform I never expected as a student. It showed me that my art actually has value beyond the classroom.", name: "Student Artist", role: "Grade 12" },
-  { text: "The energy in that room was unlike anything I have experienced at a community event. These students are genuinely creating change.", name: "Community Member", role: "Volunteer" },
-  { text: "We loved seeing student work celebrated at this level. It is inspiring to witness young people using their creativity for meaningful causes.", name: "Community Member", role: "Auction Attendee" },
-];
-
-/* ── FAQ DATA ───────────────────────────────────────────────────────────────
-   TODO: Expand as your policies become clearer.
-──────────────────────────────────────────────────────────────────────────── */
-const faqs = [
-  { q: "How do I bid on artwork?", a: "You can register your interest for any upcoming auction through our Events page. During the event you will be able to place bids on artwork in person. Online bidding options may be available in future — stay tuned." },
-  { q: "How can students submit artwork?", a: "Students can apply through our Get Involved section. We review submissions on a rolling basis and reach out before each auction. All mediums are welcome." },
-  { q: "Which charities does Paint It Forward support?", a: "We hope to support organizations including the Toronto Arts Foundation, SickKids Foundation, Holland Bloorview Foundation, and Kids Help Phone as our fundraising grows across the Greater Toronto Area." },
-  { q: "Can my business sponsor Paint It Forward?", a: "Absolutely. We welcome partnerships with businesses and community organizations who share our values. Reach out through our Contact page to discuss sponsorship opportunities." },
-  { q: "How do I volunteer at an event?", a: "Fill out the volunteer inquiry form in our Get Involved section. We welcome help with event setup, guest coordination, artwork display, and more." },
-  { q: "Is Paint It Forward a registered nonprofit?", a: "Paint It Forward is a student-led initiative based in the Greater Toronto Area. We are currently exploring formal nonprofit registration and will share updates here as that process develops." },
-];
-
-/* ── RENDER AUCTIONS ── */
-const aContainer = document.getElementById("auction-cards");
-auctions.forEach(a => {
-  aContainer.innerHTML += `
-    <article class="auction-card">
-      <div class="auction-card-header">
-        <div class="auction-title">${a.title}</div>
-      </div>
-      <div class="auction-body">
-        <div class="auction-detail">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Date: To Be Determined
-        </div>
-        <div class="auction-detail">
-          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Location: To Be Determined
-        </div>
-        <div class="tbd-badge">Registration Opening Soon</div>
-        <p style="font-size:0.82rem; color:var(--text-body); margin-bottom:1rem;">${a.note}</p>
-        <!-- FLAG: Replace href with event-specific Google Form registration link -->
-        <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center;">Express Interest</a>
-      </div>
-    </article>`;
-});
-
-/* ── RENDER TESTIMONIALS ── */
-const track = document.getElementById("testimonials-track");
-[...testimonials, ...testimonials].forEach(t => {
-  track.innerHTML += `
-    <div class="testimonial-card">
-      <span class="testimonial-opener" aria-hidden="true">&ldquo;</span>
-      <p class="testimonial-text">${t.text}</p>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
-        <div>
-          <div class="testimonial-name">${t.name}</div>
-          <div class="testimonial-role">${t.role}</div>
-        </div>
-      </div>
-    </div>`;
-});
-
-/* ── RENDER FAQ ── */
-const faqList = document.getElementById("faq-list");
-faqs.forEach((f, i) => {
-  faqList.innerHTML += `
-    <div class="faq-item" role="listitem">
-      <div class="faq-question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-${i}"
-           onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleFaq(this)">
-        ${f.q}
-        <span class="faq-toggle" aria-hidden="true">+</span>
-      </div>
-      <div class="faq-answer" id="faq-${i}" role="region">${f.a}</div>
-    </div>`;
-});
-
-/* ── FAQ TOGGLE ── */
-function toggleFaq(btn) {
-  const item = btn.closest(".faq-item");
-  const isOpen = item.classList.contains("open");
-  document.querySelectorAll(".faq-item.open").forEach(i => i.classList.remove("open"));
-  if (!isOpen) item.classList.add("open");
-  btn.setAttribute("aria-expanded", !isOpen);
-}
-
-/* ── NAV TOGGLE ── */
-document.getElementById("nav-toggle").addEventListener("click", function() {
-  const links = document.getElementById("nav-links");
-  links.classList.toggle("open");
-  this.setAttribute("aria-expanded", links.classList.contains("open"));
-});
-document.querySelectorAll(".nav-links a").forEach(a => {
-  a.addEventListener("click", () => document.getElementById("nav-links").classList.remove("open"));
-});
-
-/* ── SCROLL ANIMATIONS ── */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
-
-/* ── DARK MODE ── */
-const darkBtn  = document.getElementById("dark-toggle");
-const iconEl   = document.getElementById("toggle-icon");
-const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-const sunPath  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-
-if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  document.body.classList.add("dark");
-  iconEl.innerHTML = sunPath;
-}
-darkBtn.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
-});
-
-function handleContact(btn) {
-  const first = document.getElementById("first-name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  if (!first || !email) { btn.textContent = "Please fill in required fields"; setTimeout(() => btn.textContent = "Send Message", 2200); return; }
-  btn.textContent = "Message Sent";
-  btn.style.background = "var(--matcha-dark)";
-  btn.disabled = true;
-  setTimeout(() => { btn.textContent = "Send Message"; btn.style.background = ""; btn.disabled = false; }, 4000);
-}
-
-/* ── NEWSLETTER ─────────────────────────────────────────────────────────────
-   FLAG: Currently does not submit anywhere.
-   TODO: Replace with your mailing list provider's API call or form redirect.
-──────────────────────────────────────────────────────────────────────────── */
-function handleNewsletter(btn) {
-  const input = btn.previousElementSibling;
-  if (!input.value.includes("@")) { input.placeholder = "Please enter a valid email"; return; }
-  btn.textContent = "Subscribed";
-  input.value = "";
-  setTimeout(() => btn.textContent = "Subscribe", 3500);
-}
-</script>
-<script>
-let currentSlide = 0;
-
-function moveSlide(direction) {
-  const track = document.querySelector(".carousel-track");
-  const slides = document.querySelectorAll(".artwork-slide");
-
-  currentSlide += direction;
-
-  if (currentSlide < 0) {
-    currentSlide = slides.length - 1;
-  }
-
-  if (currentSlide >= slides.length) {
-    currentSlide = 0;
-  }
-
-  track.style.transform = 
-    `translateX(-${currentSlide * 100}%)`;
-}
-</script>
-</body>
-</html>
+  .newsletter

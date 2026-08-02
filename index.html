@@ -1,4 +1,4 @@
-each section should be full screen, <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -793,321 +793,26 @@ each section should be full screen, <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="manifest" href="/site.webmanifest" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Paint It Forward · Gallery Carousel</title>
-  <meta name="description" content="Student art gallery carousel for Paint It Forward.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --matcha: #7A9E7E;
-      --matcha-dark: #5F7F63;
-      --soft-matcha: #B8C9A3;
-      --soft-matcha-light: #DDE8D4;
-      --beige: #DCCBB8;
-      --beige-light: #EDE4D8;
-      --cream: #F7F3EC;
-      --white: #FDFBF8;
-      --espresso: #3E302A;
-      --espresso-mid: #6B5A52;
-      --espresso-light: #A08070;
-      --border: #E0D8CE;
-      --radius-sm: 6px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow-sm: 0 2px 12px rgba(62,48,42,0.07);
-      --shadow-md: 0 8px 32px rgba(62,48,42,0.11);
-      --shadow-lg: 0 20px 60px rgba(62,48,42,0.15);
-      --transition: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-      --text-heading: #3E302A;
-      --text-body: #6B5A52;
-      --text-muted: #A08070;
-      --card-bg: #FDFBF8;
-      --card-border: #E0D8CE;
-      --section-alt: #EDE4D8;
-      --section-green: #DDE8D4;
-      --input-bg: #FDFBF8;
-      --input-border: #E0D8CE;
-    }
+ <!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
+<section class="section gallery-section" id="artwork">
+  <div class="container">
+    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
+      <span class="eyebrow">Student Artwork</span>
+      <h2>Gallery</h2>
+      <p>Explore original pieces created by student artists. Each artwork tells a story and helps support meaningful causes.</p>
+    </div>
 
-    body.dark {
-      --cream: #1C1812;
-      --white: #231E18;
-      --beige-light: #2A2318;
-      --border: #3D3025;
-      --text-heading: #F0E8DF;
-      --text-body: #B8A898;
-      --text-muted: #806A58;
-      --card-bg: #231E18;
-      --card-border: #3D3025;
-      --section-alt: #211C14;
-      --section-green: #1C2418;
-      --soft-matcha-light: #253020;
-      --espresso: #F0E8DF;
-      --espresso-mid: #B8A898;
-      --espresso-light: #806A58;
-      --input-bg: #1C1812;
-      --input-border: #3D3025;
-    }
+    <div class="artwork-carousel fade-up">
+      <button class="carousel-btn" id="prevBtn" aria-label="Previous slide">&#10094;</button>
+      <div class="carousel-window">
+        <div class="carousel-track" id="carouselTrack"></div>
+      </div>
+      <button class="carousel-btn" id="nextBtn" aria-label="Next slide">&#10095;</button>
+    </div>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Source Sans 3', sans-serif;
-      background: var(--cream);
-      color: var(--text-heading);
-      transition: background 0.3s, color 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 2rem 1rem;
-    }
-
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      color: var(--text-heading);
-    }
-
-    .eyebrow {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--matcha);
-      display: block;
-      margin-bottom: 0.9rem;
-      text-align: center;
-    }
-
-    /* Gallery container — mimics your section style */
-    .gallery-section {
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      padding: 3rem 2rem;
-      transition: background var(--transition);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .section-header h2 {
-      font-size: clamp(1.9rem, 3.5vw, 3rem);
-      margin-bottom: 0.75rem;
-    }
-
-    .section-header p {
-      color: var(--text-body);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* ── CAROUSEL STRUCTURE ── */
-    .artwork-carousel {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .carousel-window {
-      flex: 1;
-      overflow: hidden;
-      border-radius: var(--radius-lg);
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
-    }
-
-    .artwork-slide {
-      min-width: 100%;
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      transition: background var(--transition), border-color var(--transition);
-    }
-
-    .artwork-image {
-      background: var(--section-alt);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      transition: background var(--transition);
-    }
-
-    .artwork-image img {
-      width: 100%;
-      height: 420px;
-      object-fit: contain;
-      border-radius: var(--radius-sm);
-    }
-
-    .artwork-details {
-      padding: 2.5rem 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .artwork-details h3 {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-      color: var(--text-heading);
-    }
-
-    .artist {
-      font-weight: 600;
-      color: var(--matcha-dark);
-      margin-bottom: 0.25rem;
-      font-size: 1rem;
-    }
-
-    .medium {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1.25rem;
-      letter-spacing: 0.02em;
-    }
-
-    .artwork-description {
-      color: var(--text-body);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
-
-    .status-badge {
-      display: inline-block;
-      background: rgba(122,158,126,0.12);
-      color: var(--matcha-dark);
-      font-weight: 600;
-      font-size: 0.8rem;
-      padding: 0.35rem 0.9rem;
-      border-radius: 3px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      align-self: flex-start;
-      border: 1px solid rgba(122,158,126,0.25);
-    }
-
-    /* Carousel buttons */
-    .carousel-btn {
-      flex-shrink: 0;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--card-border);
-      background: var(--card-bg);
-      color: var(--text-heading);
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
-      backdrop-filter: blur(4px);
-      line-height: 1;
-      padding: 0;
-    }
-
-    .carousel-btn:hover {
-      background: var(--matcha);
-      color: white;
-      border-color: var(--matcha);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    /* Dots */
-    .carousel-dots {
-      display: flex;
-      justify-content: center;
-      gap: 0.6rem;
-      margin-top: 2rem;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--border);
-      border: none;
-      cursor: pointer;
-      transition: background 0.25s, transform 0.2s;
-      padding: 0;
-    }
-
-    .dot.active {
-      background: var(--matcha-dark);
-      transform: scale(1.3);
-    }
-
-    body.dark .dot {
-      background: #4A3F35;
-    }
-    body.dark .dot.active {
-      background: var(--matcha);
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 900px) {
-      .artwork-slide {
-        grid-template-columns: 1fr;
-      }
-      .artwork-image img {
-        height: 300px;
-      }
-      .artwork-details {
-        padding: 1.8rem;
-      }
-      .gallery-section {
-        padding: 2rem 1rem;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .carousel-btn {
-        width: 38px;
-        height: 38px;
-      }
-      .artwork-details h3 {
-        font-size: 1.6rem;
-      }
-    }
-  </style>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+</section>
 </head>
 <body>
   <div class="gallery-section" id="artwork">
@@ -1163,14 +868,7 @@ each section should be full screen, <!DOCTYPE html>
           description: "A delicate study of light through a window in the early hours.",
           image: "Marseille.png", // using existing image as placeholder; replace with real one
           status: "Sold"
-        },
-        {
-          title: "Urban Reflections",
-          artist: "Sofia Reyes",
-          medium: "Acrylic on Canvas",
-          description: "Capturing the rhythm of the city after rain.",
-          image: "Gloria Bust Portrait Oil.png", // placeholder
-          status: "Available for Auction"
+        
         }
       ];
 
@@ -1978,25 +1676,84 @@ function handleNewsletter(btn) {
 }
 </script>
 <script>
-let currentSlide = 0;
+(function() {
+  const artworks = [
+    {
+      title: "Bust Study",
+      artist: "Gloria Xu",
+      medium: "Oil on Canvas",
+      description: "The use of oil paint to analyse hidden colours within light.",
+      image: "Gloria Bust Portrait Oil.png",
+      status: "Available for Auction"
+    },
+    {
+      title: "Marseille",
+      artist: "Student Artist",
+      medium: "Graphite on Paper",
+      description: "A student artwork inspired by the atmosphere and character of Marseille.",
+      image: "Marseille.png",
+      status: "Available for Auction"
+    }
+  ];
 
-function moveSlide(direction) {
-  const track = document.querySelector(".carousel-track");
-  const slides = document.querySelectorAll(".artwork-slide");
+  const track = document.getElementById('carouselTrack');
+  const dotsContainer = document.getElementById('carouselDots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let currentIndex = 0;
+  let autoplayInterval = null;
 
-  currentSlide += direction;
-
-  if (currentSlide < 0) {
-    currentSlide = slides.length - 1;
+  function renderCarousel() {
+    track.innerHTML = '';
+    dotsContainer.innerHTML = '';
+    artworks.forEach((art) => {
+      track.innerHTML += `
+        <div class="artwork-slide">
+          <div class="artwork-image"><img src="${art.image}" alt="${art.title}"></div>
+          <div class="artwork-details">
+            <h3>${art.title}</h3>
+            <p class="artist">By ${art.artist}</p>
+            <p class="medium">${art.medium}</p>
+            <p class="artwork-description">${art.description}</p>
+            <span class="status-badge">${art.status}</span>
+          </div>
+        </div>`;
+    });
+    artworks.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    });
   }
 
-  if (currentSlide >= slides.length) {
-    currentSlide = 0;
+  function goToSlide(index) {
+    if (index < 0) currentIndex = artworks.length - 1;
+    else if (index >= artworks.length) currentIndex = 0;
+    else currentIndex = index;
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+    resetAutoplay();
   }
 
-  track.style.transform = 
-    `translateX(-${currentSlide * 100}%)`;
-}
+  function nextSlide() { goToSlide(currentIndex + 1); }
+  function prevSlide() { goToSlide(currentIndex - 1); }
+  function startAutoplay() { stopAutoplay(); autoplayInterval = setInterval(nextSlide, 5500); }
+  function stopAutoplay() { if (autoplayInterval) { clearInterval(autoplayInterval); autoplayInterval = null; } }
+  function resetAutoplay() { stopAutoplay(); startAutoplay(); }
+
+  prevBtn.addEventListener('click', prevSlide);
+  nextBtn.addEventListener('click', nextSlide);
+  document.querySelector('.artwork-carousel')?.addEventListener('mouseenter', stopAutoplay);
+  document.querySelector('.artwork-carousel')?.addEventListener('mouseleave', startAutoplay);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+  });
+
+  renderCarousel();
+  startAutoplay();
+})();
 </script>
 </body>
 </html>

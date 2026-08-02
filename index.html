@@ -396,6 +396,157 @@ hello<!DOCTYPE html>
   }
 
 }
+  /* ── CAROUSEL STYLES ── */
+.carousel-window {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  position: relative;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
+  width: 100%;
+}
+
+.artwork-slide {
+  min-width: 100%;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.artwork-slide:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Artwork image */
+.artwork-image {
+  background: var(--section-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.artwork-image img {
+  width: 100%;
+  height: 420px;
+  object-fit: contain;
+}
+
+/* Artwork details */
+.artwork-details {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.artwork-details h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.artist {
+  font-weight: 600;
+  color: var(--matcha-dark);
+  margin-bottom: .4rem;
+}
+
+.medium {
+  color: var(--text-muted);
+  font-size: .9rem;
+  margin-bottom: 1.5rem;
+}
+
+.artwork-description {
+  margin-bottom: 1.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--soft-matcha-light);
+  color: var(--matcha-dark);
+  align-self: flex-start;
+}
+
+/* Carousel buttons */
+.carousel-btn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-heading);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  background: var(--matcha);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-border);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.dot.active {
+  background: var(--matcha);
+  transform: scale(1.2);
+}
+
+.dot:hover {
+  background: var(--matcha-dark);
+}
+
+/* Mobile responsive */
+@media (max-width: 900px) {
+  .artwork-slide {
+    grid-template-columns: 1fr;
+  }
+
+  .artwork-image img {
+    height: 320px;
+  }
+
+  .artwork-details {
+    padding: 2rem;
+  }
+}
 
   /* ── MISSION & VALUES ── */
   .mission-section { background: var(--section-green); transition: background var(--transition); }

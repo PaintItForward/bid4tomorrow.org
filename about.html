@@ -282,6 +282,134 @@
     .reverse-mobile { order: -1; }
     .involved-grid { grid-template-columns: 1fr; }
   }
+
+
+  /* ── TEAM ── */
+
+.team-preview-section {
+background: var(--section-alt);
+transition: background var(--transition);
+}
+
+.section-header {
+margin-bottom: 3.5rem;
+}
+
+.section-header-center {
+text-align: center;
+max-width: 700px;
+margin-left: auto;
+margin-right: auto;
+}
+
+.section-header h2 {
+margin-bottom: 1rem;
+}
+
+.section-header p {
+max-width: 620px;
+margin: 0 auto;
+}
+
+/* Team cards */
+
+.team-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 2rem;
+max-width: 1000px;
+margin: 0 auto;
+}
+
+.team-card {
+background: var(--card-bg);
+border: 1px solid var(--card-border);
+border-radius: var(--radius-lg);
+overflow: hidden;
+box-shadow: var(--shadow-sm);
+transition:
+transform var(--transition),
+box-shadow var(--transition),
+background var(--transition),
+border-color var(--transition);
+}
+
+.team-card {
+transform: translateY(-5px);
+box-shadow: var(--shadow-md);
+}
+
+/* Team image */
+
+.team-image {
+width: 100%;
+height: 360px;
+overflow: hidden;
+background: var(--beige-light);
+}
+
+.team-image img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+
+/* Team information */
+
+.team-info {
+padding: 2rem;
+}
+
+.team-info .eyebrow {
+margin-bottom: 0.55rem;
+}
+
+.team-info h3 {
+margin-bottom: 0.8rem;
+}
+
+.team-info p {
+margin-bottom: 1.25rem;
+font-size: 0.95rem;
+}
+
+/* Profile link */
+
+.text-link {
+display: inline-flex;
+align-items: center;
+gap: 0.35rem;
+color: var(--matcha-dark);
+text-decoration: none;
+font-family: 'Source Sans 3', sans-serif;
+font-size: 0.85rem;
+font-weight: 600;
+transition: color var(--transition), gap var(--transition);
+}
+
+.text-link {
+color: var(--matcha);
+gap: 0.55rem;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+.team-grid {
+grid-template-columns: 1fr;
+}
+
+.team-image {
+height: 320px;
+}
+
+.team-info {
+padding: 1.5rem;
+}
+
+}
 </style>
 </head>
 <body>
@@ -325,45 +453,50 @@
     </div>
   </header>
 
-  <section class="section about-section">
-    <div class="container">
+ <section class="section about-section">
+  <div class="container">
 
-      <!-- About Paint It Forward -->
-      <div class="about-preview">
-        <div class="about-preview-visual">
-          <img src="IMG_1269.JPG"
-               alt="Paint It Forward team"
-               class="about-image">
-        </div>
-
-        <div class="about-text fade-up">
-          <span class="eyebrow">About Us</span>
-          <h2>Art That Gives Back</h2>
-
-          <p>
-            Paint It Forward is a student-led international organization
-            connecting young artists, student leaders, and communities through
-            art and philanthropy.
-          </p>
-
-          <p>
-            Founded by students in the Greater Toronto Area, Paint It Forward
-            began with a simple belief: creativity can do more than inspire —
-            it can create meaningful change. Through student-led art auctions,
-            exhibitions, and community initiatives, we give young artists a
-            platform to share their work while supporting causes that matter.
-          </p>
-
-          <p>
-            As we grow, we are building a network of student-led chapters
-            across cities. From Toronto to Manhattan and beyond, our goal is
-            to bring young people together around a shared passion for
-            creativity, community, and giving back.
-          </p>
-        </div>
+    <!-- About Paint It Forward -->
+    <div class="about-preview">
+      <div class="about-preview-visual">
+        <img src="IMG_1269.JPG"
+             alt="Paint It Forward team"
+             class="about-image">
       </div>
 
-     <section class="section team-preview-section">
+      <div class="about-text fade-up">
+        <span class="eyebrow">About Us</span>
+        <h2>Art That Gives Back</h2>
+
+        <p>
+          Paint It Forward is a student-led international organization
+          connecting young artists, student leaders, and communities through
+          art and philanthropy.
+        </p>
+
+        <p>
+          Founded by students in the Greater Toronto Area, Paint It Forward
+          began with a simple belief: creativity can do more than inspire —
+          it can create meaningful change. Through student-led art auctions,
+          exhibitions, and community initiatives, we give young artists a
+          platform to share their work while supporting causes that matter.
+        </p>
+
+        <p>
+          As we grow, we are building a network of student-led chapters
+          across cities. From Toronto to Manhattan and beyond, our goal is
+          to bring young people together around a shared passion for
+          creativity, community, and giving back.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ── OUR TEAM ── -->
+<section class="section team-preview-section">
   <div class="container">
 
     <div class="section-header section-header-center fade-up">
@@ -379,6 +512,7 @@
 
       <!-- Gloria -->
       <div class="team-card fade-up">
+
         <div class="team-image">
           <img src="IMG_1261.JPG" alt="Gloria Xu">
         </div>
@@ -386,16 +520,23 @@
         <div class="team-info">
           <span class="eyebrow">Co-Founder</span>
           <h3>Gloria Xu</h3>
+
           <p>
             Helps lead Paint It Forward's creative direction, technology,
             systems, and artistic initiatives.
           </p>
-          <a href="gloria.html" class="text-link">View Profile →</a>
+
+          <a href="gloria.html" class="text-link">
+            View Profile →
+          </a>
         </div>
+
       </div>
+
 
       <!-- Brian -->
       <div class="team-card fade-up">
+
         <div class="team-image">
           <img src="IMG_1269.JPG" alt="Brian Lu">
         </div>
@@ -403,30 +544,51 @@
         <div class="team-info">
           <span class="eyebrow">Co-Founder</span>
           <h3>Brian Lu</h3>
+
           <p>
             Helps organize events, connect with artists and community
             partners, and grow Paint It Forward's network.
           </p>
-          <a href="brian.html" class="text-link">View Profile →</a>
+
+          <a href="brian.html" class="text-link">
+            View Profile →
+          </a>
         </div>
+
       </div>
 
-      <!-- Manhattan ***SUPER IMPORTANT ON MY TODO LIST PLEASE REMEMBER TO EDIT AND ADD manhattan.html, add photo of chapter president, their blurb
+
+      <!-- Manhattan Chapter President
+           TODO:
+           - Add president's photo
+           - Add president's name
+           - Add bio
+           - Create manhattan.html
+      -->
+      <!--
       <div class="team-card fade-up">
+
         <div class="team-image">
-          <img src="MANHATTAN-PRESIDENT.jpg" alt="Manhattan Chapter President">
+          <img src="MANHATTAN-PRESIDENT.jpg"
+               alt="Manhattan Chapter President">
         </div>
 
         <div class="team-info">
           <span class="eyebrow">Chapter President · Manhattan</span>
           <h3>[Name]</h3>
+
           <p>
             Leads Paint It Forward's Manhattan chapter and helps bring our
             mission to a new community.
           </p>
-          <a href="manhattan.html" class="text-link">View Profile →</a>
+
+          <a href="manhattan.html" class="text-link">
+            View Profile →
+          </a>
         </div>
-      </div>-->
+
+      </div>
+      -->
 
     </div>
 

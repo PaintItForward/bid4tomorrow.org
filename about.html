@@ -247,6 +247,8 @@
   .about-text h2 { margin-bottom: 1.25rem; }
   .about-text p  { margin-bottom: 1.25rem; }
 
+  
+
   /* ── FOOTER ── */
   footer { background: #2A1E18; padding: 5rem 0 2.5rem; }
   .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
@@ -342,17 +344,17 @@ box-shadow: var(--shadow-md);
 /* Team image */
 
 .team-image {
-width: 100%;
-height: 360px;
-overflow: hidden;
-background: var(--beige-light);
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: var(--beige-light);
 }
 
 .team-image img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Team information */
@@ -402,7 +404,7 @@ grid-template-columns: 1fr;
 }
 
 .team-image {
-height: 320px;
+aspect-ratio: 1 / 1;
 }
 
 .team-info {
@@ -514,7 +516,7 @@ padding: 1.5rem;
       <div class="team-card fade-up">
 
         <div class="team-image">
-          <img src="IMG_1261.JPG" alt="Gloria Xu">
+          <img src="IMG_1261.JPG" alt="Gloria Xu" style="object-position: center 20%;">
         </div>
 
         <div class="team-info">
@@ -522,7 +524,7 @@ padding: 1.5rem;
           <h3>Gloria Xu</h3>
 
           <p>
-            Helps lead Paint It Forward's creative direction, technology,
+            Leads Paint It Forward's creative direction, technology,
             systems, and artistic initiatives.
           </p>
 
@@ -538,7 +540,7 @@ padding: 1.5rem;
       <div class="team-card fade-up">
 
         <div class="team-image">
-          <img src="IMG_1269.JPG" alt="Brian Lu">
+          <img src="IMG_1269.JPG" alt="Brian Lu" style="object-position: center 30%;">
         </div>
 
         <div class="team-info">

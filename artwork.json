@@ -2,17 +2,41 @@
   {
     "title": "Bust Study",
     "artist": "Gloria Xu",
-    "medium": "Oil on Canvas",
+    "medium": "Oil on canvas",
     "description": "The use of oil paint to analyse hidden colours within light.",
     "image": "artwork/Gloria Bust Portrait Oil.png",
     "status": "Available for Auction"
   },
   {
     "title": "Marseille",
-    "artist": "Student Artist",
-    "medium": "Graphite on Paper",
+    "artist": "Gloria Xu",
+    "medium": "Graphite on paper",
     "description": "A student artwork inspired by the atmosphere and character of Marseille.",
     "image": "artwork/Marseille.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Filtering The Future",
+    "artist": "Amy Ma",
+    "medium": "Acrylic and paper collage on canvas",
+    "description": "Featuring collaged sustainable architecture research, this artwork depicts Singapore’s PARKROYAL building and its air-filtering roof gardens.",
+    "image": "artwork/AmyMa-Filtering the future.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "The Great Catch",
+    "artist": "Amy Ma",
+    "medium": "Oil on canvas",
+    "description": "A male hooded merganser tilts its beak up in victory as it catches a frog to eat after many efforts to scour for food in the murky water.",
+    "image": "artwork/AmyMa-The great catch.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Time is (not) in your hands",
+    "artist": "Amy Ma",
+    "medium": "India ink on watercolor paper",
+    "description": "Reflecting the inevitable passage of time, this piece illustrates hands across generations longing to be older or younger—bound to an unchangeable flow.",
+    "image": "artwork/AmyMa-time is (not) in your hands.jpg",
     "status": "Available for Auction"
   }
 ]

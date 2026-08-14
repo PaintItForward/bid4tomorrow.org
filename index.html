@@ -1586,24 +1586,25 @@ function handleNewsletter(btn) {
   /* ── GALLERY ── */
 
 (function() {
-  const artworks = [
-    {
-      title: "Bust Study",
-      artist: "Gloria Xu",
-      medium: "Oil on Canvas",
-      description: "The use of oil paint to analyse hidden colours within light.",
-      image: "Gloria Bust Portrait Oil.png",
-      status: "Available for Auction"
-    },
-    {
-      title: "Marseille",
-      artist: "Student Artist",
-      medium: "Graphite on Paper",
-      description: "A student artwork inspired by the atmosphere and character of Marseille.",
-      image: "Marseille.png",
-      status: "Available for Auction"
+ let artworks = [];
+
+async function loadArtworks() {
+  try {
+    const response = await fetch("artwork.json");
+
+    if (!response.ok) {
+      throw new Error("Could not load artwork.json");
     }
-  ];
+
+    artworks = await response.json();
+
+    renderArtworks();
+  } catch (error) {
+    console.error("Error loading artworks:", error);
+  }
+}
+
+loadArtworks();
 
   const track = document.getElementById('carouselTrack');
   const dotsContainer = document.getElementById('carouselDots');

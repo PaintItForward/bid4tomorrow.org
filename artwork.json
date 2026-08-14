@@ -1,1 +1,18 @@
-
+[
+  {
+    "title": "Bust Study",
+    "artist": "Gloria Xu",
+    "medium": "Oil on Canvas",
+    "description": "The use of oil paint to analyse hidden colours within light.",
+    "image": "artwork/Gloria Bust Portrait Oil.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Marseille",
+    "artist": "Student Artist",
+    "medium": "Graphite on Paper",
+    "description": "A student artwork inspired by the atmosphere and character of Marseille.",
+    "image": "artwork/Marseille.png",
+    "status": "Available for Auction"
+  }
+]

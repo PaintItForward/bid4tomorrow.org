@@ -298,6 +298,7 @@ hello<!DOCTYPE html>
 
 .artwork-slide {
   min-width: 100%;
+  height: 420px;
   flex-shrink: 0;
 
   display: grid;
@@ -320,6 +321,9 @@ hello<!DOCTYPE html>
 /* ── ARTWORK IMAGE ── */
 
 .artwork-image {
+  height: 100%;
+  box-sizing: border-box;
+
   background: var(--section-alt);
 
   display: flex;
@@ -379,10 +383,14 @@ hello<!DOCTYPE html>
 /* ── FIXED DESCRIPTION AREA ── */
 
 .artwork-description {
-  height: 120px;
+  height: 130px;
+  min-height: 130px;
+  max-height: 130px;
+
   overflow: hidden;
 
-  margin-bottom: 1.5rem;
+  margin: 0 0 1.5rem 0;
+
   line-height: 1.7;
 }
 

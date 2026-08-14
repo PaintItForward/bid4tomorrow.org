@@ -294,11 +294,13 @@ hello<!DOCTYPE html>
 }
 
 
-/* ── INDIVIDUAL SLIDE ── */
+/* ── SLIDE ── */
 
 .artwork-slide {
   min-width: 100%;
+  width: 100%;
   height: 420px;
+
   flex-shrink: 0;
 
   display: grid;
@@ -310,18 +312,14 @@ hello<!DOCTYPE html>
   overflow: hidden;
 
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition);
-}
-
-.artwork-slide:hover {
-  box-shadow: var(--shadow-md);
 }
 
 
-/* ── ARTWORK IMAGE ── */
+/* ── IMAGE ── */
 
 .artwork-image {
-  height: 100%;
+  width: 100%;
+  height: 420px;
   box-sizing: border-box;
 
   background: var(--section-alt);
@@ -335,12 +333,12 @@ hello<!DOCTYPE html>
 
 .artwork-image img {
   width: 100%;
-  height: 420px;
+  height: 100%;
   object-fit: contain;
 }
 
 
-/* ── FIXED ARTWORK DETAILS FRAME ── */
+/* ── DETAILS ── */
 
 .artwork-details {
   height: 420px;
@@ -351,56 +349,60 @@ hello<!DOCTYPE html>
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  overflow: hidden;
 }
 
 
-/* Title */
+/* ── TITLE ── */
 
 .artwork-details h3 {
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin: 0 0 1rem;
 }
 
 
-/* Artist */
+/* ── ARTIST ── */
 
 .artist {
   font-weight: 600;
   color: var(--matcha-dark);
-  margin-bottom: 0.4rem;
+  margin: 0 0 0.4rem;
 }
 
 
-/* Medium */
+/* ── MEDIUM ── */
 
 .medium {
   color: var(--text-muted);
   font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+
+  margin: 0 0 1.5rem;
 }
 
 
-/* ── FIXED DESCRIPTION AREA ── */
+/* ── FIXED DESCRIPTION FRAME ── */
 
 .artwork-description {
-  height: 130px;
-  min-height: 130px;
-  max-height: 130px;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
 
-  overflow: hidden;
-
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.5rem;
 
   line-height: 1.7;
+
+  overflow: hidden;
 }
 
 
-/* Status */
+/* ── STATUS ── */
 
 .status-badge {
   display: inline-block;
 
   padding: 0.25rem 0.75rem;
+
   border-radius: 20px;
 
   font-size: 0.75rem;
@@ -413,7 +415,7 @@ hello<!DOCTYPE html>
 }
 
 
-/* ── CAROUSEL BUTTONS ── */
+/* ── BUTTONS ── */
 
 .carousel-btn {
   flex-shrink: 0;
@@ -483,11 +485,16 @@ hello<!DOCTYPE html>
 @media (max-width: 900px) {
 
   .artwork-slide {
+    height: auto;
     grid-template-columns: 1fr;
   }
 
-  .artwork-image img {
+  .artwork-image {
     height: 320px;
+  }
+
+  .artwork-image img {
+    height: 100%;
   }
 
   .artwork-details {
@@ -495,9 +502,15 @@ hello<!DOCTYPE html>
     padding: 2rem;
   }
 
-  .artwork-description {
-    height: 90px;
-  }
+ .artwork-description {
+  margin: 0 0 1.5rem;
+  line-height: 1.7;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+
+  overflow: hidden;
 }
 
   /* ── MISSION & VALUES ── */

@@ -254,14 +254,12 @@ hello<!DOCTYPE html>
   .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: white; line-height: 1; margin-bottom: 0.3rem; }
   .hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 400; letter-spacing: 0.04em; }
 
-  /* ── GALLERY ── */
-/* ── GALLERY SECTION ── */
+/* ── GALLERY ── */
 
 .gallery-section {
   background: var(--white);
   transition: background var(--transition);
 }
-
 
 .gallery-section .section-header {
   max-width: 700px;
@@ -269,6 +267,8 @@ hello<!DOCTYPE html>
   margin-right: auto;
 }
 
+
+/* ── CAROUSEL ── */
 
 .artwork-carousel {
   display: flex;
@@ -278,126 +278,8 @@ hello<!DOCTYPE html>
   margin: 0 auto;
 }
 
-
 .carousel-window {
   flex: 1;
-  overflow: hidden;
-}
-
-
-.artwork-slide {
-  min-width: 100%;
-  display: grid;
-  grid-template-columns: 420px 1fr;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-
-
-.artwork-slide:hover {
-  box-shadow: var(--shadow-md);
-}
-
-
-/* Artwork image */
-
-.artwork-image {
-  background: var(--section-alt);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-
-.artwork-image img {
-  width: 100%;
-  height: 420px;
-  object-fit: contain;
-}
-
-
-/* Artwork information */
-
-.artwork-details {
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-
-.artwork-details h3 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-
-.artist {
-  font-weight: 600;
-  color: var(--matcha-dark);
-  margin-bottom: .4rem;
-}
-
-
-.medium {
-  color: var(--text-muted);
-  font-size: .9rem;
-  margin-bottom: 1.5rem;
-}
-
-
-.artwork-description {
-  margin-bottom: 1.5rem;
-}
-
-
-/* Carousel buttons */
-
-.carousel-btn {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  color: var(--text-heading);
-  transition: var(--transition);
-}
-
-
-.carousel-btn:hover {
-  background: var(--matcha);
-  color:white;
-  transform: translateY(-2px);
-}
-
-
-/* Mobile */
-
-@media(max-width:900px){
-
-  .artwork-slide {
-    grid-template-columns:1fr;
-  }
-
-
-  .artwork-image img {
-    height:320px;
-  }
-
-
-  .artwork-details {
-    padding:2rem;
-  }
-
-}
-  /* ── CAROUSEL STYLES ── */
-.carousel-window {
   overflow: hidden;
   border-radius: var(--radius-lg);
   position: relative;
@@ -406,34 +288,44 @@ hello<!DOCTYPE html>
 
 .carousel-track {
   display: flex;
+  width: 100%;
   transition: transform 0.5s ease-in-out;
   will-change: transform;
-  width: 100%;
 }
+
+
+/* ── INDIVIDUAL SLIDE ── */
 
 .artwork-slide {
   min-width: 100%;
   flex-shrink: 0;
+
   display: grid;
   grid-template-columns: 420px 1fr;
+
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: box-shadow var(--transition);
 }
 
 .artwork-slide:hover {
   box-shadow: var(--shadow-md);
 }
 
-/* Artwork image */
+
+/* ── ARTWORK IMAGE ── */
+
 .artwork-image {
   background: var(--section-alt);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   padding: 2rem;
 }
 
@@ -443,58 +335,95 @@ hello<!DOCTYPE html>
   object-fit: contain;
 }
 
-/* Artwork details */
+
+/* ── FIXED ARTWORK DETAILS FRAME ── */
+
 .artwork-details {
+  height: 420px;
+  box-sizing: border-box;
+
   padding: 3rem 2.5rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
+
+/* Title */
 
 .artwork-details h3 {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
 
+
+/* Artist */
+
 .artist {
   font-weight: 600;
   color: var(--matcha-dark);
-  margin-bottom: .4rem;
+  margin-bottom: 0.4rem;
 }
+
+
+/* Medium */
 
 .medium {
   color: var(--text-muted);
-  font-size: .9rem;
+  font-size: 0.9rem;
   margin-bottom: 1.5rem;
 }
 
+
+/* ── FIXED DESCRIPTION AREA ── */
+
 .artwork-description {
+  height: 120px;
+  overflow: hidden;
+
   margin-bottom: 1.5rem;
+  line-height: 1.7;
 }
+
+
+/* Status */
 
 .status-badge {
   display: inline-block;
+
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
+
   font-size: 0.75rem;
   font-weight: 600;
+
   background: var(--soft-matcha-light);
   color: var(--matcha-dark);
+
   align-self: flex-start;
 }
 
-/* Carousel buttons */
+
+/* ── CAROUSEL BUTTONS ── */
+
 .carousel-btn {
   flex-shrink: 0;
+
   width: 44px;
   height: 44px;
+
   border-radius: 50%;
   border: 1px solid var(--card-border);
+
   background: var(--card-bg);
   color: var(--text-heading);
+
   font-size: 1.2rem;
   cursor: pointer;
+
   transition: var(--transition);
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -506,7 +435,9 @@ hello<!DOCTYPE html>
   transform: translateY(-2px);
 }
 
-/* Dots */
+
+/* ── DOTS ── */
+
 .carousel-dots {
   display: flex;
   justify-content: center;
@@ -517,11 +448,16 @@ hello<!DOCTYPE html>
 .dot {
   width: 10px;
   height: 10px;
+
   border-radius: 50%;
   border: none;
+
   background: var(--card-border);
   cursor: pointer;
-  transition: background var(--transition), transform var(--transition);
+
+  transition:
+    background var(--transition),
+    transform var(--transition);
 }
 
 .dot.active {
@@ -533,8 +469,11 @@ hello<!DOCTYPE html>
   background: var(--matcha-dark);
 }
 
-/* Mobile responsive */
+
+/* ── MOBILE ── */
+
 @media (max-width: 900px) {
+
   .artwork-slide {
     grid-template-columns: 1fr;
   }
@@ -544,7 +483,12 @@ hello<!DOCTYPE html>
   }
 
   .artwork-details {
+    height: 320px;
     padding: 2rem;
+  }
+
+  .artwork-description {
+    height: 90px;
   }
 }
 

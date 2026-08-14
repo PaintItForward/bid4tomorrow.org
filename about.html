@@ -231,21 +231,47 @@
   .hero h1 { color: white; margin-bottom: 1.5rem; }
   .hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.55); max-width: 600px; margin: 0 auto; line-height: 1.75; }
 
-  /* ── ABOUT SPECIFIC LAYOUTS ── */
-  .about-section { background: var(--cream); transition: background var(--transition); }
-  .about-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; margin-bottom: 8rem; }
-  .about-preview:last-child { margin-bottom: 0; }
-  .about-preview-visual { position: relative; }
-  .about-image { 
-    width: 100%; 
-    height: auto; 
-    border-radius: var(--radius-md); 
-    box-shadow: var(--shadow-lg); 
-    object-fit: cover; 
-    aspect-ratio: 1 / 1; 
-  }
-  .about-text h2 { margin-bottom: 1.25rem; }
-  .about-text p  { margin-bottom: 1.25rem; }
+ /* ── ABOUT SPECIFIC LAYOUTS ── */
+.about-section {
+  background: var(--cream);
+  transition: background var(--transition);
+}
+
+.about-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  margin-bottom: 8rem;
+}
+
+.about-preview:last-child {
+  margin-bottom: 0;
+}
+
+.about-preview-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-image {
+  width: 420px;
+  height: 420px;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  object-fit: cover;
+}
+
+.about-text h2 {
+  margin-bottom: 1.25rem;
+}
+
+.about-text p {
+  margin-bottom: 1.25rem;
+}
 
   
 

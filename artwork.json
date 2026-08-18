@@ -80,50 +80,139 @@
     "image": "artwork/Gloria Bust Portrait Oil.png",
     "status": "Available for Auction"
   },
-
   {
-    "image": "artwork/Gloria Xu- Color Study With Bust.jpg"
+    "title": "Color Study With Bust",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Gloria Xu- Color Study With Bust.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/GloriaXu- Bust Color Study.jpg"
+    "title": "Bust Color Study",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/GloriaXu- Bust Color Study.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/GloriaXu- Bust Sketch.jpg"
+    "title": "Bust Sketch",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/GloriaXu- Bust Sketch.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/GloriaXu- Still Life Painting.jpg"
+    "title": "Still Life Painting",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/GloriaXu- Still Life Painting.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/GloriaXu- Still Life Study.jpg"
+    "title": "Still Life Study",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/GloriaXu- Still Life Study.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/GloriaXu- Study Of David.jpg"
+    "title": "Study Of David",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/GloriaXu- Study Of David.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/GloriaXu-Study of David.jpg"
+    "title": "Study of David",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/GloriaXu-Study of David.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/GloriaXu-Study of Erratic January Beauty Daily shot by Rene Vaile.jpg"
+    "title": "Study of ‘Erratic’ January Beauty Daily shot by Rene Vaile",
+    "artist": "Gloria Xu",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/GloriaXu-Study of ‘Erratic’ January Beauty Daily shot by Rene Vaile.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/Silver Citrus And Lilies.png"
+    "title": "Silver Citrus And Lilies",
+    "artist": "Unknown",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Silver Citrus And Lilies.png",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/Still Life 2.jpg"
+    "title": "Still Life 2",
+    "artist": "Unknown",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Still Life 2.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/Still Life.jpg"
+    "title": "Still Life",
+    "artist": "Unknown",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Still Life.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/Study of 'Erratic'.jpg"
+    "title": "Study of 'Erratic'",
+    "artist": "Unknown",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Study of 'Erratic'.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/Tea cup.jpeg"
+    "title": "Tea cup",
+    "artist": "Unknown",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Tea cup.jpeg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/Young Girl Study.jpg"
+    "title": "Young Girl Study",
+    "artist": "Unknown",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Young Girl Study.jpg",
+    "status": "Available for Auction"
   },
   {
-    "image": "artwork/Bust Study.jpg"
+    "title": "Bust Study (photo)",
+    "artist": "Unknown",
+    "branch": "",
+    "medium": "Unknown",
+    "description": "TBD",
+    "image": "artwork/Bust Study.jpg",
+    "status": "Available for Auction"
   }
 ]

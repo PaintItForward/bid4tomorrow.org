@@ -1415,21 +1415,20 @@ const auctions = [
 ];
 
 /* ── HERO ── */
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const counters = document.querySelectorAll(".count-up");
 
   const animateCounter = (counter) => {
     const target = parseInt(counter.dataset.target, 10);
-    const duration = 1400;
+    const duration = 800;
     const startTime = performance.now();
 
     const updateCounter = (currentTime) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Smooth ease-out
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
-      const currentValue = Math.floor(easedProgress * target);
+      // Fast, consistent rolling speed
+      const currentValue = Math.floor(progress * target);
 
       counter.textContent = currentValue;
 
@@ -1463,7 +1462,6 @@ const auctions = [
     observer.observe(statsSection);
   }
 });
-
 /* ── TESTIMONIAL DATA ───────────────────────────────────────────────────────
    TODO: Replace these placeholders with real quotes once you have them.
    Ask attendees, student artists, and parents after your first event.

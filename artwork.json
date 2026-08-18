@@ -20,7 +20,7 @@
   {
     "title": "Filtering The Future",
     "artist": "Amy Ma",
-     "branch": "Lexington",
+    "branch": "Lexington",
     "medium": "Acrylic and paper collage on canvas",
     "description": "Featuring collaged sustainable architecture research, this artwork depicts Singapore’s PARKROYAL building and its air-filtering roof gardens.",
     "image": "artwork/AmyMa-Filtering the future.jpg",
@@ -44,7 +44,8 @@
     "image": "artwork/AmyMa-time is (not) in your hands.jpg",
     "status": "Available for Auction"
   },
-    "title": "After Childhood", 
+  {
+    "title": "After Childhood",
     "artist": "Brian Lu",
     "branch": "Toronto",
     "medium": "Graphite on paper",
@@ -52,6 +53,7 @@
     "image": "artwork/After Childhood.png",
     "status": "Available for Auction"
   },
+  {
     "title": "Blink Cat",
     "artist": "Gloria Xu",
     "branch": "Toronto",
@@ -60,20 +62,22 @@
     "image": "artwork/BlinkCat.png",
     "status": "Available for Auction"
   },
+  {
     "title": "Eye Cast Study",
     "artist": "Gloria Xu",
     "branch": "Toronto",
     "medium": "Graphite on paper",
     "description": "A pencil study focusing on form and shadow, carving out the contours of an eye embedded in a block of stone.",
     "image": "artwork/EyestudyGloria.png",
-    "status": "Available for Auction"  
+    "status": "Available for Auction"
   },
+  {
     "title": "A Long Story",
     "artist": "Gloria Xu",
     "branch": "Toronto",
     "medium": "Graphite on paper",
     "description": "A detailed graphite portrait capturing subtle skin textures, deep-set wrinkles, and a quiet moment with a cigarette.",
     "image": "artwork/Gloria Xu-A Long Story.png",
-    "status": "Available for Auction" 
+    "status": "Available for Auction"
   }
-  ]
+]

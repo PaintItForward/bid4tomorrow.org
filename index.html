@@ -1035,6 +1035,8 @@
 
 <!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
   <!--TODO: UPDATE REGULARLY-->
+<!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
+<!-- TODO: UPDATE REGULARLY -->
 <section class="section stats-section" id="impact">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
@@ -1042,23 +1044,28 @@
       <h2>By the Numbers</h2>
       <p>Figures will be updated as our work grows.</p>
     </div>
+
     <div class="stats-grid fade-up" aria-label="Impact statistics">
       <div class="stat-item">
-        <span class="stat-number">7</span>
+        <span class="stat-number count-up" data-target="7">0</span>
         <div class="stat-label">Student Artists</div>
       </div>
+
       <div class="stat-item">
-        <span class="stat-number">19</span>
+        <span class="stat-number count-up" data-target="19">0</span>
         <div class="stat-label">Art Pieces Created</div>
       </div>
+
       <div class="stat-item">
         <span class="stat-number">—</span>
         <div class="stat-label">Events Hosted</div>
       </div>
+
       <div class="stat-item">
         <span class="stat-number">—</span>
         <div class="stat-label">Funds Raised</div>
       </div>
+
       <div class="stat-item">
         <span class="stat-number">—</span>
         <div class="stat-label">Community Members Reached</div>
@@ -1462,6 +1469,60 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(statsSection);
   }
 });
+
+ 
+  
+  /*Impact stats*/
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const counters = document.querySelectorAll(".stats-section .count-up");
+
+  const animateCounter = (counter) => {
+    const target = parseInt(counter.dataset.target, 10);
+    const duration = 800;
+    const startTime = performance.now();
+
+    const updateCounter = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Fast, consistent rolling speed
+      const currentValue = Math.floor(progress * target);
+
+      counter.textContent = currentValue;
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.textContent = target;
+      }
+    };
+
+    requestAnimationFrame(updateCounter);
+  };
+
+  const statsSection = document.querySelector(".stats-section");
+
+  if (statsSection) {
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            counters.forEach(animateCounter);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0.4
+      }
+    );
+
+    observer.observe(statsSection);
+  }
+});
+
+  
 /* ── TESTIMONIAL DATA ───────────────────────────────────────────────────────
    TODO: Replace these placeholders with real quotes once you have them.
    Ask attendees, student artists, and parents after your first event.

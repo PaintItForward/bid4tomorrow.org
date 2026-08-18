@@ -253,7 +253,16 @@
   .hero-stats { display: flex; flex-wrap: wrap; gap: 3.5rem; }
   .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: white; line-height: 1; margin-bottom: 0.3rem; }
   .hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 400; letter-spacing: 0.04em; }
+.hero-stat-num {
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+}
 
+.count-up {
+  display: inline-block;
+}
+
+  
 /* ── GALLERY ── */
 
 .gallery-section {
@@ -853,12 +862,13 @@
     </a>
     <ul class="nav-links" id="nav-links" role="list">
       <li><a href="about.html">About Us</a></li>
+      <li><a href="branches.html">Our Branches</a></li>li
       <li><a href="#artwork">Gallery</a></li>
       <li><a href="#auctions">Events</a></li>
       <li><a href="#impact">Impact</a></li>
       <li><a href="#causes">Causes</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#Contact">FAQ</a></li>
+      <li><a href="#Contact">Contact</a></li>
     
     </ul>
     <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
@@ -878,33 +888,48 @@
     <div class="hero-tag">Student-Led Initiative &middot; North America</div>
     <h1>Turning Creativity<br><em>Into Impact.</em></h1>
     <p class="hero-sub">A student-led art initiative using auctions to support youth, health, and community causes across the Greater Toronto Area.</p>
+
     <div class="hero-buttons">
-      <a href="#artwork"     class="btn btn-primary">View Gallery</a>
-      <a href="#auctions"    class="btn btn-outline">Upcoming Events</a>
+      <a href="#artwork" class="btn btn-primary">View Gallery</a>
+      <a href="#auctions" class="btn btn-outline">Upcoming Events</a>
       <!-- FLAG: Replace href below with your artist submission Google Form URL -->
-      <a href="#contact"     class="btn btn-outline">Get Involved</a>
+      <a href="#contact" class="btn btn-outline">Get Involved</a>
     </div>
+
     <hr class="hero-rule">
+
     <div class="hero-stats" aria-label="Organization highlights">
+
       <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Number of student artists -->
+        <div class="hero-stat-num">
+          <span class="count-up" data-target="7">0</span>
+        </div>
         <div class="hero-stat-label">Student Artists</div>
       </div>
+
       <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Number of artworks created -->
+        <div class="hero-stat-num">
+          <span class="count-up" data-target="19">0</span>
+        </div>
         <div class="hero-stat-label">Artworks Created</div>
       </div>
+
       <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Total funds raised, e.g. $12,400+ -->
-        <div class="hero-stat-label">Funds Raised</div>
+        <div class="hero-stat-num">
+          <span class="count-up" data-target="1">0</span>
+        </div>
+        <div class="hero-stat-label">Initiative</div>
       </div>
+
       <div class="hero-stat">
-        <div class="hero-stat-num">—</div><!-- TODO: Number of events hosted -->
-        <div class="hero-stat-label">Events Hosted</div>
+        <div class="hero-stat-num">GTA</div>
+        <div class="hero-stat-label">Community Focus</div>
       </div>
+
     </div>
   </div>
 </section>
+
 
 
 <!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
@@ -1401,6 +1426,56 @@ const auctions = [
   { title: "Winter Gala 2026",    note: "Details coming soon." },
   */
 ];
+
+/* ── HERO ── */
+  document.addEventListener("DOMContentLoaded", () => {
+  const counters = document.querySelectorAll(".count-up");
+
+  const animateCounter = (counter) => {
+    const target = parseInt(counter.dataset.target, 10);
+    const duration = 1400;
+    const startTime = performance.now();
+
+    const updateCounter = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Smooth ease-out
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.floor(easedProgress * target);
+
+      counter.textContent = currentValue;
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.textContent = target;
+      }
+    };
+
+    requestAnimationFrame(updateCounter);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          counters.forEach(animateCounter);
+          observer.disconnect();
+        }
+      });
+    },
+    {
+      threshold: 0.5
+    }
+  );
+
+  const statsSection = document.querySelector(".hero-stats");
+
+  if (statsSection) {
+    observer.observe(statsSection);
+  }
+});
 
 /* ── TESTIMONIAL DATA ───────────────────────────────────────────────────────
    TODO: Replace these placeholders with real quotes once you have them.

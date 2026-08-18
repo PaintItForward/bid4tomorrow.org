@@ -1223,20 +1223,7 @@
 </section>
 
 
-<!-- ═══════════════════════════ NEWSLETTER ═══════════════════════════ -->
-<section class="newsletter-section">
-  <div class="container">
-    <span class="eyebrow">Stay Connected</span>
-    <h2>Stay in the Loop</h2>
-    <p>Get updates on upcoming auctions, new artwork, and impact stories.</p>
-    <!-- FLAG: Connect this input to your mailing list (Mailchimp, Buttondown, Google Form, etc.)
-         Replace handleNewsletter() in the JS with your provider's submission endpoint -->
-    <div class="newsletter-form">
-      <input type="email" placeholder="Your email address" aria-label="Email address for newsletter">
-      <button class="btn btn-primary" type="button" onclick="handleNewsletter(this)">Subscribe</button>
-    </div>
-  </div>
-</section>
+
 
 
 <!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
@@ -1608,22 +1595,9 @@ function handleContact(btn) {
   btn.style.background = "var(--matcha-dark)";
   btn.disabled = true;
   setTimeout(() => { btn.textContent = "Send Message"; btn.style.background = ""; btn.disabled = false; }, 4000);
-}
+});
 
-/* ── NEWSLETTER ─────────────────────────────────────────────────────────────
-   FLAG: Currently does not submit anywhere.
-   TODO: Replace with your mailing list provider's API call or form redirect.
-──────────────────────────────────────────────────────────────────────────── */
-function handleNewsletter(btn) {
-  const input = btn.previousElementSibling;
-  if (!input.value.includes("@")) { input.placeholder = "Please enter a valid email"; return; }
-  btn.textContent = "Subscribed";
-  input.value = "";
-  setTimeout(() => btn.textContent = "Subscribe", 3500);
-}
-</script>
 
-<script>
   /* ── GALLERY ── */
 
 (function() {

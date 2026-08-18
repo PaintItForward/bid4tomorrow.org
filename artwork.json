@@ -1,65 +1,11 @@
 [
   {
-    "title": "Bust Study",
-    "artist": "Gloria Xu",
-    "branch": "Toronto",
-    "medium": "Oil on canvas",
-    "description": "The use of oil paint to analyse hidden colours within light.",
-    "image": "artwork/Gloria Bust Portrait Oil.png",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Marseille",
-    "artist": "Gloria Xu",
-    "branch": "Toronto",
-    "medium": "Graphite on paper",
-    "description": "A student artwork inspired by the atmosphere and character of Marseille.",
-    "image": "artwork/Marseille.png",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Filtering The Future",
-    "artist": "Amy Ma",
-    "branch": "Lexington",
-    "medium": "Acrylic and paper collage on canvas",
-    "description": "Featuring collaged sustainable architecture research, this artwork depicts Singapore’s PARKROYAL building and its air-filtering roof gardens.",
-    "image": "artwork/AmyMa-Filtering the future.jpg",
-    "status": "Available for Auction"
-  },
-  {
     "title": "The Great Catch",
     "artist": "Amy Ma",
     "branch": "Lexington",
     "medium": "Oil on canvas",
     "description": "A male hooded merganser tilts its beak up in victory as it catches a frog to eat after many efforts to scour for food in the murky water.",
     "image": "artwork/AmyMa-The great catch.jpg",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Time is (not) in your hands",
-    "artist": "Amy Ma",
-    "branch": "Lexington",
-    "medium": "India ink on watercolor paper",
-    "description": "Reflecting the inevitable passage of time, this piece illustrates hands across generations longing to be older or younger—bound to an unchangeable flow.",
-    "image": "artwork/AmyMa-time is (not) in your hands.jpg",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "After Childhood",
-    "artist": "Brian Lu",
-    "branch": "Toronto",
-    "medium": "Graphite on paper",
-    "description": "A graphite composition focusing on different materials-carved wooden joints, fabric folds, paper pages, and wooden blocks- to reflect the passing of time.",
-    "image": "artwork/After Childhood.png",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Blink Cat",
-    "artist": "Gloria Xu",
-    "branch": "Toronto",
-    "medium": "Acrylic on canvas",
-    "description": "An acrylic painting with thick, expressive brushstrokes depicting a textured orange tabby carrying a fish in its mouth against a dark blue backdrop.",
-    "image": "artwork/BlinkCat.png",
     "status": "Available for Auction"
   },
   {
@@ -72,12 +18,66 @@
     "status": "Available for Auction"
   },
   {
+    "title": "After Childhood",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "description": "A graphite composition focusing on different materials-carved wooden joints, fabric folds, paper pages, and wooden blocks- to reflect the passing of time.",
+    "image": "artwork/After Childhood.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Filtering The Future",
+    "artist": "Amy Ma",
+    "branch": "Lexington",
+    "medium": "Acrylic and paper collage on canvas",
+    "description": "Featuring collaged sustainable architecture research, this artwork depicts Singapore's PARKROYAL building and its air-filtering roof gardens.",
+    "image": "artwork/AmyMa-Filtering the future.jpg",
+    "status": "Available for Auction"
+  },
+  {
     "title": "A Long Story",
     "artist": "Gloria Xu",
     "branch": "Toronto",
     "medium": "Graphite on paper",
     "description": "A detailed graphite portrait capturing subtle skin textures, deep-set wrinkles, and a quiet moment with a cigarette.",
     "image": "artwork/Gloria Xu-A Long Story.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Marseille",
+    "artist": "Gloria Xu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "description": "A student artwork inspired by the atmosphere and character of Marseille.",
+    "image": "artwork/Marseille.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Time is (not) in your hands",
+    "artist": "Amy Ma",
+    "branch": "Lexington",
+    "medium": "India ink on watercolor paper",
+    "description": "Reflecting the inevitable passage of time, this piece illustrates hands across generations longing to be older or younger—bound to an unchangeable flow.",
+    "image": "artwork/AmyMa-time is (not) in your hands.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Blink Cat",
+    "artist": "Gloria Xu",
+    "branch": "Toronto",
+    "medium": "Acrylic on canvas",
+    "description": "An acrylic painting with thick, expressive brushstrokes depicting a textured orange tabby carrying a fish in its mouth against a dark blue backdrop.",
+    "image": "artwork/BlinkCat.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Bust Study",
+    "artist": "Gloria Xu",
+    "branch": "Toronto",
+    "medium": "Oil on canvas",
+    "description": "The use of oil paint to analyse hidden colours within light.",
+    "image": "artwork/Gloria Bust Portrait Oil.png",
     "status": "Available for Auction"
   }
 ]

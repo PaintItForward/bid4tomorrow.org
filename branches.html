@@ -1,1 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Our Branches | Paint It Forward</title>
+
+  <meta
+    name="description"
+    content="Explore Paint It Forward branches in Toronto and Lexington, Massachusetts, and learn how each branch turns student creativity into community impact."
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --matcha: #87966f;
+      --matcha-dark: #687755;
+      --beige: #d8c7aa;
+      --cream: #f7f3eb;
+      --card-bg: #fffdf8;
+      --text: #2f342c;
+      --muted: #6f746b;
+      --border: #ddd5c7;
+      --white: #ffffff;
+
+      --radius: 18px;
+      --radius-lg: 28px;
+
+      --shadow: 0 12px 35px rgba(55, 54, 44, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Source Sans 3", sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 18px 6%;
+      background: rgba(247, 243, 235, 0.95);
+      backdrop-filter: blur(12px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: "Playfair Display", serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--matcha-dark);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 110px 6% 90px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+
+      color: var(--matcha-dark);
+    }
+
+    .hero h1 {
+      max-width: 850px;
+      margin: 0 auto 24px;
+
+      font-family: "Playfair Display", serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.05;
+      font-weight: 600;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 0 auto;
+
+      color: var(--muted);
+      font-size: 1.15rem;
+      line-height: 1.8;
+    }
+
+    /* =========================
+       BRANCHES
+    ========================= */
+
+    .branches-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 6% 110px;
+    }
+
+    .branches-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .branch-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      padding: 38px;
+      box-shadow: var(--shadow);
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+    .branch-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 45px rgba(55, 54, 44, 0.11);
+    }
+
+    .branch-number {
+      position: absolute;
+      top: 28px;
+      right: 30px;
+
+      font-family: "Playfair Display", serif;
+      font-size: 1rem;
+      color: var(--beige);
+    }
+
+    .branch-tag {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+
+      margin-bottom: 22px;
+      padding: 7px 13px;
+
+      border-radius: 999px;
+      background: #e7eadf;
+
+      color: var(--matcha-dark);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .branch-card h2 {
+      margin-bottom: 5px;
+
+      font-family: "Playfair Display", serif;
+      font-size: 2.25rem;
+      line-height: 1.15;
+    }
+
+    .branch-location {
+      margin-bottom: 22px;
+      color: var(--matcha-dark);
+      font-weight: 600;
+    }
+
+    .branch-description {
+      margin-bottom: 28px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .branch-details {
+      margin-top: auto;
+
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+
+      display: grid;
+      gap: 17px;
+    }
+
+    .detail {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .detail-value {
+      text-align: right;
+      font-weight: 600;
+    }
+
+    /* =========================
+       HOW BRANCHES WORK
+    ========================= */
+
+    .how-section {
+      background: #ece7da;
+      padding: 100px 6%;
+    }
+
+    .how-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      max-width: 650px;
+      margin-bottom: 50px;
+    }
+
+    .section-heading .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 15px;
+
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      line-height: 1.15;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .step {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      padding: 30px;
+    }
+
+    .step-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 40px;
+      height: 40px;
+
+      margin-bottom: 20px;
+
+      border-radius: 50%;
+      background: var(--matcha);
+      color: var(--white);
+
+      font-weight: 700;
+    }
+
+    .step h3 {
+      margin-bottom: 10px;
+
+      font-family: "Playfair Display", serif;
+      font-size: 1.4rem;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* =========================
+       FUTURE BRANCHES
+    ========================= */
+
+    .future-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 110px 6%;
+      text-align: center;
+    }
+
+    .future-section h2 {
+      margin-bottom: 18px;
+
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.3rem, 5vw, 3.8rem);
+      line-height: 1.15;
+    }
+
+    .future-section p {
+      max-width: 650px;
+      margin: 0 auto 30px;
+
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .branch-button {
+      display: inline-block;
+
+      padding: 13px 24px;
+
+      border-radius: 999px;
+      background: var(--matcha);
+      color: var(--white);
+
+      font-weight: 700;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .branch-button:hover {
+      background: var(--matcha-dark);
+      transform: translateY(-2px);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 35px 6%;
+
+      border-top: 1px solid var(--border);
+
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 750px) {
+      nav {
+        padding: 16px 5%;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a {
+        font-size: 0.85rem;
+      }
+
+      .hero {
+        padding: 80px 6% 65px;
+      }
+
+      .branches-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .branch-card {
+        padding: 30px;
+      }
+
+      .how-section {
+        padding: 75px 6%;
+      }
+
+      .future-section {
+        padding: 80px 6%;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .nav-logo {
+        font-size: 1.1rem;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+
+      .nav-links a:nth-child(2),
+      .nav-links a:nth-child(3) {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .branch-card h2 {
+        font-size: 2rem;
+      }
+
+      .detail {
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .detail-value {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       NAVIGATION
+  ========================= -->
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      Paint It Forward
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#artwork">Gallery</a></li>
+      <li><a href="branches.html" class="active">Branches</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <header class="hero">
+    <span class="eyebrow">Paint It Forward</span>
+
+    <h1>
+      Creativity doesn't stop at one city.
+    </h1>
+
+    <p>
+      Paint It Forward is growing through student-led branches that bring
+      our mission into their own communities. Each branch works locally
+      while contributing to the larger Paint It Forward movement.
+    </p>
+  </header>
+
+
+  <!-- =========================
+       BRANCHES
+  ========================= -->
+
+  <main>
+
+    <section class="branches-section">
+
+      <div class="branches-grid">
+
+        <!-- TORONTO -->
+
+        <article class="branch-card">
+
+          <span class="branch-number">01</span>
+
+          <span class="branch-tag">
+            Founding Branch
+          </span>
+
+          <h2>Toronto</h2>
+
+          <p class="branch-location">
+            Greater Toronto Area · Canada
+          </p>
+
+          <p class="branch-description">
+            Toronto is where Paint It Forward began. As our founding branch,
+            the Toronto team is responsible for pioneering our first auction
+            model, building relationships with local artists and organizations,
+            and establishing the foundation for future branches.
+          </p>
+
+          <div class="branch-details">
+
+            <div class="detail">
+              <span class="detail-label">Country</span>
+              <span class="detail-value">Canada</span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">Focus</span>
+              <span class="detail-value">Founding & Operations</span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">Current Initiative</span>
+              <span class="detail-value">Toronto Art Auction</span>
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- LEXINGTON -->
+
+        <article class="branch-card">
+
+          <span class="branch-number">02</span>
+
+          <span class="branch-tag">
+            U.S. Branch
+          </span>
+
+          <h2>Lexington</h2>
+
+          <p class="branch-location">
+            Lexington, Massachusetts · United States
+          </p>
+
+          <p class="branch-description">
+            The Lexington branch brings Paint It Forward's model to a new
+            community in the United States. The branch will work with local
+            students and artists to develop its own community presence while
+            staying connected to the broader Paint It Forward organization.
+          </p>
+
+          <div class="branch-details">
+
+            <div class="detail">
+              <span class="detail-label">Country</span>
+              <span class="detail-value">United States</span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">Focus</span>
+              <span class="detail-value">Local Community</span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">Branch Type</span>
+              <span class="detail-value">U.S. Branch</span>
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         HOW BRANCHES WORK
+    ========================= -->
+
+    <section class="how-section">
+
+      <div class="how-inner">
+
+        <div class="section-heading">
+
+          <span class="eyebrow">
+            One organization, local impact
+          </span>
+
+          <h2>
+            Every branch has its own community.
+          </h2>
+
+          <p>
+            Branches are locally led, but connected by the same mission,
+            standards, and vision.
+          </p>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">1</div>
+
+            <h3>Build Locally</h3>
+
+            <p>
+              Branches develop relationships with students, artists,
+              organizations, schools, and community members in their area.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">2</div>
+
+            <h3>Create Impact</h3>
+
+            <p>
+              Each branch can organize initiatives and fundraising activities
+              that reflect the needs and opportunities of its community.
+            </p>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">3</div>
+
+            <h3>Grow Together</h3>
+
+            <p>
+              Branches share ideas, resources, and experience while contributing
+              to the larger Paint It Forward network.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FUTURE BRANCHES
+    ========================= -->
+
+    <section class="future-section">
+
+      <span class="eyebrow">
+        The next chapter
+      </span>
+
+      <h2>
+        More communities. More artists. More impact.
+      </h2>
+
+      <p>
+        Toronto and Lexington are only the beginning. As Paint It Forward
+        grows, we hope to build a network of student-led branches that use
+        creativity to make a meaningful difference in their communities.
+      </p>
+
+      <a href="index.html#contact" class="branch-button">
+        Get Involved
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+    <p>
+      © 2026 Paint It Forward · Student-led art, turned into impact.
+    </p>
+  </footer>
+
+</body>
+</html>

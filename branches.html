@@ -216,6 +216,19 @@
       background: var(--beige-light);
     }
 
+     /* ── DARK TOGGLE ── */
+  .dark-toggle {
+    position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 999;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #2A1E18; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-md); transition: transform var(--transition), background var(--transition);
+  }
+  body.dark .dark-toggle { background: var(--matcha); }
+  .dark-toggle:hover { transform: scale(1.1); }
+  .dark-toggle svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.8; }
+
+    
     /* =========================================
        HERO
     ========================================= */

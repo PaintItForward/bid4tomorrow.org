@@ -1743,6 +1743,30 @@ function handleContact(btn) {
   loadArtworks();
 
 })();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const els = document.querySelectorAll('.fade-up');
+
+    if (!('IntersectionObserver' in window)) {
+        // fallback: reveal all
+        els.forEach(el => el.classList.add('visible'));
+        return;
+    }
+
+    const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.08
+    });
+
+    els.forEach(el => io.observe(el));
+});
+
 </script>
 </body>
 </html>

@@ -90,15 +90,6 @@
     "status": "Available for Auction"
   },
   {
-    "title": "Bust Color Study",
-    "artist": "Gloria Xu",
-    "branch": "",
-    "medium": "Unknown",
-    "description": "TBD",
-    "image": "artwork/GloriaXu- Bust Color Study.jpg",
-    "status": "Available for Auction"
-  },
-  {
     "title": "Bust Sketch",
     "artist": "Gloria Xu",
     "branch": "",
@@ -168,24 +159,6 @@
     "medium": "Unknown",
     "description": "TBD",
     "image": "artwork/Tea cup.jpeg",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Young Girl Study",
-    "artist": "Unknown",
-    "branch": "",
-    "medium": "Unknown",
-    "description": "TBD",
-    "image": "artwork/Young Girl Study.jpg",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Bust Study (photo)",
-    "artist": "Unknown",
-    "branch": "",
-    "medium": "Unknown",
-    "description": "TBD",
-    "image": "artwork/Bust Study.jpg",
     "status": "Available for Auction"
   }
 ]

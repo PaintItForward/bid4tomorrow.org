@@ -356,8 +356,11 @@
 }
 
 .artwork-image img {
-  width: 100%;
-  height: 100%;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 
@@ -537,17 +540,15 @@
     box-sizing: border-box;
   }
 
-  .artwork-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    max-height: 500px;
-
-    object-fit: contain;
-    object-position: center;
-  }
-
+ .artwork-image img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+  
   .artwork-details {
     width: 100%;
     height: auto;

@@ -136,6 +136,36 @@
     margin-bottom: 0.9rem;
   }
 
+
+  html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+  section,
+.container,
+.nav-inner,
+.hero,
+.section {
+  max-width: 100%;
+}
+
+  
   /* ── NAVIGATION ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -295,6 +325,7 @@
   width: 100%;
 }
 
+
 .carousel-track {
   display: flex;
   width: 100%;
@@ -303,6 +334,7 @@
 }
 
 
+  
 /* ── SLIDE ── */
 
 .artwork-slide {
@@ -491,12 +523,18 @@
 
 /* ── MOBILE ── */
 
-@media (max-width: 900px) {
-
+  @media (max-width: 768px) {
   .artwork-slide {
-    height: auto;
     grid-template-columns: 1fr;
+    width: 100%;
+    min-width: 100%;
   }
+
+  .artwork-slide img {
+    width: 100%;
+    max-width: 100%;
+  }
+}
 
   .artwork-image {
     height: 320px;

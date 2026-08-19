@@ -83,8 +83,8 @@
   {
     "title": "Color Study With Bust",
     "artist": "Gloria Xu",
-    "branch": "",
-    "medium": "Unknown",
+    "branch": "Toronto",
+    "medium": "Oil on canvas",
     "description": "TBD",
     "image": "artwork/Gloria Xu- Color Study With Bust.jpg",
     "status": "Available for Auction"
@@ -92,8 +92,8 @@
   {
     "title": "Bust Sketch",
     "artist": "Gloria Xu",
-    "branch": "",
-    "medium": "Unknown",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
     "description": "TBD",
     "image": "artwork/GloriaXu- Bust Sketch.jpg",
     "status": "Available for Auction"
@@ -101,8 +101,8 @@
   {
     "title": "Still Life Painting",
     "artist": "Gloria Xu",
-    "branch": "",
-    "medium": "Unknown",
+    "branch": "Toronto",
+    "medium": "Oil on canvas",
     "description": "TBD",
     "image": "artwork/GloriaXu- Still Life Painting.jpg",
     "status": "Available for Auction"
@@ -110,8 +110,8 @@
   {
     "title": "Study Of David",
     "artist": "Gloria Xu",
-    "branch": "",
-    "medium": "Unknown",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
     "description": "TBD",
     "image": "artwork/GloriaXu- Study Of David.jpg",
     "status": "Available for Auction"
@@ -119,44 +119,44 @@
   {
     "title": "Study of Rene Vaile's ‘Erratic’",
     "artist": "Gloria Xu",
-    "branch": "",
-    "medium": "Unknown",
+    "branch": "Toronto",
+    "medium": "Oil on canvas",
     "description": "TBD",
     "image": "artwork/GloriaXu-Study of ‘Erratic’ January Beauty Daily shot by Rene Vaile.jpg.jpg",
     "status": "Available for Auction"
   },
   {
     "title": "Silver Citrus And Lilies",
-    "artist": "Unknown",
-    "branch": "",
-    "medium": "Unknown",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Acrylic on canvas",
     "description": "TBD",
     "image": "artwork/Silver Citrus And Lilies.png",
     "status": "Available for Auction"
   },
   {
-    "title": "Still Life 2",
-    "artist": "Unknown",
-    "branch": "",
-    "medium": "Unknown",
-    "description": "TBD",
-    "image": "artwork/Still Life 2.jpg",
-    "status": "Available for Auction"
-  },
-  {
     "title": "Still Life",
-    "artist": "Unknown",
-    "branch": "",
-    "medium": "Unknown",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
     "description": "TBD",
     "image": "artwork/Still Life.jpg",
     "status": "Available for Auction"
   },
   {
+    "title": "Still Life 2",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "description": "TBD",
+    "image": "artwork/Still Life 2.jpg",
+    "status": "Available for Auction"
+  },
+  {
     "title": "Tea cup",
-    "artist": "Unknown",
-    "branch": "",
-    "medium": "Unknown",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Colored pencil on paper",
     "description": "TBD",
     "image": "artwork/Tea cup.jpeg",
     "status": "Available for Auction"

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+<!--IDEA CLICK ON PROFILE, IT ROTATES, AND THEN IT SHOWS A SMALL BLURB OF SELF INTRODUCTION INSTEAD OF LEADING TO THEIR OWN PROFILE-->
 <html lang="en">
 <head>
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" href="data:image/png;base64,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"/>
+<link rel="shortcut icon" href="/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
 <meta charset="UTF-8">
@@ -11,86 +13,652 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --matcha:             #7A9E7E;
+    --matcha-dark:        #5F7F63;
+    --soft-matcha:        #B8C9A3;
+    --soft-matcha-light:  #DDE8D4;
+    --beige:              #DCCBB8;
+    --beige-light:        #EDE4D8;
+    --cream:              #F7F3EC;
+    --white:              #FDFBF8;
+    --espresso:           #3E302A;
+    --espresso-mid:       #6B5A52;
+    --espresso-light:     #A08070;
+    --border:             #E0D8CE;
+    --radius-sm: 6px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 2px 12px rgba(62,48,42,0.07);
+    --shadow-md: 0 8px 32px rgba(62,48,42,0.11);
+    --shadow-lg: 0 20px 60px rgba(62,48,42,0.15);
+    --transition: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+
+    --text-heading:   #3E302A;
+    --text-body:      #6B5A52;
+    --text-muted:     #A08070;
+    --text-on-light:  #3E302A;
+    --card-bg:        #FDFBF8;
+    --card-border:    #E0D8CE;
+    --section-alt:    #EDE4D8;
+    --section-green:  #DDE8D4;
+    --involved-1-bg:  #DDE8D4;
+    --involved-2-bg:  #EDE4D8;
+    --involved-3-bg:  #EAF0E5;
+    --involved-4-bg:  #F0EBE5;
+    --involved-border-1: rgba(184,201,163,0.6);
+    --involved-border-2: rgba(220,203,184,0.6);
+    --involved-border-3: rgba(180,205,170,0.5);
+    --involved-border-4: rgba(220,210,200,0.5);
+    --input-bg:       #FDFBF8;
+    --input-border:   #E0D8CE;
+    --input-text:     #3E302A;
+    --contact-bg:     #F7F3EC;
+    --footer-text:    rgba(255,255,255,0.38);
+    --footer-link:    rgba(255,255,255,0.5);
+    --nav-bg:         rgba(247,243,236,0.94);
+  }
+
+  body.dark {
+    --cream:              #1C1812;
+    --white:              #231E18;
+    --beige-light:        #2A2318;
+    --beige:              #2E261A;
+    --border:             #3D3025;
+    --text-heading:       #F0E8DF;
+    --text-body:          #B8A898;
+    --text-muted:         #806A58;
+    --text-on-light:      #F0E8DF;
+    --card-bg:            #231E18;
+    --card-border:        #3D3025;
+    --section-alt:        #211C14;
+    --section-green:      #1C2418;
+    --involved-1-bg:      #1C2A1C;
+    --involved-2-bg:      #2A2418;
+    --involved-3-bg:      #1E2A1C;
+    --involved-4-bg:      #2A201A;
+    --involved-border-1:  rgba(80,120,80,0.4);
+    --involved-border-2:  rgba(120,100,70,0.4);
+    --involved-border-3:  rgba(80,120,80,0.4);
+    --involved-border-4:  rgba(120,100,80,0.4);
+    --input-bg:           #1C1812;
+    --input-border:       #3D3025;
+    --input-text:         #F0E8DF;
+    --contact-bg:         #231E18;
+    --nav-bg:             rgba(28,24,18,0.96);
+    --soft-matcha-light:  #253020;
+    --espresso:           #F0E8DF;
+    --espresso-mid:       #B8A898;
+    --espresso-light:     #806A58;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text-heading);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--text-heading);
+  }
+  h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+  h2 { font-size: clamp(1.9rem, 3.5vw, 3rem); }
+  h3 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+
+  p {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text-body);
+    font-weight: 400;
+  }
+
+  .eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--matcha);
+    display: block;
+    margin-bottom: 0.9rem;
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 2.5rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--card-border);
+    transition: background var(--transition), border-color var(--transition);
+  }
+
+  .nav-inner {
+    max-width: 1320px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.65rem;
+    text-decoration: none; color: var(--text-heading);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 600; flex-shrink: 0;
+    transition: color var(--transition);
+  }
+
+  .nav-logo-mark {
+    width: 36px; height: 36px; border-radius: 50%;
+    overflow: hidden; background: var(--soft-matcha-light);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background var(--transition);
+  }
+  .nav-logo-mark img { width: 100%; height: 100%; object-fit: cover; }
+
+  .nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-body);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    padding: 0.4rem 0.8rem; border-radius: 5px;
+    transition: color var(--transition), background var(--transition);
+  }
+  .nav-links a:hover { color: var(--text-heading); background: var(--beige-light); }
+  .nav-cta {
+    background: var(--espresso) !important;
+    color: var(--cream) !important;
+    padding: 0.45rem 1.1rem !important;
+    border-radius: 4px !important; font-weight: 600 !important;
+  }
+  body.dark .nav-cta { background: var(--matcha) !important; color: white !important; }
+  .nav-cta:hover { background: var(--matcha-dark) !important; color: white !important; }
+
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.4rem; }
+  .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text-heading); margin: 5px 0; border-radius: 2px; transition: var(--transition); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.8rem 1.6rem; border-radius: 4px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: none;
+    letter-spacing: 0.03em; transition: var(--transition);
+  }
+  .btn-primary { background: var(--matcha); color: white; }
+  .btn-primary:hover { background: var(--matcha-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(122,158,126,0.35); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+  .section    { padding: 110px 0; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 50vh; background: #2A1E18;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; padding-top: 100px; padding-bottom: 50px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(140deg, #2A1E18 0%, #3E302A 40%, #5F7F63 100%);
+    opacity: 0.95;
+  }
+  .hero-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.22; animation: blobFloat 9s ease-in-out infinite; }
+  .hero-blob-1 { width: 550px; height: 550px; background: var(--soft-matcha); top: -120px; right: -80px; animation-delay: 0s; }
+  @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(18px,-25px) scale(1.04);} }
+
+  .hero-content { position: relative; z-index: 2; padding: 4rem 2.5rem; max-width: 1280px; margin: 0 auto; width: 100%; text-align: center; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 3px;
+    padding: 0.35rem 0.9rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.65);
+    letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero h1 { color: white; margin-bottom: 1.5rem; }
+  .hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.55); max-width: 600px; margin: 0 auto; line-height: 1.75; }
+
+ /* ── ABOUT SPECIFIC LAYOUTS ── */
+.about-section {
+  background: var(--cream);
+  transition: background var(--transition);
+}
+
+.about-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  margin-bottom: 8rem;
+}
+
+.about-preview:last-child {
+  margin-bottom: 0;
+}
+
+.about-preview-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-image {
+  width: 420px;
+  height: 420px;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  object-fit: cover;
+}
+
+.about-text h2 {
+  margin-bottom: 1.25rem;
+}
+
+.about-text p {
+  margin-bottom: 1.25rem;
+}
+
+  
+
+  /* ── FOOTER ── */
+  footer { background: #2A1E18; padding: 5rem 0 2.5rem; }
+  .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3.5rem; }
+  .footer-brand .footer-logo {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600;
+    color: white; text-decoration: none; margin-bottom: 1rem;
+  }
+  .footer-brand p { font-size: 0.83rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 240px; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.07); }
+  .footer-bottom p { font-size: 0.76rem; color: rgba(255,255,255,0.28); }
+
+  /* ── DARK TOGGLE ── */
+  .dark-toggle {
+    position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 999;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #2A1E18; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-md); transition: transform var(--transition), background var(--transition);
+  }
+  body.dark .dark-toggle { background: var(--matcha); }
+  .dark-toggle:hover { transform: scale(1.1); }
+  .dark-toggle svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.8; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .footer-top  { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  }
+  @media (max-width: 900px) {
+    .about-preview { grid-template-columns: 1fr; gap: 3rem; margin-bottom: 5rem; }
+    .about-preview-visual { height: auto; }
+    .reverse-mobile { order: -1; }
+    .involved-grid { grid-template-columns: 1fr; }
+  }
+
+
+  /* ── TEAM ── */
+
+.team-preview-section {
+background: var(--section-alt);
+transition: background var(--transition);
+}
+
+.section-header {
+margin-bottom: 3.5rem;
+}
+
+.section-header-center {
+text-align: center;
+max-width: 700px;
+margin-left: auto;
+margin-right: auto;
+}
+
+.section-header h2 {
+margin-bottom: 1rem;
+}
+
+.section-header p {
+max-width: 620px;
+margin: 0 auto;
+}
+
+/* Team cards */
+
+.team-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 2rem;
+max-width: 1000px;
+margin: 0 auto;
+}
+
+.team-card {
+background: var(--card-bg);
+border: 1px solid var(--card-border);
+border-radius: var(--radius-lg);
+overflow: hidden;
+box-shadow: var(--shadow-sm);
+transition:
+transform var(--transition),
+box-shadow var(--transition),
+background var(--transition),
+border-color var(--transition);
+}
+
+.team-card:hover {
+transform: translateY(-5px);
+box-shadow: var(--shadow-md);
+}
+
+/* Team image */
+
+.team-image {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: var(--beige-light);
+}
+
+.team-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Team information */
+
+.team-info {
+padding: 2rem;
+}
+
+.team-info .eyebrow {
+margin-bottom: 0.55rem;
+}
+
+.team-info h3 {
+margin-bottom: 0.8rem;
+}
+
+.team-info p {
+margin-bottom: 1.25rem;
+font-size: 0.95rem;
+}
+
+/* Profile link */
+
+.text-link {
+display: inline-flex;
+align-items: center;
+gap: 0.35rem;
+color: var(--matcha-dark);
+text-decoration: none;
+font-family: 'Source Sans 3', sans-serif;
+font-size: 0.85rem;
+font-weight: 600;
+transition: color var(--transition), gap var(--transition);
+}
+
+.text-link:hover {
+color: var(--matcha);
+gap: 0.55rem;
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+.team-grid {
+grid-template-columns: 1fr;
+}
+
+.team-image {
+aspect-ratio: 1 / 1;
+}
+
+.team-info {
+padding: 1.5rem;
+}
+
+}
+</style>
 </head>
 <body>
 
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="index.html#home" class="nav-logo" aria-label="Paint It Forward home">
-      <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-96x96.png" alt="Paint It Forward Logo">
-      </div>
-      Paint It Forward
-    </a>
-    <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Our Branches</a></li>
-      <li><a href="index.html#artwork">Gallery</a></li>
-      <li><a href="index.html#auctions">Events</a></li>
-      <li><a href="index.html#impact">Impact</a></li>
-      <li><a href="index.html#causes">Causes</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html#home" class="nav-logo" aria-label="Paint It Forward home">
+        <div class="nav-logo-mark" aria-hidden="true">
+          <img src="favicon-96x96.png" alt="Paint It Forward Logo">
+        </div>
+        Paint It Forward
+      </a>
 
+   
+      
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="branches.html">Our Branches</a></li>
+        <li><a href="index.html#artwork">Gallery</a></li>
+        <li><a href="index.html#auctions">Events</a></li>
+        <li><a href="index.html#impact">Impact</a></li>
+        <li><a href="index.html#causes">Causes</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 <main>
   <header class="hero">
-    <div class="hero-content container">
+    <div class="hero-bg"></div>
+    <div class="hero-blob hero-blob-1"></div>
+
+    <div class="hero-content">
       <span class="hero-tag">Our Story</span>
       <h1>About Us</h1>
-      <p class="hero-sub">Founded by students in the Greater Toronto Area, Paint It Forward began with a simple idea: use student creativity to create meaningful change.</p>
+      <p class="hero-sub">
+        Founded by students in the Greater Toronto Area, Paint It Forward began
+        with a simple idea: use student creativity to create meaningful change.
+        Today, we are growing beyond our original community, building a network
+        of student leaders and artists across cities.
+      </p>
     </div>
   </header>
 
-  <section class="section about-section">
-    <div class="container about-preview">
+ <section class="section about-section">
+  <div class="container">
+
+    <!-- About Paint It Forward -->
+    <div class="about-preview">
       <div class="about-preview-visual">
-        <img src="favicon.svg" alt="Paint It Forward team" class="about-image">
+        <img src="favicon.svg"
+             alt="Paint It Forward team"
+             class="about-image">
       </div>
-      <div class="about-text">
+
+      <div class="about-text fade-up">
         <span class="eyebrow">About Us</span>
         <h2>Art That Gives Back</h2>
-        <p>Paint It Forward is a student-led international organization connecting young artists, student leaders, and communities through art and philanthropy.</p>
-        <p>Through student-led art auctions, exhibitions, and community initiatives, we give young artists a platform to share their work while supporting causes that matter.</p>
+
+        <p>
+          Paint It Forward is a student-led international organization
+          connecting young artists, student leaders, and communities through
+          art and philanthropy.
+        </p>
+
+        <p>
+          Founded by students in the Greater Toronto Area, Paint It Forward
+          began with a simple belief: creativity can do more than inspire —
+          it can create meaningful change. Through student-led art auctions,
+          exhibitions, and community initiatives, we give young artists a
+          platform to share their work while supporting causes that matter.
+        </p>
+
+        <p>
+          As we grow, we are building a network of student-led chapters
+          across cities. From Toronto to Manhattan and beyond, our goal is
+          to bring young people together around a shared passion for
+          creativity, community, and giving back.
+        </p>
       </div>
     </div>
-  </section>
 
-  <section class="section team-preview-section">
-    <div class="container">
-      <div class="section-header section-header-center">
-        <span class="eyebrow">The People Behind Paint It Forward</span>
-        <h2>Meet Our Team</h2>
-        <p>Paint It Forward is led by students who bring together creativity, organization, and a shared commitment to giving back.</p>
-      </div>
+  </div>
+</section>
 
-      <div class="team-grid">
-        <div class="team-card">
-          <div class="team-image"><img src="IMG_1261.JPG" alt="Gloria Xu"></div>
-          <div class="team-info"><span class="eyebrow">Co-Founder</span><h3>Gloria Xu</h3><p>Leads Paint It Forward's creative direction, technology, systems, and artistic initiatives.</p></div>
-        </div>
-        <div class="team-card">
-          <div class="team-image"><img src="IMG_1269.JPG" alt="Brian Lu"></div>
-          <div class="team-info"><span class="eyebrow">Co-Founder</span><h3>Brian Lu</h3><p>Helps organize events, connect with artists and community partners, and grow Paint It Forward's network.</p></div>
-        </div>
-      </div>
+
+<!-- ── OUR TEAM ── -->
+<section class="section team-preview-section">
+  <div class="container">
+
+    <div class="section-header section-header-center fade-up">
+      <span class="eyebrow">The People Behind Paint It Forward</span>
+      <h2>Meet Our Team</h2>
+      <p>
+        Paint It Forward is led by students who bring together creativity,
+        organization, and a shared commitment to giving back.
+      </p>
     </div>
-  </section>
+
+    <div class="team-grid">
+
+      <!-- Gloria -->
+      <div class="team-card fade-up">
+
+        <div class="team-image">
+          <img src="IMG_1261.JPG" alt="Gloria Xu" style="object-position: center 20%;">
+        </div>
+
+        <div class="team-info">
+          <span class="eyebrow">Co-Founder</span>
+          <h3>Gloria Xu</h3>
+
+          <p>
+            Leads Paint It Forward's creative direction, technology,
+            systems, and artistic initiatives.
+          </p>
+
+      
+        </div>
+
+      </div>
+
+
+      <!-- Brian -->
+      <div class="team-card fade-up">
+
+        <div class="team-image">
+          <img src="IMG_1269.JPG" alt="Brian Lu" style="object-position: center 30%;">
+        </div>
+
+        <div class="team-info">
+          <span class="eyebrow">Co-Founder</span>
+          <h3>Brian Lu</h3>
+
+          <p>
+            Helps organize events, connect with artists and community
+            partners, and grow Paint It Forward's network.
+          </p>
+
+    
+        </div>
+
+      </div>
+
+
+      <!-- Manhattan Chapter President
+           TODO:
+           - Add president's photo
+           - Add president's name
+           - Add bio
+           - Create manhattan.html
+      -->
+      <!--
+      <div class="team-card fade-up">
+
+        <div class="team-image">
+          <img src="MANHATTAN-PRESIDENT.jpg"
+               alt="Manhattan Chapter President">
+        </div>
+
+        <div class="team-info">
+          <span class="eyebrow">Chapter President · Manhattan</span>
+          <h3>[Name]</h3>
+
+          <p>
+            Leads Paint It Forward's Manhattan chapter and helps bring our
+            mission to a new community.
+          </p>
+
+          <a href="manhattan.html" class="text-link">
+            View Profile →
+          </a>
+        </div>
+
+      </div>
+      -->
+
+    </div>
+
+  </div>
+</section>
 </main>
 
-<footer>
-  <div class="footer-inner container">
-    <p>&copy; 2026 Paint It Forward. All rights reserved.</p>
-  </div>
-</footer>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">Paint It Forward</a>
+          <p>A student-led international organization connecting young artists across communities through art, philanthropy, and meaningful causes.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Paint It Forward. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-<button class="dark-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">☾</button>
-<script src="site.js"></script>
+  <button class="dark-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </button>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      if (body.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
 </body>
 </html>

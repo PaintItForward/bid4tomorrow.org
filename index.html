@@ -1034,6 +1034,9 @@
 
 
 <!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
+  <!--TODO: UPDATE REGULARLY-->
+<!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
+<!-- TODO: UPDATE REGULARLY -->
 <section class="section stats-section" id="impact">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
@@ -1041,31 +1044,35 @@
       <h2>By the Numbers</h2>
       <p>Figures will be updated as our work grows.</p>
     </div>
+
     <div class="stats-grid fade-up" aria-label="Impact statistics">
       <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Student artists featured -->
+        <span class="stat-number count-up" data-target="7">0</span>
         <div class="stat-label">Student Artists</div>
       </div>
+
       <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Art pieces created / auctioned -->
+        <span class="stat-number count-up" data-target="19">0</span>
         <div class="stat-label">Art Pieces Created</div>
       </div>
+
       <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Events / auctions hosted -->
+        <span class="stat-number">—</span>
         <div class="stat-label">Events Hosted</div>
       </div>
+
       <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Total funds raised, e.g. $12,400+ -->
+        <span class="stat-number">—</span>
         <div class="stat-label">Funds Raised</div>
       </div>
+
       <div class="stat-item">
-        <span class="stat-number">—</span><!-- TODO: Community members reached / attendees -->
+        <span class="stat-number">—</span>
         <div class="stat-label">Community Members Reached</div>
       </div>
     </div>
   </div>
 </section>
-
 
 <!-- ═══════════════════════════ EVENTS & AUCTIONS ═══════════════════════════ -->
 <section class="section auctions-section" id="auctions">
@@ -1415,21 +1422,20 @@ const auctions = [
 ];
 
 /* ── HERO ── */
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const counters = document.querySelectorAll(".count-up");
 
   const animateCounter = (counter) => {
     const target = parseInt(counter.dataset.target, 10);
-    const duration = 1400;
+    const duration = 800;
     const startTime = performance.now();
 
     const updateCounter = (currentTime) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Smooth ease-out
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
-      const currentValue = Math.floor(easedProgress * target);
+      // Fast, consistent rolling speed
+      const currentValue = Math.floor(progress * target);
 
       counter.textContent = currentValue;
 
@@ -1464,6 +1470,59 @@ const auctions = [
   }
 });
 
+ 
+  
+  /*Impact stats*/
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const counters = document.querySelectorAll(".stats-section .count-up");
+
+  const animateCounter = (counter) => {
+    const target = parseInt(counter.dataset.target, 10);
+    const duration = 800;
+    const startTime = performance.now();
+
+    const updateCounter = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Fast, consistent rolling speed
+      const currentValue = Math.floor(progress * target);
+
+      counter.textContent = currentValue;
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        counter.textContent = target;
+      }
+    };
+
+    requestAnimationFrame(updateCounter);
+  };
+
+  const statsSection = document.querySelector(".stats-section");
+
+  if (statsSection) {
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            counters.forEach(animateCounter);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0.4
+      }
+    );
+
+    observer.observe(statsSection);
+  }
+});
+
+  
 /* ── TESTIMONIAL DATA ───────────────────────────────────────────────────────
    TODO: Replace these placeholders with real quotes once you have them.
    Ask attendees, student artists, and parents after your first event.
@@ -1482,10 +1541,17 @@ const testimonials = [
 ──────────────────────────────────────────────────────────────────────────── */
 const faqs = [
   { q: "How do I bid on artwork?", a: "You can register your interest for any upcoming auction through our Events page. During the event you will be able to place bids on artwork in person. Online bidding options may be available in future — stay tuned." },
+
+  { q: "Can students or their families buy the artwork they submitted?", a: "Students and their families are welcome to participate as bidders, but artwork cannot be bought back by the student who submitted it or through arrangements intended to guarantee or artificially inflate its sale price. Our auctions are designed to encourage genuine bidding and support our fundraising goals." },
+
   { q: "How can students submit artwork?", a: "Students can apply through our Get Involved section. We review submissions on a rolling basis and reach out before each auction. All mediums are welcome." },
+
   { q: "Which charities does Paint It Forward support?", a: "We hope to support organizations including the Toronto Arts Foundation, SickKids Foundation, Holland Bloorview Foundation, and Kids Help Phone as our fundraising grows across the Greater Toronto Area." },
+
   { q: "Can my business sponsor Paint It Forward?", a: "Absolutely. We welcome partnerships with businesses and community organizations who share our values. Reach out through our Contact page to discuss sponsorship opportunities." },
+
   { q: "How do I volunteer at an event?", a: "Fill out the volunteer inquiry form in our Get Involved section. We welcome help with event setup, guest coordination, artwork display, and more." },
+
   { q: "Is Paint It Forward a registered nonprofit?", a: "Paint It Forward is a student-led initiative based in the Greater Toronto Area. We are currently exploring formal nonprofit registration and will share updates here as that process develops." },
 ];
 
@@ -1645,7 +1711,9 @@ function handleContact(btn) {
           <div class="artwork-details">
             <h3>${art.title}</h3>
             <p class="artist">By ${art.artist}</p>
+            <p class="branch">${art.branch ?? 'Unknown'} Branch</p>
             <p class="medium">${art.medium}</p>
+            
             <p class="artwork-description">${art.description}</p>
             <span class="status-badge">${art.status}</span>
           </div>

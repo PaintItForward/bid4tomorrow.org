@@ -512,33 +512,58 @@
  /* ── MOBILE GALLERY: VERTICAL CARD ── */
 
 
+/* ── FINAL MOBILE GALLERY ── */
+
 @media (max-width: 900px) {
+
+  .gallery-section .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    overflow: hidden;
+  }
 
   .artwork-carousel {
     display: block;
+    position: relative;
+
     width: 100%;
     max-width: 100%;
     margin: 0;
-    position: relative;
+
+    overflow: visible;
   }
 
   .carousel-window {
+    display: block;
+
     width: 100%;
     max-width: 100%;
     min-width: 0;
+
+    margin: 0;
+    padding: 0;
+
     overflow: hidden;
   }
 
   .carousel-track {
     display: flex;
+
     width: 100%;
+    max-width: 100%;
     min-width: 0;
+
+    margin: 0;
+    padding: 0;
   }
 
-  /* VERTICAL CARD */
   .artwork-slide {
     display: flex;
     flex-direction: column;
+
+    flex: 0 0 100%;
 
     width: 100%;
     min-width: 100%;
@@ -547,62 +572,72 @@
     height: auto;
     min-height: 0;
 
+    margin: 0;
+    padding: 0;
+
     box-sizing: border-box;
+
+    overflow: hidden;
   }
 
-  /* IMAGE AREA */
+  /* ── SMALLER IMAGE AREA ── */
+
   .artwork-image {
     width: 100%;
-    height: 280px;
+    height: 240px;
 
     min-width: 0;
     min-height: 0;
 
-    padding: 1rem;
+    padding: 1.25rem;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     box-sizing: border-box;
+
     overflow: hidden;
   }
 
-  /* ACTUAL ARTWORK */
   .artwork-image img {
     display: block;
 
     width: auto;
     height: auto;
 
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 85%;
+    max-height: 85%;
 
     object-fit: contain;
     object-position: center;
   }
 
-  /* TEXT AREA */
+  /* ── TEXT ── */
+
   .artwork-details {
     width: 100%;
+    max-width: 100%;
     min-width: 0;
 
     height: auto;
     min-height: 0;
 
-    padding: 1.75rem;
+    padding: 1.5rem;
+
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
 
-    box-sizing: border-box;
     overflow: visible;
   }
 
   .artwork-details h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.65rem;
+    font-size: 1.4rem;
+    line-height: 1.2;
+
+    margin-bottom: 0.6rem;
   }
 
   .artist {
@@ -614,6 +649,9 @@
   }
 
   .artwork-description {
+    width: 100%;
+    max-width: 100%;
+
     height: auto;
     min-height: 0;
     max-height: none;
@@ -629,12 +667,14 @@
     overflow: hidden;
   }
 
-  /* ARROWS */
+  /* ── ARROWS ── */
+
   .carousel-btn {
     position: absolute;
+
     z-index: 20;
 
-    top: 140px;
+    top: 120px;
 
     width: 34px;
     height: 34px;
@@ -656,26 +696,27 @@
 }
 
 
-/* ── SMALL PHONES ── */
+/* ── VERY SMALL PHONES ── */
 
 @media (max-width: 480px) {
 
+  .gallery-section .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
   .artwork-image {
-    height: 240px;
-    padding: 0.75rem;
+    height: 210px;
+    padding: 1rem;
+  }
+
+  .artwork-image img {
+    max-width: 80%;
+    max-height: 80%;
   }
 
   .artwork-details {
-    padding: 1.5rem;
-  }
-
-  .artwork-details h3 {
-    font-size: 1.4rem;
-  }
-
-  .carousel-btn {
-    width: 32px;
-    height: 32px;
+    padding: 1.25rem;
   }
 }
   /* ── MISSION & VALUES ── */

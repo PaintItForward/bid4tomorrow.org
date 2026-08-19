@@ -512,13 +512,9 @@
 
 /* ── MOBILE ── */
 
- @media (max-width: 900px) {
-  .container {
-    width: 100%;
-    max-width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
+ /* ── MOBILE GALLERY: VERTICAL CARD ── */
 
+@media (max-width: 900px) {
 
   .artwork-carousel {
     width: 100%;
@@ -534,26 +530,111 @@
   }
 
   .carousel-track {
+    display: flex;
     width: 100%;
   }
 
+  /* Each artwork becomes a vertical card */
   .artwork-slide {
+    display: flex;
+    flex-direction: column;
+
     width: 100%;
     min-width: 100%;
     max-width: 100%;
+
+    height: auto;
+    min-height: 0;
+
     box-sizing: border-box;
   }
 
+  /* IMAGE ON TOP */
   .artwork-image {
     width: 100%;
+    height: auto;
+
+    aspect-ratio: 1 / 1;
+
+    min-height: 0;
+    max-height: none;
+
+    padding: 1.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     box-sizing: border-box;
+    overflow: hidden;
   }
 
-  /* Put arrows ON TOP of the card instead of beside it */
+  .artwork-image img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+  }
+
+  /* TEXT BELOW IMAGE */
+  .artwork-details {
+    width: 100%;
+    height: auto;
+
+    min-height: 0;
+
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    box-sizing: border-box;
+
+    overflow: visible;
+  }
+
+  .artwork-details h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .artist {
+    margin-bottom: 0.3rem;
+  }
+
+  .medium {
+    margin-bottom: 1rem;
+  }
+
+  .artwork-description {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+
+    margin-bottom: 1.25rem;
+
+    line-height: 1.7;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+
+    overflow: hidden;
+  }
+
+  /* MOBILE ARROWS */
   .carousel-btn {
     position: absolute;
-    top: 50%;
     z-index: 10;
+
+    top: 25%;
 
     width: 36px;
     height: 36px;
@@ -571,8 +652,34 @@
 
   #nextBtn {
     right: 8px;
+  }
+}
 
-   
+
+/* ── SMALL PHONES ── */
+
+@media (max-width: 480px) {
+
+  .artwork-image {
+    aspect-ratio: 1 / 1;
+    padding: 1rem;
+  }
+
+  .artwork-details {
+    padding: 1.5rem;
+  }
+
+  .artwork-details h3 {
+    font-size: 1.45rem;
+  }
+
+  .artwork-description {
+    -webkit-line-clamp: 5;
+  }
+
+  .carousel-btn {
+    width: 34px;
+    height: 34px;
   }
 }
   /* ── MISSION & VALUES ── */

@@ -508,33 +508,34 @@
 }
 
 
-/* ── MOBILE ── */
-
-/* ── MOBILE ── */
 
  /* ── MOBILE GALLERY: VERTICAL CARD ── */
+
 
 @media (max-width: 900px) {
 
   .artwork-carousel {
+    display: block;
     width: 100%;
     max-width: 100%;
-    display: block;
+    margin: 0;
     position: relative;
   }
 
   .carousel-window {
     width: 100%;
     max-width: 100%;
+    min-width: 0;
     overflow: hidden;
   }
 
   .carousel-track {
     display: flex;
     width: 100%;
+    min-width: 0;
   }
 
-  /* Each artwork becomes a vertical card */
+  /* VERTICAL CARD */
   .artwork-slide {
     display: flex;
     flex-direction: column;
@@ -549,17 +550,15 @@
     box-sizing: border-box;
   }
 
-  /* IMAGE ON TOP */
+  /* IMAGE AREA */
   .artwork-image {
     width: 100%;
-    height: auto;
+    height: 280px;
 
-    aspect-ratio: 1 / 1;
-
+    min-width: 0;
     min-height: 0;
-    max-height: none;
 
-    padding: 1.5rem;
+    padding: 1rem;
 
     display: flex;
     align-items: center;
@@ -569,11 +568,12 @@
     overflow: hidden;
   }
 
+  /* ACTUAL ARTWORK */
   .artwork-image img {
     display: block;
 
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
 
     max-width: 100%;
     max-height: 100%;
@@ -582,31 +582,31 @@
     object-position: center;
   }
 
-  /* TEXT BELOW IMAGE */
+  /* TEXT AREA */
   .artwork-details {
     width: 100%;
-    height: auto;
+    min-width: 0;
 
+    height: auto;
     min-height: 0;
 
-    padding: 2rem;
+    padding: 1.75rem;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 
     box-sizing: border-box;
-
     overflow: visible;
   }
 
   .artwork-details h3 {
-    font-size: 1.6rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.65rem;
   }
 
   .artist {
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.25rem;
   }
 
   .medium {
@@ -620,24 +620,24 @@
 
     margin-bottom: 1.25rem;
 
-    line-height: 1.7;
+    line-height: 1.65;
 
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 5;
 
     overflow: hidden;
   }
 
-  /* MOBILE ARROWS */
+  /* ARROWS */
   .carousel-btn {
     position: absolute;
-    z-index: 10;
+    z-index: 20;
 
-    top: 25%;
+    top: 140px;
 
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
 
     transform: translateY(-50%);
   }
@@ -661,8 +661,8 @@
 @media (max-width: 480px) {
 
   .artwork-image {
-    aspect-ratio: 1 / 1;
-    padding: 1rem;
+    height: 240px;
+    padding: 0.75rem;
   }
 
   .artwork-details {
@@ -670,16 +670,12 @@
   }
 
   .artwork-details h3 {
-    font-size: 1.45rem;
-  }
-
-  .artwork-description {
-    -webkit-line-clamp: 5;
+    font-size: 1.4rem;
   }
 
   .carousel-btn {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
   }
 }
   /* ── MISSION & VALUES ── */

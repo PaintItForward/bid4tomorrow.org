@@ -512,20 +512,29 @@
 
 /* ── MOBILE ── */
 
-@media (max-width: 600px) {
+ @media (max-width: 900px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
 
   .artwork-carousel {
     width: 100%;
     max-width: 100%;
-    gap: 0;
+    display: block;
     position: relative;
   }
 
   .carousel-window {
     width: 100%;
     max-width: 100%;
-    flex: 1 1 100%;
-    min-width: 0;
+    overflow: hidden;
+  }
+
+  .carousel-track {
+    width: 100%;
   }
 
   .artwork-slide {
@@ -537,31 +546,19 @@
 
   .artwork-image {
     width: 100%;
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    aspect-ratio: 1 / 1;
-    padding: 1rem;
     box-sizing: border-box;
   }
 
-  .artwork-image img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    object-position: center;
-  }
-
+  /* Put arrows ON TOP of the card instead of beside it */
   .carousel-btn {
     position: absolute;
-    z-index: 10;
     top: 50%;
-    transform: translateY(-50%);
+    z-index: 10;
+
     width: 36px;
     height: 36px;
+
+    transform: translateY(-50%);
   }
 
   .carousel-btn:hover {
@@ -574,6 +571,8 @@
 
   #nextBtn {
     right: 8px;
+
+   
   }
 }
   /* ── MISSION & VALUES ── */

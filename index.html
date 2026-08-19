@@ -95,7 +95,13 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; font-size: 16px; }
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    overflow-x: hidden;
+    background: #F7F3EC; /* matches --cream; shown briefly during any overscroll bounce */
+  }
+  html.dark { background: #1C1812; }
 
    body{
     font-family: 'Source Sans 3', sans-serif;
@@ -103,6 +109,7 @@
     background: var(--cream);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    overscroll-behavior-x: none;
     transition: background 0.3s, color 0.3s;
   }
 
@@ -136,36 +143,6 @@
     margin-bottom: 0.9rem;
   }
 
-
-  html,
-body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-img,
-video,
-iframe {
-  max-width: 100%;
-  height: auto;
-}
-
-  section,
-.container,
-.nav-inner,
-.hero,
-.section {
-  max-width: 100%;
-}
-
-  
   /* ── NAVIGATION ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -310,35 +287,39 @@ iframe {
 /* ── CAROUSEL ── */
 
 .artwork-carousel {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .carousel-window {
-  width: 100%;
-  max-width: 100%;
+  flex: 1;
   overflow: hidden;
+  border-radius: var(--radius-lg);
   position: relative;
+  width: 100%;
+  min-width: 0;
 }
 
 .carousel-track {
   display: flex;
   width: 100%;
-  max-width: 100%;
+  min-width: 0;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
 }
 
 
-
-  
 /* ── SLIDE ── */
 
 .artwork-slide {
-  flex: 0 0 100%;
+  min-width: 100%;
   width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
+  height: 420px;
+
+  flex-shrink: 0;
 
   display: grid;
   grid-template-columns: 420px 1fr;
@@ -357,6 +338,7 @@ iframe {
 .artwork-image {
   width: 100%;
   height: 420px;
+  min-width: 0;
   box-sizing: border-box;
 
   background: var(--section-alt);
@@ -364,6 +346,7 @@ iframe {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 
   padding: 2rem;
 }
@@ -380,6 +363,7 @@ iframe {
 .artwork-details {
   height: 420px;
   box-sizing: border-box;
+  min-width: 0;
 
   padding: 3rem 2.5rem;
 
@@ -519,18 +503,12 @@ iframe {
 
 /* ── MOBILE ── */
 
-  @media (max-width: 768px) {
-  .artwork-slide {
-    grid-template-columns: 1fr;
-    width: 100%;
-    min-width: 100%;
-  }
+@media (max-width: 900px) {
 
-  .artwork-slide img {
-    width: 100%;
-    max-width: 100%;
+  .artwork-slide {
+    height: auto;
+    grid-template-columns: 1fr;
   }
-}
 
   .artwork-image {
     height: 320px;
@@ -655,7 +633,7 @@ iframe {
   .cause-desc { font-size: 0.82rem; line-height: 1.65; color: var(--text-body); }
 
   /* ── TESTIMONIALS ── */
-  .testimonials-section { background: var(--white); overflow: hidden; transition: background var(--transition); }
+  .testimonials-section { background: var(--white); overflow: hidden; flex-direction: column; transition: background var(--transition); }
   .testimonials-wrapper {
     overflow: hidden; position: relative;
     mask-image: linear-gradient(to right, transparent, black 80px, black calc(100% - 80px), transparent);
@@ -761,7 +739,7 @@ iframe {
     transition: background var(--transition);
   }
   .contact-item-icon svg { width: 15px; height: 15px; stroke: var(--matcha-dark); fill: none; stroke-width: 1.7; }
-  .contact-item-text { font-size: 0.87rem; color: var(--text-body); }
+  .contact-item-text { font-size: 0.87rem; color: var(--text-body); overflow-wrap: break-word; word-break: break-word; }
   .contact-item-text a { color: var(--matcha-dark); text-decoration: none; }
   .contact-item-text a:hover { text-decoration: underline; }
 
@@ -1680,10 +1658,12 @@ const sunPath  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2
 
 if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
   document.body.classList.add("dark");
+  document.documentElement.classList.add("dark");
   iconEl.innerHTML = sunPath;
 }
 darkBtn.addEventListener("click", () => {
   document.body.classList.toggle("dark");
+  document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
   iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
 });
 

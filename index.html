@@ -310,39 +310,35 @@ iframe {
 /* ── CAROUSEL ── */
 
 .artwork-carousel {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 1000px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .carousel-window {
-  flex: 1;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  position: relative;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
 }
-
 
 .carousel-track {
   display: flex;
   width: 100%;
-  transition: transform 0.5s ease-in-out;
-  will-change: transform;
+  max-width: 100%;
 }
+
 
 
   
 /* ── SLIDE ── */
 
 .artwork-slide {
-  min-width: 100%;
+  flex: 0 0 100%;
   width: 100%;
-  height: 420px;
-
-  flex-shrink: 0;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 
   display: grid;
   grid-template-columns: 420px 1fr;

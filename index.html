@@ -277,6 +277,10 @@
   transition: background var(--transition);
 }
 
+.section-header-center {
+  text-align: center;
+}
+
 .gallery-section .section-header {
   max-width: 700px;
   margin-left: auto;
@@ -519,8 +523,11 @@
   }
 
   .artwork-details {
-    height: 320px;
+    height: auto;
+    min-height: 320px;
     padding: 2rem;
+    justify-content: flex-start;
+    overflow: visible;
   }
 
  .artwork-description {

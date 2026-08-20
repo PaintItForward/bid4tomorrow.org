@@ -143,8 +143,8 @@
     margin-bottom: 0.9rem;
   }
 
-  /* ---- Nav ---- */
-   nav {
+  /* ── NAVIGATION ── */
+  nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     padding: 0 2.5rem;
     background: var(--nav-bg);
@@ -199,219 +199,645 @@
   .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.4rem; }
   .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text-heading); margin: 5px 0; border-radius: 2px; transition: var(--transition); }
 
-  /* ---- Hero ---- */
-  .hero{
-    max-width:1180px; margin:0 auto; padding:4.5rem 1.5rem 3rem;
-    text-align:center;
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.8rem 1.6rem; border-radius: 4px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: none;
+    letter-spacing: 0.03em; transition: var(--transition);
   }
-  .hero .eyebrow{justify-content:center; margin-bottom:1.1rem;}
-  .hero .eyebrow::after{content:""; width:18px; height:1px; background:var(--matcha);}
-  .hero h1{font-size:clamp(2.1rem, 5vw, 3.4rem); line-height:1.12; max-width:16ch; margin:0 auto;}
-  .hero p{
-    max-width:46ch; margin:1.25rem auto 0; color:var(--ink-soft); font-size:1.08rem; line-height:1.6;
+  .btn-primary { background: var(--matcha); color: white; }
+  .btn-primary:hover { background: var(--matcha-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(122,158,126,0.35); }
+  .btn-dark { background: var(--espresso); color: white; }
+  body.dark .btn-dark { background: var(--matcha); color: white; }
+  .btn-dark:hover { background: var(--matcha-dark); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.55); }
+  .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: white; }
+  .btn-ghost {
+    background: rgba(255,255,255,0.55); color: var(--text-heading);
+    border: 1.5px solid var(--card-border);
   }
-  .hero-actions{margin-top:2rem; display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;}
+  body.dark .btn-ghost { background: rgba(255,255,255,0.08); color: var(--text-heading); border-color: var(--card-border); }
+  .btn-ghost:hover { background: var(--card-bg); border-color: var(--text-heading); transform: translateY(-1px); }
 
-  .btn{
-    display:inline-flex; align-items:center; gap:.5rem; font-family:var(--font-body);
-    font-weight:600; font-size:.95rem; padding:.85rem 1.7rem; border-radius:var(--radius-sm);
-    cursor:pointer; transition:all .2s ease; border:1px solid transparent;
-  }
-  .btn-primary{background:var(--matcha); color:var(--white); border-color:var(--matcha);}
-  .btn-primary:hover{background:var(--matcha-deep); border-color:var(--matcha-deep); transform:translateY(-1px);}
-  .btn-outline{background:transparent; color:var(--ink); border-color:var(--hairline);}
-  .btn-outline:hover{border-color:var(--matcha); color:var(--matcha);}
+  /* ── LAYOUT ── */
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+ .section    { min-height: 100vh; display: flex; align-items: center; padding: 110px 0; }
+.section-sm { min-height: 50vh; display: flex; align-items: center; padding: 72px 0; }
 
-  /* ---- Campaign strip (dates + countdown) ---- */
-  .campaign-strip{
-    max-width:760px; margin:2.75rem auto 0; background:var(--beige);
-    border:1px solid var(--hairline); border-radius:var(--radius);
-    padding:1.4rem 1.6rem; display:flex; align-items:center; justify-content:space-between;
-    gap:1.5rem; flex-wrap:wrap;
-  }
-  .campaign-dates{font-size:.88rem; color:var(--ink-soft);}
-  .campaign-dates strong{color:var(--ink); font-weight:600;}
-  .campaign-countdown{display:flex; gap:1.4rem;}
-  .cd-unit{text-align:center; min-width:44px; position:relative;}
-  .cd-unit:not(:last-child)::after{
-    content:""; position:absolute; right:-.7rem; top:2px; bottom:6px; width:1px; background:var(--hairline);
-  }
-  .cd-num{font-family:var(--font-display); font-size:1.5rem; font-weight:700; font-variant-numeric:tabular-nums;}
-  .cd-label{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:.15rem;}
-
-  /* ---- Controls (search + filter) ---- */
-  .controls{
-    max-width:1180px; margin:3.5rem auto 1.5rem; padding:0 1.5rem;
-    display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
-  }
-  .controls h2{font-size:1.6rem;}
-  .controls-tools{display:flex; gap:.7rem; flex-wrap:wrap;}
-  .search-box{
-    display:flex; align-items:center; gap:.5rem; background:var(--white);
-    border:1px solid var(--hairline); border-radius:var(--radius-sm); padding:.6rem .9rem;
-    min-width:220px;
-  }
-  .search-box input{
-    border:none; background:none; outline:none; font-family:var(--font-body);
-    font-size:.9rem; color:var(--ink); width:100%;
-  }
-  .search-box input::placeholder{color:var(--ink-faint);}
-  select{
-    font-family:var(--font-body); font-size:.9rem; color:var(--ink); background:var(--white);
-    border:1px solid var(--hairline); border-radius:var(--radius-sm); padding:.6rem .9rem; cursor:pointer;
-  }
-  .filter-chips{max-width:1180px; margin:0 auto 2rem; padding:0 1.5rem; display:flex; gap:.6rem; flex-wrap:wrap;}
-  .chip{
-    font-size:.82rem; padding:.4rem .9rem; border-radius:999px; border:1px solid var(--hairline);
-    background:var(--white); color:var(--ink-soft); cursor:pointer; transition:all .2s ease;
-  }
-  .chip.active, .chip:hover{border-color:var(--matcha); color:var(--matcha); background:var(--matcha-pale);}
-
-  /* ---- Grid ---- */
-  .grid{
-    max-width:1180px; margin:0 auto; padding:0 1.5rem 5rem;
-    display:grid; grid-template-columns:repeat(3, 1fr); gap:1.75rem;
-  }
-  .art-card{
-    background:var(--white); border:1px solid var(--hairline); border-radius:var(--radius);
-    overflow:hidden; transition:transform .3s ease, box-shadow .3s ease; display:flex; flex-direction:column;
-    opacity:0; animation:rise .5s ease forwards;
-  }
-  @keyframes rise{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-  .art-card:hover{transform:translateY(-5px); box-shadow:var(--shadow);}
-  .art-card:hover .art-img{transform:scale(1.045);}
-  .art-media{position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--beige);}
-  .art-img{width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
-  .status-badge{
-    position:absolute; top:.8rem; left:.8rem; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
-    font-weight:700; padding:.35rem .65rem; border-radius:999px; backdrop-filter:blur(4px);
-  }
-  .status-live{background:rgba(110,127,82,.9); color:var(--white);}
-  .status-ending{background:rgba(169,132,63,.92); color:var(--white);}
-  .status-closed{background:rgba(42,39,33,.78); color:#fff;}
-  .art-body{padding:1.1rem 1.2rem 1.3rem; display:flex; flex-direction:column; gap:.7rem; flex:1;}
-  .art-title{font-family:var(--font-display); font-size:1.15rem; font-weight:600;}
-  .art-meta{font-size:.84rem; color:var(--ink-soft);}
-  .art-meta .medium{font-style:italic; color:var(--ink-faint);}
-  .plaque-rule{height:1px; background:var(--hairline); margin:.15rem 0;}
-  .bid-row{display:flex; align-items:flex-end; justify-content:space-between; gap:.5rem;}
-  .bid-block .label{font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:.2rem;}
-  .bid-current{font-family:var(--font-display); font-size:1.3rem; font-weight:700; color:var(--matcha-deep);}
-  [data-theme="dark"] .bid-current{color:var(--matcha);}
-  .bid-count{font-size:.78rem; color:var(--ink-faint); text-align:right;}
-  .timer-row{
-    display:flex; align-items:center; justify-content:space-between; font-size:.82rem;
-    color:var(--ink-soft); padding-top:.2rem;
-  }
-  .timer-row .t-left{font-variant-numeric:tabular-nums; font-weight:600;}
-  .timer-row.urgent .t-left{color:var(--ochre);}
-  .art-cta{
-    margin-top:.3rem; width:100%; text-align:center; padding:.75rem; border-radius:var(--radius-sm);
-    background:var(--matcha); color:var(--white); font-weight:600; font-size:.9rem; border:1px solid var(--matcha);
-    transition:all .2s ease;
-  }
-  .art-cta:hover{background:var(--matcha-deep);}
-  .art-cta.disabled{background:var(--beige); color:var(--ink-faint); border-color:var(--hairline); cursor:default; pointer-events:none;}
-
-  .empty-state{
-    grid-column:1/-1; text-align:center; padding:3.5rem 1rem; color:var(--ink-soft);
+  
+  /* ── AUCTION PAGE ── */
+  .auction-page {
+    padding-top: 70px;
   }
 
-  footer{
-    border-top:1px solid var(--hairline); padding:2.5rem 1.5rem; text-align:center;
-    color:var(--ink-faint); font-size:.85rem;
+  .auction-hero {
+    background: var(--cream);
+    padding: 7rem 0 4.5rem;
+    text-align: center;
   }
 
-  @media (max-width:900px){
-    .grid{grid-template-columns:repeat(2,1fr); gap:1.25rem;}
+  .auction-hero .container {
+    max-width: 900px;
   }
-  @media (max-width:640px){
-    .nav-links{display:none;}
-    .nav-menu-btn{display:block;}
-    .grid{grid-template-columns:1fr; padding:0 1.1rem 3.5rem;}
-    .hero{padding:2.75rem 1.2rem 2rem;}
-    .campaign-strip{flex-direction:column; align-items:flex-start; padding:1.2rem;}
-    .campaign-countdown{align-self:stretch; justify-content:space-between;}
-    .controls{padding:0 1.1rem; flex-direction:column; align-items:flex-start;}
-    .filter-chips{padding:0 1.1rem;}
-    .search-box{min-width:0; flex:1;}
-    .controls-tools{width:100%;}
+
+  .auction-hero .eyebrow {
+    margin-bottom: 1rem;
   }
+
+  .auction-hero h1 {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    margin: 0 auto 1.25rem;
+  }
+
+  .auction-hero p {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 2rem;
+  }
+
+  .campaign-strip {
+    max-width: 760px;
+    margin: 3rem auto 0;
+    background: var(--section-green);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    text-align: left;
+  }
+
+  .campaign-dates {
+    font-size: .88rem;
+    color: var(--text-body);
+  }
+
+  .campaign-dates strong {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  .campaign-countdown {
+    display: flex;
+    gap: 1.35rem;
+  }
+
+  .cd-unit {
+    text-align: center;
+    min-width: 44px;
+    position: relative;
+  }
+
+  .cd-unit:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -.7rem;
+    top: 2px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--card-border);
+  }
+
+  .cd-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cd-label {
+    font-size: .62rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: .15rem;
+  }
+
+  .auction-listing-section {
+    background: var(--white);
+    padding: 5rem 0 7rem;
+  }
+
+  .controls {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .controls-heading .eyebrow {
+    margin-bottom: .55rem;
+  }
+
+  .controls-heading h2 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+  }
+
+  .controls-tools {
+    display: flex;
+    gap: .65rem;
+    flex-wrap: wrap;
+  }
+
+  .search-box,
+  select {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: .88rem;
+    color: var(--text-heading);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .65rem .85rem;
+    min-width: 220px;
+  }
+
+  .search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font: inherit;
+    color: var(--text-heading);
+    width: 100%;
+  }
+
+  .search-box input::placeholder {
+    color: var(--text-muted);
+  }
+
+  select {
+    padding: .65rem .85rem;
+    cursor: pointer;
+  }
+
+  .filter-chips {
+    display: flex;
+    gap: .55rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .chip {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: .78rem;
+    padding: .42rem .85rem;
+    border-radius: 999px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text-body);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .chip.active,
+  .chip:hover {
+    border-color: var(--matcha);
+    color: var(--matcha-dark);
+    background: var(--soft-matcha-light);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .art-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    opacity: 0;
+    animation: rise .5s ease forwards;
+    transition: transform var(--transition), box-shadow var(--transition),
+                border-color var(--transition), background var(--transition);
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .art-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--matcha);
+  }
+
+  .art-card:hover .art-img {
+    transform: scale(1.035);
+  }
+
+  .art-media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--section-alt);
+  }
+
+  .art-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .5s ease;
+  }
+
+  .status-badge {
+    position: absolute;
+    top: .85rem;
+    left: .85rem;
+    font-size: .65rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: .35rem .65rem;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+  }
+
+  .status-live {
+    background: rgba(122,158,126,.92);
+    color: white;
+  }
+
+  .status-ending {
+    background: rgba(169,132,63,.92);
+    color: white;
+  }
+
+  .status-closed {
+    background: rgba(62,48,42,.84);
+    color: white;
+  }
+
+  .art-body {
+    padding: 1.2rem 1.25rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+    flex: 1;
+  }
+
+  .art-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+
+  .art-meta {
+    font-size: .82rem;
+    color: var(--text-body);
+    margin-top: .2rem;
+  }
+
+  .art-meta .medium {
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  .plaque-rule {
+    height: 1px;
+    background: var(--card-border);
+    margin: .1rem 0;
+  }
+
+  .bid-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+
+  .bid-block .label {
+    font-size: .63rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: .2rem;
+  }
+
+  .bid-current {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--matcha-dark);
+  }
+
+  body.dark .bid-current {
+    color: var(--soft-matcha);
+  }
+
+  .bid-count {
+    font-size: .76rem;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  .timer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: .8rem;
+    color: var(--text-body);
+    padding-top: .15rem;
+  }
+
+  .timer-row .t-left {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  .timer-row.urgent .t-left {
+    color: #A9853F;
+  }
+
+  .art-cta {
+    margin-top: .25rem;
+    width: 100%;
+    text-align: center;
+    padding: .72rem;
+    border-radius: var(--radius-sm);
+    background: var(--matcha);
+    color: white;
+    font-weight: 600;
+    font-size: .86rem;
+    border: 1px solid var(--matcha);
+    transition: var(--transition);
+  }
+
+  .art-cta:hover {
+    background: var(--matcha-dark);
+  }
+
+  .art-cta.disabled {
+    background: var(--section-alt);
+    color: var(--text-muted);
+    border-color: var(--card-border);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text-body);
+  }
+
+  .auction-footer {
+    background: #2A1E18;
+    color: rgba(255,255,255,.45);
+    border: 0;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    font-size: .82rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    nav {
+      padding: 0 1.25rem;
+    }
+
+    .auction-hero {
+      padding: 5.5rem 0 3rem;
+    }
+
+    .auction-hero h1 {
+      font-size: clamp(2.6rem, 12vw, 4rem);
+    }
+
+    .campaign-strip {
+      align-items: flex-start;
+      flex-direction: column;
+      padding: 1.15rem;
+    }
+
+    .campaign-countdown {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .auction-listing-section {
+      padding: 3.5rem 0 5rem;
+    }
+
+    .controls {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .controls-tools {
+      width: 100%;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 0;
+    }
+
+    select {
+      flex: 1;
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 1.15rem;
+    }
+
+    .filter-chips {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .nav-links {
+      position: absolute;
+      top: 70px;
+      left: 1rem;
+      right: 1rem;
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: .25rem;
+      padding: .75rem;
+      background: var(--nav-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { display: block; padding: .7rem .8rem; }
+    .nav-toggle { display: block; }
+  }
+
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-heading);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    transition: var(--transition);
+  }
+  .theme-toggle:hover {
+    background: var(--beige-light);
+    border-color: var(--matcha);
+  }
+
 </style>
 </head>
 <body>
 
-<nav class="nav">
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="#" class="wordmark">Paint It <span>Forward</span></a>
-    <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Gallery</a>
-      <a href="#" class="active">Auction</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
+
+    <a href="index.html" class="nav-logo" aria-label="Paint It Forward home">
+      <div class="nav-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M19.5 3.5c-1.8-1.8-4.7-1.8-6.5 0L4.2 12.3c-1.5 1.5-1.5 3.8 0 5.3l2.2 2.2c1.5 1.5 3.8 1.5 5.3 0l8.8-8.8c1.8-1.8 1.8-4.7 0-6.5ZM7.8 16.2l-1.5-1.5 7.6-7.6 1.5 1.5-7.6 7.6Zm6.4-8.8 1.4-1.4 2.4 2.4-1.4 1.4-2.4-2.4Z"/>
+        </svg>
+      </div>
+      Paint It Forward
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#artwork">Gallery</a></li>
+      <li><a href="auction.html" class="nav-cta">Auction</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+
+    <div style="display:flex;align-items:center;gap:.65rem;">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">☾</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <div class="nav-right">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
-      <button class="nav-menu-btn" aria-label="Menu">☰</button>
-    </div>
+
   </div>
 </nav>
 
-<header class="hero">
-  <span class="eyebrow">Online Auction</span>
-  <h1>Turning Creativity Into Impact.</h1>
-  <p>Bid on original artwork created by student artists and help turn creativity into meaningful impact.</p>
-  <div class="hero-actions">
-    <a href="#grid" class="btn btn-primary">Browse Artwork</a>
-    <a href="#" class="btn btn-outline">How It Works</a>
-  </div>
+<header class="auction-hero">
+  <div class="container">
+    <span class="eyebrow">Online Auction · Demo</span>
+    <h1>Demo</h1>
+    <p>Bid on original artwork created by student artists and help turn creativity into meaningful impact.</p>
 
-  <div class="campaign-strip">
-    <div class="campaign-dates">
-      <strong>Fall 2026 Auction</strong> · Sept 12 – Sept 21
+    <div class="hero-actions">
+      <a href="#grid" class="btn btn-primary">Browse Artwork</a>
+      <a href="#grid" class="btn btn-ghost">How It Works</a>
     </div>
-    <div class="campaign-countdown" id="campaignCountdown">
-      <div class="cd-unit"><div class="cd-num" id="cd-d">–</div><div class="cd-label">Days</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cd-h">–</div><div class="cd-label">Hours</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cd-m">–</div><div class="cd-label">Min</div></div>
+
+    <div class="campaign-strip">
+      <div class="campaign-dates">
+        <strong>Fall 2026 Auction</strong> · Sept 12 – Sept 21
+      </div>
+      <div class="campaign-countdown" id="campaignCountdown">
+        <div class="cd-unit"><div class="cd-num" id="cd-d">–</div><div class="cd-label">Days</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-h">–</div><div class="cd-label">Hours</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-m">–</div><div class="cd-label">Min</div></div>
+      </div>
     </div>
   </div>
 </header>
 
-<section class="controls" id="grid">
-  <h2>Live Artwork</h2>
-  <div class="controls-tools">
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" id="searchInput" placeholder="Search artwork...">
+<section class="auction-listing-section" id="grid">
+  <div class="container">
+    <div class="controls">
+      <div class="controls-heading">
+        <span class="eyebrow">Student Artwork</span>
+        <h2>Live Artwork</h2>
+      </div>
+
+      <div class="controls-tools">
+        <div class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input type="text" id="searchInput" placeholder="Search artwork..." aria-label="Search artwork">
+        </div>
+        <select id="sortSelect" aria-label="Sort artwork">
+          <option value="ending">Ending Soon</option>
+          <option value="newest">Newest</option>
+          <option value="bids">Most Bids</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+        </select>
+      </div>
     </div>
-    <select id="sortSelect">
-      <option value="ending">Ending Soon</option>
-      <option value="newest">Newest</option>
-      <option value="bids">Most Bids</option>
-      <option value="price-low">Price: Low to High</option>
-      <option value="price-high">Price: High to Low</option>
-    </select>
+
+    <div class="filter-chips" id="mediumChips"></div>
+    <div class="grid" id="artGrid"></div>
   </div>
 </section>
 
-<div class="filter-chips" id="mediumChips"></div>
-
-<section class="grid" id="artGrid"></section>
-
-<footer>
+<footer class="auction-footer">
+  Paint It Forward · Student Artwork Auction · Demo build, mock data — for design review only
+</footer>
   Paint It Forward · Student Artwork Auction · Prototype build, mock data — for design review only
 </footer>
 
 <script>
+  // ---------- MOBILE NAV ----------
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+
   // ---------- THEME ----------
   const themeToggle = document.getElementById('themeToggle');
   themeToggle.addEventListener('click', () => {
     const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    themeToggle.textContent = isDark ? '🌙' : '☀️';
+    const isDark = document.body.classList.contains('dark');
+    document.body.classList.toggle('dark', !isDark);
+    document.documentElement.classList.toggle('dark', !isDark);
+    themeToggle.textContent = isDark ? '☾' : '☀';
   });
 
   // ---------- MOCK DATA ----------

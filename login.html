@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Paint It Forward</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    .auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 7rem 1.5rem 3rem; background: var(--cream); }
+    .auth-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-md); }
+    .auth-card h1 { font-size: 2rem; margin-bottom: .5rem; }
+    .auth-card p { color: var(--text-body); margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .4rem; }
+    .form-group input { width: 100%; padding: .8rem 1rem; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--radius-sm); color: var(--input-text); font: inherit; }
+    .auth-links { display: flex; justify-content: space-between; margin-top: 1rem; font-size: .85rem; }
+    .auth-links a { color: var(--matcha-dark); text-decoration: none; }
+    .auth-error { display: none; background: #F9E5E5; color: #8B3A3A; padding: .8rem; border-radius: var(--radius-sm); margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <nav>… same as artwork-detail …</nav>
+  <main class="auth-page">
+    <div class="auth-card">
+      <span class="eyebrow">Bidder Login</span>
+      <h1>Welcome Back</h1>
+      <p>Log in to continue bidding on student artwork.</p>
+      <div class="auth-error" id="authError"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary" style="width:100%;">Login</button>
+      </form>
+      <div class="auth-links">
+        <a href="signup.html">Create account</a>
+        <a href="reset-password.html">Forgot password?</a>
+      </div>
+    </div>
+  </main>
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+        await PIF.request('/auth/login', { method: 'POST', body: { email, password } });
+        const redirect = new URLSearchParams(location.search).get('redirect') || 'dashboard.html';
+        location.href = redirect;
+      } catch (err) {
+        document.getElementById('authError').textContent = err.message;
+        document.getElementById('authError').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 -- schema.sql
 -- Paint It Forward Auction Database Schema
 -- PostgreSQL
-
+ 
 -- Enable UUID generation if not already available
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 

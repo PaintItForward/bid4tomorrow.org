@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artwork | Paint It Forward</title>
+  <meta name="description" content="Bid on original student artwork and support charitable causes.">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .auction-detail-page { padding-top: 70px; background: var(--cream); }
+    .detail-container { max-width: 1200px; margin: 0 auto; padding: 4rem 2.5rem 6rem; }
+    .detail-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: start; }
+    .detail-media { position: relative; }
+    .main-image {
+      position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-lg);
+      overflow: hidden; background: var(--section-alt);
+      box-shadow: var(--shadow-md); cursor: zoom-in;
+    }
+    .main-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease; }
+    .main-image:hover img { transform: scale(1.04); }
+    .zoom-btn {
+      position: absolute; bottom: 1rem; right: 1rem;
+      background: rgba(62,48,42,.65); color: white; border: none;
+      border-radius: 999px; padding: .55rem 1rem; font-size: .8rem;
+      cursor: pointer; backdrop-filter: blur(6px);
+      transition: background .3s;
+    }
+    .zoom-btn:hover { background: rgba(62,48,42,.85); }
+
+    .detail-info h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); margin-bottom: .5rem; }
+    .detail-artist { font-size: 1.1rem; color: var(--text-body); margin-bottom: 1.5rem; }
+    .meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .meta-item .label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); display: block; }
+    .meta-item .value { font-family: 'Source Sans 3', sans-serif; font-size: 1rem; color: var(--text-heading); font-weight: 500; }
+    .statement { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem; }
+    .statement p { font-style: italic; color: var(--text-body); }
+    .bid-panel { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 2rem; }
+    .bid-panel .row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .9rem; }
+    .bid-panel .row .label { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+    .bid-current-large { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: var(--matcha-dark); }
+    body.dark .bid-current-large { color: var(--soft-matcha); }
+    .min-next { color: var(--text-body); font-size: .95rem; }
+    .bid-form input {
+      width: 100%; padding: .85rem 1rem; margin: 1rem 0 .5rem;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      border-radius: var(--radius-sm); color: var(--input-text);
+      font-family: 'Source Sans 3', sans-serif; font-size: 1rem;
+    }
+    .bid-form .legal { font-size: .78rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .success-msg { display: none; background: var(--section-green); color: var(--text-heading); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; }
+    .error-msg { display: none; background: #F9E5E5; color: #8B3A3A; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; }
+    .bid-history { list-style: none; padding: 0; margin-top: 1rem; }
+    .bid-history li { display: flex; justify-content: space-between; padding: .8rem 0; border-bottom: 1px solid var(--card-border); font-size: .95rem; }
+    .bid-history .amount { font-weight: 600; color: var(--text-heading); }
+    .bid-history .time { color: var(--text-muted); font-size: .85rem; }
+
+    @media (max-width: 900px) {
+      .detail-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .detail-container { padding: 2.5rem 1.5rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Paint It Forward home">
+      <div class="nav-logo-mark" aria-hidden="true">
+        <img src="favicon-96x96.png" alt="Paint It Forward Logo" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      Paint It Forward
+    </a>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="branches.html">Our Branches</a></li>
+      <li><a href="index.html#artwork">Gallery</a></li>
+      <li><a href="index.html#auctions">Events</a></li>
+      <li><a href="auction.html" class="nav-cta">Auction</a></li>
+      <li><a href="index.html#impact">Impact</a></li>
+      <li><a href="index.html#causes">Causes</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main class="auction-detail-page">
+  <div class="detail-container">
+    <div class="detail-grid">
+      <div class="detail-media">
+        <div class="main-image" id="mainImage">
+          <img id="artImage" src="" alt="">
+          <button class="zoom-btn" id="zoomBtn" aria-label="Zoom artwork">Zoom</button>
+        </div>
+      </div>
+      <div class="detail-info">
+        <span class="eyebrow" id="statusBadge">Live Auction</span>
+        <h1 id="artTitle">Loading…</h1>
+        <p class="detail-artist" id="artArtist"></p>
+
+        <div class="meta-grid">
+          <div class="meta-item"><span class="label">Medium</span><span class="value" id="artMedium"></span></div>
+          <div class="meta-item"><span class="label">Dimensions</span><span class="value" id="artDimensions"></span></div>
+          <div class="meta-item"><span class="label">Year</span><span class="value" id="artYear"></span></div>
+          <div class="meta-item"><span class="label">Starting Bid</span><span class="value" id="artStartBid"></span></div>
+        </div>
+
+        <div class="statement">
+          <p id="artStatement"></p>
+        </div>
+
+        <div class="bid-panel">
+          <div class="row">
+            <span class="label">Current Highest Bid</span>
+            <span class="bid-current-large" id="currentBid">$—</span>
+          </div>
+          <div class="row">
+            <span class="label">Minimum Next Bid</span>
+            <span class="min-next" id="minBid">$—</span>
+          </div>
+          <div class="row">
+            <span class="label">Bids</span>
+            <span id="bidCount">0</span>
+          </div>
+          <div class="row">
+            <span class="label">Time Remaining</span>
+            <span data-countdown id="countdown">—</span>
+          </div>
+          <div class="success-msg" id="successMsg">✓ Bid placed successfully</div>
+          <div class="error-msg" id="errorMsg"></div>
+          <div class="bid-form" id="bidFormWrap">
+            <label for="bidInput">Your bid:</label>
+            <input type="number" id="bidInput" min="0" step="1" placeholder="Enter your bid">
+            <p class="legal">By placing this bid, you agree that your bid is binding and that you will complete payment if you win.</p>
+            <button class="btn btn-primary" id="placeBidBtn" style="width:100%;">Place Bid</button>
+          </div>
+          <div id="closedMsg" style="display:none;">
+            <p class="eyebrow">Auction Closed</p>
+            <p id="winningBidText"></p>
+          </div>
+        </div>
+
+        <h2>Bid History</h2>
+        <ul class="bid-history" id="bidHistory"><li>Loading…</li></ul>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="auction-footer">
+  Paint It Forward · Student Artwork Auction · Production build
+</footer>
+
+<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+<script>
+  (async function () {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || 'marseille';
+
+    let artwork;
+    try {
+      artwork = await PIF.request(`/artworks/${id}`);
+    } catch (e) {
+      console.warn('Using mock artwork data');
+      // Mock fallback matching auction.html demo
+      const now = Date.now();
+      artwork = {
+        id,
+        title: 'Marseille',
+        artist: 'Jane Smith',
+        medium: 'Acrylic on canvas',
+        dimensions: '24 × 30 in',
+        year: 2026,
+        statement: 'This piece captures the coastal light of Marseille, painted from memory after a family trip. I wanted to translate the warmth of the Mediterranean into paint.',
+        description: 'Original acrylic painting on canvas.',
+        image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&q=80',
+        starting_bid: 40,
+        current_bid: 75,
+        min_increment: 5,
+        bid_count: 6,
+        auction_end: new Date(now + (2*24+4)*3600*1000 + 17*60*1000).toISOString(),
+        status: 'live',
+        bids: [
+          { amount: 75, bidder_name: 'S.C.', created_at: new Date(now - 2*60000).toISOString() },
+          { amount: 65, bidder_name: 'A.T.', created_at: new Date(now - 8*60000).toISOString() },
+          { amount: 55, bidder_name: 'R.M.', created_at: new Date(now - 21*60000).toISOString() }
+        ]
+      };
+    }
+
+    const isClosed = artwork.status === 'closed' || new Date(artwork.auction_end).getTime() <= Date.now();
+    const minNext = artwork.current_bid + (artwork.min_increment || 5);
+
+    document.getElementById('artImage').src = artwork.image || artwork.img || '';
+    document.getElementById('artTitle').textContent = artwork.title;
+    document.getElementById('artArtist').textContent = artwork.artist;
+    document.getElementById('artMedium').textContent = artwork.medium;
+    document.getElementById('artDimensions').textContent = artwork.dimensions || '—';
+    document.getElementById('artYear').textContent = artwork.year || '—';
+    document.getElementById('artStartBid').textContent = `$${artwork.starting_bid || artwork.startBid}`;
+    document.getElementById('artStatement').textContent = artwork.statement || artwork.description || 'No statement provided.';
+    document.getElementById('currentBid').textContent = `$${artwork.current_bid}`;
+    document.getElementById('minBid').textContent = `$${minNext}`;
+    document.getElementById('bidCount').textContent = artwork.bid_count ?? artwork.bids?.length ?? 0;
+    document.getElementById('bidInput').min = minNext;
+    document.getElementById('bidInput').value = minNext;
+
+    if (isClosed) {
+      document.getElementById('bidFormWrap').style.display = 'none';
+      document.getElementById('closedMsg').style.display = 'block';
+      document.getElementById('statusBadge').textContent = 'Closed';
+      document.getElementById('winningBidText').textContent = `Winning bid: $${artwork.current_bid}`;
+      document.getElementById('countdown').textContent = 'Auction closed';
+    } else {
+      PIF.startCountdown(document.getElementById('countdown'), artwork.auction_end);
+    }
+
+    // Bid history
+    const historyEl = document.getElementById('bidHistory');
+    historyEl.innerHTML = '';
+    (artwork.bids || []).forEach(b => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="amount">$${b.amount}</span><span>${b.bidder_name || 'Anonymous'}</span><span class="time">${PIF.formatTimeAgo(b.created_at)}</span>`;
+      historyEl.appendChild(li);
+    });
+
+    // Zoom toggle
+    const imgWrap = document.getElementById('mainImage');
+    const img = document.getElementById('artImage');
+    let zoomed = false;
+    document.getElementById('zoomBtn').addEventListener('click', () => {
+      zoomed = !zoomed;
+      img.style.transform = zoomed ? 'scale(2)' : 'scale(1)';
+      imgWrap.style.cursor = zoomed ? 'zoom-out' : 'zoom-in';
+    });
+    imgWrap.addEventListener('click', (e) => {
+      if (e.target !== img) return;
+      zoomed = !zoomed;
+      img.style.transform = zoomed ? 'scale(2)' : 'scale(1)';
+    });
+
+    // Place bid
+    document.getElementById('placeBidBtn').addEventListener('click', async () => {
+      const amount = parseInt(document.getElementById('bidInput').value, 10);
+      if (!amount || amount < minNext) {
+        document.getElementById('errorMsg').textContent = `Bid must be at least $${minNext}.`;
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('successMsg').style.display = 'none';
+        return;
+      }
+      try {
+        const res = await PIF.request(`/artworks/${id}/bids`, { method: 'POST', body: { amount } });
+        document.getElementById('currentBid').textContent = `$${res.current_bid}`;
+        document.getElementById('minBid').textContent = `$${res.current_bid + (artwork.min_increment || 5)}`;
+        document.getElementById('bidCount').textContent = (artwork.bid_count || 0) + 1;
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('errorMsg').style.display = 'none';
+        // Prepend new bid to history
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="amount">$${amount}</span><span>You</span><span class="time">just now</span>`;
+        historyEl.prepend(li);
+        // Update artwork object with new bid for min calculation
+        artwork.current_bid = res.current_bid;
+        artwork.bid_count = (artwork.bid_count || 0) + 1;
+        document.getElementById('bidInput').min = artwork.current_bid + (artwork.min_increment || 5);
+        document.getElementById('bidInput').value = artwork.current_bid + (artwork.min_increment || 5);
+      } catch (err) {
+        if (err.message.includes('login') || err.message.includes('auth')) {
+          location.href = `/login.html?redirect=${encodeURIComponent(location.pathname + location.search)}`;
+        } else {
+          document.getElementById('errorMsg').textContent = err.message;
+          document.getElementById('errorMsg').style.display = 'block';
+          document.getElementById('successMsg').style.display = 'none';
+        }
+      }
+    });
+  })();
+</script>
+</body>
+</html>

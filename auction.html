@@ -1,35 +1,207 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="manifest" href="/site.webmanifest" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paint It Forward</title>
-<meta name="description" content="Paint It Forward is a student-led initiative using art to support youth, health, and community causes across the Greater Toronto Area.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paint It Forward – Auction</title>
+  <meta name="description" content="Paint It Forward student art auction – bid on original artwork and support community causes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
 
-<link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    /* ---- Minimal inline fallback in case main.css is missing ---- */
+    :root {
+      --matcha: #7A9E7E;
+      --matcha-dark: #5F7F63;
+      --espresso: #3E302A;
+      --cream: #F7F3EC;
+      --white: #FDFBF8;
+      --card-bg: #FDFBF8;
+      --card-border: #E0D8CE;
+      --text-heading: #3E302A;
+      --text-body: #6B5A52;
+      --text-muted: #A08070;
+      --border: #E0D8CE;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 12px rgba(62,48,42,0.07);
+      --shadow-md: 0 8px 32px rgba(62,48,42,0.11);
+      --transition: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    body.dark {
+      --cream: #1C1812;
+      --white: #231E18;
+      --card-bg: #231E18;
+      --card-border: #3D3025;
+      --text-heading: #F0E8DF;
+      --text-body: #B8A898;
+      --text-muted: #806A58;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text-heading); transition: background 0.3s, color 0.3s; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+    .eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--matcha); display: block; margin-bottom: 0.5rem; }
 
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 2.5rem; background: var(--cream); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .nav-inner {
+      max-width: 1320px; margin: 0 auto; display: flex; align-items: center;
+      justify-content: space-between; height: 70px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--text-heading); font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; }
+    .nav-logo-mark { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; background: var(--card-border); flex-shrink: 0; }
+    .nav-logo-mark img { width: 100%; height: 100%; object-fit: cover; }
+    .nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-body); font-size: 0.85rem; font-weight: 500; padding: 0.4rem 0.8rem; border-radius: 5px; transition: 0.2s; }
+    .nav-links a:hover { color: var(--text-heading); background: var(--card-border); }
+    .nav-cta { background: var(--espresso) !important; color: var(--cream) !important; padding: 0.45rem 1.1rem !important; border-radius: 4px !important; font-weight: 600 !important; }
+    body.dark .nav-cta { background: var(--matcha) !important; color: white !important; }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.4rem; }
+    .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text-heading); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+    @media (max-width: 768px) { .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: var(--cream); padding: 1.25rem; border-bottom: 1px solid var(--card-border); } .nav-links.open { display: flex; } .nav-toggle { display: block; } nav { padding: 0 1.5rem; } }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.8rem 1.6rem; border-radius: 4px; font-family: 'Source Sans 3', sans-serif; font-size: 0.875rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; transition: var(--transition); }
+    .btn-primary { background: var(--matcha); color: white; }
+    .btn-primary:hover { background: var(--matcha-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(122,158,126,0.35); }
+    .btn-ghost { background: rgba(255,255,255,0.55); color: var(--text-heading); border: 1.5px solid var(--card-border); }
+    body.dark .btn-ghost { background: rgba(255,255,255,0.08); border-color: var(--card-border); }
+    .btn-ghost:hover { background: var(--card-bg); border-color: var(--text-heading); transform: translateY(-1px); }
+
+    /* Hero */
+    .auction-hero {
+      padding: 130px 0 60px; background: #2A1E18; color: white;
+      position: relative; overflow: hidden;
+    }
+    .auction-hero .container { position: relative; z-index: 2; }
+    .auction-hero h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); color: white; margin-bottom: 1rem; }
+    .auction-hero p { font-size: 1.1rem; color: rgba(255,255,255,0.6); max-width: 520px; line-height: 1.75; margin-bottom: 2rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-bottom: 3rem; }
+    .campaign-strip {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 2rem;
+      padding: 1.25rem 0; border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .campaign-dates { font-size: 0.9rem; color: rgba(255,255,255,0.5); }
+    .campaign-dates strong { color: white; }
+    .campaign-countdown { display: flex; gap: 1.5rem; }
+    .cd-unit { text-align: center; }
+    .cd-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600; color: white; line-height: 1; }
+    .cd-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); }
+
+    /* Controls */
+    .controls {
+      display: flex; flex-wrap: wrap; justify-content: space-between;
+      align-items: center; gap: 1rem; margin: 2.5rem 0 1.5rem;
+    }
+    .controls-tools { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+    .search-box {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 4px; padding: 0 0.8rem; transition: border-color var(--transition);
+    }
+    .search-box:focus-within { border-color: var(--matcha); }
+    .search-box input {
+      border: none; background: transparent; padding: 0.6rem 0; font-size: 0.875rem;
+      color: var(--text-heading); outline: none; width: 180px;
+    }
+    .search-box input::placeholder { color: var(--text-muted); }
+    .controls-tools select {
+      padding: 0.6rem 0.8rem; border-radius: 4px; border: 1px solid var(--card-border);
+      background: var(--card-bg); color: var(--text-heading); font-size: 0.875rem;
+      cursor: pointer; outline: none;
+    }
+    .filter-chips {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;
+    }
+    .chip {
+      padding: 0.3rem 1rem; border-radius: 20px; border: 1px solid var(--card-border);
+      background: var(--card-bg); color: var(--text-body); font-size: 0.75rem;
+      cursor: pointer; transition: 0.2s; font-weight: 500;
+    }
+    .chip:hover { border-color: var(--matcha); }
+    .chip.active { background: var(--matcha); color: white; border-color: var(--matcha); }
+
+    /* Grid */
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem; margin: 1.5rem 0 3rem;
+    }
+    .art-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .art-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .art-card-img {
+      height: 220px; background: var(--cream); display: flex;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .art-card-img img {
+      max-width: 100%; max-height: 100%; object-fit: contain;
+    }
+    .art-card-body { padding: 1.25rem; }
+    .art-card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--text-heading); }
+    .art-card-artist { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+    .art-card-medium { font-size: 0.7rem; font-weight: 600; color: var(--matcha-dark); text-transform: uppercase; letter-spacing: 0.05em; }
+    .art-card-desc { font-size: 0.82rem; color: var(--text-body); margin: 0.6rem 0; line-height: 1.5; }
+    .art-card-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--card-border);
+    }
+    .art-card-bid { font-weight: 700; color: var(--matcha-dark); }
+    .art-card-time { font-size: 0.75rem; color: var(--text-muted); }
+    .art-card .btn { font-size: 0.75rem; padding: 0.4rem 1rem; }
+
+    /* Footer */
+    .auction-footer {
+      text-align: center; padding: 2.5rem 1.5rem;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted); font-size: 0.8rem;
+    }
+
+    /* Dark toggle */
+    .dark-toggle {
+      position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 999;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #2A1E18; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-md); transition: transform 0.3s;
+    }
+    body.dark .dark-toggle { background: var(--matcha); }
+    .dark-toggle:hover { transform: scale(1.1); }
+    .dark-toggle svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 1.8; }
+
+    @media (max-width: 600px) {
+      .controls { flex-direction: column; align-items: stretch; }
+      .controls-tools { flex-direction: column; align-items: stretch; }
+      .search-box input { width: 100%; }
+      .campaign-strip { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
 <body>
 
+<!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
 <nav id="main-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-
     <a href="index.html" class="nav-logo" aria-label="Paint It Forward home">
       <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-96x96.png" alt="Paint It Forward Logo"
-             style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="favicon-96x96.png" alt="Paint It Forward Logo" />
       </div>
       Paint It Forward
     </a>
-
     <ul class="nav-links" id="nav-links" role="list">
       <li><a href="about.html">About Us</a></li>
       <li><a href="branches.html">Our Branches</a></li>
@@ -41,30 +213,24 @@
       <li><a href="index.html#faq">FAQ</a></li>
       <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
     </ul>
-
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false"
-            aria-controls="nav-links" aria-label="Toggle navigation">
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
     </button>
-
   </div>
 </nav>
 
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <header class="auction-hero">
   <div class="container">
-    <span class="eyebrow">Online Auction · Demo</span>
-    <h1>Demo</h1>
-    <p>Bid on original artwork created by student artists and help turn creativity into meaningful impact.</p>
-
+    <span class="eyebrow">Online Auction · Fall 2026</span>
+    <h1>Bid for Impact</h1>
+    <p>Original student artwork, auctioned to raise funds for youth, health, and community causes across the GTA.</p>
     <div class="hero-actions">
       <a href="#grid" class="btn btn-primary">Browse Artwork</a>
       <a href="#grid" class="btn btn-ghost">How It Works</a>
     </div>
-
     <div class="campaign-strip">
-      <div class="campaign-dates">
-        <strong>Fall 2026 Auction</strong> · Sept 12 – Sept 21
-      </div>
+      <div class="campaign-dates"><strong>Fall 2026 Auction</strong> · Sept 12 – Sept 21</div>
       <div class="campaign-countdown" id="campaignCountdown">
         <div class="cd-unit"><div class="cd-num" id="cd-d">–</div><div class="cd-label">Days</div></div>
         <div class="cd-unit"><div class="cd-num" id="cd-h">–</div><div class="cd-label">Hours</div></div>
@@ -74,6 +240,7 @@
   </div>
 </header>
 
+<!-- ═══════════════════════════ AUCTION LISTING ═══════════════════════════ -->
 <section class="auction-listing-section" id="grid">
   <div class="container">
     <div class="controls">
@@ -81,11 +248,10 @@
         <span class="eyebrow">Student Artwork</span>
         <h2>Live Artwork</h2>
       </div>
-
       <div class="controls-tools">
         <div class="search-box">
           <span aria-hidden="true">⌕</span>
-          <input type="text" id="searchInput" placeholder="Search artwork..." aria-label="Search artwork">
+          <input type="text" id="searchInput" placeholder="Search artwork..." aria-label="Search artwork" />
         </div>
         <select id="sortSelect" aria-label="Sort artwork">
           <option value="ending">Ending Soon</option>
@@ -102,36 +268,352 @@
   </div>
 </section>
 
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
 <footer class="auction-footer">
   Paint It Forward · Student Artwork Auction · Demo build, mock data — for design review only
 </footer>
-  Paint It Forward · Student Artwork Auction · Prototype build, mock data — for design review only
-</footer>
 
-<!-- Dark mode toggle -->
+<!-- ═══════════════════════════ DARK MODE TOGGLE ═══════════════════════════ -->
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
   <svg id="toggle-icon" viewBox="0 0 24 24">
-    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
   </svg>
 </button>
 
-<script src="assets/js/main.js"></script>
+<!-- ═══════════════════════════ SCRIPTS ═══════════════════════════ -->
 <script>
-  // auction.html page logic — replace mock array with live fetch
-  (async function () {
-    let artworks = [];
-    try {
-      artworks = await PIF.request('/artworks');
-    } catch (e) {
-      console.warn('Using mock artworks (API not available)');
-      // Keep your existing mock array as fallback here
-      artworks = [/* ... your mock data ... */];
+  // ------------------------------------------------------------------
+  // 1. MOCK DATA — replace with API call when ready
+  // ------------------------------------------------------------------
+  const MOCK_ARTWORKS = [
+    {
+      id: 1,
+      title: "Bust Study",
+      artist: "Gloria Xu",
+      medium: "Oil on Canvas",
+      description: "The use of oil paint to analyse hidden colours within light.",
+      image: "Gloria Bust Portrait Oil.png",
+      startingBid: 120,
+      currentBid: 175,
+      bids: 8,
+      endDate: "2026-09-20T18:00:00",
+      createdAt: "2026-09-10T10:00:00"
+    },
+    {
+      id: 2,
+      title: "Marseille",
+      artist: "Leo Chen",
+      medium: "Graphite on Paper",
+      description: "A student artwork inspired by the atmosphere and character of Marseille.",
+      image: "Marseille.png",
+      startingBid: 80,
+      currentBid: 95,
+      bids: 4,
+      endDate: "2026-09-19T20:00:00",
+      createdAt: "2026-09-09T14:30:00"
+    },
+    {
+      id: 3,
+      title: "Golden Hour",
+      artist: "Maya Singh",
+      medium: "Acrylic on Canvas",
+      description: "Warm tones capture the fleeting beauty of sunset over the city.",
+      image: "golden-hour.jpg",
+      startingBid: 150,
+      currentBid: 210,
+      bids: 12,
+      endDate: "2026-09-18T17:00:00",
+      createdAt: "2026-09-01T09:00:00"
+    },
+    {
+      id: 4,
+      title: "Quiet Storm",
+      artist: "James Park",
+      medium: "Watercolour",
+      description: "Emotive abstraction exploring stillness and movement.",
+      image: "quiet-storm.jpg",
+      startingBid: 90,
+      currentBid: 130,
+      bids: 6,
+      endDate: "2026-09-21T21:00:00",
+      createdAt: "2026-09-12T08:15:00"
+    },
+    {
+      id: 5,
+      title: "Urban Drift",
+      artist: "Sophia Liu",
+      medium: "Digital Illustration",
+      description: "A dreamlike cityscape blending architecture with organic forms.",
+      image: "urban-drift.jpg",
+      startingBid: 60,
+      currentBid: 85,
+      bids: 3,
+      endDate: "2026-09-17T19:00:00",
+      createdAt: "2026-09-05T11:45:00"
+    },
+    {
+      id: 6,
+      title: "Still Life with Oranges",
+      artist: "Emily R.",
+      medium: "Oil on Board",
+      description: "Classical still life reimagined with a modern, vibrant palette.",
+      image: "still-life.jpg",
+      startingBid: 100,
+      currentBid: 155,
+      bids: 7,
+      endDate: "2026-09-20T16:00:00",
+      createdAt: "2026-09-08T13:20:00"
+    },
+    {
+      id: 7,
+      title: "Lunar Reflections",
+      artist: "Anika Desai",
+      medium: "Mixed Media",
+      description: "Collage and paint exploring the relationship between light and memory.",
+      image: "lunar.jpg",
+      startingBid: 110,
+      currentBid: 140,
+      bids: 5,
+      endDate: "2026-09-19T22:00:00",
+      createdAt: "2026-09-11T16:50:00"
+    },
+    {
+      id: 8,
+      title: "Pulse",
+      artist: "Marcus T.",
+      medium: "Acrylic on Canvas",
+      description: "Bold colours and rhythmic lines express the energy of urban life.",
+      image: "pulse.jpg",
+      startingBid: 70,
+      currentBid: 105,
+      bids: 9,
+      endDate: "2026-09-21T15:30:00",
+      createdAt: "2026-09-13T07:00:00"
+    }
+  ];
+
+  // ------------------------------------------------------------------
+  // 2. STATE
+  // ------------------------------------------------------------------
+  let artworks = [];
+  let filtered = [];
+  let activeMedium = 'All';
+
+  // ------------------------------------------------------------------
+  // 3. DOM REFS
+  // ------------------------------------------------------------------
+  const grid = document.getElementById('artGrid');
+  const chipsContainer = document.getElementById('mediumChips');
+  const searchInput = document.getElementById('searchInput');
+  const sortSelect = document.getElementById('sortSelect');
+
+  // ------------------------------------------------------------------
+  // 4. HELPERS
+  // ------------------------------------------------------------------
+  function getTimeLeft(endDate) {
+    const diff = new Date(endDate) - Date.now();
+    if (diff <= 0) return { days: 0, hours: 0, minutes: 0, expired: true };
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    return { days, hours, minutes, expired: false };
+  }
+
+  function formatPrice(amount) {
+    return '$' + amount.toFixed(0);
+  }
+
+  function getEndLabel(endDate) {
+    const { days, hours, minutes, expired } = getTimeLeft(endDate);
+    if (expired) return 'Ended';
+    if (days > 0) return `${days}d ${hours}h left`;
+    if (hours > 0) return `${hours}h ${minutes}m left`;
+    return `${minutes}m left`;
+  }
+
+  // ------------------------------------------------------------------
+  // 5. RENDER
+  // ------------------------------------------------------------------
+  function renderGrid(items) {
+    if (!items.length) {
+      grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:3rem 0;">No artworks match your filters.</p>`;
+      return;
+    }
+    grid.innerHTML = items.map(art => `
+      <article class="art-card" data-id="${art.id}">
+        <div class="art-card-img">
+          <img src="${art.image}" alt="${art.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%22 y=%22115%22 font-family=%22sans-serif%22 font-size=%2214%22 fill=%22%23999%22%3EImage unavailable%3C/text%3E%3C/svg%3E'" />
+        </div>
+        <div class="art-card-body">
+          <div class="art-card-title">${art.title}</div>
+          <div class="art-card-artist">by ${art.artist}</div>
+          <div class="art-card-medium">${art.medium}</div>
+          <p class="art-card-desc">${art.description}</p>
+          <div class="art-card-meta">
+            <div>
+              <div class="art-card-bid">${formatPrice(art.currentBid)}</div>
+              <div class="art-card-time">${art.bids} bids · ${getEndLabel(art.endDate)}</div>
+            </div>
+            <button class="btn btn-primary" onclick="alert('Bid on "${art.title}" – demo action')">Place Bid</button>
+          </div>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  function renderChips(mediums) {
+    const allChips = ['All', ...mediums];
+    chipsContainer.innerHTML = allChips.map(m => `
+      <button class="chip ${m === activeMedium ? 'active' : ''}" data-medium="${m}">${m}</button>
+    `).join('');
+    // attach click events
+    chipsContainer.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeMedium = btn.dataset.medium;
+        renderChips([...new Set(artworks.map(a => a.medium))]);
+        applyFilters();
+      });
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // 6. FILTER + SORT
+  // ------------------------------------------------------------------
+  function applyFilters() {
+    const query = searchInput.value.toLowerCase().trim();
+    const sort = sortSelect.value;
+
+    let result = [...artworks];
+
+    // Medium filter
+    if (activeMedium !== 'All') {
+      result = result.filter(a => a.medium === activeMedium);
     }
 
-    const now = Date.now();
-    // ... rest of your existing filter/render/timer logic, unchanged
-    // replace `artworks` variable and remove local `const artworks = [...]`
-  })();
+    // Search
+    if (query) {
+      result = result.filter(a =>
+        a.title.toLowerCase().includes(query) ||
+        a.artist.toLowerCase().includes(query) ||
+        a.description.toLowerCase().includes(query)
+      );
+    }
+
+    // Sort
+    switch (sort) {
+      case 'ending':
+        result.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+        break;
+      case 'newest':
+        result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+      case 'bids':
+        result.sort((a, b) => b.bids - a.bids);
+        break;
+      case 'price-low':
+        result.sort((a, b) => a.currentBid - b.currentBid);
+        break;
+      case 'price-high':
+        result.sort((a, b) => b.currentBid - a.currentBid);
+        break;
+      default:
+        break;
+    }
+
+    filtered = result;
+    renderGrid(filtered);
+  }
+
+  // ------------------------------------------------------------------
+  // 7. COUNTDOWN TIMER
+  // ------------------------------------------------------------------
+  function updateCountdown(endDateStr) {
+    const end = new Date(endDateStr);
+    const el = (id) => document.getElementById(id);
+    function tick() {
+      const { days, hours, minutes, expired } = getTimeLeft(end);
+      if (expired) {
+        el('cd-d').textContent = '0';
+        el('cd-h').textContent = '0';
+        el('cd-m').textContent = '0';
+        return;
+      }
+      el('cd-d').textContent = String(days).padStart(2, '0');
+      el('cd-h').textContent = String(hours).padStart(2, '0');
+      el('cd-m').textContent = String(minutes).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 60000);
+  }
+
+  // ------------------------------------------------------------------
+  // 8. INIT
+  // ------------------------------------------------------------------
+  async function init() {
+    // Try to fetch from API, fallback to mock
+    try {
+      // If you have a global PIF object from main.js, use it
+      if (typeof PIF !== 'undefined' && PIF.request) {
+        artworks = await PIF.request('/artworks');
+      } else {
+        throw new Error('PIF not available');
+      }
+    } catch (e) {
+      console.warn('Using mock artworks (API not available)');
+      artworks = MOCK_ARTWORKS;
+    }
+
+    // Set countdown target (use the latest end date from mock, or hardcode)
+    const latestEnd = artworks.reduce((latest, a) =>
+      new Date(a.endDate) > new Date(latest) ? a.endDate : latest
+    , artworks[0]?.endDate || '2026-09-21T23:59:59');
+    updateCountdown(latestEnd);
+
+    // Render chips
+    const mediums = [...new Set(artworks.map(a => a.medium))];
+    renderChips(mediums);
+
+    // Initial render
+    applyFilters();
+
+    // Event listeners
+    searchInput.addEventListener('input', applyFilters);
+    sortSelect.addEventListener('change', applyFilters);
+  }
+
+  // ------------------------------------------------------------------
+  // 9. NAV TOGGLE (mobile)
+  // ------------------------------------------------------------------
+  document.getElementById('nav-toggle').addEventListener('click', function () {
+    const links = document.getElementById('nav-links');
+    links.classList.toggle('open');
+    this.setAttribute('aria-expanded', links.classList.contains('open'));
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('open'));
+  });
+
+  // ------------------------------------------------------------------
+  // 10. DARK MODE TOGGLE (inline, also works with main.js)
+  // ------------------------------------------------------------------
+  const darkBtn = document.getElementById('dark-toggle');
+  const iconEl = document.getElementById('toggle-icon');
+  const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+  const sunPath = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.body.classList.add('dark');
+    iconEl.innerHTML = sunPath;
+  }
+  darkBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    iconEl.innerHTML = document.body.classList.contains('dark') ? sunPath : moonPath;
+  });
+
+  // ------------------------------------------------------------------
+  // 11. GO!
+  // ------------------------------------------------------------------
+  init();
 </script>
 </body>
 </html>

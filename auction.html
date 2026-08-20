@@ -1,69 +1,203 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="manifest" href="/site.webmanifest" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Online Auction — Paint It Forward</title>
+<title>Paint It Forward</title>
+<meta name="description" content="Paint It Forward is a student-led initiative using art to support youth, health, and community causes across the Greater Toronto Area.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --cream:#F7F3EA; --beige:#EAE2D0; --beige-dark:#DDD1B0; --hairline:#D8CCAA;
-    --ink:#2A2721; --ink-soft:#6B6455; --ink-faint:#948C7A;
-    --matcha:#6E7F52; --matcha-deep:#56613F; --matcha-pale:#DEE5CB;
-    --ochre:#A9843F; --white:#FFFDF8;
-    --radius:10px; --radius-sm:6px;
-    --shadow:0 1px 2px rgba(42,39,33,.06), 0 10px 26px rgba(42,39,33,.07);
-    --font-display:'Playfair Display',Georgia,serif;
-    --font-body:'Source Sans 3','Source Sans Pro',system-ui,sans-serif;
-  }
-  [data-theme="dark"]{
-    --cream:#1E1C17; --beige:#2A2721; --beige-dark:#3A352A; --hairline:#453F30;
-    --ink:#EDE6D6; --ink-soft:#B7AF9C; --ink-faint:#8C8471;
-    --matcha:#93A671; --matcha-deep:#A9BB89; --matcha-pale:#34402B;
-    --ochre:#C6A25E; --white:#262319;
-    --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.35);
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0; background:var(--cream); color:var(--ink);
-    font-family:var(--font-body); -webkit-font-smoothing:antialiased;
-    transition:background .3s ease, color .3s ease;
-    overflow-x:hidden;
-  }
-  a{color:inherit; text-decoration:none;}
-  img{max-width:100%; display:block;}
-  h1,h2,h3{font-family:var(--font-display); margin:0; font-weight:600; letter-spacing:-0.01em;}
+  :root {
+    --matcha:             #7A9E7E;
+    --matcha-dark:        #5F7F63;
+    --soft-matcha:        #B8C9A3;
+    --soft-matcha-light:  #DDE8D4;
+    --beige:              #DCCBB8;
+    --beige-light:        #EDE4D8;
+    --cream:              #F7F3EC;
+    --white:              #FDFBF8;
+    --espresso:           #3E302A;
+    --espresso-mid:       #6B5A52;
+    --espresso-light:     #A08070;
+    --border:             #E0D8CE;
+    --radius-sm: 6px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 2px 12px rgba(62,48,42,0.07);
+    --shadow-md: 0 8px 32px rgba(62,48,42,0.11);
+    --shadow-lg: 0 20px 60px rgba(62,48,42,0.15);
+    --transition: 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 
-  .eyebrow{
-    font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--matcha); font-weight:700; display:inline-flex; align-items:center; gap:.5rem;
+    /* Dark-mode-safe text variables (reassigned in .dark) */
+    --text-heading:   #3E302A;
+    --text-body:      #6B5A52;
+    --text-muted:     #A08070;
+    --text-on-light:  #3E302A;
+    --card-bg:        #FDFBF8;
+    --card-border:    #E0D8CE;
+    --section-alt:    #EDE4D8;
+    --section-green:  #DDE8D4;
+    --involved-1-bg:  #DDE8D4;
+    --involved-2-bg:  #EDE4D8;
+    --involved-3-bg:  #EAF0E5;
+    --involved-4-bg:  #F0EBE5;
+    --involved-border-1: rgba(184,201,163,0.6);
+    --involved-border-2: rgba(220,203,184,0.6);
+    --involved-border-3: rgba(180,205,170,0.5);
+    --involved-border-4: rgba(220,210,200,0.5);
+    --input-bg:       #FDFBF8;
+    --input-border:   #E0D8CE;
+    --input-text:     #3E302A;
+    --contact-bg:     #F7F3EC;
+    --footer-text:    rgba(255,255,255,0.38);
+    --footer-link:    rgba(255,255,255,0.5);
+    --nav-bg:         rgba(247,243,236,0.94);
   }
-  .eyebrow::before{content:""; width:18px; height:1px; background:var(--matcha);}
+
+  body.dark {
+    --cream:              #1C1812;
+    --white:              #231E18;
+    --beige-light:        #2A2318;
+    --beige:              #2E261A;
+    --border:             #3D3025;
+    --text-heading:       #F0E8DF;
+    --text-body:          #B8A898;
+    --text-muted:         #806A58;
+    --text-on-light:      #F0E8DF;
+    --card-bg:            #231E18;
+    --card-border:        #3D3025;
+    --section-alt:        #211C14;
+    --section-green:      #1C2418;
+    --involved-1-bg:      #1C2A1C;
+    --involved-2-bg:      #2A2418;
+    --involved-3-bg:      #1E2A1C;
+    --involved-4-bg:      #2A201A;
+    --involved-border-1:  rgba(80,120,80,0.4);
+    --involved-border-2:  rgba(120,100,70,0.4);
+    --involved-border-3:  rgba(80,120,80,0.4);
+    --involved-border-4:  rgba(120,100,80,0.4);
+    --input-bg:           #1C1812;
+    --input-border:       #3D3025;
+    --input-text:         #F0E8DF;
+    --contact-bg:         #231E18;
+    --nav-bg:             rgba(28,24,18,0.96);
+    --soft-matcha-light:  #253020;
+    --espresso:           #F0E8DF;
+    --espresso-mid:       #B8A898;
+    --espresso-light:     #806A58;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    overflow-x: hidden;
+    background: #F7F3EC; /* matches --cream; shown briefly during any overscroll bounce */
+  }
+  html.dark { background: #1C1812; }
+
+   body{
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text-heading);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--text-heading);
+  }
+  h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+  h2 { font-size: clamp(1.9rem, 3.5vw, 3rem); }
+  h3 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+
+  p {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text-body);
+    font-weight: 400;
+  }
+
+  .eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--matcha);
+    display: block;
+    margin-bottom: 0.9rem;
+  }
 
   /* ---- Nav ---- */
-  .nav{
-    position:sticky; top:0; z-index:50; background:var(--cream);
-    border-bottom:1px solid var(--hairline);
+   nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 2.5rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--card-border);
+    transition: background var(--transition), border-color var(--transition);
   }
-  .nav-inner{
-    max-width:1180px; margin:0 auto; padding:1rem 1.5rem;
-    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+
+  .nav-inner {
+    max-width: 1320px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
   }
-  .wordmark{font-family:var(--font-display); font-size:1.25rem; font-weight:700;}
-  .wordmark span{color:var(--matcha);}
-  .nav-links{display:flex; gap:2rem; font-size:.95rem; font-weight:500;}
-  .nav-links a{color:var(--ink-soft); transition:color .2s ease; padding:.25rem 0; border-bottom:2px solid transparent;}
-  .nav-links a:hover, .nav-links a.active{color:var(--ink); border-bottom-color:var(--matcha);}
-  .nav-right{display:flex; align-items:center; gap:.9rem;}
-  .theme-toggle{
-    width:38px; height:38px; border-radius:50%; border:1px solid var(--hairline);
-    background:var(--beige); cursor:pointer; display:flex; align-items:center; justify-content:center;
-    font-size:1rem; color:var(--ink); transition:background .2s ease;
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.65rem;
+    text-decoration: none; color: var(--text-heading);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 600; flex-shrink: 0;
+    transition: color var(--transition);
   }
-  .theme-toggle:hover{background:var(--beige-dark);}
-  .nav-menu-btn{display:none; background:none; border:none; font-size:1.4rem; color:var(--ink); cursor:pointer;}
+
+  .nav-logo-mark {
+    width: 36px; height: 36px; border-radius: 50%;
+    overflow: hidden; background: var(--soft-matcha-light);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background var(--transition);
+    /* TODO: Replace SVG below with your logo image file:
+       <img src="logo-icon.png" alt="" style="width:100%;height:100%;object-fit:contain;"> */
+  }
+  .nav-logo-mark svg { width: 18px; height: 18px; fill: var(--matcha-dark); }
+
+  .nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-body);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    padding: 0.4rem 0.8rem; border-radius: 5px;
+    transition: color var(--transition), background var(--transition);
+  }
+  .nav-links a:hover { color: var(--text-heading); background: var(--beige-light); }
+  .nav-cta {
+    background: var(--espresso) !important;
+    color: var(--cream) !important;
+    padding: 0.45rem 1.1rem !important;
+    border-radius: 4px !important; font-weight: 600 !important;
+  }
+  body.dark .nav-cta { background: var(--matcha) !important; color: white !important; }
+  .nav-cta:hover { background: var(--matcha-dark) !important; color: white !important; }
+
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.4rem; }
+  .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text-heading); margin: 5px 0; border-radius: 2px; transition: var(--transition); }
 
   /* ---- Hero ---- */
   .hero{

@@ -631,7 +631,7 @@
 
   @media (max-width: 640px) {
     nav {
-      padding: 0 1.25rem;
+      padding: 0 1.5rem;
     }
 
     .auction-hero {
@@ -685,45 +685,36 @@
     }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     .nav-links {
-      position: absolute;
-      top: 70px;
-      left: 1rem;
-      right: 1rem;
       display: none;
       flex-direction: column;
-      align-items: stretch;
-      gap: .25rem;
-      padding: .75rem;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
       background: var(--nav-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-md);
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
     }
     .nav-links.open { display: flex; }
-    .nav-links a { display: block; padding: .7rem .8rem; }
     .nav-toggle { display: block; }
   }
 
-
-  .theme-toggle {
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--card-border);
-    border-radius: 50%;
-    background: transparent;
-    color: var(--text-heading);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .95rem;
-    transition: var(--transition);
+  /* ── DARK TOGGLE ── */
+  .dark-toggle {
+    position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 999;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #2A1E18; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition), background var(--transition);
   }
-  .theme-toggle:hover {
-    background: var(--beige-light);
-    border-color: var(--matcha);
+  body.dark .dark-toggle { background: var(--matcha); }
+  .dark-toggle:hover { transform: scale(1.1); }
+  .dark-toggle svg {
+    width: 18px; height: 18px;
+    stroke: white; fill: none; stroke-width: 1.8;
   }
 
 </style>
@@ -735,27 +726,28 @@
 
     <a href="index.html" class="nav-logo" aria-label="Paint It Forward home">
       <div class="nav-logo-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <path d="M19.5 3.5c-1.8-1.8-4.7-1.8-6.5 0L4.2 12.3c-1.5 1.5-1.5 3.8 0 5.3l2.2 2.2c1.5 1.5 3.8 1.5 5.3 0l8.8-8.8c1.8-1.8 1.8-4.7 0-6.5ZM7.8 16.2l-1.5-1.5 7.6-7.6 1.5 1.5-7.6 7.6Zm6.4-8.8 1.4-1.4 2.4 2.4-1.4 1.4-2.4-2.4Z"/>
-        </svg>
+        <img src="favicon-96x96.png" alt="Paint It Forward Logo"
+             style="width: 100%; height: 100%; object-fit: cover;">
       </div>
       Paint It Forward
     </a>
 
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="branches.html">Our Branches</a></li>
       <li><a href="index.html#artwork">Gallery</a></li>
+      <li><a href="index.html#auctions">Events</a></li>
       <li><a href="auction.html" class="nav-cta">Auction</a></li>
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#impact">Impact</a></li>
+      <li><a href="index.html#causes">Causes</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
     </ul>
 
-    <div style="display:flex;align-items:center;gap:.65rem;">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">☾</button>
-      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false"
+            aria-controls="nav-links" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
 
   </div>
 </nav>
@@ -818,6 +810,13 @@
   Paint It Forward · Student Artwork Auction · Prototype build, mock data — for design review only
 </footer>
 
+<!-- Dark mode toggle -->
+<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+  <svg id="toggle-icon" viewBox="0 0 24 24">
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+  </svg>
+</button>
+
 <script>
   // ---------- MOBILE NAV ----------
   const navToggle = document.getElementById('navToggle');
@@ -829,16 +828,31 @@
     });
   }
 
+document.querySelectorAll(".nav-links a").forEach(a => {
+  a.addEventListener("click", () => document.getElementById("nav-links").classList.remove("open"));
+});
+
+
 
   // ---------- THEME ----------
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle.addEventListener('click', () => {
-    const html = document.documentElement;
-    const isDark = document.body.classList.contains('dark');
-    document.body.classList.toggle('dark', !isDark);
-    document.documentElement.classList.toggle('dark', !isDark);
-    themeToggle.textContent = isDark ? '☾' : '☀';
-  });
+/* ── DARK MODE ── */
+const darkBtn  = document.getElementById("dark-toggle");
+const iconEl   = document.getElementById("toggle-icon");
+const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+const sunPath  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+
+if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  document.body.classList.add("dark");
+  document.documentElement.classList.add("dark");
+  iconEl.innerHTML = sunPath;
+}
+
+darkBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
+  iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
+});
+
 
   // ---------- MOCK DATA ----------
   // In production this array is replaced by a live fetch to the auction API

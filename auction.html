@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Auction — Paint It Forward</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F3EA; --beige:#EAE2D0; --beige-dark:#DDD1B0; --hairline:#D8CCAA;
+    --ink:#2A2721; --ink-soft:#6B6455; --ink-faint:#948C7A;
+    --matcha:#6E7F52; --matcha-deep:#56613F; --matcha-pale:#DEE5CB;
+    --ochre:#A9843F; --white:#FFFDF8;
+    --radius:10px; --radius-sm:6px;
+    --shadow:0 1px 2px rgba(42,39,33,.06), 0 10px 26px rgba(42,39,33,.07);
+    --font-display:'Playfair Display',Georgia,serif;
+    --font-body:'Source Sans 3','Source Sans Pro',system-ui,sans-serif;
+  }
+  [data-theme="dark"]{
+    --cream:#1E1C17; --beige:#2A2721; --beige-dark:#3A352A; --hairline:#453F30;
+    --ink:#EDE6D6; --ink-soft:#B7AF9C; --ink-faint:#8C8471;
+    --matcha:#93A671; --matcha-deep:#A9BB89; --matcha-pale:#34402B;
+    --ochre:#C6A25E; --white:#262319;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:var(--font-body); -webkit-font-smoothing:antialiased;
+    transition:background .3s ease, color .3s ease;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  h1,h2,h3{font-family:var(--font-display); margin:0; font-weight:600; letter-spacing:-0.01em;}
+
+  .eyebrow{
+    font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--matcha); font-weight:700; display:inline-flex; align-items:center; gap:.5rem;
+  }
+  .eyebrow::before{content:""; width:18px; height:1px; background:var(--matcha);}
+
+  /* ---- Nav ---- */
+  .nav{
+    position:sticky; top:0; z-index:50; background:var(--cream);
+    border-bottom:1px solid var(--hairline);
+  }
+  .nav-inner{
+    max-width:1180px; margin:0 auto; padding:1rem 1.5rem;
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  }
+  .wordmark{font-family:var(--font-display); font-size:1.25rem; font-weight:700;}
+  .wordmark span{color:var(--matcha);}
+  .nav-links{display:flex; gap:2rem; font-size:.95rem; font-weight:500;}
+  .nav-links a{color:var(--ink-soft); transition:color .2s ease; padding:.25rem 0; border-bottom:2px solid transparent;}
+  .nav-links a:hover, .nav-links a.active{color:var(--ink); border-bottom-color:var(--matcha);}
+  .nav-right{display:flex; align-items:center; gap:.9rem;}
+  .theme-toggle{
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--hairline);
+    background:var(--beige); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:1rem; color:var(--ink); transition:background .2s ease;
+  }
+  .theme-toggle:hover{background:var(--beige-dark);}
+  .nav-menu-btn{display:none; background:none; border:none; font-size:1.4rem; color:var(--ink); cursor:pointer;}
+
+  /* ---- Hero ---- */
+  .hero{
+    max-width:1180px; margin:0 auto; padding:4.5rem 1.5rem 3rem;
+    text-align:center;
+  }
+  .hero .eyebrow{justify-content:center; margin-bottom:1.1rem;}
+  .hero .eyebrow::after{content:""; width:18px; height:1px; background:var(--matcha);}
+  .hero h1{font-size:clamp(2.1rem, 5vw, 3.4rem); line-height:1.12; max-width:16ch; margin:0 auto;}
+  .hero p{
+    max-width:46ch; margin:1.25rem auto 0; color:var(--ink-soft); font-size:1.08rem; line-height:1.6;
+  }
+  .hero-actions{margin-top:2rem; display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:.5rem; font-family:var(--font-body);
+    font-weight:600; font-size:.95rem; padding:.85rem 1.7rem; border-radius:var(--radius-sm);
+    cursor:pointer; transition:all .2s ease; border:1px solid transparent;
+  }
+  .btn-primary{background:var(--matcha); color:var(--white); border-color:var(--matcha);}
+  .btn-primary:hover{background:var(--matcha-deep); border-color:var(--matcha-deep); transform:translateY(-1px);}
+  .btn-outline{background:transparent; color:var(--ink); border-color:var(--hairline);}
+  .btn-outline:hover{border-color:var(--matcha); color:var(--matcha);}
+
+  /* ---- Campaign strip (dates + countdown) ---- */
+  .campaign-strip{
+    max-width:760px; margin:2.75rem auto 0; background:var(--beige);
+    border:1px solid var(--hairline); border-radius:var(--radius);
+    padding:1.4rem 1.6rem; display:flex; align-items:center; justify-content:space-between;
+    gap:1.5rem; flex-wrap:wrap;
+  }
+  .campaign-dates{font-size:.88rem; color:var(--ink-soft);}
+  .campaign-dates strong{color:var(--ink); font-weight:600;}
+  .campaign-countdown{display:flex; gap:1.4rem;}
+  .cd-unit{text-align:center; min-width:44px; position:relative;}
+  .cd-unit:not(:last-child)::after{
+    content:""; position:absolute; right:-.7rem; top:2px; bottom:6px; width:1px; background:var(--hairline);
+  }
+  .cd-num{font-family:var(--font-display); font-size:1.5rem; font-weight:700; font-variant-numeric:tabular-nums;}
+  .cd-label{font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:.15rem;}
+
+  /* ---- Controls (search + filter) ---- */
+  .controls{
+    max-width:1180px; margin:3.5rem auto 1.5rem; padding:0 1.5rem;
+    display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  }
+  .controls h2{font-size:1.6rem;}
+  .controls-tools{display:flex; gap:.7rem; flex-wrap:wrap;}
+  .search-box{
+    display:flex; align-items:center; gap:.5rem; background:var(--white);
+    border:1px solid var(--hairline); border-radius:var(--radius-sm); padding:.6rem .9rem;
+    min-width:220px;
+  }
+  .search-box input{
+    border:none; background:none; outline:none; font-family:var(--font-body);
+    font-size:.9rem; color:var(--ink); width:100%;
+  }
+  .search-box input::placeholder{color:var(--ink-faint);}
+  select{
+    font-family:var(--font-body); font-size:.9rem; color:var(--ink); background:var(--white);
+    border:1px solid var(--hairline); border-radius:var(--radius-sm); padding:.6rem .9rem; cursor:pointer;
+  }
+  .filter-chips{max-width:1180px; margin:0 auto 2rem; padding:0 1.5rem; display:flex; gap:.6rem; flex-wrap:wrap;}
+  .chip{
+    font-size:.82rem; padding:.4rem .9rem; border-radius:999px; border:1px solid var(--hairline);
+    background:var(--white); color:var(--ink-soft); cursor:pointer; transition:all .2s ease;
+  }
+  .chip.active, .chip:hover{border-color:var(--matcha); color:var(--matcha); background:var(--matcha-pale);}
+
+  /* ---- Grid ---- */
+  .grid{
+    max-width:1180px; margin:0 auto; padding:0 1.5rem 5rem;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1.75rem;
+  }
+  .art-card{
+    background:var(--white); border:1px solid var(--hairline); border-radius:var(--radius);
+    overflow:hidden; transition:transform .3s ease, box-shadow .3s ease; display:flex; flex-direction:column;
+    opacity:0; animation:rise .5s ease forwards;
+  }
+  @keyframes rise{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  .art-card:hover{transform:translateY(-5px); box-shadow:var(--shadow);}
+  .art-card:hover .art-img{transform:scale(1.045);}
+  .art-media{position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--beige);}
+  .art-img{width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
+  .status-badge{
+    position:absolute; top:.8rem; left:.8rem; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
+    font-weight:700; padding:.35rem .65rem; border-radius:999px; backdrop-filter:blur(4px);
+  }
+  .status-live{background:rgba(110,127,82,.9); color:var(--white);}
+  .status-ending{background:rgba(169,132,63,.92); color:var(--white);}
+  .status-closed{background:rgba(42,39,33,.78); color:#fff;}
+  .art-body{padding:1.1rem 1.2rem 1.3rem; display:flex; flex-direction:column; gap:.7rem; flex:1;}
+  .art-title{font-family:var(--font-display); font-size:1.15rem; font-weight:600;}
+  .art-meta{font-size:.84rem; color:var(--ink-soft);}
+  .art-meta .medium{font-style:italic; color:var(--ink-faint);}
+  .plaque-rule{height:1px; background:var(--hairline); margin:.15rem 0;}
+  .bid-row{display:flex; align-items:flex-end; justify-content:space-between; gap:.5rem;}
+  .bid-block .label{font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:.2rem;}
+  .bid-current{font-family:var(--font-display); font-size:1.3rem; font-weight:700; color:var(--matcha-deep);}
+  [data-theme="dark"] .bid-current{color:var(--matcha);}
+  .bid-count{font-size:.78rem; color:var(--ink-faint); text-align:right;}
+  .timer-row{
+    display:flex; align-items:center; justify-content:space-between; font-size:.82rem;
+    color:var(--ink-soft); padding-top:.2rem;
+  }
+  .timer-row .t-left{font-variant-numeric:tabular-nums; font-weight:600;}
+  .timer-row.urgent .t-left{color:var(--ochre);}
+  .art-cta{
+    margin-top:.3rem; width:100%; text-align:center; padding:.75rem; border-radius:var(--radius-sm);
+    background:var(--matcha); color:var(--white); font-weight:600; font-size:.9rem; border:1px solid var(--matcha);
+    transition:all .2s ease;
+  }
+  .art-cta:hover{background:var(--matcha-deep);}
+  .art-cta.disabled{background:var(--beige); color:var(--ink-faint); border-color:var(--hairline); cursor:default; pointer-events:none;}
+
+  .empty-state{
+    grid-column:1/-1; text-align:center; padding:3.5rem 1rem; color:var(--ink-soft);
+  }
+
+  footer{
+    border-top:1px solid var(--hairline); padding:2.5rem 1.5rem; text-align:center;
+    color:var(--ink-faint); font-size:.85rem;
+  }
+
+  @media (max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr); gap:1.25rem;}
+  }
+  @media (max-width:640px){
+    .nav-links{display:none;}
+    .nav-menu-btn{display:block;}
+    .grid{grid-template-columns:1fr; padding:0 1.1rem 3.5rem;}
+    .hero{padding:2.75rem 1.2rem 2rem;}
+    .campaign-strip{flex-direction:column; align-items:flex-start; padding:1.2rem;}
+    .campaign-countdown{align-self:stretch; justify-content:space-between;}
+    .controls{padding:0 1.1rem; flex-direction:column; align-items:flex-start;}
+    .filter-chips{padding:0 1.1rem;}
+    .search-box{min-width:0; flex:1;}
+    .controls-tools{width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="wordmark">Paint It <span>Forward</span></a>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Gallery</a>
+      <a href="#" class="active">Auction</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+      <button class="nav-menu-btn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow">Online Auction</span>
+  <h1>Turning Creativity Into Impact.</h1>
+  <p>Bid on original artwork created by student artists and help turn creativity into meaningful impact.</p>
+  <div class="hero-actions">
+    <a href="#grid" class="btn btn-primary">Browse Artwork</a>
+    <a href="#" class="btn btn-outline">How It Works</a>
+  </div>
+
+  <div class="campaign-strip">
+    <div class="campaign-dates">
+      <strong>Fall 2026 Auction</strong> · Sept 12 – Sept 21
+    </div>
+    <div class="campaign-countdown" id="campaignCountdown">
+      <div class="cd-unit"><div class="cd-num" id="cd-d">–</div><div class="cd-label">Days</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-h">–</div><div class="cd-label">Hours</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-m">–</div><div class="cd-label">Min</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="controls" id="grid">
+  <h2>Live Artwork</h2>
+  <div class="controls-tools">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search artwork...">
+    </div>
+    <select id="sortSelect">
+      <option value="ending">Ending Soon</option>
+      <option value="newest">Newest</option>
+      <option value="bids">Most Bids</option>
+      <option value="price-low">Price: Low to High</option>
+      <option value="price-high">Price: High to Low</option>
+    </select>
+  </div>
+</section>
+
+<div class="filter-chips" id="mediumChips"></div>
+
+<section class="grid" id="artGrid"></section>
+
+<footer>
+  Paint It Forward · Student Artwork Auction · Prototype build, mock data — for design review only
+</footer>
+
+<script>
+  // ---------- THEME ----------
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeToggle.textContent = isDark ? '🌙' : '☀️';
+  });
+
+  // ---------- MOCK DATA ----------
+  // In production this array is replaced by a live fetch to the auction API
+  // (e.g. GET /api/artworks) backed by the real database — see ARCHITECTURE.md
+  const now = Date.now();
+  const artworks = [
+    {
+      id:'marseille', title:'Marseille', artist:'Jane Smith', medium:'Acrylic on canvas',
+      img:'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=700&q=80',
+      startBid:40, currentBid:75, bids:6, ends: now + (2*24+4)*3600*1000 + 17*60*1000,
+      created: now - 6*24*3600*1000
+    },
+    {
+      id:'golden-hour', title:'Golden Hour', artist:'Malik Osei', medium:'Oil on canvas',
+      img:'https://images.unsplash.com/photo-1578926288207-a90a5366759d?w=700&q=80',
+      startBid:60, currentBid:120, bids:11, ends: now + 6*3600*1000 + 12*60*1000,
+      created: now - 5*24*3600*1000
+    },
+    {
+      id:'quiet-static', title:'Quiet Static', artist:'Priya Nandan', medium:'Mixed media on panel',
+      img:'https://images.unsplash.com/photo-1549490349-8643362247b5?w=700&q=80',
+      startBid:30, currentBid:30, bids:0, ends: now + (4*24+9)*3600*1000,
+      created: now - 1*24*3600*1000
+    },
+    {
+      id:'terra-nova', title:'Terra Nova', artist:'Wren Callahan', medium:'Ceramic relief',
+      img:'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=700&q=80',
+      startBid:45, currentBid:88, bids:4, ends: now + (1*24+2)*3600*1000 + 40*60*1000,
+      created: now - 3*24*3600*1000
+    },
+    {
+      id:'sunset-fold', title:'Sunset Fold', artist:'Alex Torres', medium:'Watercolor on paper',
+      img:'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=700&q=80',
+      startBid:50, currentBid:200, bids:14, ends: now - 2*3600*1000, // already closed
+      created: now - 9*24*3600*1000, sold:true
+    },
+    {
+      id:'harbor-light', title:'Harbor Light', artist:'Dana Feldman', medium:'Gouache on board',
+      img:'https://images.unsplash.com/photo-1579762593175-20226054cad0?w=700&q=80',
+      startBid:35, currentBid:35, bids:0, ends: now + (5*24+1)*3600*1000,
+      created: now - 12*3600*1000
+    }
+  ];
+
+  const mediums = [...new Set(artworks.map(a => a.medium))];
+  let activeMedium = 'All';
+  let sortMode = 'ending';
+  let searchTerm = '';
+
+  // ---------- FILTER CHIPS ----------
+  const chipsEl = document.getElementById('mediumChips');
+  function renderChips(){
+    const all = ['All', ...mediums];
+    chipsEl.innerHTML = all.map(m =>
+      `<button class="chip ${m===activeMedium?'active':''}" data-medium="${m}">${m}</button>`
+    ).join('');
+    chipsEl.querySelectorAll('.chip').forEach(c => {
+      c.addEventListener('click', () => { activeMedium = c.dataset.medium; renderChips(); renderGrid(); });
+    });
+  }
+
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    searchTerm = e.target.value.toLowerCase(); renderGrid();
+  });
+  document.getElementById('sortSelect').addEventListener('change', (e) => {
+    sortMode = e.target.value; renderGrid();
+  });
+
+  // ---------- FORMAT HELPERS ----------
+  function fmtRemaining(ms){
+    if (ms <= 0) return null;
+    const d = Math.floor(ms/(24*3600*1000));
+    const h = Math.floor((ms%(24*3600*1000))/(3600*1000));
+    const m = Math.floor((ms%(3600*1000))/(60*1000));
+    if (d > 0) return `${d}d ${h}h ${m}m`;
+    if (h > 0) return `${h}h ${m}m`;
+    return `${m}m`;
+  }
+
+  // ---------- RENDER GRID ----------
+  const gridEl = document.getElementById('artGrid');
+  function renderGrid(){
+    let list = artworks.filter(a => {
+      const matchMedium = activeMedium === 'All' || a.medium === activeMedium;
+      const matchSearch = !searchTerm || a.title.toLowerCase().includes(searchTerm) || a.artist.toLowerCase().includes(searchTerm);
+      return matchMedium && matchSearch;
+    });
+
+    list.sort((a,b) => {
+      if (sortMode === 'ending') return a.ends - b.ends;
+      if (sortMode === 'newest') return b.created - a.created;
+      if (sortMode === 'bids') return b.bids - a.bids;
+      if (sortMode === 'price-low') return a.currentBid - b.currentBid;
+      if (sortMode === 'price-high') return b.currentBid - a.currentBid;
+      return 0;
+    });
+
+    if (list.length === 0){
+      gridEl.innerHTML = `<div class="empty-state">No artwork matches your search — try a different keyword or filter.</div>`;
+      return;
+    }
+
+    gridEl.innerHTML = list.map((a, i) => {
+      const remaining = a.ends - Date.now();
+      const closed = remaining <= 0;
+      const urgent = !closed && remaining < 6*3600*1000;
+      const badge = closed ? `<span class="status-badge status-closed">${a.sold ? 'Sold' : 'Closed'}</span>`
+                    : urgent ? `<span class="status-badge status-ending">Ending Soon</span>`
+                    : `<span class="status-badge status-live">Live</span>`;
+      return `
+      <a href="artwork-detail.html?id=${a.id}" class="art-card" style="animation-delay:${i*0.05}s">
+        <div class="art-media">
+          <img class="art-img" src="${a.img}" alt="${a.title}" loading="lazy">
+          ${badge}
+        </div>
+        <div class="art-body">
+          <div>
+            <div class="art-title">${a.title}</div>
+            <div class="art-meta">${a.artist} · <span class="medium">${a.medium}</span></div>
+          </div>
+          <div class="plaque-rule"></div>
+          <div class="bid-row">
+            <div class="bid-block">
+              <span class="label">${closed ? (a.sold ? 'Winning Bid' : 'Final Bid') : 'Current Bid'}</span>
+              <div class="bid-current">$${a.currentBid}</div>
+            </div>
+            <div class="bid-count">${a.bids} bid${a.bids===1?'':'s'}<br>from $${a.startBid}</div>
+          </div>
+          <div class="timer-row ${urgent?'urgent':''}">
+            <span>${closed ? 'Auction closed' : 'Ends in'}</span>
+            <span class="t-left">${closed ? '' : fmtRemaining(remaining)}</span>
+          </div>
+          <span class="art-cta ${closed?'disabled':''}">${closed ? (a.sold?'Sold':'Auction Closed') : 'Bid Now'}</span>
+        </div>
+      </a>`;
+    }).join('');
+  }
+
+  // ---------- CAMPAIGN COUNTDOWN ----------
+  const campaignEnd = now + (2*24+4)*3600*1000 + 17*60*1000; // demo: mirrors soonest highlighted end
+  function tickCampaign(){
+    const rem = Math.max(0, campaignEnd - Date.now());
+    const d = Math.floor(rem/(24*3600*1000));
+    const h = Math.floor((rem%(24*3600*1000))/(3600*1000));
+    const m = Math.floor((rem%(3600*1000))/(60*1000));
+    document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  }
+
+  function tickAll(){ renderGrid(); tickCampaign(); }
+  renderChips();
+  tickAll();
+  setInterval(tickAll, 30000); // refresh countdowns every 30s (per-minute granularity)
+</script>
+</body>
+</html>

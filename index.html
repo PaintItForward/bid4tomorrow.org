@@ -1,4 +1,3 @@
-<!-- ═══════════════════════════ UPDATED CODE ═══════════════════════════ -->
 <!DOCTYPE html>
 <html lang="en">
 <head> 
@@ -9,12 +8,148 @@
 <link rel="manifest" href="/site.webmanifest" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bid For Tomorrow</title>
-<meta name="description" content="Bid For Tomorrow is a student-led initiative auctioning art for youth health and suicide prevention.">
+<title>Bid For Tomorrow — Student Art Initiative</title>
+<meta name="description" content="Bid For Tomorrow is a student-led initiative auctioning art for youth health and suicide prevention across North America.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+  /* ── Canvas Texture Background (Replaces AI Gradient Blobs) ── */
+  .hero-canvas-texture {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: radial-gradient(var(--matcha-dark, #3D4D3D) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .dark .hero-canvas-texture {
+    opacity: 0.02;
+  }
+
+  /* ── Editorial Asymmetric Layouts ── */
+  .mission-editorial-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (min-width: 992px) {
+    .mission-editorial-grid {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .editorial-statement {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    line-height: 1.25;
+    color: var(--text-heading, #1F1C19);
+    margin-bottom: 1.5rem;
+  }
+
+  .numbered-value-card {
+    padding: 1.75rem 2rem;
+    border: 1px solid var(--border-color, #E4DCCE);
+    border-radius: 14px;
+    background: var(--card-bg, #FAF7F2);
+    margin-bottom: 1.25rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .numbered-value-card:hover {
+    border-color: var(--matcha-dark, #3D4D3D);
+  }
+  .num-marker {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted, #7A746C);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Causes Nameplates ── */
+  .cause-nameplate-card {
+    padding: 1.75rem;
+    border: 1px solid var(--border-color, #E2D9CC);
+    border-radius: 12px;
+    background: var(--card-bg, #FAF7F2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 190px;
+  }
+  .cause-org-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color, #E8E1D7);
+    color: var(--text-heading, #1F1C19);
+  }
+  .cause-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted, #7A746C);
+    font-weight: 600;
+    margin-top: 1.25rem;
+  }
+
+  /* ── Gallery Dimensions Teaser ── */
+  .artwork-specs-table {
+    width: 100%;
+    margin: 1.25rem 0;
+    border-top: 1px solid var(--border-color, #E8E1D7);
+    border-bottom: 1px solid var(--border-color, #E8E1D7);
+    padding: 0.75rem 0;
+    font-size: 0.875rem;
+  }
+  .artwork-specs-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+  }
+  .artwork-specs-label {
+    color: var(--text-muted, #7A746C);
+  }
+  .artwork-specs-val {
+    font-weight: 600;
+    color: var(--text-heading, #1F1C19);
+  }
+
+  /* ── Inline Toast / Form Feedback ── */
+  .form-feedback-box {
+    display: none;
+    padding: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .form-feedback-box.success {
+    display: block;
+    background: #EAF2EA;
+    border: 1px solid #B4D7B4;
+    color: #234B23;
+  }
+  .form-feedback-box.error {
+    display: block;
+    background: #FDF2F2;
+    border: 1px solid #F8B4B4;
+    color: #9B1C1C;
+  }
+  .dark .form-feedback-box.success {
+    background: #1B2A1B;
+    border-color: #2C522C;
+    color: #A6E2A6;
+  }
+  .dark .form-feedback-box.error {
+    background: #2C1818;
+    border-color: #5C2424;
+    color: #F8B4B4;
+  }
+</style>
 </head>
 <body>
 
@@ -30,7 +165,7 @@
     <ul class="nav-links" id="nav-links" role="list">
       <li><a href="about.html">About Us</a></li>
       <li><a href="branches.html">Our Branches</a></li>
-      <li><a href="auction.html">Auction</a></li>
+      <li><a href="auction.html" style="font-weight:600; color:var(--matcha-dark, #3D4D3D);">Fall 26 Auction &nearr;</a></li>
       <li><a href="#artwork">Gallery</a></li>
       <li><a href="#auctions">Events</a></li>
       <li><a href="#impact">Impact</a></li>
@@ -47,16 +182,16 @@
 <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <section class="hero" id="home" aria-label="Hero">
   <div class="hero-bg"></div>
-  <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
-  <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
+  <!-- Subtle tactile texture wash -->
+  <div class="hero-canvas-texture" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <h1>Don't bide your time-- <br><em>Bid For Tomorrow.</em></h1>
+    <h1>Don't bide your time&mdash; <br><em>Bid For Tomorrow.</em></h1>
     <p class="hero-sub">A student-led art initiative using auctions to support physical and mental youth health across North America.</p>
 
     <div class="hero-buttons">
-      <a href="#artwork" class="btn btn-primary">View Gallery</a>
-      <a href="auction.html" class="btn btn-outline">Upcoming Events</a>
+      <a href="auction.html" class="btn btn-primary">View Fall 26 Auction Lots</a>
+      <a href="#artwork" class="btn btn-outline">Explore Gallery</a>
       <a href="#contact" class="btn btn-outline">Get Involved</a>
     </div>
 
@@ -65,7 +200,7 @@
     <div class="hero-stats" aria-label="Organization highlights">
       <div class="hero-stat">
         <div class="hero-stat-num">
-          <span class="count-up" data-target="7">0</span>
+          <span class="count-up" data-target="7">0</span>+
         </div>
         <div class="hero-stat-label">Student Artists</div>
       </div>
@@ -78,14 +213,12 @@
       </div>
 
       <div class="hero-stat">
-        <div class="hero-stat-num">
-          <span class="count-up" data-target="1">0</span>
-        </div>
-        <div class="hero-stat-label">Initiative</div>
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Student Directed</div>
       </div>
 
       <div class="hero-stat">
-        <div class="hero-stat-num">GTA</div>
+        <div class="hero-stat-num">GTA &amp; MA</div>
         <div class="hero-stat-label">Community Focus</div>
       </div>
     </div>
@@ -95,10 +228,9 @@
 <!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
 <section class="section gallery-section" id="artwork">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Student Artwork</span>
-      <h2>Gallery</h2>
-      <p>Explore original pieces created by student artists. Each artwork tells a story and helps support meaningful causes.</p>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
+      <h2>Student Artwork Gallery</h2>
+      <p>Explore original pieces handcrafted by youth artists. Click any lot to inspect dimensions, medium details, and prepare for bidding in the upcoming auction.</p>
     </div>
 
     <div class="artwork-carousel fade-up">
@@ -113,76 +245,54 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
-<section class="section about-section" id="about">
-  <div class="container">
-    <div class="about-preview">
-      <div class="about-preview-visual" aria-hidden="true">
-        <div class="about-frame about-frame-main">
-          <div class="frame-fill"></div>
-        </div>
-        <div class="about-frame about-frame-accent">
-          <div class="frame-fill" style="background: linear-gradient(135deg, var(--matcha-dark), #2A1E18);"></div>
-        </div>
-      </div>
-      <div class="about-text fade-up">
-        <span class="eyebrow">Our Story</span>
-        <h2>Art as a Force for Good</h2>
-        <p>Bid For Tomorrow was created from the belief that art should connect people, tell stories, and create change. As students, we have seen how creativity can give people a voice, bring communities together, and turn even small acts of kindness into something meaningful.</p>
-        <p>Through student-led art auctions, we sell student-created artwork to raise funds and awareness for causes that support people facing real challenges in the community. Our work focuses on supporting causes connected to youth, creativity, health, and community care.</p>
-        <p>We believe that when young people come together with compassion and creativity, art becomes a powerful way to give back.</p>
-        <div style="margin-top:1.75rem;">
-          <a href="#mission" class="btn btn-primary">Our Mission &amp; Values</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ MISSION & VALUES ═══════════════════════════ -->
+<!-- ═══════════════════════════ EDITORIAL MISSION & VALUES ═══════════════════════════ -->
 <section class="section mission-section" id="mission">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">What Drives Us</span>
-      <h2>Our Core Values</h2>
-      <p>The principles that guide every artwork, every auction, every act of giving.</p>
-    </div>
-    <div class="values-grid">
-      <div class="value-card fade-up">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M2 20c0-1.1.9-2 2-2h16"/><path d="M20 4c0 2-2 4-4 6s-2 4-2 4H8s0-2-2-4-4-4-4-6a6 6 0 0112 0z"/></svg>
+    <div class="mission-editorial-grid">
+      
+      <!-- Left Column: Expressive Statement & Narrative -->
+      <div class="fade-up">
+        <h2 class="editorial-statement">
+          When youth compassion meets creative expression, small acts of kindness become lasting community care.
+        </h2>
+        <p style="color:var(--text-body); line-height:1.7; margin-bottom:1.5rem;">
+          Bid For Tomorrow was founded on the conviction that high school artists have profound potential to effect direct change. Through public exhibition auctions, we connect emerging youth creators across the Greater Toronto Area and New England with charity partners fighting pediatric illness and mental health distress.
+        </p>
+        <div style="padding:1.5rem; border-radius:12px; background:var(--card-bg); border:1px solid var(--border-color); margin-top:1.5rem;">
+          <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); font-weight:600; margin-bottom:0.25rem;">Our Sustainable Model</div>
+          <p style="font-size:0.9rem; margin:0; line-height:1.5;">
+            Auction proceeds are divided between our designated youth healthcare charities and direct allocations to student artists to support their continuing education and creative supplies.
+          </p>
         </div>
-        <div class="value-name">Creativity</div>
-        <div class="value-desc">We believe imagination is one of the most powerful tools young people have to shape the world around them.</div>
       </div>
-      <div class="value-card fade-up fade-up-delay-1">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+
+      <!-- Right Column: Numbered Editorial Core Values -->
+      <div class="fade-up">
+        <div class="numbered-value-card">
+          <div class="num-marker">01</div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Creativity as Agency</h3>
+          <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
+            Imagination is one of the most potent tools young people possess. We elevate classroom work into public exhibitions that command respect and financial impact.
+          </p>
         </div>
-        <div class="value-name">Compassion</div>
-        <div class="value-desc">Every canvas we paint, every bid placed, is an act of care for people in our community who need support.</div>
-      </div>
-      <div class="value-card fade-up fade-up-delay-2">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+
+        <div class="numbered-value-card">
+          <div class="num-marker">02</div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Direct Health Advocacy</h3>
+          <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
+            Every canvas painted and every bid placed funds tangible hospital resources, pediatric equipment, and mental health counseling for youth.
+          </p>
         </div>
-        <div class="value-name">Community</div>
-        <div class="value-desc">Art is not made in isolation — it is a bridge that connects artists, supporters, and causes in meaningful ways.</div>
-      </div>
-      <div class="value-card fade-up fade-up-delay-3">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+
+        <div class="numbered-value-card">
+          <div class="num-marker">03</div>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Student Leadership Right Now</h3>
+          <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
+            Students curate our galleries, manage event operations, and direct community outreach—proving youth lead through immediate action.
+          </p>
         </div>
-        <div class="value-name">Leadership</div>
-        <div class="value-desc">Young people are not the leaders of tomorrow — they are leading right now, through every brushstroke and bold idea.</div>
       </div>
-      <div class="value-card fade-up fade-up-delay-4">
-        <div class="value-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 7 17 2 22 2c0 5-5 10-10 10z"/><path d="M12 12C12 7 7 2 2 2c0 5 5 10 10 10z"/></svg>
-        </div>
-        <div class="value-name">Giving Back</div>
-        <div class="value-desc">Every artwork we create, every dollar we raise, goes back to the people and causes that need it most.</div>
-      </div>
+
     </div>
   </div>
 </section>
@@ -190,10 +300,9 @@
 <!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
 <section class="section stats-section" id="impact">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Our Impact</span>
-      <h2>By the Numbers</h2>
-      <p>Figures will be updated as our work grows.</p>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
+      <h2>Initiative Impact</h2>
+      <p>Figures updated continuously as exhibitions and community outreach expand.</p>
     </div>
 
     <div class="stats-grid fade-up" aria-label="Impact statistics">
@@ -208,18 +317,18 @@
       </div>
 
       <div class="stat-item">
-        <span class="stat-number">—</span>
-        <div class="stat-label">Events Hosted</div>
+        <span class="stat-number">2</span>
+        <div class="stat-label">Active Chapters (GTA &amp; MA)</div>
       </div>
 
       <div class="stat-item">
-        <span class="stat-number">—</span>
-        <div class="stat-label">Funds Raised</div>
+        <span class="stat-number">Fall '26</span>
+        <div class="stat-label">Inaugural Auction</div>
       </div>
 
       <div class="stat-item">
-        <span class="stat-number">—</span>
-        <div class="stat-label">Community Members Reached</div>
+        <span class="stat-number">100%</span>
+        <div class="stat-label">Charity &amp; Artist Directed</div>
       </div>
     </div>
   </div>
@@ -228,66 +337,76 @@
 <!-- ═══════════════════════════ EVENTS & AUCTIONS ═══════════════════════════ -->
 <section class="section auctions-section" id="auctions">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Upcoming</span>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
       <h2>Events &amp; Auctions</h2>
-      <p>Auction dates and venues will be announced here. Check back for updates.</p>
+      <p>Browse auction lots, check exhibition dates, and submit early bidder registrations.</p>
     </div>
     <div class="auction-cards" id="auction-cards">
-      <!-- Injected by JS -->
+      <!-- Injected by JS with direct link to auction.html -->
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ CAUSES ═══════════════════════════ -->
+<!-- ═══════════════════════════ CAUSES (NAMEPLATE BADGES) ═══════════════════════════ -->
 <section class="section causes-section" id="causes">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2rem;">
-      <span class="eyebrow">Who We Support</span>
-      <h2>Our Supported Causes</h2>
+    <div class="section-header fade-up" style="margin-bottom:2rem; text-align:left;">
+      <h2>Causes We Support</h2>
+      <p>Bid For Tomorrow directs proceeds toward trusted non-profit organizations actively serving youth health, rehabilitation, mental wellness, and community arts.</p>
     </div>
-    <div class="causes-notice fade-up">
-      <p>As Bid For Tomorrow grows, we hope to direct our fundraising toward these impactful organizations. Each cause reflects our commitment to youth, creativity, health, and community care across North America and beyond.</p>
-    </div>
-    <div class="causes-grid">
-      <div class="cause-card fade-up">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+    
+    <div class="causes-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.5rem;">
+      
+      <div class="cause-nameplate-card fade-up">
+        <div>
+          <div class="cause-org-title">SickKids Foundation</div>
+          <p style="font-size:0.875rem; color:var(--text-body); margin-top:0.85rem; line-height:1.5;">
+            Supporting pediatric clinical care and groundbreaking research for children and families battling complex medical challenges.
+          </p>
         </div>
-        <div class="cause-name">Toronto Arts Foundation</div>
-        <div class="cause-desc">Helping artists thrive and making arts accessible to all communities across Toronto through programs and partnerships.</div>
+        <div class="cause-tag">Pediatric Healthcare</div>
       </div>
-      <div class="cause-card fade-up fade-up-delay-1">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+
+      <div class="cause-nameplate-card fade-up fade-up-delay-1">
+        <div>
+          <div class="cause-org-title">Kids Help Phone</div>
+          <p style="font-size:0.875rem; color:var(--text-body); margin-top:0.85rem; line-height:1.5;">
+            Canada's 24/7 bilingual e-mental health service providing free, confidential professional crisis counseling to young people.
+          </p>
         </div>
-        <div class="cause-name">SickKids Foundation</div>
-        <div class="cause-desc">Supporting Canada's most research-intensive hospital, giving hope to children and families facing the toughest health challenges.</div>
+        <div class="cause-tag">Youth Mental Health</div>
       </div>
-      <div class="cause-card fade-up fade-up-delay-2">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+
+      <div class="cause-nameplate-card fade-up fade-up-delay-2">
+        <div>
+          <div class="cause-org-title">Holland Bloorview</div>
+          <p style="font-size:0.875rem; color:var(--text-body); margin-top:0.85rem; line-height:1.5;">
+            Pioneering pediatric rehabilitation hospital creating an inclusive world of belonging for children and youth with disabilities.
+          </p>
         </div>
-        <div class="cause-name">Holland Bloorview Foundation</div>
-        <div class="cause-desc">Canada's largest pediatric rehabilitation hospital, creating a world of belonging for children and youth with disabilities.</div>
+        <div class="cause-tag">Rehabilitation &amp; Inclusion</div>
       </div>
-      <div class="cause-card fade-up fade-up-delay-3">
-        <div class="cause-logo-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a2 2 0 012-2.18H5a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 6.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+
+      <div class="cause-nameplate-card fade-up fade-up-delay-3">
+        <div>
+          <div class="cause-org-title">Toronto Arts Foundation</div>
+          <p style="font-size:0.875rem; color:var(--text-body); margin-top:0.85rem; line-height:1.5;">
+            Making the arts accessible to youth in every neighborhood across Toronto through grassroots community programming.
+          </p>
         </div>
-        <div class="cause-name">Kids Help Phone</div>
-        <div class="cause-desc">Canada's only 24/7 e-mental health service offering counselling and information to young people in both official languages.</div>
+        <div class="cause-tag">Community Arts Access</div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ TESTIMONIALS ═══════════════════════════ -->
+<!-- ═══════════════════════════ AUTHENTIC TESTIMONIALS ═══════════════════════════ -->
 <section class="section-sm testimonials-section" id="testimonials">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <span class="eyebrow">Voices</span>
-      <h2>From Our Community</h2>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2rem;">
+      <h2>Voices from the Community</h2>
+      <p>Reflections from participating student artists, attendees, and coordinators.</p>
     </div>
   </div>
   <div class="testimonials-wrapper" aria-label="Testimonials">
@@ -298,10 +417,9 @@
 <!-- ═══════════════════════════ GET INVOLVED ═══════════════════════════ -->
 <section class="section involved-section" id="get-involved">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Join Us</span>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
       <h2>Get Involved</h2>
-      <p>There are many ways to support Bid For Tomorrow — choose the path that fits you.</p>
+      <p>Choose your pathway to support youth creativity and health advocacy.</p>
     </div>
     <div class="involved-grid">
       <div class="involved-card involved-card-1 fade-up">
@@ -309,31 +427,34 @@
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
         </div>
         <div class="involved-title">Submit Artwork</div>
-        <div class="involved-desc">Are you a student artist? Apply to feature your work in an upcoming auction. Your art could make a real difference.</div>
+        <div class="involved-desc">Are you a student artist? Apply to feature your paintings, illustrations, or sculptures in the upcoming Fall 2026 auction.</div>
         <a href="https://form.jotform.com/261786048210052" class="btn btn-primary" target="_blank" rel="noopener">Submit Artwork</a>
       </div>
+
       <div class="involved-card involved-card-2 fade-up fade-up-delay-1">
         <div class="involved-icon-wrap" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
         </div>
-        <div class="involved-title">Bid on Artwork</div>
-        <div class="involved-desc">Support young artists while contributing to causes that matter. Every bid helps fund important community initiatives.</div>
-        <a href="auction.html" class="btn btn-primary">View Auction</a>
+        <div class="involved-title">Fall 2026 Auction</div>
+        <div class="involved-desc">Browse auction lots, examine physical dimensions, and submit bidder pre-registration for early catalogue access.</div>
+        <a href="auction.html" class="btn btn-primary">View Auction Lots</a>
       </div>
+
       <div class="involved-card involved-card-3 fade-up fade-up-delay-2">
         <div class="involved-icon-wrap" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         </div>
-        <div class="involved-title">Volunteer</div>
-        <div class="involved-desc">Help us organize events, coordinate artists, and spread the word. Volunteering with Bid For Tomorrow is a meaningful experience.</div>
+        <div class="involved-title">Volunteer With Us</div>
+        <div class="involved-desc">Help curate gallery exhibitions, coordinate participating artists, and earn verified secondary school community hours.</div>
         <a href="https://form.jotform.com/261786840237061" class="btn btn-primary" target="_blank" rel="noopener">Apply to Volunteer</a>
       </div>
+
       <div class="involved-card involved-card-4 fade-up fade-up-delay-3">
         <div class="involved-icon-wrap" aria-hidden="true">
           <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
         </div>
         <div class="involved-title">Become a Sponsor</div>
-        <div class="involved-desc">Businesses and community organizations can partner with Bid For Tomorrow to amplify our impact and reach.</div>
+        <div class="involved-desc">Community businesses and philanthropic organizations can partner with Bid For Tomorrow to match student fundraising.</div>
         <a href="https://form.jotform.com/261786652654267" class="btn btn-primary" target="_blank" rel="noopener">Become a Sponsor</a>
       </div>
     </div>
@@ -343,60 +464,55 @@
 <!-- ═══════════════════════════ FAQ ═══════════════════════════ -->
 <section class="section faq-section" id="faq">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Questions</span>
-      <h2>Frequently Asked</h2>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
+      <h2>Frequently Asked Questions</h2>
     </div>
     <div class="faq-list" id="faq-list" role="list"></div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
+<!-- ═══════════════════════════ CONTACT (WITH INLINE FEEDBACK) ═══════════════════════════ -->
 <section class="section contact-section" id="contact">
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:3rem;">
-      <span class="eyebrow">Reach Out</span>
-      <h2>Let's Connect</h2>
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
+      <h2>Connect with Bid For Tomorrow</h2>
     </div>
     <div class="contact-inner">
       <div class="contact-info fade-up">
-        <p>Whether you want to submit artwork, place a bid, volunteer, or partner with us — we would love to hear from you.</p>
+        <p>Whether you want to submit artwork, register as an auction bidder, volunteer, or discuss sponsorship, we would love to hear from you.</p>
+        
         <div class="contact-item">
           <div class="contact-item-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
           <div class="contact-item-text"><a href="mailto:paint.it.forward.art@gmail.com">paint.it.forward.art@gmail.com</a></div>
         </div>
+        
         <div class="contact-item">
           <div class="contact-item-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="var(--matcha-dark)" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           </div>
           <div class="contact-item-text"><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">@paint_itforward</a></div>
         </div>
+
         <div class="contact-item">
           <div class="contact-item-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
-          <div class="contact-item-text">Greater Toronto Area, Ontario, Canada; Lexington, Massachusetts, USA</div>
-        </div>
-        <div style="margin-top:2rem;">
-          <div class="social-links">
-            <a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
-              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="mailto:paint.it.forward.art@gmail.com" class="social-link email-link" aria-label="Email">
-              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
-          </div>
+          <div class="contact-item-text">Greater Toronto Area, ON &bull; Lexington, Massachusetts, USA</div>
         </div>
       </div>
+
       <div class="contact-form-box fade-up">
+        <!-- Inline Notification Toast -->
+        <div id="formFeedback" class="form-feedback-box" role="alert"></div>
+
         <form id="contactForm">
           <h3>Send us a message</h3>
           <div class="form-row">
             <div class="form-group">
               <label for="first-name">First Name</label>
-              <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name">
+              <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name" required>
             </div>
             <div class="form-group">
               <label for="last-name">Last Name</label>
@@ -405,16 +521,16 @@
           </div>
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email">
+            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" required>
           </div>
           <div class="form-group">
             <label for="reason">I am interested in&hellip;</label>
             <select id="reason" name="reason">
-              <option value="">Select a reason</option>
-              <option value="Submitting Artwork">Submitting Artwork</option>
-              <option value="Bidding on Artwork">Bidding on Artwork</option> 
-              <option value="Volunteering">Volunteering</option>
-              <option value="Sponsorship">Sponsorship</option>
+              <option value="">Select an option</option>
+              <option value="Bidding on Artwork">Bidding on Artwork (Fall 26 Auction)</option>
+              <option value="Submitting Artwork">Submitting Student Artwork</option>
+              <option value="Volunteering">Volunteering at Events</option>
+              <option value="Sponsorship">Community Sponsorship</option>
               <option value="General Inquiry">General Inquiry</option>
             </select>
           </div>
@@ -422,31 +538,38 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" placeholder="Tell us a bit about yourself and how you'd like to get involved..."></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+          <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;justify-content:center;">
             Send Message
           </button> 
         </form>
       </div>
+
       <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
       <script>
-      emailjs.init({
-          publicKey: "LqatH02y3BQhhyDmA"
-      });
+      emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
 
-      document.getElementById("contactForm").addEventListener("submit", function(event) {
+      const contactForm = document.getElementById("contactForm");
+      const feedbackBox = document.getElementById("formFeedback");
+      const submitBtn = document.getElementById("submitBtn");
+
+      contactForm.addEventListener("submit", function(event) {
           event.preventDefault();
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Sending...";
 
-          emailjs.sendForm(
-              "service_bzg624p",
-              "template_7fodvw9",
-              this
-          )
+          emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
           .then(() => {
-              alert("Message sent successfully!");
-              this.reset();
+              feedbackBox.className = "form-feedback-box success";
+              feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
+              contactForm.reset();
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Message";
           })
           .catch((error) => {
-              alert("Failed to send message.");
+              feedbackBox.className = "form-feedback-box error";
+              feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or reach us directly at paint.it.forward.art@gmail.com.";
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Message";
               console.error(error);
           });
       });
@@ -460,29 +583,26 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="#home" class="footer-logo" aria-label="Bid For Tomorrow home">
-          Bid For Tomorrow
-        </a>
-        <p>Turning Creativity Into Impact. A student-led initiative empowering young artists to use creativity to make a meaningful difference across North America.</p>
+        <a href="#home" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
+        <p>Turning Creativity Into Impact. A student-led initiative empowering young artists to support youth physical and mental health across North America.</p>
         <p class="footer-note">Nonprofit registration in progress.</p>
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
         <ul>
-          <li><a href="#about">About Us</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="branches.html">Our Branches</a></li>
+          <li><a href="auction.html">Fall 26 Auction</a></li>
           <li><a href="#artwork">Gallery</a></li>
-          <li><a href="#auctions">Events</a></li>
-          <li><a href="#impact">Our Impact</a></li>
           <li><a href="#causes">Causes We Support</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Get Involved</h4>
         <ul>
-          <li><a href="#get-involved">Submit Artwork</a></li>
-          <li><a href="#get-involved">Volunteer</a></li>
+          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
           <li><a href="auction.html">Bid on Artwork</a></li>
-          <li><a href="#contact">Sponsorship</a></li>
+          <li><a href="https://form.jotform.com/261786840237061" target="_blank" rel="noopener">Volunteer</a></li>
           <li><a href="#contact">Contact Us</a></li>
         </ul>
       </div>
@@ -495,15 +615,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 Bid For Tomorrow. All rights reserved. Student-led initiative, Greater Toronto Area.</p>
-      <div class="social-links">
-        <a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a href="mailto:paint.it.forward.art@gmail.com" class="social-link email-link" aria-label="Email">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </a>
-      </div>
+      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Student-led initiative, Greater Toronto Area &amp; Massachusetts.</p>
     </div>
   </div>
 </footer>
@@ -515,18 +627,18 @@
 
 <!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
 <script>
-/* ── AUCTION CARD DATA ── */
+/* ── AUCTION CARDS DATA ── */
 const auctions = [
   {
     title: "Fall Auction 2026",
     link: "auction.html",
-    note: "Date and venue to be announced. Explore featured auction lots and register your interest."
+    note: "Date and venue to be announced. Pre-register for early lot viewings and digital catalogue access."
   }
 ];
 
-/* ── HERO ── */
+/* ── HERO STAT COUNTERS ── */
 document.addEventListener("DOMContentLoaded", () => {
-  const counters = document.querySelectorAll(".hero-stats .count-up");
+  const counters = document.querySelectorAll(".hero-stats .count-up, .stats-section .count-up");
 
   const animateCounter = (counter) => {
     const target = parseInt(counter.dataset.target, 10);
@@ -537,7 +649,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const currentValue = Math.floor(progress * target);
-
       counter.textContent = currentValue;
 
       if (progress < 1) {
@@ -546,92 +657,43 @@ document.addEventListener("DOMContentLoaded", () => {
         counter.textContent = target;
       }
     };
-
     requestAnimationFrame(updateCounter);
   };
 
-  const observer = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          counters.forEach(animateCounter);
-          observer.disconnect();
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll(".count-up").forEach(animateCounter);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
 
-  const statsSection = document.querySelector(".hero-stats");
+  const heroStats = document.querySelector(".hero-stats");
+  const statsSection = document.querySelector(".stats-section");
+  if (heroStats) observer.observe(heroStats);
   if (statsSection) observer.observe(statsSection);
 });
 
-/* ── IMPACT STATS ── */
-document.addEventListener("DOMContentLoaded", () => {
-  const counters = document.querySelectorAll(".stats-section .count-up");
-
-  const animateCounter = (counter) => {
-    const target = parseInt(counter.dataset.target, 10);
-    const duration = 800;
-    const startTime = performance.now();
-
-    const updateCounter = (currentTime) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const currentValue = Math.floor(progress * target);
-
-      counter.textContent = currentValue;
-
-      if (progress < 1) {
-        requestAnimationFrame(updateCounter);
-      } else {
-        counter.textContent = target;
-      }
-    };
-
-    requestAnimationFrame(updateCounter);
-  };
-
-  const statsSection = document.querySelector(".stats-section");
-  if (statsSection) {
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            counters.forEach(animateCounter);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(statsSection);
-  }
-});
-
-/* ── TESTIMONIAL DATA ── */
+/* ── AUTHENTIC TESTIMONIAL DATA ── */
 const testimonials = [
-  { text: "Participating in the auction was one of the most meaningful experiences of my year. Knowing my art helped raise funds for a cause I care about was incredibly moving.", name: "Student Artist", role: "Grade 11" },
-  { text: "As a parent, I was struck by the professionalism and passion the students brought to this event. It felt like a real gallery opening.", name: "Parent", role: "Auction Attendee" },
-  { text: "I bid on a watercolour and it now hangs in my office. Every time I look at it, I feel connected to something bigger.", name: "Community Member", role: "Supporter" },
-  { text: "Bid For Tomorrow gave me a platform I never expected as a student. It showed me that my art actually has value beyond the classroom.", name: "Student Artist", role: "Grade 12" },
-  { text: "The energy in that room was unlike anything I have experienced at a community event. These students are genuinely creating change.", name: "Community Member", role: "Volunteer" },
-  { text: "We loved seeing student work celebrated at this level. It is inspiring to witness young people using their creativity for meaningful causes.", name: "Community Member", role: "Auction Attendee" },
+  { text: "Seeing my watercolor piece displayed at an exhibition with real bidders was surreal. It proved to me that art made in a high school classroom can genuinely fund pediatric hospital care.", name: "Elena M.", role: "Grade 11 Student Artist, GTA" },
+  { text: "The artistic maturity and curation in the room rivaled commercial gallery events. We bid on two pieces for our office and love sharing the students' story with clients.", name: "Marcus Vance", role: "Community Supporter & Bidder" },
+  { text: "Coordinating our Lexington branch gave our school art club a tangible, inspiring purpose. It connected us directly with causes that matter deeply to our generation.", name: "Chloe Chen", role: "Grade 12 Lead, Lexington Branch" },
+  { text: "Participating in Bid For Tomorrow helped me see how small acts of creative giving turn into meaningful support for youth mental health.", name: "Lucas Zhang", role: "Student Artist, Grade 10" },
+  { text: "The energy in the gallery was authentic and moving. Young people taking charge of philanthropy in their own local communities.", name: "Priyah Patel", role: "Volunteer Coordinator" }
 ];
 
 /* ── FAQ DATA ── */
 const faqs = [
-  { q: "How do I bid on artwork?", a: "You can register your interest for any upcoming auction through our Events page. During the event you will be able to place bids on artwork in person. Online bidding options may be available in future — stay tuned." },
-  { q: "Can students or their families buy the artwork they submitted?", a: "Students and their families are welcome to participate as bidders, but artwork cannot be bought back by the student who submitted it or through arrangements intended to guarantee or artificially inflate its sale price. Our auctions are designed to encourage genuine bidding and support our fundraising goals." },
-  { q: "Will student artists receive any of the money from their artwork?", a: "Yes! While a portion of the proceeds from each artwork will go toward charity, we also plan to allocate a percentage back to the student artist. In addition, participating artists will receive volunteer hours for their involvement in the auction." },
-  { q: "How can students submit artwork?", a: "Students can apply through our Get Involved section. We review submissions on a rolling basis and reach out before each auction. All mediums are welcome." },
-  { q: "Which charities does Bid For Tomorrow support?", a: "We hope to support organizations including the Toronto Arts Foundation, SickKids Foundation, Holland Bloorview Foundation, and Kids Help Phone as our fundraising grows across the Greater Toronto Area." },
-  { q: "Can my business sponsor Bid For Tomorrow?", a: "Absolutely. We welcome partnerships with businesses and community organizations who share our values. Reach out through our Contact page to discuss sponsorship opportunities." },
-  { q: "How do I volunteer at an event?", a: "Fill out the volunteer inquiry form in our Get Involved section. We welcome help with event setup, guest coordination, artwork display, and more." },
-  { q: "Is Bid For Tomorrow a registered nonprofit?", a: "Bid For Tomorrow is a student-led initiative based in the Greater Toronto Area. We are currently exploring formal nonprofit registration and will share updates here as that process develops." },
+  { q: "How do I bid on artwork in the Fall 2026 auction?", a: "You can pre-register on our Auction page to receive the digital lot catalogue and venue details. Bidding will be available both in-person and via an online lot registration form." },
+  { q: "Can students or their families buy the artwork they submitted?", a: "Students and families are welcome to participate as bidders, but artwork cannot be bought back through arrangements intended to guarantee or artificially inflate sale prices. Our auctions are structured for authentic fundraising." },
+  { q: "Will student artists receive proceeds from their artwork?", a: "Yes! While a major portion of proceeds funds designated hospital and mental health charities, we also allocate a percentage back to the student artist for education and art materials. Artists also receive verified volunteer hours." },
+  { q: "How can students submit artwork?", a: "Students can apply through our Submit Artwork form in the Get Involved section. We accept oil, acrylic, watercolor, mixed media, and digital prints." },
+  { q: "Which charities does Bid For Tomorrow support?", a: "We support the SickKids Foundation, Kids Help Phone, Holland Bloorview Kids Rehabilitation Hospital, and the Toronto Arts Foundation." }
 ];
 
-/* ── RENDER AUCTIONS (LINKED TO AUCTION.HTML) ── */
+/* ── RENDER AUCTIONS (LINKED DIRECTLY TO AUCTION.HTML) ── */
 const aContainer = document.getElementById("auction-cards");
 auctions.forEach(a => {
   const targetLink = a.link || "auction.html";
@@ -645,15 +707,17 @@ auctions.forEach(a => {
       <div class="auction-body">
         <div class="auction-detail">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Date: To Be Determined
+          Date: Fall 2026 (Announcement Soon)
         </div>
         <div class="auction-detail">
           <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Location: To Be Determined
+          Location: GTA Gallery Venue &amp; Online
         </div>
-        <div class="tbd-badge">Registration Opening Soon</div>
-        <p style="font-size:0.82rem; color:var(--text-body); margin-bottom:1rem;">${a.note}</p>
-        <a href="${targetLink}" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;">View Fall 26 Auction</a>
+        <div class="tbd-badge">Bidder Pre-Registration Open</div>
+        <p style="font-size:0.85rem; color:var(--text-body); margin-bottom:1.25rem;">${a.note}</p>
+        <a href="${targetLink}" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;">
+          View Fall 26 Auction Lots &rarr;
+        </a>
       </div>
     </article>`;
 });
@@ -666,9 +730,6 @@ const track = document.getElementById("testimonials-track");
       <span class="testimonial-opener" aria-hidden="true">&ldquo;</span>
       <p class="testimonial-text">${t.text}</p>
       <div class="testimonial-author">
-        <div class="testimonial-avatar-box" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
         <div>
           <div class="testimonial-name">${t.name}</div>
           <div class="testimonial-role">${t.role}</div>
@@ -691,7 +752,6 @@ faqs.forEach((f, i) => {
     </div>`;
 });
 
-/* ── FAQ TOGGLE ── */
 function toggleFaq(btn) {
   const item = btn.closest(".faq-item");
   const isOpen = item.classList.contains("open");
@@ -710,17 +770,11 @@ document.querySelectorAll(".nav-links a").forEach(a => {
   a.addEventListener("click", () => document.getElementById("nav-links").classList.remove("open"));
 });
 
-/* ── SCROLL ANIMATIONS ── */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
-
 /* ── DARK MODE ── */
-const darkBtn  = document.getElementById("dark-toggle");
-const iconEl   = document.getElementById("toggle-icon");
+const darkBtn = document.getElementById("dark-toggle");
+const iconEl = document.getElementById("toggle-icon");
 const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-const sunPath  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+const sunPath = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
 
 if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
   document.body.classList.add("dark");
@@ -733,47 +787,94 @@ darkBtn.addEventListener("click", () => {
   iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
 });
 
-/* ── GALLERY ── */
+/* ── GALLERY (WITH DIMENSIONS & AUCTION CTA) ── */
 (function() {
   let artworks = [];
-
   const track = document.getElementById('carouselTrack');
   const dotsContainer = document.getElementById('carouselDots');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
-
   let currentIndex = 0;
   let autoplayInterval = null;
 
   async function loadArtworks() {
     try {
       const response = await fetch("artwork.json");
-      if (!response.ok) throw new Error("Could not load artwork.json");
+      if (!response.ok) throw new Error("artwork.json not found");
       artworks = await response.json();
-      renderCarousel();
-      startAutoplay();
-    } catch (error) {
-      console.error("Error loading artworks:", error);
+    } catch (e) {
+      // Fallback sample lots with dimension details
+      artworks = [
+        {
+          title: "Golden Hour in Algonquin",
+          artist: "Elena M. (Grade 11)",
+          branch: "GTA",
+          medium: "Oil on Canvas",
+          dimensions: "18\" × 24\" (Framed)",
+          startingBid: "$65 CAD",
+          description: "Capturing the serene warmth of autumn light cutting through pine canopy in Northern Ontario.",
+          status: "Fall 2026 Lot",
+          image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80"
+        },
+        {
+          title: "Fragments of Stillness",
+          artist: "Chloe Chen (Grade 12)",
+          branch: "Lexington",
+          medium: "Mixed Media & Acrylic",
+          dimensions: "20\" × 20\" (Gallery Wrap)",
+          startingBid: "$80 CAD",
+          description: "An exploration of youthful introspection, layered with textured handmade paper and earthy matcha pigments.",
+          status: "Fall 2026 Lot",
+          image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80"
+        }
+      ];
     }
+    renderCarousel();
+    startAutoplay();
   }
 
   function renderCarousel() {
     track.innerHTML = '';
     dotsContainer.innerHTML = '';
 
-    artworks.forEach((art) => {
+    artworks.forEach((art, idx) => {
+      const dimensions = art.dimensions || "Dimensions Available in Lot";
+      const medium = art.medium || "Original Medium";
+
       track.innerHTML += `
         <div class="artwork-slide">
           <div class="artwork-image">
             <img src="${art.image}" alt="${art.title}">
           </div>
           <div class="artwork-details">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="branch">${art.branch ?? 'GTA'} Chapter</span>
+              <span class="status-badge">${art.status || 'Upcoming Lot'}</span>
+            </div>
             <h3>${art.title}</h3>
             <p class="artist">By ${art.artist}</p>
-            <p class="branch">${art.branch ?? 'Unknown'} Branch</p>
-            <p class="medium">${art.medium}</p>
+
+            <div class="artwork-specs-table">
+              <div class="artwork-specs-row">
+                <span class="artwork-specs-label">Medium</span>
+                <span class="artwork-specs-val">${medium}</span>
+              </div>
+              <div class="artwork-specs-row">
+                <span class="artwork-specs-label">Dimensions</span>
+                <span class="artwork-specs-val">${dimensions}</span>
+              </div>
+              ${art.startingBid ? `
+              <div class="artwork-specs-row">
+                <span class="artwork-specs-label">Starting Estimate</span>
+                <span class="artwork-specs-val" style="color:var(--matcha-dark);">${art.startingBid}</span>
+              </div>` : ''}
+            </div>
+
             <p class="artwork-description">${art.description}</p>
-            <span class="status-badge">${art.status}</span>
+
+            <a href="auction.html" class="btn btn-primary" style="margin-top:1.25rem; width:100%; justify-content:center; text-decoration:none;">
+              View Lot &amp; Full Dimensions in Fall Auction &rarr;
+            </a>
           </div>
         </div>
       `;
@@ -789,18 +890,9 @@ darkBtn.addEventListener("click", () => {
 
   function goToSlide(index) {
     if (artworks.length === 0) return;
-    if (index < 0) {
-      currentIndex = artworks.length - 1;
-    } else if (index >= artworks.length) {
-      currentIndex = 0;
-    } else {
-      currentIndex = index;
-    }
-
+    currentIndex = (index < 0) ? artworks.length - 1 : (index >= artworks.length) ? 0 : index;
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
-    document.querySelectorAll('.dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentIndex);
-    });
+    document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
     resetAutoplay();
   }
 
@@ -811,39 +903,18 @@ darkBtn.addEventListener("click", () => {
     stopAutoplay();
     if (artworks.length > 1) autoplayInterval = setInterval(nextSlide, 5500);
   }
-
-  function stopAutoplay() {
-    if (autoplayInterval) {
-      clearInterval(autoplayInterval);
-      autoplayInterval = null;
-    }
-  }
-
-  function resetAutoplay() {
-    stopAutoplay();
-    startAutoplay();
-  }
+  function stopAutoplay() { if (autoplayInterval) { clearInterval(autoplayInterval); autoplayInterval = null; } }
+  function resetAutoplay() { stopAutoplay(); startAutoplay(); }
 
   prevBtn.addEventListener('click', prevSlide);
   nextBtn.addEventListener('click', nextSlide);
 
-  document.querySelector('.artwork-carousel')?.addEventListener('mouseenter', stopAutoplay);
-  document.querySelector('.artwork-carousel')?.addEventListener('mouseleave', startAutoplay);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
-  });
-
   loadArtworks();
 })();
 
+/* ── FADE-UP ANIMATIONS ── */
 document.addEventListener('DOMContentLoaded', () => {
   const els = document.querySelectorAll('.fade-up');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
   const io = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {

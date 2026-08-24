@@ -1,18 +1,33 @@
 <!DOCTYPE html>
+<!-- IDEA: CLICK ON PROFILE, IT ROTATES, AND THEN IT SHOWS A SMALL BLURB OF SELF INTRODUCTION INSTEAD OF LEADING TO THEIR OWN PROFILE -->
 <html lang="en">
-<head> 
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>About Us | Bid For Tomorrow</title>
-  <meta name="description" content="Learn more about the team behind Bid For Tomorrow and our mission to support youth, health, and community causes through art.">
+  <meta name="description" content="Learn more about the team behind Bid For Tomorrow and our mission to support youth, health, and community causes through student-led fine art auctions.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Shared Unified Stylesheet with Index -->
-  <link rel="stylesheet" href="styles.css">
+  <!-- Shared Unified Stylesheet -->
+  <link rel="stylesheet" href="/src/index.css">
+
+  <!-- Immediate Theme Loader to prevent flash of wrong mode -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem("bft-theme") || 
+                         localStorage.getItem("paintItForwardTheme") || 
+                         (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    })();
+  </script>
 </head>
 
 <body>
@@ -31,16 +46,47 @@
         Bid For Tomorrow
       </a>
 
+      <!-- Mobile Controls (Theme Toggle + Hamburger) -->
+      <div class="mobile-nav-controls" style="display: none; align-items: center; gap: 0.75rem;">
+        <button type="button" class="nav-theme-btn" id="mobileNavThemeToggle" aria-label="Toggle dark mode" style="padding: 0.45rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card-bg); color: var(--text-heading); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
       <div class="nav-right">
         <ul class="nav-links" id="nav-links" role="list">
           <li><a href="about.html" class="active">About Us</a></li>
           <li><a href="branches.html">Our Branches</a></li>
           <li><a href="index.html#artworks">Gallery</a></li>
           <li><a href="index.html#auctions">Events</a></li>
-          <li><a href="auction.html">Auction</a></li>
+          <li><a href="auction.html">Live Auction</a></li>
           <li><a href="index.html#impact">Impact</a></li>
           <li><a href="index.html#causes">Causes</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
+
+          <!-- Desktop Theme Toggle in Navbar -->
+          <li>
+            <button
+              type="button"
+              id="navThemeToggle"
+              class="nav-theme-btn"
+              aria-label="Toggle dark mode"
+              title="Toggle dark mode"
+              style="padding: 0.45rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card-bg); color: var(--text-heading); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color var(--transition), color var(--transition);"
+            >
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+            </button>
+          </li>
+
           <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
         </ul>
       </div>
@@ -59,11 +105,11 @@
          HERO
     ========================================= -->
     <header class="hero" style="min-height: auto; padding: 140px 6% 70px; text-align: center; display: block;">
-      <div class="hero-content" style="padding: 0; max-width: 860px;">
+      <div class="hero-content" style="padding: 0; max-width: 860px; margin: 0 auto;">
         <span class="eyebrow" style="margin-left: auto; margin-right: auto;">Our Story</span>
         <h1 style="max-width: 850px; margin: 0 auto 20px;">Art That Gives Back</h1>
-        <p class="hero-sub" style="max-width: 680px; margin: 0 auto;">
-          Founded by students in the Greater Toronto Area, Bid For Tomorrow began with a simple belief:
+        <p class="hero-sub" style="max-width: 680px; margin: 0 auto; color: var(--text-body); font-size: 1.15rem; line-height: 1.75;">
+          Founded by student artists and youth organizers in the Greater Toronto Area, Bid For Tomorrow began with a simple belief:
           creativity can do more than inspire — it can fund real-world change for youth, healthcare, and humanitarian causes.
         </p>
       </div>
@@ -72,14 +118,14 @@
     <!-- =========================================
          ABOUT PREVIEW SECTION
     ========================================= -->
-    <section class="section about-section">
-      <div class="container">
+    <section class="section about-section" style="padding: 80px 6%;">
+      <div class="container" style="max-width: 1200px; margin: 0 auto;">
         <div class="about-preview">
           <div class="about-preview-visual">
             <div class="about-image-wrapper">
               <img
                 src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80"
-                alt="Bid For Tomorrow art exhibition"
+                alt="Bid For Tomorrow art exhibition gala"
                 class="about-image"
                 loading="lazy"
               >
@@ -107,15 +153,89 @@
     </section>
 
     <!-- =========================================
+         OUR FOUR PILLARS
+    ========================================= -->
+    <section class="section" style="background: var(--section-alt); padding: 90px 6%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <div class="container" style="max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; max-width: 740px; margin: 0 auto 3.5rem;">
+          <span class="eyebrow" style="margin-left: auto; margin-right: auto;">Our Core Foundation</span>
+          <h2 style="margin-bottom: 1rem;">The Principles That Guide Us</h2>
+          <p style="color: var(--text-body); font-size: 1.05rem;">
+            Every auction, workshop, and chapter launch operates under four foundational commitments.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.75rem;">
+          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--terracotta); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(207, 85, 39, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--terracotta);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+              </svg>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">100% Direct Impact</h3>
+            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+              Every dollar pledged at our galas goes directly to vetted pediatric, mental health, and community initiatives with full public financial audits.
+            </p>
+          </div>
+
+          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--ochre-gold); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(153, 135, 49, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--ochre-gold);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="m4.93 4.93 4.24 4.24"/>
+                <path d="m14.83 9.17 4.24-4.24"/>
+                <path d="m14.83 14.83 4.24 4.24"/>
+                <path d="m9.17 14.83-4.24 4.24"/>
+              </svg>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Curatorial Prestige</h3>
+            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+              We treat youth and student art with museum-standard catalogue presentation, archival conservation, and professional live auctions.
+            </p>
+          </div>
+
+          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--cerulean); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(95, 168, 194, 0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--cerulean);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Youth-Led Autonomy</h3>
+            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+              Branches are completely founded and operated by local high school and university students, fostering lifelong leadership.
+            </p>
+          </div>
+
+          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--terracotta); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(207, 85, 39, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--terracotta);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Cross-Border Network</h3>
+            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+              Inter-chapter exchanges allow artists in Toronto, Massachusetts, and new city branches to exhibit in each other's charity galas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================
          OUR TEAM (3D Interactive Rotating Profile Flip Cards)
     ========================================= -->
-    <section class="section team-preview-section">
-      <div class="container">
+    <section class="section team-preview-section" style="padding: 95px 6%;">
+      <div class="container" style="max-width: 1200px; margin: 0 auto;">
         <div class="section-header section-header-center" style="text-align: center; max-width: 740px; margin: 0 auto 3.5rem;">
           <span class="eyebrow" style="margin-left: auto; margin-right: auto;">The People Behind Bid For Tomorrow</span>
           <h2 style="margin-bottom: 1rem;">Meet Our Leadership</h2>
           <p style="color: var(--text-body); font-size: 1.05rem;">
-            Click on any team member profile to flip the card and read their personal introduction, artistic philosophy, and leadership focus.
+            Click on any team member profile to rotate the card and read their personal introduction, artistic philosophy, and leadership focus.
           </p>
         </div>
 
@@ -128,7 +248,7 @@
             role="button"
             tabindex="0"
             aria-expanded="false"
-            aria-label="Gloria Xu - Co-Founder. Click to flip profile and read bio."
+            aria-label="Gloria Xu - Co-Founder. Click to flip profile and read self introduction."
           >
             <div class="team-card-inner">
               
@@ -162,7 +282,7 @@
                   </div>
                   <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--card-border); margin-top: 1rem;">
                     <span style="font-size: 0.78rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Curatorial & Creative Direction</span>
-                    <span style="font-size: 0.78rem; color: var(--text-muted);">↻ Tap to Flip</span>
+                    <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">↻ Tap to Flip</span>
                   </div>
                 </div>
               </div>
@@ -203,9 +323,9 @@
                 </div>
 
                 <div class="team-back-footer">
-                  <span style="font-size: 0.8rem; color: var(--text-muted);">Toronto Branch</span>
+                  <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Toronto Branch</span>
                   <button type="button" class="btn-flip-back" aria-label="Flip back to portrait">
-                    <span>← Return</span>
+                    <span>← Return to Portrait</span>
                   </button>
                 </div>
               </div>
@@ -220,7 +340,7 @@
             role="button"
             tabindex="0"
             aria-expanded="false"
-            aria-label="Brian Lu - Co-Founder. Click to flip profile and read bio."
+            aria-label="Brian Lu - Co-Founder. Click to flip profile and read self introduction."
           >
             <div class="team-card-inner">
               
@@ -254,7 +374,7 @@
                   </div>
                   <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--card-border); margin-top: 1rem;">
                     <span style="font-size: 0.78rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Outreach & Philanthropy</span>
-                    <span style="font-size: 0.78rem; color: var(--text-muted);">↻ Tap to Flip</span>
+                    <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">↻ Tap to Flip</span>
                   </div>
                 </div>
               </div>
@@ -295,9 +415,9 @@
                 </div>
 
                 <div class="team-back-footer">
-                  <span style="font-size: 0.8rem; color: var(--text-muted);">Toronto & International</span>
+                  <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Toronto & International</span>
                   <button type="button" class="btn-flip-back" aria-label="Flip back to portrait">
-                    <span>← Return</span>
+                    <span>← Return to Portrait</span>
                   </button>
                 </div>
               </div>
@@ -305,6 +425,27 @@
             </div>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================
+         CALL TO ACTION
+    ========================================= -->
+    <section class="section" style="padding: 90px 6%; text-align: center; background: var(--cream);">
+      <div style="max-width: 750px; margin: 0 auto;">
+        <span class="eyebrow" style="margin-left: auto; margin-right: auto;">Join Us</span>
+        <h2 style="margin-bottom: 1.25rem;">Be Part of the Next Chapter</h2>
+        <p style="color: var(--text-body); font-size: 1.08rem; line-height: 1.75; margin-bottom: 2.2rem;">
+          Whether you are a student artist eager to donate your pieces, a passionate community leader looking to launch a branch, or a collector seeking meaningful art, there is a place for you.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="index.html#contact" class="btn btn-primary" style="padding: 14px 32px; border-radius: 999px; background: var(--terracotta); color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+            Get In Touch
+          </a>
+          <a href="branches.html" class="btn" style="padding: 14px 32px; border-radius: 999px; background: var(--card-bg); color: var(--text-heading); border: 1px solid var(--card-border); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+            Explore Branches
+          </a>
         </div>
       </div>
     </section>
@@ -333,7 +474,11 @@
   <script>
     // 1. Theme Synchronization
     const themeToggle = document.getElementById("themeToggle");
-    const themeIcon = document.getElementById("themeIcon");
+    const navThemeToggle = document.getElementById("navThemeToggle");
+    const mobileNavThemeToggle = document.getElementById("mobileNavThemeToggle");
+
+    const sunSVG = `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
+    const moonSVG = `<path d="M12 3a6 6 0 0 0 9 9 9 0 1 1-9-9Z"/>`;
 
     function getSavedTheme() {
       return localStorage.getItem("bft-theme") || 
@@ -342,30 +487,42 @@
     }
 
     function applyTheme(theme) {
-      if (theme === "dark") {
+      const isDark = theme === "dark";
+      if (isDark) {
         document.documentElement.classList.add("dark");
         document.body.classList.add("dark");
-        if (themeIcon) {
-          themeIcon.innerHTML = `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
-        }
       } else {
         document.documentElement.classList.remove("dark");
         document.body.classList.remove("dark");
-        if (themeIcon) {
-          themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>`;
-        }
       }
+
+      const iconSvg = isDark ? sunSVG : moonSVG;
+      document.querySelectorAll(".theme-icon-slot, #themeIcon").forEach(el => {
+        el.innerHTML = iconSvg;
+      });
     }
 
     applyTheme(getSavedTheme());
 
-    if (themeToggle) {
-      themeToggle.addEventListener("click", () => {
-        const isCurrentlyDark = document.body.classList.contains("dark");
-        const newTheme = isCurrentlyDark ? "light" : "dark";
-        localStorage.setItem("bft-theme", newTheme);
-        localStorage.setItem("paintItForwardTheme", newTheme);
-        applyTheme(newTheme);
+    function toggleTheme() {
+      const isCurrentlyDark = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark");
+      const newTheme = isCurrentlyDark ? "light" : "dark";
+      localStorage.setItem("bft-theme", newTheme);
+      localStorage.setItem("paintItForwardTheme", newTheme);
+      applyTheme(newTheme);
+    }
+
+    if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
+    if (navThemeToggle) navThemeToggle.addEventListener("click", toggleTheme);
+    if (mobileNavThemeToggle) mobileNavThemeToggle.addEventListener("click", toggleTheme);
+
+    // Mobile Navigation Toggle
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("nav-links");
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
       });
     }
 
@@ -373,10 +530,19 @@
     document.querySelectorAll('.team-card-flipper').forEach(card => {
       // Toggle rotation flip on click
       card.addEventListener('click', (e) => {
-        // Toggle flipped state
         const isFlipped = card.classList.toggle('flipped');
         card.setAttribute('aria-expanded', isFlipped ? 'true' : 'false');
       });
+
+      // Special button for flipping back
+      const returnBtn = card.querySelector('.btn-flip-back');
+      if (returnBtn) {
+        returnBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          card.classList.remove('flipped');
+          card.setAttribute('aria-expanded', 'false');
+        });
+      }
 
       // Keyboard accessibility (Enter / Space key triggers flip)
       card.addEventListener('keydown', (e) => {

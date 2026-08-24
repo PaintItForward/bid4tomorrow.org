@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -15,13 +15,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   >
 
+  <!-- Shared Stylesheet with Index -->
   <link rel="stylesheet" href="styles.css">
-</head>
 
+  <!-- Immediate Theme Loader to prevent flash of wrong mode -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem("bft-theme") || 
+                         localStorage.getItem("paintItForwardTheme") || 
+                         (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    })();
+  </script>
+</head>
 
 <body>
 
@@ -34,56 +48,89 @@
 
       <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
         <div class="nav-logo-mark" aria-hidden="true">
-          <img src="favicon-96x96.png" alt="Bid For Tomorrow Logo">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          </svg>
         </div>
         Bid For Tomorrow
       </a>
 
-      <div class="nav-right">
+      <!-- Mobile Controls (Theme Toggle + Hamburger) -->
+      <div class="mobile-nav-controls" style="display: none; align-items: center; gap: 0.75rem;">
+        <button type="button" class="nav-theme-btn" id="mobileNavThemeToggle" aria-label="Toggle dark mode" style="padding: 0.45rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card-bg); color: var(--text-heading); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-        
-      <ul class="nav-links"id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Our Branches</a></li>
-      <li><a  href="auction.html">Auction</a></li>
-      <li><a href="index.html#artwork">Gallery</a></li>
-      <li><a href="index.html#auctions">Events</a></li>
-      <li><a href="index.html#impact">Impact</a></li>
-      <li><a href="index.html#causes">Causes</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
-      </ul>
+      <div class="nav-right">
+        <ul class="nav-links" id="nav-links" role="list">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="branches.html" class="active">Our Branches</a></li>
+          <li><a href="index.html#artworks">Gallery</a></li>
+          <li><a href="index.html#auctions">Events</a></li>
+          <li><a href="auction.html">Auction</a></li>
+          <li><a href="index.html#impact">Impact</a></li>
+          <li><a href="index.html#causes">Causes</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          
+          <!-- Desktop Theme Toggle in Navbar -->
+          <li>
+            <button
+              type="button"
+              id="navThemeToggle"
+              class="nav-theme-btn"
+              aria-label="Toggle dark mode"
+              title="Toggle dark mode"
+              style="padding: 0.45rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card-bg); color: var(--text-heading); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color var(--transition), color var(--transition);"
+            >
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+            </button>
+          </li>
+
+          <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
+        </ul>
+      </div>
 
     </div>
   </nav>
 
-  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-    ☾
+  <!-- Floating Dark Mode Toggle -->
+  <button class="dark-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
   </button>
-
 
   <!-- =========================================
        HERO
   ========================================= -->
 
-  <header class="hero">
+  <header class="hero" style="min-height: auto; padding: 140px 6% 70px; text-align: center; display: block;">
 
-    <span class="eyebrow">
+    <span class="eyebrow" style="margin-left: auto; margin-right: auto;">
       Bid For Tomorrow
     </span>
 
-    <h1>
+    <h1 style="max-width: 850px; margin: 0 auto 22px;">
       Creativity doesn't stop at one city.
     </h1>
 
-    <p>
+    <p style="max-width: 680px; margin: 0 auto;">
       Bid For Tomorrow is growing through student-led branches that bring
       our mission into their own communities. Each branch works locally
       while contributing to the larger Bid For Tomorrow movement.
     </p>
 
   </header>
-
 
   <!-- =========================================
        BRANCHES
@@ -94,7 +141,6 @@
     <section class="branches-section">
 
       <div class="branches-grid">
-
 
         <!-- =====================================
              TORONTO
@@ -118,78 +164,72 @@
             Greater Toronto Area · Canada
           </p>
 
-
           <!-- Toronto Carousel -->
+          <div class="branch-carousel" data-carousel="toronto">
 
-               <!-- Toronto Carousel -->
+            <div class="carousel-track">
 
-        <div
-          class="branch-carousel"
-          data-carousel="toronto"
-        >
-        
-          <div class="carousel-track">
-        
-            <div class="carousel-slide">
-              <img
-                src="favicon.svg"
-                alt="Bid For Tomorrow Toronto placeholder"
-              >
+              <div class="carousel-slide">
+                <img
+                  src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=900&q=80"
+                  alt="Toronto branch art workshop"
+                  loading="lazy"
+                >
+              </div>
+
+              <div class="carousel-slide">
+                <img
+                  src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80"
+                  alt="Toronto charity art gallery exhibition"
+                  loading="lazy"
+                >
+              </div>
+
+              <div class="carousel-slide">
+                <img
+                  src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80"
+                  alt="Toronto student-led community painting session"
+                  loading="lazy"
+                >
+              </div>
+
             </div>
-        
-            <div class="carousel-slide">
-              <img
-                src="favicon.svg"
-                alt="Bid For Tomorrow Toronto placeholder"
-              >
+
+            <button
+              type="button"
+              class="carousel-btn carousel-prev"
+              aria-label="Previous Toronto image"
+            >
+              ‹
+            </button>
+
+            <button
+              type="button"
+              class="carousel-btn carousel-next"
+              aria-label="Next Toronto image"
+            >
+              ›
+            </button>
+
+            <div class="carousel-dots">
+              <button
+                type="button"
+                class="carousel-dot active"
+                aria-label="Toronto image 1"
+              ></button>
+              <button
+                type="button"
+                class="carousel-dot"
+                aria-label="Toronto image 2"
+              ></button>
+              <button
+                type="button"
+                class="carousel-dot"
+                aria-label="Toronto image 3"
+              ></button>
             </div>
-        
-            <div class="carousel-slide">
-              <img
-                src="favicon.svg"
-                alt="Bid For Tomorrow Toronto placeholder"
-              >
-            </div>
-        
+
           </div>
-        
-        
-          <button
-            class="carousel-btn carousel-prev"
-            aria-label="Previous Toronto image"
-          >
-            ‹
-          </button>
-        
-          <button
-            class="carousel-btn carousel-next"
-            aria-label="Next Toronto image"
-          >
-            ›
-          </button>
-        
-        
-          <div class="carousel-dots">
-        
-            <button
-              class="carousel-dot active"
-              aria-label="Toronto image 1"
-            ></button>
-        
-            <button
-              class="carousel-dot"
-              aria-label="Toronto image 2"
-            ></button>
-        
-            <button
-              class="carousel-dot"
-              aria-label="Toronto image 3"
-            ></button>
-        
-          </div>
-        
-        </div>
-
 
           <p class="branch-description">
             Toronto is where Bid For Tomorrow began. As our founding branch,
@@ -198,14 +238,12 @@
             and establishing the foundation for future branches.
           </p>
 
-
           <div class="branch-details">
 
             <div class="detail">
               <span class="detail-label">
                 Country
               </span>
-
               <span class="detail-value">
                 Canada
               </span>
@@ -215,7 +253,6 @@
               <span class="detail-label">
                 Focus
               </span>
-
               <span class="detail-value">
                 Founding & Operations
               </span>
@@ -225,7 +262,6 @@
               <span class="detail-label">
                 Current Initiative
               </span>
-
               <span class="detail-value">
                 Toronto Art Auction
               </span>
@@ -234,7 +270,6 @@
           </div>
 
         </article>
-
 
         <!-- =====================================
              LEXINGTON
@@ -258,78 +293,72 @@
             Lexington, Massachusetts · United States
           </p>
 
-
           <!-- Lexington Carousel -->
+          <div class="branch-carousel" data-carousel="lexington">
 
-          <!-- Lexington Carousel -->
-
-          <div
-            class="branch-carousel"
-            data-carousel="lexington"
-          >
-          
             <div class="carousel-track">
-          
+
               <div class="carousel-slide">
                 <img
-                  src="favicon.svg"
-                  alt="Bid For Tomorrow Lexington placeholder"
+                  src="https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80"
+                  alt="Lexington community youth art exhibition"
+                  loading="lazy"
                 >
               </div>
-          
+
               <div class="carousel-slide">
                 <img
-                  src="favicon.svg"
-                  alt="Bid For Tomorrow Lexington placeholder"
+                  src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=80"
+                  alt="Lexington student artists in studio"
+                  loading="lazy"
                 >
               </div>
-          
+
               <div class="carousel-slide">
                 <img
-                  src="favicon.svg"
-                  alt="Bid For Tomorrow Lexington placeholder"
+                  src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=900&q=80"
+                  alt="Lexington art charity benefit showcase"
+                  loading="lazy"
                 >
               </div>
-          
+
             </div>
-          
-          
+
             <button
+              type="button"
               class="carousel-btn carousel-prev"
               aria-label="Previous Lexington image"
             >
               ‹
             </button>
-          
+
             <button
+              type="button"
               class="carousel-btn carousel-next"
               aria-label="Next Lexington image"
             >
               ›
             </button>
-          
-          
+
             <div class="carousel-dots">
-          
               <button
+                type="button"
                 class="carousel-dot active"
                 aria-label="Lexington image 1"
               ></button>
-          
               <button
+                type="button"
                 class="carousel-dot"
                 aria-label="Lexington image 2"
               ></button>
-          
               <button
+                type="button"
                 class="carousel-dot"
                 aria-label="Lexington image 3"
               ></button>
-          
             </div>
-          
-          </div>
 
+          </div>
 
           <p class="branch-description">
             The Lexington branch brings Bid For Tomorrow's model to a new
@@ -338,14 +367,12 @@
             staying connected to the broader Bid For Tomorrow organization.
           </p>
 
-
           <div class="branch-details">
 
             <div class="detail">
               <span class="detail-label">
                 Country
               </span>
-
               <span class="detail-value">
                 United States
               </span>
@@ -355,7 +382,6 @@
               <span class="detail-label">
                 Focus
               </span>
-
               <span class="detail-value">
                 Local Community
               </span>
@@ -365,7 +391,6 @@
               <span class="detail-label">
                 Branch Type
               </span>
-
               <span class="detail-value">
                 U.S. Branch
               </span>
@@ -378,7 +403,6 @@
       </div>
 
     </section>
-
 
     <!-- =========================================
          HOW BRANCHES WORK
@@ -405,7 +429,6 @@
 
         </div>
 
-
         <div class="steps">
 
           <div class="step">
@@ -425,7 +448,6 @@
 
           </div>
 
-
           <div class="step">
 
             <div class="step-number">
@@ -442,7 +464,6 @@
             </p>
 
           </div>
-
 
           <div class="step">
 
@@ -467,14 +488,13 @@
 
     </section>
 
-
     <!-- =========================================
          FUTURE BRANCHES
     ========================================= -->
 
     <section class="future-section">
 
-      <span class="eyebrow">
+      <span class="eyebrow" style="margin-left: auto; margin-right: auto;">
         The next chapter
       </span>
 
@@ -499,172 +519,154 @@
 
   </main>
 
-
   <!-- =========================================
        FOOTER
   ========================================= -->
 
   <footer>
-
-    <p>
-      © 2026 Bid For Tomorrow · Student-led art, turned into impact.
-    </p>
-
+    <div style="max-width: 1200px; margin: 0 auto; text-align: center; padding: 2rem 1.5rem;">
+      <p style="font-size: 0.9rem; color: var(--text-muted);">
+        © 2026 Bid For Tomorrow · Student-led fine art charity auctions for global impact.
+      </p>
+    </div>
   </footer>
-
 
   <!-- =========================================
        JAVASCRIPT
   ========================================= -->
 
   <script>
-
     /* =========================================
-       LIGHT / DARK MODE
+       LIGHT / DARK MODE TOGGLE (SYNCS WITH LOCALSTORAGE)
     ========================================= */
 
     const themeToggle = document.getElementById("themeToggle");
+    const navThemeToggle = document.getElementById("navThemeToggle");
+    const mobileNavThemeToggle = document.getElementById("mobileNavThemeToggle");
 
-    const savedTheme = localStorage.getItem("paintItForwardTheme");
+    const sunSVG = `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
+    const moonSVG = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>`;
 
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark");
-      themeToggle.textContent = "☀";
+    function getSavedTheme() {
+      return localStorage.getItem("bft-theme") || 
+             localStorage.getItem("paintItForwardTheme") || 
+             (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     }
 
-    themeToggle.addEventListener("click", () => {
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+        document.body.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.body.classList.remove("dark");
+      }
 
-      document.body.classList.toggle("dark");
+      const iconSvg = isDark ? sunSVG : moonSVG;
+      document.querySelectorAll(".theme-icon-slot, #themeIcon").forEach(el => {
+        el.innerHTML = iconSvg;
+      });
+    }
 
-      const isDark =
-        document.body.classList.contains("dark");
+    // Initialize theme immediately
+    applyTheme(getSavedTheme());
 
-      localStorage.setItem(
-        "paintItForwardTheme",
-        isDark ? "dark" : "light"
-      );
+    function toggleTheme() {
+      const isCurrentlyDark = document.documentElement.classList.contains("dark") || document.body.classList.contains("dark");
+      const newTheme = isCurrentlyDark ? "light" : "dark";
+      localStorage.setItem("bft-theme", newTheme);
+      localStorage.setItem("paintItForwardTheme", newTheme);
+      applyTheme(newTheme);
+    }
 
-      themeToggle.textContent =
-        isDark ? "☀" : "☾";
+    if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
+    if (navThemeToggle) navThemeToggle.addEventListener("click", toggleTheme);
+    if (mobileNavThemeToggle) mobileNavThemeToggle.addEventListener("click", toggleTheme);
 
-    });
-
+    // Mobile Navigation Toggle
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("nav-links");
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
 
     /* =========================================
        BRANCH CAROUSELS
     ========================================= */
 
     document.querySelectorAll(".branch-carousel").forEach(carousel => {
+      const track = carousel.querySelector(".carousel-track");
+      const slides = carousel.querySelectorAll(".carousel-slide");
+      const previous = carousel.querySelector(".carousel-prev");
+      const next = carousel.querySelector(".carousel-next");
+      const dots = carousel.querySelectorAll(".carousel-dot");
 
-      const track =
-        carousel.querySelector(".carousel-track");
-
-      const slides =
-        carousel.querySelectorAll(".carousel-slide");
-
-      const previous =
-        carousel.querySelector(".carousel-prev");
-
-      const next =
-        carousel.querySelector(".carousel-next");
-
-      const dots =
-        carousel.querySelectorAll(".carousel-dot");
+      if (!track || slides.length === 0) return;
 
       let current = 0;
 
-
       function updateCarousel(index) {
-
-        current =
-          (index + slides.length) % slides.length;
-
-        track.style.transform =
-          `translateX(-${current * 100}%)`;
+        current = (index + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
 
         dots.forEach((dot, i) => {
-
-          dot.classList.toggle(
-            "active",
-            i === current
-          );
-
+          dot.classList.toggle("active", i === current);
         });
-
       }
 
+      if (previous) {
+        previous.addEventListener("click", () => {
+          updateCarousel(current - 1);
+        });
+      }
 
-      previous.addEventListener("click", () => {
-
-        updateCarousel(current - 1);
-
-      });
-
-
-      next.addEventListener("click", () => {
-
-        updateCarousel(current + 1);
-
-      });
-
+      if (next) {
+        next.addEventListener("click", () => {
+          updateCarousel(current + 1);
+        });
+      }
 
       dots.forEach((dot, index) => {
-
         dot.addEventListener("click", () => {
-
           updateCarousel(index);
-
         });
-
       });
 
-
-      /* Touch swipe */
-
+      /* Touch swipe support */
       let touchStartX = 0;
       let touchEndX = 0;
-
 
       carousel.addEventListener(
         "touchstart",
         event => {
-
-          touchStartX =
-            event.changedTouches[0].screenX;
-
+          touchStartX = event.changedTouches[0].screenX;
         },
         { passive: true }
       );
 
-
       carousel.addEventListener(
         "touchend",
         event => {
-
-          touchEndX =
-            event.changedTouches[0].screenX;
-
-          const difference =
-            touchStartX - touchEndX;
-
+          touchEndX = event.changedTouches[0].screenX;
+          const difference = touchStartX - touchEndX;
 
           if (Math.abs(difference) < 40) {
             return;
           }
-
 
           if (difference > 0) {
             updateCarousel(current + 1);
           } else {
             updateCarousel(current - 1);
           }
-
         },
         { passive: true }
       );
-
     });
-
   </script>
 
 </body>

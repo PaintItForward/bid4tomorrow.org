@@ -1,205 +1,318 @@
 <!DOCTYPE html>
-<!--IDEA CLICK ON PROFILE, IT ROTATES, AND THEN IT SHOWS A SMALL BLURB OF SELF INTRODUCTION INSTEAD OF LEADING TO THEIR OWN PROFILE-->
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="data:image/png;base64,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"/>
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About Us | Bid For Tomorrow</title>
-<meta name="description" content="Learn more about the team behind Bid For Tomorrow and our mission to support youth, health, and community causes through art.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>About Us | Bid For Tomorrow</title>
+  <meta name="description" content="Learn more about the team behind Bid For Tomorrow and our mission to support youth, health, and community causes through art.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Shared Unified Stylesheet with Index -->
+  <link rel="stylesheet" href="/src/index.css">
 </head>
+
 <body>
 
+  <!-- =========================================
+       NAVIGATION
+  ========================================= -->
   <nav id="main-nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
-      <a href="index.html#home" class="nav-logo" aria-label="Bid For Tomorrow home">
+      <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
         <div class="nav-logo-mark" aria-hidden="true">
-          <img src="favicon-96x96.png" alt="Bid For Tomorrow Logo">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          </svg>
         </div>
         Bid For Tomorrow
       </a>
 
-   
-      
-      <ul class="nav-links" id="nav-links" role="list">
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="branches.html">Our Branches</a></li>
-        <li><a  href="auction.html">Auction</a></li>
-        <li><a href="index.html#artwork">Gallery</a></li>
-        <li><a href="index.html#auctions">Events</a></li>
-        <li><a href="index.html#impact">Impact</a></li>
-        <li><a href="index.html#causes">Causes</a></li>
-        <li><a href="index.html#faq">FAQ</a></li>
-        <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
-      </ul>
-      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="nav-right">
+        <ul class="nav-links" id="nav-links" role="list">
+          <li><a href="about.html" class="active">About Us</a></li>
+          <li><a href="branches.html">Our Branches</a></li>
+          <li><a href="index.html#artworks">Gallery</a></li>
+          <li><a href="index.html#auctions">Events</a></li>
+          <li><a href="auction.html">Auction</a></li>
+          <li><a href="index.html#impact">Impact</a></li>
+          <li><a href="index.html#causes">Causes</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
-<main>
-  <header class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-blob hero-blob-1"></div>
 
-    <div class="hero-content">
-      <span class="hero-tag">Our Story</span>
-      <h1>About Us</h1>
-      <p class="hero-sub">
-        Founded by students in the Greater Toronto Area, Bid For Tomorrow began
-        with a simple idea: use student creativity to create meaningful change.
-        Today, we are growing beyond our original community, building a network
-        of student leaders and artists across cities.
-      </p>
-    </div>
-  </header>
+  <!-- Floating Dark Mode Toggle -->
+  <button class="dark-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
 
- <section class="section about-section">
-  <div class="container">
-
-    <!-- About Bid For Tomorrow -->
-    <div class="about-preview">
-      <div class="about-preview-visual">
-        <img src="favicon.svg"
-             alt="Bid For Tomorrow team"
-             class="about-image">
-      </div>
-
-      <div class="about-text fade-up">
-        <span class="eyebrow">About Us</span>
-        <h2>Art That Gives Back</h2>
-
-        <p>
-          Bid For Tomorrow is a student-led international organization
-          connecting young artists, student leaders, and communities through
-          art and philanthropy.
-        </p>
-
-        <p>
-          Founded by students in the Greater Toronto Area, Bid For Tomorrow
-          began with a simple belief: creativity can do more than inspire —
-          it can create meaningful change. Through student-led art auctions,
-          exhibitions, and community initiatives, we give young artists a
-          platform to share their work while supporting causes that matter.
-        </p>
-
-        <p>
-          As we grow, we are building a network of student-led chapters
-          across cities. From Toronto to Manhattan and beyond, our goal is
-          to bring young people together around a shared passion for
-          creativity, community, and giving back.
+  <main>
+    <!-- =========================================
+         HERO
+    ========================================= -->
+    <header class="hero" style="min-height: auto; padding: 140px 6% 70px; text-align: center; display: block;">
+      <div class="hero-content" style="padding: 0; max-width: 860px;">
+        <span class="eyebrow" style="margin-left: auto; margin-right: auto;">Our Story</span>
+        <h1 style="max-width: 850px; margin: 0 auto 20px;">Art That Gives Back</h1>
+        <p class="hero-sub" style="max-width: 680px; margin: 0 auto;">
+          Founded by students in the Greater Toronto Area, Bid For Tomorrow began with a simple belief:
+          creativity can do more than inspire — it can fund real-world change for youth, healthcare, and humanitarian causes.
         </p>
       </div>
-    </div>
+    </header>
 
-  </div>
-</section>
+    <!-- =========================================
+         ABOUT PREVIEW SECTION
+    ========================================= -->
+    <section class="section about-section">
+      <div class="container">
+        <div class="about-preview">
+          <div class="about-preview-visual">
+            <div class="about-image-wrapper">
+              <img
+                src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80"
+                alt="Bid For Tomorrow art exhibition"
+                class="about-image"
+                loading="lazy"
+              >
+            </div>
+          </div>
 
+          <div class="about-text">
+            <span class="eyebrow">The Movement</span>
+            <h2>Connecting Artists & Communities</h2>
 
-<!-- ── OUR TEAM ── -->
-<section class="section team-preview-section">
-  <div class="container">
+            <p>
+              Bid For Tomorrow is a student-led international organization connecting young artists, student leaders, and communities through fine art and transparent philanthropy.
+            </p>
 
-    <div class="section-header section-header-center fade-up">
-      <span class="eyebrow">The People Behind Bid For Tomorrow</span>
-      <h2>Meet Our Team</h2>
-      <p>
-        Bid For Tomorrow is led by students who bring together creativity,
-        organization, and a shared commitment to giving back.
-      </p>
-    </div>
+            <p>
+              Through museum-grade student-led art auctions, curated exhibitions, and community studio initiatives, we give young artists a prestigious platform to share their creations while directing 100% of auction proceeds toward audited grassroots causes.
+            </p>
 
-    <div class="team-grid">
-
-      <!-- Gloria -->
-      <div class="team-card fade-up">
-
-        <div class="team-image">
-          <img src="IMG_1261.JPG" alt="Gloria Xu" style="object-position: center 20%;">
+            <p>
+              As we expand, we are building a united network of student-led chapters across cities worldwide — spanning Toronto, Lexington, Manhattan, and beyond.
+            </p>
+          </div>
         </div>
-
-        <div class="team-info">
-          <span class="eyebrow">Co-Founder</span>
-          <h3>Gloria Xu</h3>
-
-          <p>
-            Leads Bid For Tomorrow's creative direction, technology,
-            systems, and artistic initiatives.
-          </p>
-
-      
-        </div>
-
       </div>
+    </section>
 
-
-      <!-- Brian -->
-      <div class="team-card fade-up">
-
-        <div class="team-image">
-          <img src="IMG_1269.JPG" alt="Brian Lu" style="object-position: center 30%;">
-        </div>
-
-        <div class="team-info">
-          <span class="eyebrow">Co-Founder</span>
-          <h3>Brian Lu</h3>
-
-          <p>
-            Helps organize events, connect with artists and community
-            partners, and grow Bid For Tomorrow's network.
+    <!-- =========================================
+         OUR TEAM (3D Interactive Rotating Profile Flip Cards)
+    ========================================= -->
+    <section class="section team-preview-section">
+      <div class="container">
+        <div class="section-header section-header-center" style="text-align: center; max-width: 740px; margin: 0 auto 3.5rem;">
+          <span class="eyebrow" style="margin-left: auto; margin-right: auto;">The People Behind Bid For Tomorrow</span>
+          <h2 style="margin-bottom: 1rem;">Meet Our Leadership</h2>
+          <p style="color: var(--text-body); font-size: 1.05rem;">
+            Click on any team member profile to flip the card and read their personal introduction, artistic philosophy, and leadership focus.
           </p>
-
-    
         </div>
 
+        <div class="team-grid">
+
+          <!-- Gloria Xu Profile Card (3D Flipper) -->
+          <div
+            class="team-card-flipper"
+            id="card-gloria"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-label="Gloria Xu - Co-Founder. Click to flip profile and read bio."
+          >
+            <div class="team-card-inner">
+              
+              <!-- Front Face -->
+              <div class="team-card-front">
+                <div class="team-image-container">
+                  <img
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80"
+                    alt="Gloria Xu Portrait"
+                    style="object-position: center 20%;"
+                    loading="lazy"
+                  >
+                  <div class="team-flip-indicator" aria-hidden="true">
+                    <span>Click to read bio</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                      <path d="M21 3v5h-5"/>
+                      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                      <path d="M3 21v-5h5"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="team-info-front">
+                  <div>
+                    <span class="eyebrow" style="margin-bottom: 0.35rem;">Co-Founder</span>
+                    <h3>Gloria Xu</h3>
+                    <p>
+                      Directs Bid For Tomorrow's artistic vision, digital curation, fine art partnerships, and operational platforms.
+                    </p>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--card-border); margin-top: 1rem;">
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Curatorial & Creative Direction</span>
+                    <span style="font-size: 0.78rem; color: var(--text-muted);">↻ Tap to Flip</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Back Face (Self Introduction Blurb) -->
+              <div class="team-card-back">
+                <div>
+                  <div class="team-back-header">
+                    <span class="eyebrow" style="margin-bottom: 0.35rem;">Self Introduction</span>
+                    <h3>Gloria Xu</h3>
+                    <span style="font-size: 0.85rem; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Co-Founder · Creative Director</span>
+                  </div>
+
+                  <p class="team-bio-text">
+                    "Art has always been my lens for understanding and reflecting human emotion. Co-founding Bid For Tomorrow was born from the realization that student artists produce work with immense emotional weight and technical excellence, but lack avenues to translate that talent into direct philanthropic power."
+                  </p>
+
+                  <ul class="team-focus-points">
+                    <li>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Fine Arts Curation & Exhibition Design
+                    </li>
+                    <li>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Digital Auction Architecture & Cataloguing
+                    </li>
+                    <li>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Artist Mentorship & Youth Engagement
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="team-back-footer">
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">Toronto Branch</span>
+                  <button type="button" class="btn-flip-back" aria-label="Flip back to portrait">
+                    <span>← Return</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Brian Lu Profile Card (3D Flipper) -->
+          <div
+            class="team-card-flipper"
+            id="card-brian"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-label="Brian Lu - Co-Founder. Click to flip profile and read bio."
+          >
+            <div class="team-card-inner">
+              
+              <!-- Front Face -->
+              <div class="team-card-front">
+                <div class="team-image-container">
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80"
+                    alt="Brian Lu Portrait"
+                    style="object-position: center 30%;"
+                    loading="lazy"
+                  >
+                  <div class="team-flip-indicator" aria-hidden="true">
+                    <span>Click to read bio</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                      <path d="M21 3v5h-5"/>
+                      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                      <path d="M3 21v-5h5"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="team-info-front">
+                  <div>
+                    <span class="eyebrow" style="margin-bottom: 0.35rem;">Co-Founder</span>
+                    <h3>Brian Lu</h3>
+                    <p>
+                      Oversees live event logistics, institutional community sponsorships, cause audits, and branch expansion strategies.
+                    </p>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--card-border); margin-top: 1rem;">
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Outreach & Philanthropy</span>
+                    <span style="font-size: 0.78rem; color: var(--text-muted);">↻ Tap to Flip</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Back Face (Self Introduction Blurb) -->
+              <div class="team-card-back">
+                <div>
+                  <div class="team-back-header">
+                    <span class="eyebrow" style="margin-bottom: 0.35rem;">Self Introduction</span>
+                    <h3>Brian Lu</h3>
+                    <span style="font-size: 0.85rem; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Co-Founder · Operations & Growth</span>
+                  </div>
+
+                  <p class="team-bio-text">
+                    "My mission with Bid For Tomorrow is connecting community energy with measurable social impact. By organizing transparent, high-visibility auction galas and forging partnerships with charities and schools, we prove that youth leadership can drive tangible societal outcomes."
+                  </p>
+
+                  <ul class="team-focus-points">
+                    <li>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Gala Logistics & Live Auction Coordination
+                    </li>
+                    <li>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Donor Relations & Verified Fund Disbursements
+                    </li>
+                    <li>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Inter-Branch Frameworks & Scaling
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="team-back-footer">
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">Toronto & International</span>
+                  <button type="button" class="btn-flip-back" aria-label="Flip back to portrait">
+                    <span>← Return</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
       </div>
+    </section>
+  </main>
 
-
-      <!-- Manhattan Chapter President
-           TODO:
-           - Add president's photo
-           - Add president's name
-           - Add bio
-           - Create manhattan.html
-      -->
-      <!--
-      <div class="team-card fade-up">
-
-        <div class="team-image">
-          <img src="MANHATTAN-PRESIDENT.jpg"
-               alt="Manhattan Chapter President">
-        </div>
-
-        <div class="team-info">
-          <span class="eyebrow">Chapter President · Manhattan</span>
-          <h3>[Name]</h3>
-
-          <p>
-            Leads Bid For Tomorrow's Manhattan chapter and helps bring our
-            mission to a new community.
-          </p>
-
-          <a href="manhattan.html" class="text-link">
-            View Profile →
-          </a>
-        </div>
-
-      </div>
-      -->
-
-    </div>
-
-  </div>
-</section>
-</main>
-
+  <!-- =========================================
+       FOOTER
+  ========================================= -->
   <footer>
     <div class="footer-inner">
       <div class="footer-top">
@@ -214,26 +327,67 @@
     </div>
   </footer>
 
-  <button class="dark-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
-    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-  </button>
-
+  <!-- =========================================
+       JAVASCRIPT (Theme Sync & 3D Flip Card Logic)
+  ========================================= -->
   <script>
-    const toggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    
-    if (localStorage.getItem('theme') === 'dark') {
-      body.classList.add('dark');
+    // 1. Theme Synchronization
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+
+    function getSavedTheme() {
+      return localStorage.getItem("bft-theme") || 
+             localStorage.getItem("paintItForwardTheme") || 
+             (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     }
 
-    toggle.addEventListener('click', () => {
-      body.classList.toggle('dark');
-      if (body.classList.contains('dark')) {
-        localStorage.setItem('theme', 'dark');
+    function applyTheme(theme) {
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+        document.body.classList.add("dark");
+        if (themeIcon) {
+          themeIcon.innerHTML = `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
+        }
       } else {
-        localStorage.setItem('theme', 'light');
+        document.documentElement.classList.remove("dark");
+        document.body.classList.remove("dark");
+        if (themeIcon) {
+          themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>`;
+        }
       }
+    }
+
+    applyTheme(getSavedTheme());
+
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        const isCurrentlyDark = document.body.classList.contains("dark");
+        const newTheme = isCurrentlyDark ? "light" : "dark";
+        localStorage.setItem("bft-theme", newTheme);
+        localStorage.setItem("paintItForwardTheme", newTheme);
+        applyTheme(newTheme);
+      });
+    }
+
+    // 2. 3D Profile Card Flip Interaction
+    document.querySelectorAll('.team-card-flipper').forEach(card => {
+      // Toggle rotation flip on click
+      card.addEventListener('click', (e) => {
+        // Toggle flipped state
+        const isFlipped = card.classList.toggle('flipped');
+        card.setAttribute('aria-expanded', isFlipped ? 'true' : 'false');
+      });
+
+      // Keyboard accessibility (Enter / Space key triggers flip)
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const isFlipped = card.classList.toggle('flipped');
+          card.setAttribute('aria-expanded', isFlipped ? 'true' : 'false');
+        }
+      });
     });
   </script>
+
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Online Art Auction | Paint It Forward</title>
-  <meta name="description" content="Paint It Forward student art auction – bid on original museum-grade student artwork and support community causes." />
+  <title>Online Art Auction | Bid For Tomorrow</title>
+  <meta name="description" content="Bid For Tomorrow student art auction – bid on original museum-grade student artwork and support community causes." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,14 +21,21 @@
   ========================================= -->
   <nav id="main-nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo" aria-label="Paint It Forward home">
+      <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
         <div class="nav-logo-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
           </svg>
         </div>
-        Paint It Forward
+        Bid For Tomorrow
       </a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
       <div class="nav-right">
         <ul class="nav-links" id="nav-links" role="list">
@@ -59,7 +66,7 @@
     ========================================= -->
     <header class="auction-hero">
       <div class="container">
-        <span class="eyebrow">Online Charity Gala · Fall 2026 Collection</span>
+        <span class="eyebrow">Online Charity Gala · Active Collection</span>
         <h1>Bid for Impact</h1>
         <p>
           Original fine art crafted by exceptional student artists, auctioned to raise audited funds for youth hospitals, mental health access, and grassroots community food security.
@@ -72,12 +79,13 @@
 
         <div class="campaign-strip">
           <div class="campaign-dates">
-            <strong>Autumn Charity Session</strong> · Closing September 21, 2026
+            <strong>Autumn Charity Session</strong> · Closing in real-time
           </div>
           <div class="campaign-countdown" id="campaignCountdown" aria-label="Time remaining for current auction lots">
-            <div class="cd-unit"><div class="cd-num" id="cd-d">–</div><div class="cd-label">Days</div></div>
-            <div class="cd-unit"><div class="cd-num" id="cd-h">–</div><div class="cd-label">Hours</div></div>
-            <div class="cd-unit"><div class="cd-num" id="cd-m">–</div><div class="cd-label">Min</div></div>
+            <div class="cd-unit"><div class="cd-num" id="cd-d">03</div><div class="cd-label">Days</div></div>
+            <div class="cd-unit"><div class="cd-num" id="cd-h">14</div><div class="cd-label">Hours</div></div>
+            <div class="cd-unit"><div class="cd-num" id="cd-m">28</div><div class="cd-label">Min</div></div>
+            <div class="cd-unit"><div class="cd-num" id="cd-s" style="color: var(--terracotta);">45</div><div class="cd-label">Sec</div></div>
           </div>
         </div>
       </div>
@@ -106,16 +114,30 @@
 
             <select id="sortSelect" aria-label="Sort artwork catalogue">
               <option value="ending">Closing Soonest</option>
-              <option value="newest">Recently Listed</option>
               <option value="bids">Most Popular (Bids)</option>
               <option value="price-low">Current Bid: Low to High</option>
               <option value="price-high">Current Bid: High to Low</option>
+              <option value="newest">Recently Listed</option>
             </select>
           </div>
         </div>
 
+        <!-- Medium Category Filter Chips -->
         <div class="filter-chips" id="mediumChips" role="group" aria-label="Filter lots by artistic medium"></div>
 
+        <!-- Live Auction Results Banner -->
+        <div id="toastNotification" style="display: none; margin-bottom: 2rem; padding: 1rem 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--section-alt); color: var(--text-heading); font-size: 0.95rem; font-weight: 500; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--terracotta); flex-shrink: 0;">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="toastMessage">Your bid has been recorded.</span>
+          </div>
+          <button type="button" id="closeToastBtn" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted);">✕</button>
+        </div>
+
+        <!-- Artwork Grid -->
         <div class="art-grid" id="artGrid"></div>
 
       </div>
@@ -147,8 +169,13 @@
         </div>
         <div style="display: flex; justify-content: space-between;">
           <span style="font-size: 0.85rem; color: var(--text-muted);">Minimum Next Bid:</span>
-          <strong id="modalMinBid" style="font-size: 1rem; color: var(--text-heading);"></strong>
+          <strong id="modalMinBid" style="font-size: 1.05rem; color: var(--text-heading);"></strong>
         </div>
+      </div>
+
+      <!-- In-Modal Error Warning if Bid is too low -->
+      <div id="modalError" style="display: none; background: rgba(125, 32, 39, 0.1); border: 1px solid var(--crimson); color: var(--crimson); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.88rem; font-weight: 600;">
+        Please enter an amount equal to or greater than the minimum next bid.
       </div>
 
       <form id="bidForm">
@@ -183,9 +210,15 @@
        FOOTER
   ========================================= -->
   <footer class="auction-footer">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <p style="color: rgba(250, 227, 177, 0.85); font-size: 0.9rem;">
-        © 2026 Paint It Forward · Student-led Fine Art Charity Auctions · 100% Direct Impact Guaranteed.
+    <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+      <p style="color: rgba(250, 227, 177, 0.85); font-size: 0.9rem; margin-bottom: 0.5rem;">
+        © 2026 Bid For Tomorrow · Student-led Fine Art Charity Auctions · 100% Direct Impact Guaranteed.
+      </p>
+      <p style="color: rgba(250, 227, 177, 0.6); font-size: 0.8rem;">
+        <a href="index.html" style="color: var(--sand-gold); text-decoration: underline; margin: 0 0.5rem;">Home</a> · 
+        <a href="about.html" style="color: var(--sand-gold); text-decoration: underline; margin: 0 0.5rem;">About Us</a> · 
+        <a href="branches.html" style="color: var(--sand-gold); text-decoration: underline; margin: 0 0.5rem;">Branches</a> · 
+        <a href="index.html#contact" style="color: var(--sand-gold); text-decoration: underline; margin: 0 0.5rem;">Contact</a>
       </p>
     </div>
   </footer>
@@ -232,7 +265,21 @@
       });
     }
 
-    // 2. Mock Auction Data with high-res curated art imagery
+    // Mobile Navigation Toggle
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("nav-links");
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
+
+    // 2. Mock Auction Data with dynamic relative closing times
+    const NOW = Date.now();
+    const HOUR = 3600 * 1000;
+    const DAY = 24 * HOUR;
+
     const MOCK_ARTWORKS = [
       {
         id: 1,
@@ -244,8 +291,8 @@
         startingBid: 140,
         currentBid: 285,
         bids: 8,
-        endDate: "2026-09-20T18:00:00",
-        createdAt: "2026-09-10T10:00:00"
+        endTime: NOW + (3 * DAY) + (6 * HOUR),
+        createdAt: NOW - (4 * DAY)
       },
       {
         id: 2,
@@ -257,8 +304,8 @@
         startingBid: 95,
         currentBid: 160,
         bids: 5,
-        endDate: "2026-09-19T20:00:00",
-        createdAt: "2026-09-09T14:30:00"
+        endTime: NOW + (2 * DAY) + (14 * HOUR),
+        createdAt: NOW - (3 * DAY)
       },
       {
         id: 3,
@@ -270,8 +317,8 @@
         startingBid: 160,
         currentBid: 320,
         bids: 14,
-        endDate: "2026-09-18T17:00:00",
-        createdAt: "2026-09-01T09:00:00"
+        endTime: NOW + (1 * DAY) + (8 * HOUR),
+        createdAt: NOW - (5 * DAY)
       },
       {
         id: 4,
@@ -283,8 +330,8 @@
         startingBid: 110,
         currentBid: 195,
         bids: 7,
-        endDate: "2026-09-21T21:00:00",
-        createdAt: "2026-09-12T08:15:00"
+        endTime: NOW + (4 * DAY) + (2 * HOUR),
+        createdAt: NOW - (2 * DAY)
       },
       {
         id: 5,
@@ -296,8 +343,8 @@
         startingBid: 75,
         currentBid: 140,
         bids: 6,
-        endDate: "2026-09-17T19:00:00",
-        createdAt: "2026-09-05T11:45:00"
+        endTime: NOW + (18 * HOUR),
+        createdAt: NOW - (6 * DAY)
       },
       {
         id: 6,
@@ -309,8 +356,8 @@
         startingBid: 120,
         currentBid: 245,
         bids: 11,
-        endDate: "2026-09-20T16:00:00",
-        createdAt: "2026-09-08T13:20:00"
+        endTime: NOW + (3 * DAY) + (1 * HOUR),
+        createdAt: NOW - (3 * DAY)
       },
       {
         id: 7,
@@ -322,8 +369,8 @@
         startingBid: 130,
         currentBid: 210,
         bids: 9,
-        endDate: "2026-09-19T22:00:00",
-        createdAt: "2026-09-11T16:50:00"
+        endTime: NOW + (2 * DAY) + (20 * HOUR),
+        createdAt: NOW - (4 * DAY)
       },
       {
         id: 8,
@@ -335,8 +382,8 @@
         startingBid: 85,
         currentBid: 175,
         bids: 10,
-        endDate: "2026-09-21T15:30:00",
-        createdAt: "2026-09-13T07:00:00"
+        endTime: NOW + (4 * DAY) + (18 * HOUR),
+        createdAt: NOW - (1 * DAY)
       }
     ];
 
@@ -350,32 +397,53 @@
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
 
+    // Toast notification elements
+    const toastNotification = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+    const closeToastBtn = document.getElementById('closeToastBtn');
+    if (closeToastBtn) {
+      closeToastBtn.addEventListener('click', () => {
+        toastNotification.style.display = 'none';
+      });
+    }
+
+    function showToast(msg) {
+      if (!toastNotification || !toastMessage) return;
+      toastMessage.textContent = msg;
+      toastNotification.style.display = 'flex';
+      setTimeout(() => {
+        if (toastNotification) toastNotification.style.display = 'none';
+      }, 6000);
+    }
+
     // Modal elements
     const bidModal = document.getElementById('bidModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalArtist = document.getElementById('modalArtist');
     const modalCurrentBid = document.getElementById('modalCurrentBid');
     const modalMinBid = document.getElementById('modalMinBid');
+    const modalError = document.getElementById('modalError');
     const bidAmountInput = document.getElementById('bidAmount');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const cancelBidBtn = document.getElementById('cancelBidBtn');
     const bidForm = document.getElementById('bidForm');
 
-    function getTimeLeft(endDate) {
-      const diff = new Date(endDate) - Date.now();
-      if (diff <= 0) return { days: 0, hours: 0, minutes: 0, expired: true };
+    function getTimeLeft(endTime) {
+      const diff = endTime - Date.now();
+      if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      return { days, hours, minutes, expired: false };
+      const seconds = Math.floor((diff / 1000) % 60);
+      return { days, hours, minutes, seconds, expired: false };
     }
 
     function formatPrice(amount) {
       return '$' + amount.toLocaleString();
     }
 
-    function getEndLabel(endDate) {
-      const { days, hours, minutes, expired } = getTimeLeft(endDate);
+    function getEndLabel(endTime) {
+      const { days, hours, minutes, expired } = getTimeLeft(endTime);
       if (expired) return 'Auction Closed';
       if (days > 0) return `${days}d ${hours}h left`;
       if (hours > 0) return `${hours}h ${minutes}m left`;
@@ -391,12 +459,15 @@
       modalMinBid.textContent = formatPrice(minBid);
       bidAmountInput.value = minBid;
       bidAmountInput.min = minBid;
+      if (modalError) modalError.style.display = 'none';
       bidModal.style.display = 'flex';
+      bidAmountInput.focus();
     }
 
     function closeBidModal() {
       bidModal.style.display = 'none';
       selectedLot = null;
+      if (modalError) modalError.style.display = 'none';
     }
 
     closeModalBtn.addEventListener('click', closeBidModal);
@@ -409,18 +480,24 @@
       e.preventDefault();
       if (!selectedLot) return;
       const amount = parseFloat(bidAmountInput.value);
-      if (amount <= selectedLot.currentBid) {
-        alert('Your bid must be higher than the current bid.');
+      const minRequired = selectedLot.currentBid + 15;
+      
+      if (amount < minRequired) {
+        if (modalError) {
+          modalError.textContent = `Bid must be at least ${formatPrice(minRequired)} ($15 above current bid).`;
+          modalError.style.display = 'block';
+        }
         return;
       }
       
-      // Update local state
+      // Update state
+      const bidderName = document.getElementById('bidderName').value;
       selectedLot.currentBid = amount;
       selectedLot.bids += 1;
       
       closeBidModal();
       applyFilters();
-      alert(`Success! Your bid of ${formatPrice(amount)} for "${selectedLot.title}" has been registered.`);
+      showToast(`Success! Your bid of ${formatPrice(amount)} for "${selectedLot.title}" has been registered. Confirmation sent!`);
     });
 
     function renderGrid(items) {
@@ -437,7 +514,7 @@
       grid.innerHTML = items.map(art => `
         <article class="art-card" data-id="${art.id}">
           <div class="art-card-img">
-            <img src="${art.image}" alt="${art.title}" loading="lazy" />
+            <img src="${art.image}" alt="${art.title}" loading="lazy" referrerpolicy="no-referrer" />
           </div>
           <div class="art-card-body">
             <div class="art-card-medium">${art.medium}</div>
@@ -447,7 +524,7 @@
             <div class="art-card-meta">
               <div>
                 <div class="art-card-bid">${formatPrice(art.currentBid)}</div>
-                <div class="art-card-time">${art.bids} bids · ${getEndLabel(art.endDate)}</div>
+                <div class="art-card-time">${art.bids} bids · ${getEndLabel(art.endTime)}</div>
               </div>
               <button type="button" class="btn btn-primary bid-trigger-btn" data-art-id="${art.id}">
                 Place Bid
@@ -459,7 +536,7 @@
 
       // Attach bid triggers
       grid.querySelectorAll('.bid-trigger-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
           const id = parseInt(btn.getAttribute('data-art-id'), 10);
           const found = artworks.find(a => a.id === id);
           if (found) openBidModal(found);
@@ -503,10 +580,7 @@
 
       switch (sort) {
         case 'ending':
-          result.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
-          break;
-        case 'newest':
-          result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          result.sort((a, b) => a.endTime - b.endTime);
           break;
         case 'bids':
           result.sort((a, b) => b.bids - a.bids);
@@ -517,36 +591,39 @@
         case 'price-high':
           result.sort((a, b) => b.currentBid - a.currentBid);
           break;
+        case 'newest':
+          result.sort((a, b) => b.createdAt - a.createdAt);
+          break;
       }
 
       filtered = result;
       renderGrid(filtered);
     }
 
-    function updateCountdown(endDateStr) {
-      const end = new Date(endDateStr);
+    function startCampaignCountdown(targetEndTime) {
       const el = (id) => document.getElementById(id);
       function tick() {
-        const { days, hours, minutes, expired } = getTimeLeft(end);
+        const { days, hours, minutes, seconds, expired } = getTimeLeft(targetEndTime);
         if (expired) {
-          if (el('cd-d')) el('cd-d').textContent = '0';
-          if (el('cd-h')) el('cd-h').textContent = '0';
-          if (el('cd-m')) el('cd-m').textContent = '0';
+          if (el('cd-d')) el('cd-d').textContent = '00';
+          if (el('cd-h')) el('cd-h').textContent = '00';
+          if (el('cd-m')) el('cd-m').textContent = '00';
+          if (el('cd-s')) el('cd-s').textContent = '00';
           return;
         }
         if (el('cd-d')) el('cd-d').textContent = String(days).padStart(2, '0');
         if (el('cd-h')) el('cd-h').textContent = String(hours).padStart(2, '0');
         if (el('cd-m')) el('cd-m').textContent = String(minutes).padStart(2, '0');
+        if (el('cd-s')) el('cd-s').textContent = String(seconds).padStart(2, '0');
       }
       tick();
-      setInterval(tick, 60000);
+      setInterval(tick, 1000);
     }
 
     function init() {
-      const latestEnd = artworks.reduce((latest, a) =>
-        new Date(a.endDate) > new Date(latest) ? a.endDate : latest
-      , artworks[0]?.endDate || '2026-09-21T23:59:59');
-      updateCountdown(latestEnd);
+      // Set target countdown to furthest lot ending
+      const maxEndTime = Math.max(...artworks.map(a => a.endTime));
+      startCampaignCountdown(maxEndTime);
 
       const mediums = [...new Set(artworks.map(a => a.medium))];
       renderChips(mediums);
@@ -556,7 +633,11 @@
       sortSelect.addEventListener('change', applyFilters);
     }
 
-    init();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   </script>
 
 </body>

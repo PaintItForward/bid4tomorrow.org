@@ -1,4 +1,4 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <!-- IDEA: CLICK ON PROFILE, IT ROTATES, AND THEN IT SHOWS A SMALL BLURB OF SELF INTRODUCTION INSTEAD OF LEADING TO THEIR OWN PROFILE -->
 <html lang="en">
 <head>
@@ -12,8 +12,750 @@ DOCTYPE html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Shared Unified Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* =========================================
+       CSS VARIABLES & THEMES
+    ========================================= */
+    :root {
+      --terracotta:         #C25737;
+      --terracotta-dark:    #A34224;
+      --terracotta-light:   #E87D5D;
+      --ochre-gold:         #B8860B;
+      --sand-gold:          #D4A853;
+      --cerulean:           #3B7A8C;
+      --charcoal:           #2C221E;
+      --charcoal-light:     #4A3B35;
+      --cream:              #FAF7F2;
+      --white:              #FFFFFF;
+      --border:             #E8E0D5;
+      --card-border:        #E2D9CC;
+      --card-bg:            #FFFFFF;
+      --section-alt:        #F4EFEA;
+      --text-heading:       #2C221E;
+      --text-body:          #5C4D46;
+      --text-muted:         #8C7A72;
+      --nav-bg:             rgba(250, 247, 242, 0.92);
+
+      --radius-sm:          6px;
+      --radius-md:          12px;
+      --radius-lg:          20px;
+      --shadow-sm:          0 2px 10px rgba(44, 34, 30, 0.05);
+      --shadow-md:          0 8px 24px rgba(44, 34, 30, 0.08);
+      --shadow-lg:          0 16px 40px rgba(44, 34, 30, 0.12);
+      --transition:         0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    html.dark, body.dark {
+      --cream:              #181311;
+      --white:              #221B18;
+      --border:             #3A2F2A;
+      --card-border:        #3D322C;
+      --card-bg:            #241D19;
+      --section-alt:        #1D1714;
+      --text-heading:       #F5EFEB;
+      --text-body:          #C9BCB5;
+      --text-muted:         #8F8078;
+      --nav-bg:             rgba(24, 19, 17, 0.94);
+      --shadow-sm:          0 2px 10px rgba(0, 0, 0, 0.35);
+      --shadow-md:          0 8px 24px rgba(0, 0, 0, 0.45);
+      --shadow-lg:          0 16px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* =========================================
+       BASE RESETS & ELEMENT CONSTRAINTS
+    ========================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-body);
+      background-color: var(--cream);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background-color var(--transition), color var(--transition);
+    }
+
+    /* Prevent any SVG from blowing up to full viewport width */
+    svg {
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+      max-width: 100%;
+      height: auto;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      color: var(--text-heading);
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    h1 { font-size: clamp(2.4rem, 5vw, 4.2rem); }
+    h2 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); }
+    h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+
+    .eyebrow {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      padding: 85px 0;
+    }
+
+    /* =========================================
+       NAVIGATION BAR
+    ========================================= */
+    #main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--nav-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background-color var(--transition), border-color var(--transition);
+    }
+
+    .nav-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-heading);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo-mark {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 50%;
+      background: var(--section-alt);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .nav-logo-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-body);
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      transition: color var(--transition), background-color var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--terracotta);
+      background: rgba(194, 87, 55, 0.08);
+    }
+
+    .nav-cta {
+      background: var(--terracotta) !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      padding: 0.5rem 1.15rem !important;
+      border-radius: var(--radius-sm) !important;
+      transition: background var(--transition), transform var(--transition) !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--terracotta-dark) !important;
+      transform: translateY(-1px);
+    }
+
+    .nav-theme-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-heading);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.65rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+    }
+
+    .nav-theme-btn:hover {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-heading);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* Floating Theme Toggle (Bottom Right) */
+    .dark-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 999;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      color: var(--text-heading);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    .dark-toggle:hover {
+      transform: scale(1.08);
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+    }
+
+    /* =========================================
+       HERO SECTION
+    ========================================= */
+    .hero {
+      padding: 140px 1.5rem 60px;
+      text-align: center;
+      background: var(--cream);
+    }
+
+    .hero-content {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-body);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* =========================================
+       ABOUT STORY SECTION
+    ========================================= */
+    .about-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-preview-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .about-image-wrapper {
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius-md);
+      background: var(--section-alt);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .about-image {
+      width: 100%;
+      height: 100%;
+      max-height: 240px;
+      object-fit: contain;
+    }
+
+    .about-text h2 {
+      margin-bottom: 1.25rem;
+    }
+
+    .about-text p {
+      margin-bottom: 1.15rem;
+      font-size: 1.02rem;
+    }
+
+    /* =========================================
+       CORE PILLARS (4 Grid Cards)
+    ========================================= */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .pillar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-top: 4px solid var(--terracotta);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pillar-icon-box {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .pillar-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .pillar-card p {
+      font-size: 0.94rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* =========================================
+       3D INTERACTIVE FLIP PROFILE CARDS
+    ========================================= */
+    .team-preview-section {
+      background: var(--section-alt);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      max-width: 960px;
+      margin: 3rem auto 0;
+    }
+
+    .team-card-flipper {
+      perspective: 1400px;
+      -webkit-perspective: 1400px;
+      height: 560px;
+      width: 100%;
+      cursor: pointer;
+      position: relative;
+      background: transparent;
+      border: none;
+      padding: 0;
+      outline: none;
+    }
+
+    .team-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: var(--radius-md);
+    }
+
+    .team-card-flipper.flipped .team-card-inner {
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
+
+    .team-card-front,
+    .team-card-back {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: var(--radius-md);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+      overflow: hidden;
+    }
+
+    .team-card-front {
+      border-top: 4px solid var(--terracotta);
+      transform: rotateY(0deg);
+      -webkit-transform: rotateY(0deg);
+      z-index: 2;
+    }
+
+    .team-card-back {
+      border-top: 4px solid var(--ochre-gold);
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+      padding: 2.2rem 1.8rem;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .team-card-flipper.flipped .team-card-front {
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .team-card-flipper.flipped .team-card-back {
+      z-index: 2;
+      pointer-events: auto;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Card Front Portrait & Content */
+    .team-image-container {
+      width: 100%;
+      height: 310px;
+      position: relative;
+      overflow: hidden;
+      background: var(--section-alt);
+    }
+
+    .team-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .team-card-flipper:hover .team-image-container img {
+      transform: scale(1.04);
+    }
+
+    .team-flip-indicator {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(44, 34, 30, 0.8);
+      backdrop-filter: blur(8px);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      letter-spacing: 0.03em;
+    }
+
+    .team-flip-indicator svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .team-info-front {
+      padding: 1.6rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+
+    .team-info-front h3 {
+      font-size: 1.35rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .team-info-front p {
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+
+    /* Card Back (Self Introduction Blurb) */
+    .team-back-header {
+      margin-bottom: 1rem;
+    }
+
+    .team-bio-text {
+      font-size: 0.94rem;
+      line-height: 1.65;
+      font-style: italic;
+      color: var(--text-body);
+      margin-bottom: 1.25rem;
+    }
+
+    .team-focus-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .team-focus-points li {
+      font-size: 0.86rem;
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      line-height: 1.4;
+    }
+
+    .team-focus-points li svg {
+      width: 15px;
+      height: 15px;
+      color: var(--terracotta);
+    }
+
+    .team-back-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-flip-back {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-heading);
+      padding: 0.4rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+
+    .btn-flip-back:hover {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: #FFFFFF;
+    }
+
+    /* =========================================
+       CTA SECTION
+    ========================================= */
+    .cta-section {
+      padding: 90px 1.5rem;
+      text-align: center;
+      background: var(--cream);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.8rem 1.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--terracotta);
+      color: #FFFFFF;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--terracotta-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text-heading);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+      transform: translateY(-2px);
+    }
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+    footer {
+      background: #1C1512;
+      color: #C2B6B0;
+      padding: 4.5rem 1.5rem 2.5rem;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-brand .footer-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.88rem;
+      color: #9E8E87;
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    .footer-bottom {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.8rem;
+      color: #7D6F69;
+    }
+
+    /* =========================================
+       RESPONSIVE DESIGN
+    ========================================= */
+    @media (max-width: 860px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        flex-direction: column;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-lg);
+        gap: 0.5rem;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .mobile-nav-controls {
+        display: flex !important;
+      }
+
+      .about-preview {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        text-align: center;
+      }
+
+      .about-image-wrapper {
+        margin: 0 auto;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 
   <!-- Immediate Theme Loader to prevent flash of wrong mode -->
   <script>
@@ -39,7 +781,7 @@ DOCTYPE html>
     <div class="nav-inner">
       <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
         <div class="nav-logo-mark" aria-hidden="true">
-          <img src="favicon-96x96.png" alt="Bid For Tomorrow Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="favicon-96x96.png" alt="Bid For Tomorrow Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
             <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
           </svg>
@@ -49,8 +791,8 @@ DOCTYPE html>
 
       <!-- Mobile Controls (Theme Toggle + Hamburger) -->
       <div class="mobile-nav-controls" style="display: none; align-items: center; gap: 0.75rem;">
-        <button type="button" class="nav-theme-btn" id="mobileNavThemeToggle" aria-label="Toggle dark mode" style="padding: 0.45rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card-bg); color: var(--text-heading); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
+        <button type="button" class="nav-theme-btn" id="mobileNavThemeToggle" aria-label="Toggle dark mode">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
             <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
           </svg>
         </button>
@@ -80,9 +822,8 @@ DOCTYPE html>
               class="nav-theme-btn"
               aria-label="Toggle dark mode"
               title="Toggle dark mode"
-              style="padding: 0.45rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card-bg); color: var(--text-heading); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color var(--transition), color var(--transition);"
             >
-              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon-slot">
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
               </svg>
             </button>
@@ -96,7 +837,7 @@ DOCTYPE html>
 
   <!-- Floating Dark Mode Toggle -->
   <button class="dark-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
       <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
     </svg>
   </button>
@@ -105,11 +846,11 @@ DOCTYPE html>
     <!-- =========================================
          HERO
     ========================================= -->
-    <header class="hero" style="min-height: auto; padding: 140px 6% 70px; text-align: center; display: block;">
-      <div class="hero-content" style="padding: 0; max-width: 860px; margin: 0 auto;">
-        <span class="eyebrow" style="margin-left: auto; margin-right: auto;">Our Story</span>
-        <h1 style="max-width: 850px; margin: 0 auto 20px;">Art That Gives Back</h1>
-        <p class="hero-sub" style="max-width: 680px; margin: 0 auto; color: var(--text-body); font-size: 1.15rem; line-height: 1.75;">
+    <header class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">Our Story</span>
+        <h1>Art That Gives Back</h1>
+        <p class="hero-sub">
           Founded by student artists and youth organizers in the Greater Toronto Area, Bid For Tomorrow began with a simple belief:
           creativity can do more than inspire — it can fund real-world change for youth, healthcare, and humanitarian causes.
         </p>
@@ -119,8 +860,8 @@ DOCTYPE html>
     <!-- =========================================
          ABOUT PREVIEW SECTION
     ========================================= -->
-    <section class="section about-section" style="padding: 80px 6%;">
-      <div class="container" style="max-width: 1200px; margin: 0 auto;">
+    <section class="section about-section">
+      <div class="container">
         <div class="about-preview">
           <div class="about-preview-visual">
             <div class="about-image-wrapper">
@@ -155,32 +896,32 @@ DOCTYPE html>
     <!-- =========================================
          OUR FOUR PILLARS
     ========================================= -->
-    <section class="section" style="background: var(--section-alt); padding: 90px 6%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-      <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <div style="text-align: center; max-width: 740px; margin: 0 auto 3.5rem;">
-          <span class="eyebrow" style="margin-left: auto; margin-right: auto;">Our Core Foundation</span>
-          <h2 style="margin-bottom: 1rem;">The Principles That Guide Us</h2>
-          <p style="color: var(--text-body); font-size: 1.05rem;">
+    <section class="section" style="background: var(--section-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <div class="container">
+        <div style="text-align: center; max-width: 740px; margin: 0 auto;">
+          <span class="eyebrow">Our Core Foundation</span>
+          <h2>The Principles That Guide Us</h2>
+          <p style="font-size: 1.05rem; margin-top: 0.75rem;">
             Every auction, workshop, and chapter launch operates under four foundational commitments.
           </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.75rem;">
-          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--terracotta); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(207, 85, 39, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--terracotta);">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon-box" style="background: rgba(194, 87, 55, 0.12); color: var(--terracotta);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
               </svg>
             </div>
-            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">100% Direct Impact</h3>
-            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+            <h3>100% Direct Impact</h3>
+            <p>
               Every dollar pledged at our galas goes directly to vetted pediatric, mental health, and community initiatives with full public financial audits.
             </p>
           </div>
 
-          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--ochre-gold); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(153, 135, 49, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--ochre-gold);">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="pillar-card" style="border-top-color: var(--ochre-gold);">
+            <div class="pillar-icon-box" style="background: rgba(184, 134, 11, 0.12); color: var(--ochre-gold);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="m4.93 4.93 4.24 4.24"/>
                 <path d="m14.83 9.17 4.24-4.24"/>
@@ -188,37 +929,37 @@ DOCTYPE html>
                 <path d="m9.17 14.83-4.24 4.24"/>
               </svg>
             </div>
-            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Curatorial Prestige</h3>
-            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+            <h3>Curatorial Prestige</h3>
+            <p>
               We treat youth and student art with museum-standard catalogue presentation, archival conservation, and professional live auctions.
             </p>
           </div>
 
-          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--cerulean); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(95, 168, 194, 0.18); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--cerulean);">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="pillar-card" style="border-top-color: var(--cerulean);">
+            <div class="pillar-icon-box" style="background: rgba(59, 122, 140, 0.12); color: var(--cerulean);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
             </div>
-            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Youth-Led Autonomy</h3>
-            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+            <h3>Youth-Led Autonomy</h3>
+            <p>
               Branches are completely founded and operated by local high school and university students, fostering lifelong leadership.
             </p>
           </div>
 
-          <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 4px solid var(--terracotta); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(207, 85, 39, 0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--terracotta);">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="pillar-card">
+            <div class="pillar-icon-box" style="background: rgba(194, 87, 55, 0.12); color: var(--terracotta);">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="2" y1="12" x2="22" y2="12"/>
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
               </svg>
             </div>
-            <h3 style="font-size: 1.25rem; margin-bottom: 0.6rem;">Cross-Border Network</h3>
-            <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.6;">
+            <h3>Cross-Border Network</h3>
+            <p>
               Inter-chapter exchanges allow artists in Toronto, Massachusetts, and new city branches to exhibit in each other's charity galas.
             </p>
           </div>
@@ -229,12 +970,12 @@ DOCTYPE html>
     <!-- =========================================
          OUR TEAM (3D Interactive Rotating Profile Flip Cards)
     ========================================= -->
-    <section class="section team-preview-section" style="padding: 95px 6%;">
-      <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <div class="section-header section-header-center" style="text-align: center; max-width: 740px; margin: 0 auto 3.5rem;">
-          <span class="eyebrow" style="margin-left: auto; margin-right: auto;">The People Behind Bid For Tomorrow</span>
-          <h2 style="margin-bottom: 1rem;">Meet Our Leadership</h2>
-          <p style="color: var(--text-body); font-size: 1.05rem;">
+    <section class="section team-preview-section">
+      <div class="container">
+        <div style="text-align: center; max-width: 740px; margin: 0 auto;">
+          <span class="eyebrow">The People Behind Bid For Tomorrow</span>
+          <h2>Meet Our Leadership</h2>
+          <p style="font-size: 1.05rem; margin-top: 0.75rem;">
             Click on any team member profile to rotate the card and read their personal introduction, artistic philosophy, and leadership focus.
           </p>
         </div>
@@ -279,9 +1020,9 @@ DOCTYPE html>
                       Directs Bid For Tomorrow's artistic vision, digital curation, fine art partnerships, and operational platforms.
                     </p>
                   </div>
-                  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--card-border); margin-top: 1rem;">
-                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Curatorial & Creative Direction</span>
-                    <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">↻ Tap to Flip</span>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.85rem; border-top: 1px solid var(--border); margin-top: 0.85rem;">
+                    <span style="font-size: 0.76rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Curatorial & Creative Direction</span>
+                    <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">↻ Tap to Flip</span>
                   </div>
                 </div>
               </div>
@@ -290,9 +1031,9 @@ DOCTYPE html>
               <div class="team-card-back">
                 <div>
                   <div class="team-back-header">
-                    <span class="eyebrow" style="margin-bottom: 0.35rem;">Self Introduction</span>
+                    <span class="eyebrow" style="margin-bottom: 0.25rem;">Self Introduction</span>
                     <h3>Gloria Xu</h3>
-                    <span style="font-size: 0.85rem; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Co-Founder · Creative Director</span>
+                    <span style="font-size: 0.82rem; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Co-Founder · Creative Director</span>
                   </div>
 
                   <p class="team-bio-text">
@@ -370,9 +1111,9 @@ DOCTYPE html>
                       Oversees live event logistics, institutional community sponsorships, cause audits, and branch expansion strategies.
                     </p>
                   </div>
-                  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--card-border); margin-top: 1rem;">
-                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Outreach & Philanthropy</span>
-                    <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">↻ Tap to Flip</span>
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.85rem; border-top: 1px solid var(--border); margin-top: 0.85rem;">
+                    <span style="font-size: 0.76rem; font-weight: 700; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.5px;">Outreach & Philanthropy</span>
+                    <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">↻ Tap to Flip</span>
                   </div>
                 </div>
               </div>
@@ -381,9 +1122,9 @@ DOCTYPE html>
               <div class="team-card-back">
                 <div>
                   <div class="team-back-header">
-                    <span class="eyebrow" style="margin-bottom: 0.35rem;">Self Introduction</span>
+                    <span class="eyebrow" style="margin-bottom: 0.25rem;">Self Introduction</span>
                     <h3>Brian Lu</h3>
-                    <span style="font-size: 0.85rem; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Co-Founder · Operations & Growth</span>
+                    <span style="font-size: 0.82rem; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Co-Founder · Operations & Growth</span>
                   </div>
 
                   <p class="team-bio-text">
@@ -430,18 +1171,18 @@ DOCTYPE html>
     <!-- =========================================
          CALL TO ACTION
     ========================================= -->
-    <section class="section" style="padding: 90px 6%; text-align: center; background: var(--cream);">
+    <section class="cta-section">
       <div style="max-width: 750px; margin: 0 auto;">
-        <span class="eyebrow" style="margin-left: auto; margin-right: auto;">Join Us</span>
+        <span class="eyebrow">Join Us</span>
         <h2 style="margin-bottom: 1.25rem;">Be Part of the Next Chapter</h2>
-        <p style="color: var(--text-body); font-size: 1.08rem; line-height: 1.75; margin-bottom: 2.2rem;">
+        <p style="font-size: 1.08rem; line-height: 1.75; margin-bottom: 2.2rem;">
           Whether you are a student artist eager to donate your pieces, a passionate community leader looking to launch a branch, or a collector seeking meaningful art, there is a place for you.
         </p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="index.html#contact" class="btn btn-primary" style="padding: 14px 32px; border-radius: 999px; background: var(--terracotta); color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+          <a href="index.html#contact" class="btn btn-primary">
             Get In Touch
           </a>
-          <a href="branches.html" class="btn" style="padding: 14px 32px; border-radius: 999px; background: var(--card-bg); color: var(--text-heading); border: 1px solid var(--card-border); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+          <a href="branches.html" class="btn btn-secondary">
             Explore Branches
           </a>
         </div>
@@ -454,11 +1195,9 @@ DOCTYPE html>
   ========================================= -->
   <footer>
     <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="index.html" class="footer-logo">Bid For Tomorrow</a>
-          <p>A student-led international organization connecting young artists across communities through art, philanthropy, and meaningful causes.</p>
-        </div>
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">Bid For Tomorrow</a>
+        <p>A student-led international organization connecting young artists across communities through art, philanthropy, and meaningful causes.</p>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 Bid For Tomorrow. All rights reserved.</p>

@@ -427,11 +427,11 @@
       margin: 3rem auto 0;
     }
 
-    .team-card-flipper {
+       .team-card-flipper {
       perspective: 1400px;
       -webkit-perspective: 1400px;
       width: 100%;
-      min-height: 720px;
+      height: 680px;
       cursor: pointer;
       position: relative;
       background: transparent;
@@ -442,15 +442,12 @@
 
     .team-card-inner {
       position: relative;
-      height: auto;
       width: 100%;
-      aspect-ratio: 3/4;
-      min-height: 720px;
+      height: 100%;
       transform-style: preserve-3d;
       -webkit-transform-style: preserve-3d;
       transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
       border-radius: var(--radius-md);
-    }
 
     .team-card-flipper.flipped .team-card-inner {
       transform: rotateY(180deg);

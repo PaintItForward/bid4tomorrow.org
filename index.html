@@ -15,17 +15,184 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-  /* ── Canvas Texture Background (Replaces AI Gradient Blobs) ── */
+  /* ── Canvas Layer & Layer Stacking Fixes ── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 1. Paint canvas layer sits behind text (z-index: 1) */
+  .paint-canvas-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  /* 2. Woven Canvas Texture */
   .hero-canvas-texture {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.035;
-    background-image: radial-gradient(var(--matcha-dark, #3D4D3D) 1px, transparent 1px);
-    background-size: 24px 24px;
+    z-index: 1;
+    background-image: 
+      repeating-linear-gradient(0deg, rgba(103, 60, 52, 0.05) 0px, rgba(103, 60, 52, 0.05) 1px, transparent 1px, transparent 4px),
+      repeating-linear-gradient(90deg, rgba(103, 60, 52, 0.05) 0px, rgba(103, 60, 52, 0.05) 1px, transparent 1px, transparent 4px),
+      radial-gradient(ellipse at 50% 50%, rgba(250, 227, 177, 0.25) 0%, rgba(153, 135, 49, 0.08) 100%);
+    background-size: 4px 4px, 4px 4px, 100% 100%;
+    opacity: 0.85;
   }
+
+  .hero-canvas-weave-detail {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: 
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.22) 0px, rgba(255, 255, 255, 0.22) 1px, transparent 1px, transparent 8px),
+      repeating-linear-gradient(-45deg, rgba(103, 60, 52, 0.04) 0px, rgba(103, 60, 52, 0.04) 1px, transparent 1px, transparent 8px);
+    background-size: 8px 8px, 8px 8px;
+    opacity: 0.75;
+  }
+
   .dark .hero-canvas-texture {
-    opacity: 0.02;
+    opacity: 0.9;
+    background-image: 
+      repeating-linear-gradient(0deg, rgba(250, 227, 177, 0.045) 0px, rgba(250, 227, 177, 0.045) 1px, transparent 1px, transparent 4px),
+      repeating-linear-gradient(90deg, rgba(250, 227, 177, 0.045) 0px, rgba(250, 227, 177, 0.045) 1px, transparent 1px, transparent 4px);
+  }
+
+  /* 3. Hero content sits ABOVE the paint (z-index: 10) */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    pointer-events: none; /* Clicks in empty space hit the canvas underneath */
+  }
+
+  /* 4. Keep all buttons, links, cards, and toolbars interactive */
+  .hero-content a,
+  .hero-content button,
+  .hero-content input,
+  .hero-content label,
+  .hero-stat-box,
+  .hero-tag,
+  .paint-toolbar {
+    pointer-events: auto;
+  }
+
+  /* ── Studio Paint Toolbar ── */
+  .paint-toolbar {
+    margin-top: 2rem;
+    background: var(--card-bg, #FCF6EC);
+    border: 1px solid var(--border, #998731);
+    border-radius: 6px;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 4px 16px rgba(103, 60, 52, 0.12);
+    backdrop-filter: blur(8px);
+  }
+
+  .palette-swatches {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .palette-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-heading, #4E2922);
+  }
+
+  .swatch-btn {
+    border: 1px solid rgba(0,0,0,0.15);
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: rgba(153, 135, 49, 0.12);
+    color: var(--text-heading, #4E2922);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .swatch-btn.color-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    padding: 0;
+  }
+
+  .swatch-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .swatch-btn.active {
+    box-shadow: 0 0 0 2px var(--terracotta, #CF5527), 0 2px 6px rgba(0,0,0,0.25);
+    transform: scale(1.15);
+  }
+
+  .custom-color-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    border: 1px dashed var(--border, #998731);
+    background: rgba(153, 135, 49, 0.08);
+    color: var(--text-heading, #4E2922);
+  }
+
+  .custom-color-label input[type="color"] {
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .paint-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .toolbar-btn {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--border, #998731);
+    background: transparent;
+    color: var(--text-heading, #4E2922);
+    transition: all 0.2s ease;
+  }
+
+  .toolbar-btn.primary-tool {
+    background: var(--terracotta, #CF5527);
+    color: #fff;
+    border-color: var(--terracotta, #CF5527);
+  }
+
+  .toolbar-btn:hover {
+    transform: translateY(-1px);
   }
 
   /* ── Editorial Asymmetric Layouts ── */
@@ -180,7 +347,6 @@
 </nav>
 
 <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <section class="hero" id="home" aria-label="Hero">
   <!-- 1. Background Tone -->
   <div class="hero-bg" aria-hidden="true"></div>
@@ -189,10 +355,10 @@
   <div class="hero-canvas-texture" aria-hidden="true"></div>
   <div class="hero-canvas-weave-detail" aria-hidden="true"></div>
 
-  <!-- 3. Interactive Paint Canvas Layer (Behind text) -->
+  <!-- 3. Interactive Paint Canvas Layer (Sits behind text) -->
   <canvas id="hero-paint-canvas" class="paint-canvas-layer"></canvas>
 
-  <!-- 4. Hero Content (Single copy, sits in front of paint) -->
+  <!-- 4. Hero Content (Sits in front of paint) -->
   <div class="hero-content">
     <span class="hero-tag">
       <span>Student Art Initiative &bull; GTA &amp; New England</span>
@@ -281,8 +447,6 @@
 <section class="section mission-section" id="mission">
   <div class="container">
     <div class="mission-editorial-grid">
-      
-      <!-- Left Column: Expressive Statement & Narrative -->
       <div class="fade-up">
         <h2 class="editorial-statement">
           When youth compassion meets creative expression, small acts of kindness become lasting community care.
@@ -298,7 +462,6 @@
         </div>
       </div>
 
-      <!-- Right Column: Numbered Editorial Core Values -->
       <div class="fade-up">
         <div class="numbered-value-card">
           <div class="num-marker">01</div>
@@ -324,7 +487,6 @@
           </p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -373,13 +535,11 @@
       <h2>Events &amp; Auctions</h2>
       <p>Browse auction lots, check exhibition dates, and submit early bidder registrations.</p>
     </div>
-    <div class="auction-cards" id="auction-cards">
-      <!-- Injected by JS with direct link to auction.html -->
-    </div>
+    <div class="auction-cards" id="auction-cards"></div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ CAUSES (NAMEPLATE BADGES) ═══════════════════════════ -->
+<!-- ═══════════════════════════ CAUSES ═══════════════════════════ -->
 <section class="section causes-section" id="causes">
   <div class="container">
     <div class="section-header fade-up" style="margin-bottom:2rem; text-align:left;">
@@ -388,7 +548,6 @@
     </div>
     
     <div class="causes-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.5rem;">
-      
       <div class="cause-nameplate-card fade-up">
         <div>
           <div class="cause-org-title">SickKids Foundation</div>
@@ -428,12 +587,11 @@
         </div>
         <div class="cause-tag">Community Arts Access</div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ AUTHENTIC TESTIMONIALS ═══════════════════════════ -->
+<!-- ═══════════════════════════ TESTIMONIALS ═══════════════════════════ -->
 <section class="section-sm testimonials-section" id="testimonials">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2rem;">
@@ -503,7 +661,7 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ CONTACT (WITH INLINE FEEDBACK) ═══════════════════════════ -->
+<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
 <section class="section contact-section" id="contact">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
@@ -536,7 +694,6 @@
       </div>
 
       <div class="contact-form-box fade-up">
-        <!-- Inline Notification Toast -->
         <div id="formFeedback" class="form-feedback-box" role="alert"></div>
 
         <form id="contactForm">
@@ -577,7 +734,89 @@
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-     <script>
+      <script>
+      emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
+
+      const contactForm = document.getElementById("contactForm");
+      const feedbackBox = document.getElementById("formFeedback");
+      const submitBtn = document.getElementById("submitBtn");
+
+      contactForm.addEventListener("submit", function(event) {
+          event.preventDefault();
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Sending...";
+
+          emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
+          .then(() => {
+              feedbackBox.className = "form-feedback-box success";
+              feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
+              contactForm.reset();
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Message";
+          })
+          .catch((error) => {
+              feedbackBox.className = "form-feedback-box error";
+              feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or reach us directly at paint.it.forward.art@gmail.com.";
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Message";
+              console.error(error);
+          });
+      });
+      </script>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
+        <p>Turning Creativity Into Impact. A student-led initiative empowering young artists to support youth physical and mental health across North America.</p>
+        <p class="footer-note">Nonprofit registration in progress.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="branches.html">Our Branches</a></li>
+          <li><a href="auction.html">Fall 26 Auction</a></li>
+          <li><a href="#artwork">Gallery</a></li>
+          <li><a href="#causes">Causes We Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
+          <li><a href="auction.html">Bid on Artwork</a></li>
+          <li><a href="https://form.jotform.com/261786840237061" target="_blank" rel="noopener">Volunteer</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:paint.it.forward.art@gmail.com">Email Us</a></li>
+          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Student-led initiative, Greater Toronto Area &amp; Massachusetts.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Dark mode toggle -->
+<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</button>
+
+<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
+<script>
+/* ── STANDALONE PAINT HERO SIMULATION ── */
 (function initPaintHero() {
   const canvas = document.getElementById('hero-paint-canvas');
   if (!canvas) return;
@@ -753,7 +992,7 @@
   }
   requestAnimationFrame(render);
 
-  // Mouse & Touch events
+  // Mouse & Touch events on the canvas
   canvas.addEventListener('pointerdown', (e) => {
     isPointerDown = true;
     const r = canvas.getBoundingClientRect();
@@ -818,60 +1057,7 @@
     createSplash(r.width * 0.78, r.height * 0.3);
   }, 600);
 })();
-</script>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-<footer role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#home" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
-        <p>Turning Creativity Into Impact. A student-led initiative empowering young artists to support youth physical and mental health across North America.</p>
-        <p class="footer-note">Nonprofit registration in progress.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="branches.html">Our Branches</a></li>
-          <li><a href="auction.html">Fall 26 Auction</a></li>
-          <li><a href="#artwork">Gallery</a></li>
-          <li><a href="#causes">Causes We Support</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Get Involved</h4>
-        <ul>
-          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
-          <li><a href="auction.html">Bid on Artwork</a></li>
-          <li><a href="https://form.jotform.com/261786840237061" target="_blank" rel="noopener">Volunteer</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="mailto:paint.it.forward.art@gmail.com">Email Us</a></li>
-          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Student-led initiative, Greater Toronto Area &amp; Massachusetts.</p>
-    </div>
-  </div>
-</footer>
-
-<!-- Dark mode toggle -->
-<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-</button>
-
-<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
-<script>
 /* ── AUCTION CARDS DATA ── */
 const auctions = [
   {
@@ -938,64 +1124,70 @@ const faqs = [
   { q: "Which charities does Bid For Tomorrow support?", a: "We support the SickKids Foundation, Kids Help Phone, Holland Bloorview Kids Rehabilitation Hospital, and the Toronto Arts Foundation." }
 ];
 
-/* ── RENDER AUCTIONS (LINKED DIRECTLY TO AUCTION.HTML) ── */
+/* ── RENDER AUCTIONS ── */
 const aContainer = document.getElementById("auction-cards");
-auctions.forEach(a => {
-  const targetLink = a.link || "auction.html";
-  aContainer.innerHTML += `
-    <article class="auction-card">
-      <div class="auction-card-header">
-        <a href="${targetLink}" style="text-decoration:none;color:inherit;display:block;">
-          <div class="auction-title">${a.title}</div>
-        </a>
-      </div>
-      <div class="auction-body">
-        <div class="auction-detail">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Date: Fall 2026 (Announcement Soon)
+if (aContainer) {
+  auctions.forEach(a => {
+    const targetLink = a.link || "auction.html";
+    aContainer.innerHTML += `
+      <article class="auction-card">
+        <div class="auction-card-header">
+          <a href="${targetLink}" style="text-decoration:none;color:inherit;display:block;">
+            <div class="auction-title">${a.title}</div>
+          </a>
         </div>
-        <div class="auction-detail">
-          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Location: GTA Gallery Venue &amp; Online
+        <div class="auction-body">
+          <div class="auction-detail">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Date: Fall 2026 (Announcement Soon)
+          </div>
+          <div class="auction-detail">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Location: GTA Gallery Venue &amp; Online
+          </div>
+          <div class="tbd-badge">Bidder Pre-Registration Open</div>
+          <p style="font-size:0.85rem; color:var(--text-body); margin-bottom:1.25rem;">${a.note}</p>
+          <a href="${targetLink}" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;">
+            View Fall 26 Auction Lots &rarr;
+          </a>
         </div>
-        <div class="tbd-badge">Bidder Pre-Registration Open</div>
-        <p style="font-size:0.85rem; color:var(--text-body); margin-bottom:1.25rem;">${a.note}</p>
-        <a href="${targetLink}" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;">
-          View Fall 26 Auction Lots &rarr;
-        </a>
-      </div>
-    </article>`;
-});
+      </article>`;
+  });
+}
 
 /* ── RENDER TESTIMONIALS ── */
 const track = document.getElementById("testimonials-track");
-[...testimonials, ...testimonials].forEach(t => {
-  track.innerHTML += `
-    <div class="testimonial-card">
-      <span class="testimonial-opener" aria-hidden="true">&ldquo;</span>
-      <p class="testimonial-text">${t.text}</p>
-      <div class="testimonial-author">
-        <div>
-          <div class="testimonial-name">${t.name}</div>
-          <div class="testimonial-role">${t.role}</div>
+if (track) {
+  [...testimonials, ...testimonials].forEach(t => {
+    track.innerHTML += `
+      <div class="testimonial-card">
+        <span class="testimonial-opener" aria-hidden="true">&ldquo;</span>
+        <p class="testimonial-text">${t.text}</p>
+        <div class="testimonial-author">
+          <div>
+            <div class="testimonial-name">${t.name}</div>
+            <div class="testimonial-role">${t.role}</div>
+          </div>
         </div>
-      </div>
-    </div>`;
-});
+      </div>`;
+  });
+}
 
 /* ── RENDER FAQ ── */
 const faqList = document.getElementById("faq-list");
-faqs.forEach((f, i) => {
-  faqList.innerHTML += `
-    <div class="faq-item" role="listitem">
-      <div class="faq-question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-${i}"
-           onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleFaq(this)">
-        ${f.q}
-        <span class="faq-toggle" aria-hidden="true">+</span>
-      </div>
-      <div class="faq-answer" id="faq-${i}" role="region">${f.a}</div>
-    </div>`;
-});
+if (faqList) {
+  faqs.forEach((f, i) => {
+    faqList.innerHTML += `
+      <div class="faq-item" role="listitem">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-${i}"
+             onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleFaq(this)">
+          ${f.q}
+          <span class="faq-toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-answer" id="faq-${i}" role="region">${f.a}</div>
+      </div>`;
+  });
+}
 
 function toggleFaq(btn) {
   const item = btn.closest(".faq-item");
@@ -1006,13 +1198,16 @@ function toggleFaq(btn) {
 }
 
 /* ── NAV TOGGLE ── */
-document.getElementById("nav-toggle").addEventListener("click", function() {
-  const links = document.getElementById("nav-links");
-  links.classList.toggle("open");
-  this.setAttribute("aria-expanded", links.classList.contains("open"));
-});
+const navToggleBtn = document.getElementById("nav-toggle");
+if (navToggleBtn) {
+  navToggleBtn.addEventListener("click", function() {
+    const links = document.getElementById("nav-links");
+    links.classList.toggle("open");
+    this.setAttribute("aria-expanded", links.classList.contains("open"));
+  });
+}
 document.querySelectorAll(".nav-links a").forEach(a => {
-  a.addEventListener("click", () => document.getElementById("nav-links").classList.remove("open"));
+  a.addEventListener("click", () => document.getElementById("nav-links")?.classList.remove("open"));
 });
 
 /* ── DARK MODE ── */
@@ -1024,13 +1219,15 @@ const sunPath = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2=
 if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
   document.body.classList.add("dark");
   document.documentElement.classList.add("dark");
-  iconEl.innerHTML = sunPath;
+  if (iconEl) iconEl.innerHTML = sunPath;
 }
-darkBtn.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
-  iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
-});
+if (darkBtn) {
+  darkBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
+    if (iconEl) iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
+  });
+}
 
 /* ── GALLERY (WITH DIMENSIONS & AUCTION CTA) ── */
 (function() {
@@ -1048,7 +1245,6 @@ darkBtn.addEventListener("click", () => {
       if (!response.ok) throw new Error("artwork.json not found");
       artworks = await response.json();
     } catch (e) {
-      // Fallback sample lots with dimension details
       artworks = [
         {
           title: "Golden Hour in Algonquin",
@@ -1079,6 +1275,7 @@ darkBtn.addEventListener("click", () => {
   }
 
   function renderCarousel() {
+    if (!track || !dotsContainer) return;
     track.innerHTML = '';
     dotsContainer.innerHTML = '';
 
@@ -1134,7 +1331,7 @@ darkBtn.addEventListener("click", () => {
   }
 
   function goToSlide(index) {
-    if (artworks.length === 0) return;
+    if (artworks.length === 0 || !track) return;
     currentIndex = (index < 0) ? artworks.length - 1 : (index >= artworks.length) ? 0 : index;
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
     document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
@@ -1151,8 +1348,8 @@ darkBtn.addEventListener("click", () => {
   function stopAutoplay() { if (autoplayInterval) { clearInterval(autoplayInterval); autoplayInterval = null; } }
   function resetAutoplay() { stopAutoplay(); startAutoplay(); }
 
-  prevBtn.addEventListener('click', prevSlide);
-  nextBtn.addEventListener('click', nextSlide);
+  if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+  if (nextBtn) nextBtn.addEventListener('click', nextSlide);
 
   loadArtworks();
 })();

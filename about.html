@@ -518,6 +518,21 @@
   transition: transform 0.6s ease;
 }
 
+    /* 1. Constrain the About Section graphic/logo */
+.about-image {
+  width: auto;
+  height: auto;
+  max-width: 120px; /* Adjust this value to your preferred icon size */
+  max-height: 120px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* 2. Set strict maximum bounds for general layout SVGs */
+svg:not([width]) {
+  width: 24px;
+  height: 24px;
+}
     /* =========================================
        CTA SECTION
     ========================================= */

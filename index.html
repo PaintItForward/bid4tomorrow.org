@@ -181,6 +181,23 @@
 
 <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <section class="hero" id="home" aria-label="Hero">
+
+   <!-- 1. Canvas Background Layer -->
+  <canvas id="hero-paint-canvas" class="paint-canvas-layer"></canvas>
+
+  <!-- 2. Woven Artist Canvas Texture -->
+  <div class="hero-canvas-texture" aria-hidden="true"></div>
+  <div class="hero-canvas-weave-detail" aria-hidden="true"></div>
+
+  <!-- 3. Existing Hero Content (make sure it has pointer-events: none on container, pointer-events: auto on buttons/links) -->
+  <div class="hero-content">
+    <h1>Don't bide your time— <br><em>Bid For Tomorrow.</em></h1>
+    <p class="hero-sub">A student-led art initiative...</p>
+    <div class="hero-buttons">
+      <a href="auction.html" class="btn btn-primary">View Fall 26 Auction Lots</a>
+    </div>
+  </div>
+  
   <div class="hero-bg"></div>
   <!-- Subtle tactile texture wash -->
   <div class="hero-canvas-texture" aria-hidden="true"></div>
@@ -546,6 +563,212 @@
 
       <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
       <script>
+
+       
+(function initPaintHero() {
+  const canvas = document.getElementById('hero-paint-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: true });
+
+  const colors = {
+    light: ['#CF5527', '#7D2027', '#998731', '#5FA8C2', '#673C34', '#A83E17'],
+    dark: ['#F39875', '#FAE3B1', '#5FA8C2', '#E9DCA6', '#D4EDF5', '#A93C44']
+  };
+
+  let droplets = [];
+  let colorIdx = 0;
+  let isPointerDown = false;
+  let lastPointer = null;
+  let lastSplash = 0;
+
+  function hexToRgb(hex) {
+    let bigint = parseInt(hex.replace('#', ''), 16);
+    return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+  }
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = canvas.clientWidth * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    ctx.resetTransform?.();
+    ctx.scale(dpr, dpr);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function createSplash(x, y, vel = { x: 0, y: 0 }) {
+    const isDark = document.body.classList.contains('dark');
+    const palette = isDark ? colors.dark : colors.light;
+    const color = hexToRgb(palette[colorIdx % palette.length]);
+    colorIdx++;
+
+    const now = performance.now();
+    const radius = 22 + Math.random() * 24;
+    const speed = Math.hypot(vel.x, vel.y);
+
+    // Create 2-4 dripping streams
+    const dripCount = Math.floor(2 + Math.random() * 3);
+    const drips = [];
+    for (let i = 0; i < dripCount; i++) {
+      const offsetX = (Math.random() - 0.5) * radius * 1.3;
+      const offsetY = Math.abs(offsetX) * 0.3 + (radius * 0.45);
+      const dripW = Math.max(1.8, radius * 0.22);
+      drips.push({
+        offsetX, offsetY,
+        currentLength: 0,
+        maxLength: 70 + Math.random() * 140,
+        speed: 0.8 + Math.random() * 1.4,
+        trail: [{ x: offsetX, y: offsetY, width: dripW }],
+        tearRadius: dripW * 1.4,
+        meander: (Math.random() - 0.5) * 1.5,
+        settled: false
+      });
+    }
+
+    // Organic core points
+    const points = [];
+    for (let i = 0; i < 14; i++) {
+      const ang = (i / 14) * Math.PI * 2;
+      const lobe = Math.random() < 0.35 ? (1.3 + Math.random() * 0.9) : (0.75 + Math.random() * 0.4);
+      points.push({ x: Math.cos(ang) * radius * lobe, y: Math.sin(ang) * radius * lobe });
+    }
+
+    droplets.push({
+      x, y, vx: vel.x * 0.08, vy: vel.y * 0.08,
+      radius: 1, baseRadius: radius,
+      color, alpha: 0.96, maxAlpha: 0.96,
+      birthTime: now, lifespan: 11000, dryDelay: 4000,
+      points, drips
+    });
+
+    // Satellites
+    const satCount = 14 + Math.floor(Math.random() * 12);
+    for (let i = 0; i < satCount; i++) {
+      const satAng = Math.random() * Math.PI * 2;
+      const satDist = (radius * 0.9 + Math.random() * 90);
+      const satR = 3.5 + Math.random() * 7;
+      droplets.push({
+        x: x + Math.cos(satAng) * satDist,
+        y: y + Math.sin(satAng) * satDist,
+        vx: 0, vy: 0, radius: 1, baseRadius: satR,
+        color, alpha: 0.9, maxAlpha: 0.9,
+        birthTime: now, lifespan: 11000, dryDelay: 4000,
+        points: []
+      });
+    }
+  }
+
+  function render(time) {
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    const surviving = [];
+
+    for (let d of droplets) {
+      const age = time - d.birthTime;
+      if (age >= d.lifespan) continue;
+
+      let alpha = d.maxAlpha;
+      if (age > d.dryDelay) {
+        alpha = d.maxAlpha * (1 - Math.pow((age - d.dryDelay) / (d.lifespan - d.dryDelay), 1.3));
+      }
+      if (alpha <= 0.01) continue;
+
+      if (d.radius < d.baseRadius) d.radius += (d.baseRadius - d.radius) * 0.4 + 0.6;
+
+      // Update drips
+      if (d.drips) {
+        for (let drip of d.drips) {
+          if (!drip.settled && drip.currentLength < drip.maxLength) {
+            drip.currentLength += drip.speed * Math.max(0.2, 1 - (drip.currentLength / drip.maxLength) * 0.7);
+            const curX = drip.offsetX + (Math.sin(drip.currentLength * 0.06) * 0.7) + (drip.meander * 0.35);
+            const curY = drip.offsetY + drip.currentLength;
+            drip.trail.push({ x: curX, y: curY, width: Math.max(1.2, drip.trail[0].width * (1 - (drip.currentLength / drip.maxLength) * 0.5)) });
+            if (drip.currentLength >= drip.maxLength) drip.settled = true;
+          }
+        }
+      }
+
+      ctx.save();
+      // Draw drips
+      if (d.drips) {
+        ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
+        for (let drip of d.drips) {
+          if (drip.trail.length > 1) {
+            ctx.beginPath();
+            for (let seg of drip.trail) ctx.arc(d.x + seg.x, d.y + seg.y, seg.width, 0, Math.PI * 2);
+            ctx.fill();
+            const tip = drip.trail[drip.trail.length - 1];
+            ctx.beginPath();
+            ctx.arc(d.x + tip.x, d.y + tip.y, drip.tearRadius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+
+      // Draw splat body
+      ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
+      if (d.points && d.points.length > 2) {
+        ctx.beginPath();
+        const scale = d.radius / d.baseRadius;
+        ctx.moveTo(d.x + d.points[0].x * scale, d.y + d.points[0].y * scale);
+        for (let p = 1; p < d.points.length; p++) {
+          const midX = d.x + (d.points[p - 1].x + d.points[p].x) * 0.5 * scale;
+          const midY = d.y + (d.points[p - 1].y + d.points[p].y) * 0.5 * scale;
+          ctx.quadraticCurveTo(d.x + d.points[p - 1].x * scale, d.y + d.points[p - 1].y * scale, midX, midY);
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        // Wet shine
+        if (age < d.dryDelay && d.radius > 6) {
+          ctx.fillStyle = `rgba(255,255,255,${alpha * 0.35 * (1 - age / d.dryDelay)})`;
+          ctx.beginPath();
+          ctx.ellipse(d.x - d.radius * 0.28, d.y - d.radius * 0.28, d.radius * 0.28, d.radius * 0.18, -Math.PI / 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+      surviving.push(d);
+    }
+
+    droplets = surviving;
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  // Mouse & touch events
+  canvas.addEventListener('pointerdown', (e) => {
+    isPointerDown = true;
+    const r = canvas.getBoundingClientRect();
+    lastPointer = { x: e.clientX, y: e.clientY, time: performance.now() };
+    createSplash(e.clientX - r.left, e.clientY - r.top);
+  });
+
+  canvas.addEventListener('pointermove', (e) => {
+    if (!lastPointer) return;
+    const now = performance.now();
+    const dt = Math.max(1, now - lastPointer.time);
+    const speed = Math.hypot(e.clientX - lastPointer.x, e.clientY - lastPointer.y) / dt;
+    if (isPointerDown && (speed > 0.35 || now - lastSplash > 120)) {
+      const r = canvas.getBoundingClientRect();
+      createSplash(e.clientX - r.left, e.clientY - r.top, { x: (e.clientX - lastPointer.x) / dt * 16, y: (e.clientY - lastPointer.y) / dt * 16 });
+      lastSplash = now;
+    }
+    lastPointer = { x: e.clientX, y: e.clientY, time: now };
+  });
+
+  window.addEventListener('pointerup', () => { isPointerDown = false; lastPointer = null; });
+
+  // Initial welcome splash
+  setTimeout(() => {
+    const r = canvas.getBoundingClientRect();
+    createSplash(r.width * 0.78, r.height * 0.3);
+  }, 600);
+})();
+
       emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
 
       const contactForm = document.getElementById("contactForm");

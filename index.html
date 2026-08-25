@@ -180,29 +180,24 @@
 </nav>
 
 <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
 <section class="hero" id="home" aria-label="Hero">
+  <!-- 1. Background Tone -->
+  <div class="hero-bg" aria-hidden="true"></div>
 
-   <!-- 1. Canvas Background Layer -->
-  <canvas id="hero-paint-canvas" class="paint-canvas-layer"></canvas>
-
-  <!-- 2. Woven Artist Canvas Texture -->
+  <!-- 2. Woven Canvas Texture -->
   <div class="hero-canvas-texture" aria-hidden="true"></div>
   <div class="hero-canvas-weave-detail" aria-hidden="true"></div>
 
-  <!-- 3. Existing Hero Content (make sure it has pointer-events: none on container, pointer-events: auto on buttons/links) -->
-  <div class="hero-content">
-    <h1>Don't bide your time— <br><em>Bid For Tomorrow.</em></h1>
-    <p class="hero-sub">A student-led art initiative...</p>
-    <div class="hero-buttons">
-      <a href="auction.html" class="btn btn-primary">View Fall 26 Auction Lots</a>
-    </div>
-  </div>
-  
-  <div class="hero-bg"></div>
-  <!-- Subtle tactile texture wash -->
-  <div class="hero-canvas-texture" aria-hidden="true"></div>
+  <!-- 3. Interactive Paint Canvas Layer (Behind text) -->
+  <canvas id="hero-paint-canvas" class="paint-canvas-layer"></canvas>
 
+  <!-- 4. Hero Content (Single copy, sits in front of paint) -->
   <div class="hero-content">
+    <span class="hero-tag">
+      <span>Student Art Initiative &bull; GTA &amp; New England</span>
+    </span>
+
     <h1>Don't bide your time&mdash; <br><em>Bid For Tomorrow.</em></h1>
     <p class="hero-sub">A student-led art initiative using auctions to support physical and mental youth health across North America.</p>
 
@@ -215,28 +210,48 @@
     <hr class="hero-rule">
 
     <div class="hero-stats" aria-label="Organization highlights">
-      <div class="hero-stat">
-        <div class="hero-stat-num">
-          <span class="count-up" data-target="7">0</span>+
-        </div>
+      <div class="hero-stat-box">
+        <div class="hero-stat-num"><span class="count-up" data-target="7">0</span>+</div>
         <div class="hero-stat-label">Student Artists</div>
       </div>
 
-      <div class="hero-stat">
-        <div class="hero-stat-num">
-          <span class="count-up" data-target="19">0</span>
-        </div>
+      <div class="hero-stat-box">
+        <div class="hero-stat-num"><span class="count-up" data-target="19">0</span></div>
         <div class="hero-stat-label">Artworks Created</div>
       </div>
 
-      <div class="hero-stat">
+      <div class="hero-stat-box">
         <div class="hero-stat-num">100%</div>
         <div class="hero-stat-label">Student Directed</div>
       </div>
 
-      <div class="hero-stat">
+      <div class="hero-stat-box cerulean-accent">
         <div class="hero-stat-num">GTA &amp; MA</div>
         <div class="hero-stat-label">Community Focus</div>
+      </div>
+    </div>
+
+    <!-- 5. Interactive Studio Color Selector Toolbar -->
+    <div class="paint-toolbar" id="paint-toolbar">
+      <div class="palette-swatches">
+        <span class="palette-label">Paint Color:</span>
+        <button type="button" class="swatch-btn active" data-color="rainbow" title="Rainbow Multi-color">🌈 Multi</button>
+        <button type="button" class="swatch-btn color-dot" data-color="#CF5527" style="background:#CF5527;" title="Terracotta"></button>
+        <button type="button" class="swatch-btn color-dot" data-color="#7D2027" style="background:#7D2027;" title="Crimson"></button>
+        <button type="button" class="swatch-btn color-dot" data-color="#998731" style="background:#998731;" title="Ochre"></button>
+        <button type="button" class="swatch-btn color-dot" data-color="#5FA8C2" style="background:#5FA8C2;" title="Cerulean"></button>
+        <button type="button" class="swatch-btn color-dot" data-color="#673C34" style="background:#673C34;" title="Mahogany"></button>
+        
+        <!-- Custom Color Picker Input -->
+        <label class="custom-color-label" title="Choose any custom color">
+          🎨 Custom
+          <input type="color" id="custom-color-picker" value="#CF5527">
+        </label>
+      </div>
+
+      <div class="paint-actions">
+        <button type="button" id="btn-throw-splatter" class="toolbar-btn primary-tool">Throw Splatter</button>
+        <button type="button" id="btn-clear-paint" class="toolbar-btn">Clear Canvas</button>
       </div>
     </div>
   </div>
@@ -562,19 +577,14 @@
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-      <script>
-
-       
+     <script>
 (function initPaintHero() {
   const canvas = document.getElementById('hero-paint-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d', { alpha: true });
 
-  const colors = {
-    light: ['#CF5527', '#7D2027', '#998731', '#5FA8C2', '#673C34', '#A83E17'],
-    dark: ['#F39875', '#FAE3B1', '#5FA8C2', '#E9DCA6', '#D4EDF5', '#A93C44']
-  };
-
+  const defaultPalette = ['#CF5527', '#7D2027', '#998731', '#5FA8C2', '#673C34', '#A83E17'];
+  let activeColor = 'rainbow'; // 'rainbow' or hex string
   let droplets = [];
   let colorIdx = 0;
   let isPointerDown = false;
@@ -596,17 +606,21 @@
   window.addEventListener('resize', resize);
   resize();
 
-  function createSplash(x, y, vel = { x: 0, y: 0 }) {
-    const isDark = document.body.classList.contains('dark');
-    const palette = isDark ? colors.dark : colors.light;
-    const color = hexToRgb(palette[colorIdx % palette.length]);
+  function getCurrentColor() {
+    if (activeColor !== 'rainbow') {
+      return hexToRgb(activeColor);
+    }
+    const colorHex = defaultPalette[colorIdx % defaultPalette.length];
     colorIdx++;
+    return hexToRgb(colorHex);
+  }
 
+  function createSplash(x, y, vel = { x: 0, y: 0 }) {
+    const color = getCurrentColor();
     const now = performance.now();
     const radius = 22 + Math.random() * 24;
-    const speed = Math.hypot(vel.x, vel.y);
 
-    // Create 2-4 dripping streams
+    // Create 2-4 dripping streams flowing down with gravity
     const dripCount = Math.floor(2 + Math.random() * 3);
     const drips = [];
     for (let i = 0; i < dripCount; i++) {
@@ -625,7 +639,7 @@
       });
     }
 
-    // Organic core points
+    // Organic splatter blob contours
     const points = [];
     for (let i = 0; i < 14; i++) {
       const ang = (i / 14) * Math.PI * 2;
@@ -641,7 +655,7 @@
       points, drips
     });
 
-    // Satellites
+    // Satellite splatter droplets
     const satCount = 14 + Math.floor(Math.random() * 12);
     for (let i = 0; i < satCount; i++) {
       const satAng = Math.random() * Math.PI * 2;
@@ -688,7 +702,7 @@
       }
 
       ctx.save();
-      // Draw drips
+      // Draw drips under the splat
       if (d.drips) {
         ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
         for (let drip of d.drips) {
@@ -718,7 +732,7 @@
         ctx.closePath();
         ctx.fill();
 
-        // Wet shine
+        // Glossy wet paint highlight
         if (age < d.dryDelay && d.radius > 6) {
           ctx.fillStyle = `rgba(255,255,255,${alpha * 0.35 * (1 - age / d.dryDelay)})`;
           ctx.beginPath();
@@ -739,7 +753,7 @@
   }
   requestAnimationFrame(render);
 
-  // Mouse & touch events
+  // Mouse & Touch events
   canvas.addEventListener('pointerdown', (e) => {
     isPointerDown = true;
     const r = canvas.getBoundingClientRect();
@@ -762,41 +776,49 @@
 
   window.addEventListener('pointerup', () => { isPointerDown = false; lastPointer = null; });
 
+  // ── Color Swatch & Custom Color Picker Listeners ──
+  const swatchButtons = document.querySelectorAll('.swatch-btn');
+  swatchButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      swatchButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeColor = btn.dataset.color;
+    });
+  });
+
+  const customPicker = document.getElementById('custom-color-picker');
+  if (customPicker) {
+    customPicker.addEventListener('input', (e) => {
+      swatchButtons.forEach(b => b.classList.remove('active'));
+      activeColor = e.target.value;
+    });
+  }
+
+  // ── Throw Splatter Button ──
+  const throwBtn = document.getElementById('btn-throw-splatter');
+  if (throwBtn) {
+    throwBtn.addEventListener('click', () => {
+      const r = canvas.getBoundingClientRect();
+      createSplash(r.width * (0.25 + Math.random() * 0.5), r.height * (0.2 + Math.random() * 0.45));
+    });
+  }
+
+  // ── Clear Canvas Button ──
+  const clearBtn = document.getElementById('btn-clear-paint');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      droplets = [];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+  }
+
   // Initial welcome splash
   setTimeout(() => {
     const r = canvas.getBoundingClientRect();
     createSplash(r.width * 0.78, r.height * 0.3);
   }, 600);
 })();
-
-      emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
-
-      const contactForm = document.getElementById("contactForm");
-      const feedbackBox = document.getElementById("formFeedback");
-      const submitBtn = document.getElementById("submitBtn");
-
-      contactForm.addEventListener("submit", function(event) {
-          event.preventDefault();
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Sending...";
-
-          emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
-          .then(() => {
-              feedbackBox.className = "form-feedback-box success";
-              feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
-              contactForm.reset();
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Send Message";
-          })
-          .catch((error) => {
-              feedbackBox.className = "form-feedback-box error";
-              feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or reach us directly at paint.it.forward.art@gmail.com.";
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Send Message";
-              console.error(error);
-          });
-      });
-      </script>
+</script>
     </div>
   </div>
 </section>

@@ -1233,6 +1233,7 @@
     }
 
     // Fetch lots from Supabase
+    
     async function fetchLots() {
       const { data, error } = await supabase
         .from('lots')
@@ -1257,9 +1258,14 @@
         .eq('auction_id', FALL_2026_AUCTION_ID)
         .order('lot_number');
 
-      if (error) {
-        console.error('Error fetching lots:', error);
-        return [];
+      console.log('Raw data from Supabase:', data);
+console.log('Error from Supabase:', error);
+
+if (error) {
+  console.error('Error fetching lots:', error);
+  return [];
+  
+   
       }
 
       // Transform to match the expected structure

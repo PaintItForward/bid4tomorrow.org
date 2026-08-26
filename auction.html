@@ -1117,19 +1117,16 @@
        SCRIPTS
        ========================================= -->
   <script>
-
-
-    
-const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';  
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ'; 
-const supabase = window.supabase.createClient(
-  'https://zezgamocqdkqfaqzompd.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ'
-);
-const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
-    
     // =======================================================
-    // 1. THEME (existing)
+    // 1. SUPABASE CONFIGURATION (with your actual anon key)
+    // =======================================================
+    const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
+
+    // =======================================================
+    // 2. THEME (existing)
     // =======================================================
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
@@ -1168,7 +1165,7 @@ const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
     }
 
     // =======================================================
-    // 2. NAV TOGGLE
+    // 3. NAV TOGGLE
     // =======================================================
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.getElementById('navLinks');
@@ -1180,7 +1177,7 @@ const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
     }
 
     // =======================================================
-    // 3. TOAST (info only)
+    // 4. TOAST (info only)
     // =======================================================
     const toastEl = document.getElementById('toastNotification');
     const toastTitle = document.getElementById('toastTitle');
@@ -1202,121 +1199,13 @@ const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
     }
 
     // =======================================================
-    // 4. AUCTION DATA — only starting bid, no fake current bids
+    // 5. AUCTION LOGIC — fetch from Supabase (replaces static data)
     // =======================================================
-    const LOTS = [{
-      id: 1,
-      lotNumber: 'LOT 001',
-      title: 'Marseille',
-      artist: 'Gloria',
-      grade: 'Grade 11',
-      branch: 'GTA Chapter',
-      medium: 'Oil on canvas',
-      dimensions: '18" × 24" (Solid Wood Frame)',
-      description: 'A luminous study capturing the warmth of the Mediterranean coast through layered impasto and soft atmospheric perspective. The golden light of the French port city is rendered with rich ochres and deep cerulean shadows.',
-      image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80',
-      startingBid: 65,
-      createdAt: Date.now() - (4 * 24 * 3600 * 1000)
-    }, {
-      id: 2,
-      lotNumber: 'LOT 002',
-      title: 'Stillness in Motion',
-      artist: 'Chloe Chen',
-      grade: 'Grade 12',
-      branch: 'Lexington Chapter',
-      medium: 'Mixed media & acrylic',
-      dimensions: '20" × 20" (Gallery Wrap)',
-      description: 'An introspective composition exploring the tension between movement and pause. Layered with handmade cotton rag paper, matcha earth pigments, and delicate gold leaf accents.',
-      image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80',
-      startingBid: 80,
-      createdAt: Date.now() - (3 * 24 * 3600 * 1000)
-    }, {
-      id: 3,
-      lotNumber: 'LOT 003',
-      title: 'Ravine Echoes',
-      artist: 'Lucas Zhang',
-      grade: 'Grade 10',
-      branch: 'GTA Chapter',
-      medium: 'Watercolour & ink',
-      dimensions: '12" × 16" (Matted)',
-      description: 'Inspired by Toronto\'s Don Valley waterways, this delicate work combines traditional Chinese brush techniques with contemporary watercolour washes. The ravine comes alive with subtle ink linework and translucent colour.',
-      image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80',
-      startingBid: 45,
-      createdAt: Date.now() - (5 * 24 * 3600 * 1000)
-    }, {
-      id: 4,
-      lotNumber: 'LOT 004',
-      title: 'King Street Nocturne',
-      artist: 'Maya Singh',
-      grade: 'Grade 12',
-      branch: 'GTA Chapter',
-      medium: 'Acrylic on linen',
-      dimensions: '24" × 30" (Oak Floater)',
-      description: 'A moody night scene capturing streetcar reflections on wet pavement beneath the historic architecture of downtown Toronto. Rich indigos and warm sodium-glow highlights create a cinematic urban atmosphere.',
-      image: 'https://images.unsplash.com/photo-1578925518470-4def7a0f08bb?auto=format&fit=crop&w=900&q=80',
-      startingBid: 90,
-      createdAt: Date.now() - (2 * 24 * 3600 * 1000)
-    }, {
-      id: 5,
-      lotNumber: 'LOT 005',
-      title: 'Resilient Bloom',
-      artist: 'Priyah Patel',
-      grade: 'Grade 11',
-      branch: 'Lexington Chapter',
-      medium: 'Digital giclée print',
-      dimensions: '16" × 20" (Edition 1/5)',
-      description: 'A botanical study celebrating recovery and renewal. Printed with archival museum pigment inks on cotton rag paper, this limited-edition piece explores the quiet strength of resilience through organic forms.',
-      image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=900&q=80',
-      startingBid: 50,
-      createdAt: Date.now() - (6 * 24 * 3600 * 1000)
-    }, {
-      id: 6,
-      lotNumber: 'LOT 006',
-      title: 'Seville Clementines',
-      artist: 'Emily R.',
-      grade: 'Grade 11',
-      branch: 'GTA Chapter',
-      medium: 'Oil on wood panel',
-      dimensions: '10" × 12" (Cradled Birch)',
-      description: 'A contemporary take on Dutch still life tradition, featuring high-impasto citrus textures and rich umber shadows. The vibrant orange fruit pops against a deep charcoal background.',
-      image: 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80',
-      startingBid: 70,
-      createdAt: Date.now() - (3 * 24 * 3600 * 1000)
-    }, {
-      id: 7,
-      lotNumber: 'LOT 007',
-      title: 'Untitled No. 12',
-      artist: 'Omar K.',
-      grade: 'Grade 10',
-      branch: 'Lexington Chapter',
-      medium: 'Charcoal & graphite',
-      dimensions: '18" × 24" (Paper)',
-      description: 'A powerful figurative study exploring the human form through dramatic chiaroscuro. The artist\'s confident mark-making captures both the physical presence and emotional weight of the subject.',
-      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80',
-      startingBid: 55,
-      createdAt: Date.now() - (4 * 24 * 3600 * 1000)
-    }, {
-      id: 8,
-      lotNumber: 'LOT 008',
-      title: 'Autumn Passage',
-      artist: 'Sophie W.',
-      grade: 'Grade 12',
-      branch: 'GTA Chapter',
-      medium: 'Acrylic & sand',
-      dimensions: '24" × 36" (Canvas)',
-      description: 'A textured abstract landscape that captures the fleeting beauty of autumn in the Canadian Shield. Layers of acrylic and sand create a tactile surface that shifts with the changing light.',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
-      startingBid: 100,
-      createdAt: Date.now() - (2 * 24 * 3600 * 1000)
-    }];
-
-    // =======================================================
-    // 5. RENDER ENGINE
-    // =======================================================
-    let filteredLots = [...LOTS];
+    let LOTS = [];
     let activeMedium = 'All';
     let selectedLot = null;
 
+    // DOM refs
     const grid = document.getElementById('lotGrid');
     const chipsContainer = document.getElementById('mediumChips');
     const searchInput = document.getElementById('searchInput');
@@ -1340,6 +1229,54 @@ const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
 
     function formatPrice(amount) {
       return '$' + amount.toLocaleString() + ' CAD';
+    }
+
+    // Fetch lots from Supabase
+    async function fetchLots() {
+      const { data, error } = await supabase
+        .from('lots')
+        .select(`
+          id,
+          lot_number,
+          starting_bid,
+          status,
+          artworks:artwork_id (
+            title,
+            description,
+            image_url,
+            medium,
+            dimensions,
+            artists:artist_id (
+              name,
+              grade,
+              branch
+            )
+          )
+        `)
+        .eq('auction_id', FALL_2026_AUCTION_ID)
+        .order('lot_number');
+
+      if (error) {
+        console.error('Error fetching lots:', error);
+        return [];
+      }
+
+      // Transform to match the expected structure
+      return data.map(lot => ({
+        id: lot.id,
+        lotNumber: lot.lot_number,
+        startingBid: lot.starting_bid,
+        status: lot.status,
+        title: lot.artworks.title,
+        artist: lot.artworks.artists.name,
+        grade: lot.artworks.artists.grade,
+        branch: lot.artworks.artists.branch,
+        medium: lot.artworks.medium,
+        dimensions: lot.artworks.dimensions,
+        description: lot.artworks.description,
+        image: lot.artworks.image_url,
+        createdAt: Date.now() // or use a real timestamp if available
+      }));
     }
 
     function renderGrid(items) {
@@ -1377,7 +1314,6 @@ const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
         </article>
       `).join('');
 
-      // View Lot buttons
       grid.querySelectorAll('.view-lot-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1439,8 +1375,7 @@ const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
           break;
       }
 
-      filteredLots = result;
-      renderGrid(filteredLots);
+      renderGrid(result);
     }
 
     // =======================================================
@@ -1481,16 +1416,29 @@ const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
       }
     });
 
-    // Bid button in modal is disabled (Bidding Opens Soon)
+    // Bid button is disabled – just for show
     modalBidBtn.addEventListener('click', () => {
-      // No action – it's disabled, but we can show a toast if clicked (though disabled prevents click)
-      // But we can keep it as a visual element only.
+      // no action – button is disabled
     });
 
     // =======================================================
-    // 7. INIT
+    // 7. INIT — load data and render
     // =======================================================
-    function init() {
+    async function init() {
+      console.log('🔄 Loading auction lots from Supabase...');
+      LOTS = await fetchLots();
+      console.log(`✅ Loaded ${LOTS.length} lots.`);
+
+      if (LOTS.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <h3 style="font-size:1.3rem;margin-bottom:0.5rem;">No lots available</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;">Check back soon for the Fall 2026 auction preview.</p>
+          </div>
+        `;
+        return;
+      }
+
       const mediums = [...new Set(LOTS.map(a => a.medium))];
       renderChips(mediums);
       applyFilters();

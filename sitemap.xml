@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://bid4tomorrow.org/</loc>
   </url>
+
+  <url>
+    <loc>https://bid4tomorrow.org/about.html</loc>
+  </url>
+
+  <url>
+    <loc>https://bid4tomorrow.org/auction.html</loc>
+  </url>
+
+  <url>
+    <loc>https://bid4tomorrow.org/branches.html</loc>
+  </url>
+
+  <url>
+    <loc>https://bid4tomorrow.org/artwork-detail.html</loc>
+  </url>
+
+
 </urlset>

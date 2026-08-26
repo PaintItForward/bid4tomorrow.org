@@ -1,1666 +1,1497 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0">
-    </script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-GPN4QVF0X0');
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bid For Tomorrow · Auction Lots</title>
-    <meta name="description" content="Fall 2026 Student Charity Auction · Browse original student artwork lots with verified dimensions." />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-    <style>
-        /* ==========================================================================
-           VARIABLES & THEMES
-           ========================================================================== */
-        :root {
-            --sand-gold: #FAE3B1;
-            --sand-gold-light: #FCF1D9;
-            --sand-gold-tint: #FDF7EB;
-            --ochre-gold: #998731;
-            --ochre-gold-dark: #7D6D24;
-            --ochre-gold-light: #E9DCA6;
-            --terracotta: #CF5527;
-            --terracotta-dark: #A83E17;
-            --terracotta-light: #F39875;
-            --crimson: #7D2027;
-            --crimson-dark: #5C141A;
-            --crimson-light: #A93C44;
-            --mahogany: #673C34;
-            --mahogany-dark: #4D2B24;
-            --mahogany-mid: #7F4C43;
-            --mahogany-light: #AB7A71;
-            --cerulean: #5FA8C2;
-            --cerulean-dark: #3B829C;
-            --cerulean-light: #D4EDF5;
-
-            --cream: #FAE3B1;
-            --cream-alt: #F5DC9F;
-            --white: #FCF6EC;
-            --border: #998731;
-            --border-subtle: rgba(153, 135, 49, 0.35);
-
-            --radius-sm: 2px;
-            --radius-md: 4px;
-            --radius-lg: 8px;
-            --shadow-sm: 0 2px 8px rgba(103, 60, 52, 0.06);
-            --shadow-md: 0 8px 24px rgba(103, 60, 52, 0.1);
-            --shadow-lg: 0 20px 48px rgba(103, 60, 52, 0.14);
-
-            --text-heading: #4E2922;
-            --text-body: #59322B;
-            --text-muted: #83544C;
-            --card-bg: #FCF6EC;
-            --section-alt: #F6DEAA;
-            --input-bg: #FFFFFF;
-            --nav-bg: rgba(250, 227, 177, 0.96);
-
-            --hero-bg-base: #FCF3DF;
-            --hero-gradient-start: #FDF8EC;
-            --hero-gradient-mid: #FAECBD;
-            --hero-tag-bg: rgba(153, 135, 49, 0.14);
-            --hero-tag-border: #998731;
-            --hero-tag-text: #673C34;
-        }
-
-        .dark {
-            --cream: #180B09;
-            --cream-alt: #2A1612;
-            --white: #261310;
-            --border: #998731;
-            --border-subtle: rgba(153, 135, 49, 0.45);
-            --text-heading: #FAE3B1;
-            --text-body: #F3E3CE;
-            --text-muted: #D6C2AC;
-            --card-bg: #2C1713;
-            --section-alt: #23120F;
-            --input-bg: #22110E;
-            --nav-bg: rgba(38, 20, 16, 0.97);
-            --hero-bg-base: #180B09;
-            --hero-gradient-start: #120705;
-            --hero-gradient-mid: #200D0B;
-            --hero-tag-bg: rgba(153, 135, 49, 0.2);
-            --hero-tag-border: #998731;
-            --hero-tag-text: #FAE3B1;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
-            --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.7);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--cream);
-            color: var(--text-body);
-            line-height: 1.65;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        h1,
-        h2,
-        h3,
-        .font-serif {
-            font-family: 'Playfair Display', Georgia, serif;
-            color: var(--text-heading);
-            letter-spacing: -0.02em;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.7rem 1.5rem;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .btn-primary {
-            background-color: var(--crimson);
-            color: var(--white);
-        }
-        .btn-primary:hover {
-            background-color: var(--crimson-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(125, 32, 39, 0.25);
-        }
-
-        .btn-outline {
-            border-color: var(--border);
-            background-color: transparent;
-            color: var(--text-heading);
-        }
-        .btn-outline:hover {
-            background-color: var(--cream-alt);
-            border-color: var(--crimson);
-        }
-
-        .btn-ghost {
-            background-color: transparent;
-            color: var(--text-muted);
-        }
-        .btn-ghost:hover {
-            color: var(--text-heading);
-            background-color: var(--cream-alt);
-        }
-
-        /* ==========================================================================
-           NAVIGATION
-           ========================================================================== */
-        #main-nav {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            background-color: var(--nav-bg);
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            height: 76px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 900;
-            font-size: 1.35rem;
-            color: var(--crimson);
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-        }
-        .dark .nav-logo {
-            color: var(--sand-gold);
-        }
-
-        .nav-logo-mark {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-md);
-            background: var(--crimson);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1.75rem;
-            list-style: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-
-        .nav-links a:hover {
-            color: var(--crimson);
-        }
-        .dark .nav-links a:hover {
-            color: var(--sand-gold);
-        }
-
-        .nav-links a.active {
-            color: var(--ochre-gold);
-            font-weight: 700;
-        }
-
-        .nav-cta {
-            padding: 0.6rem 1.25rem;
-            background: var(--crimson);
-            color: var(--white) !important;
-            border-radius: var(--radius-sm);
-            transition: background-color 0.2s ease;
-        }
-        .nav-cta:hover {
-            background: var(--crimson-dark);
-        }
-
-        .nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .nav-toggle span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            background-color: var(--text-heading);
-            transition: 0.2s;
-        }
-
-        @media (max-width: 960px) {
-            .nav-toggle {
-                display: flex;
-            }
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 76px;
-                left: 0;
-                right: 0;
-                background: var(--card-bg);
-                border-bottom: 1px solid var(--border);
-                padding: 1.5rem;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-                box-shadow: var(--shadow-md);
-            }
-            .nav-links.open {
-                display: flex;
-            }
-        }
-
-        .dark-toggle {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-md);
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--text-heading);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 99;
-            box-shadow: var(--shadow-md);
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-        .dark-toggle:hover {
-            transform: scale(1.08);
-        }
-
-        /* ==========================================================================
-           HERO
-           ========================================================================== */
-        .auction-hero {
-            position: relative;
-            padding: 4rem 0 3rem 0;
-            text-align: center;
-            background: linear-gradient(180deg, var(--hero-gradient-mid) 0%, var(--hero-bg-base) 100%);
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem 1rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.82rem;
-            font-weight: 700;
-            background: var(--hero-tag-bg);
-            border: 1px solid var(--hero-tag-border);
-            color: var(--hero-tag-text);
-            margin-bottom: 1.25rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .hero-badge span.pulse-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--terracotta);
-            display: inline-block;
-            box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.2);
-        }
-
-        .auction-hero h1 {
-            font-size: clamp(2.4rem, 5vw, 4rem);
-            line-height: 1.15;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .auction-hero p {
-            font-size: clamp(1rem, 1.6vw, 1.1rem);
-            max-width: 680px;
-            margin: 0 auto 2rem auto;
-            color: var(--text-body);
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .campaign-strip {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 1rem 1.75rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.75rem;
-        }
-
-        .campaign-dates {
-            font-size: 0.85rem;
-            color: var(--text-heading);
-            text-align: left;
-        }
-        .campaign-dates strong {
-            display: block;
-            font-size: 1rem;
-            color: var(--ochre-gold);
-        }
-
-        .campaign-countdown {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .cd-unit {
-            text-align: center;
-            min-width: 38px;
-        }
-        .cd-num {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            line-height: 1.1;
-        }
-        .cd-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        /* ==========================================================================
-           AUCTION LISTING
-           ========================================================================== */
-        .auction-listing-section {
-            padding: 3rem 0 5rem 0;
-        }
-
-        .section-header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .section-header h2 {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        .section-header p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: 0.15rem;
-        }
-
-        .controls-tools {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            align-items: center;
-        }
-
-        .search-box {
-            position: relative;
-            min-width: 220px;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 0.6rem 1rem 0.6rem 2.4rem;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background-color: var(--input-bg);
-            color: var(--text-heading);
-            font-size: 0.85rem;
-            outline: none;
-            transition: border-color 0.2s ease;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .search-box input:focus {
-            border-color: var(--ochre-gold);
-        }
-        .search-box svg {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 15px;
-            height: 15px;
-            stroke: var(--text-muted);
-        }
-
-        select#sortSelect {
-            padding: 0.6rem 1.25rem;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background-color: var(--input-bg);
-            color: var(--text-heading);
-            font-size: 0.85rem;
-            outline: none;
-            cursor: pointer;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        /* Filter Chips */
-        .filter-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .chip {
-            padding: 0.35rem 1rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.82rem;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .chip:hover {
-            border-color: var(--ochre-gold);
-            color: var(--text-heading);
-        }
-        .chip.active {
-            background: var(--ochre-gold);
-            color: var(--white);
-            border-color: var(--ochre-gold);
-        }
-
-        /* ==========================================================================
-           LOT GRID
-           ========================================================================== */
-        .lot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .lot-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-        }
-        .lot-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--crimson);
-        }
-
-        .lot-image-wrap {
-            height: 220px;
-            overflow: hidden;
-            position: relative;
-            background: var(--section-alt);
-        }
-        .lot-image-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .lot-card:hover .lot-image-wrap img {
-            transform: scale(1.05);
-        }
-
-        .lot-number-badge {
-            position: absolute;
-            top: 0.85rem;
-            left: 0.85rem;
-            padding: 0.25rem 0.75rem;
-            background: var(--mahogany-dark);
-            color: var(--sand-gold);
-            font-size: 0.78rem;
-            font-weight: 700;
-            font-family: monospace;
-            border-radius: var(--radius-sm);
-            z-index: 5;
-            letter-spacing: 0.5px;
-        }
-
-        .lot-branch-badge {
-            position: absolute;
-            top: 0.85rem;
-            right: 0.85rem;
-            padding: 0.2rem 0.65rem;
-            background: var(--sand-gold);
-            color: var(--crimson);
-            font-size: 0.7rem;
-            font-weight: 700;
-            border-radius: var(--radius-sm);
-            z-index: 5;
-            box-shadow: var(--shadow-sm);
-        }
-        .dark .lot-branch-badge {
-            background: var(--mahogany-dark);
-            color: var(--sand-gold);
-        }
-
-        .lot-body {
-            padding: 1.25rem 1.5rem 1.5rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .lot-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.1rem;
-            line-height: 1.25;
-        }
-
-        .lot-artist {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--ochre-gold);
-            margin-bottom: 0.4rem;
-        }
-
-        .lot-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem 1rem;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-        }
-        .lot-details span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .lot-details .label {
-            color: var(--text-body);
-            font-weight: 600;
-        }
-
-        .lot-starting-bid {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-heading);
-            margin-bottom: 1rem;
-        }
-        .lot-starting-bid small {
-            font-size: 0.75rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .lot-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: auto;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .lot-actions .btn {
-            flex: 1;
-            justify-content: center;
-        }
-
-        /* ==========================================================================
-           DETAIL MODAL
-           ========================================================================== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(24, 11, 9, 0.8);
-            backdrop-filter: blur(6px);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            animation: fadeIn 0.2s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 2rem 2.25rem 2.25rem 2.25rem;
-            width: 100%;
-            max-width: 620px;
-            position: relative;
-            box-shadow: var(--shadow-lg);
-            animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @keyframes scaleUp {
-            from {
-                transform: scale(0.95);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal-close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.4rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            line-height: 1;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s ease;
-        }
-        .modal-close-btn:hover {
-            color: var(--text-heading);
-            background-color: var(--section-alt);
-        }
-
-        .modal-lot-number {
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--ochre-gold);
-            margin-bottom: 0.2rem;
-        }
-
-        .modal-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.15rem;
-        }
-
-        .modal-artist {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--ochre-gold);
-            margin-bottom: 1rem;
-        }
-
-        .modal-image-wrap {
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-            margin-bottom: 1.25rem;
-            background: var(--section-alt);
-            max-height: 320px;
-        }
-        .modal-image-wrap img {
-            width: 100%;
-            height: 100%;
-            max-height: 320px;
-            object-fit: cover;
-        }
-
-        .modal-info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem 1.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.88rem;
-        }
-        .modal-info-grid .info-label {
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-        .modal-info-grid .info-value {
-            color: var(--text-heading);
-            font-weight: 500;
-        }
-
-        .modal-description {
-            font-size: 0.9rem;
-            color: var(--text-body);
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .modal-bid-section {
-            background: var(--section-alt);
-            padding: 1rem 1.25rem;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-subtle);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.75rem;
-        }
-        .modal-bid-section .bid-label {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-        .modal-bid-section .bid-amount {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-heading);
-        }
-
-        /* ==========================================================================
-           TOAST
-           ========================================================================== */
-        .toast-banner {
-            position: fixed;
-            top: 90px;
-            right: 1.5rem;
-            z-index: 110;
-            background: var(--card-bg);
-            border: 1px solid var(--terracotta);
-            border-radius: var(--radius-md);
-            padding: 0.85rem 1.25rem;
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            max-width: 400px;
-            animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .toast-banner .toast-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--terracotta);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
-            font-size: 0.9rem;
-        }
-
-        .toast-banner .toast-body {
-            flex-grow: 1;
-        }
-        .toast-banner .toast-body .toast-title {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--text-heading);
-        }
-        .toast-banner .toast-body .toast-msg {
-            font-size: 0.8rem;
-            color: var(--text-body);
-        }
-
-        .toast-close {
-            background: none;
-            border: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            line-height: 1;
-            padding: 0 0.25rem;
-        }
-        .toast-close:hover {
-            color: var(--text-heading);
-        }
-
-        /* ==========================================================================
-           FOOTER
-           ========================================================================== */
-        .auction-footer {
-            border-top: 1px solid var(--border);
-            padding: 3rem 0;
-            text-align: center;
-            background: var(--cream-alt);
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        .dark .auction-footer {
-            background: var(--section-alt);
-        }
-        .auction-footer a {
-            color: var(--text-heading);
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
-        /* ==========================================================================
-           RESPONSIVE
-           ========================================================================== */
-        @media (max-width: 640px) {
-            .modal-card {
-                padding: 1.25rem;
-            }
-            .modal-info-grid {
-                grid-template-columns: 1fr;
-                gap: 0.25rem;
-            }
-            .modal-bid-section {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
-            .lot-grid {
-                grid-template-columns: 1fr;
-            }
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .controls-tools {
-                width: 100%;
-            }
-            .search-box {
-                flex: 1;
-                min-width: 140px;
-            }
-            .campaign-strip {
-                flex-direction: column;
-                text-align: center;
-            }
-            .campaign-dates {
-                text-align: center;
-            }
-        }
-
-        /* scrollbar */
-        .modal-card::-webkit-scrollbar {
-            width: 4px;
-        }
-        .modal-card::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .modal-card::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-    </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GPN4QVF0X0');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fall '26 Auction · Bid For Tomorrow</title>
+  <meta name="description" content="Preview the original student artworks featured in Bid For Tomorrow's Fall 2026 charity auction." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       VARIABLES & THEMES (exact match to existing Bid For Tomorrow site)
+       ========================================================================== */
+    :root {
+      --sand-gold:          #FAE3B1;
+      --sand-gold-light:    #FCF1D9;
+      --sand-gold-tint:     #FDF7EB;
+      --ochre-gold:         #998731;
+      --ochre-gold-dark:    #7D6D24;
+      --ochre-gold-light:   #E9DCA6;
+      --terracotta:         #CF5527;
+      --terracotta-dark:    #A83E17;
+      --terracotta-light:   #F39875;
+      --crimson:            #7D2027;
+      --crimson-dark:       #5C141A;
+      --crimson-light:      #A93C44;
+      --mahogany:           #673C34;
+      --mahogany-dark:      #4D2B24;
+      --mahogany-mid:       #7F4C43;
+      --mahogany-light:     #AB7A71;
+      --cerulean:           #5FA8C2;
+      --cerulean-dark:      #3B829C;
+      --cerulean-light:     #D4EDF5;
+
+      --cream:              #FAE3B1;
+      --cream-alt:          #F5DC9F;
+      --white:              #FCF6EC;
+      --border:             #998731;
+      --border-subtle:      rgba(153, 135, 49, 0.35);
+
+      --radius-sm:          2px;
+      --radius-md:          4px;
+      --radius-lg:          8px;
+      --shadow-sm:          0 2px 8px rgba(103, 60, 52, 0.06);
+      --shadow-md:          0 8px 24px rgba(103, 60, 52, 0.1);
+      --shadow-lg:          0 20px 48px rgba(103, 60, 52, 0.14);
+
+      --text-heading:       #4E2922;
+      --text-body:          #59322B;
+      --text-muted:         #83544C;
+      --card-bg:            #FCF6EC;
+      --section-alt:        #F6DEAA;
+      --input-bg:           #FFFFFF;
+      --nav-bg:             rgba(250, 227, 177, 0.96);
+
+      --hero-bg-base:       #FCF3DF;
+      --hero-gradient-start:#FDF8EC;
+      --hero-gradient-mid:  #FAECBD;
+      --hero-tag-bg:        rgba(153, 135, 49, 0.14);
+      --hero-tag-border:    #998731;
+      --hero-tag-text:      #673C34;
+    }
+
+    .dark {
+      --cream:              #180B09;
+      --cream-alt:          #2A1612;
+      --white:              #261310;
+      --border:             #998731;
+      --border-subtle:      rgba(153, 135, 49, 0.45);
+      --text-heading:       #FAE3B1;
+      --text-body:          #F3E3CE;
+      --text-muted:         #D6C2AC;
+      --card-bg:            #2C1713;
+      --section-alt:        #23120F;
+      --input-bg:           #22110E;
+      --nav-bg:             rgba(38, 20, 16, 0.97);
+      --hero-bg-base:       #180B09;
+      --hero-gradient-start:#120705;
+      --hero-gradient-mid:  #200D0B;
+      --hero-tag-bg:        rgba(153, 135, 49, 0.2);
+      --hero-tag-border:    #998731;
+      --hero-tag-text:      #FAE3B1;
+      --shadow-sm:          0 2px 8px rgba(0, 0, 0, 0.4);
+      --shadow-md:          0 8px 24px rgba(0, 0, 0, 0.6);
+      --shadow-lg:          0 20px 48px rgba(0, 0, 0, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--cream);
+      color: var(--text-body);
+      line-height: 1.65;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+      color: var(--text-heading);
+      letter-spacing: -0.02em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn-primary {
+      background-color: var(--crimson);
+      color: var(--white);
+    }
+    .btn-primary:hover {
+      background-color: var(--crimson-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(125, 32, 39, 0.25);
+    }
+
+    .btn-outline {
+      border-color: var(--border);
+      background-color: transparent;
+      color: var(--text-heading);
+    }
+    .btn-outline:hover {
+      background-color: var(--cream-alt);
+      border-color: var(--crimson);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text-muted);
+    }
+    .btn-ghost:hover {
+      color: var(--text-heading);
+      background-color: var(--cream-alt);
+    }
+
+    .btn-disabled {
+      opacity: 0.6;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    /* ==========================================================================
+       NAVIGATION (unchanged from existing site)
+       ========================================================================== */
+    #main-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background-color: var(--nav-bg);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: 1.35rem;
+      color: var(--crimson);
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+    .dark .nav-logo {
+      color: var(--sand-gold);
+    }
+
+    .nav-logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--crimson);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--crimson);
+    }
+    .dark .nav-links a:hover {
+      color: var(--sand-gold);
+    }
+
+    .nav-links a.active {
+      color: var(--ochre-gold);
+      font-weight: 700;
+    }
+
+    .nav-cta {
+      padding: 0.6rem 1.25rem;
+      background: var(--crimson);
+      color: var(--white) !important;
+      border-radius: var(--radius-sm);
+      transition: background-color 0.2s ease;
+    }
+    .nav-cta:hover {
+      background: var(--crimson-dark);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background-color: var(--text-heading);
+      transition: 0.2s;
+    }
+
+    @media (max-width: 960px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        box-shadow: var(--shadow-md);
+      }
+      .nav-links.open { display: flex; }
+    }
+
+    .dark-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    .dark-toggle:hover {
+      transform: scale(1.08);
+    }
+
+    /* ==========================================================================
+       HERO (auction preview)
+       ========================================================================== */
+    .auction-hero {
+      position: relative;
+      padding: 4rem 0 3rem 0;
+      text-align: center;
+      background: linear-gradient(180deg, var(--hero-gradient-mid) 0%, var(--hero-bg-base) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: var(--hero-tag-bg);
+      border: 1px solid var(--hero-tag-border);
+      color: var(--hero-tag-text);
+      margin-bottom: 1.25rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .auction-hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.15;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .auction-hero p {
+      font-size: clamp(1rem, 1.6vw, 1.1rem);
+      max-width: 680px;
+      margin: 0 auto 2rem auto;
+      color: var(--text-body);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .auction-status-banner {
+      display: inline-block;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.8rem 2rem;
+      box-shadow: var(--shadow-sm);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-heading);
+    }
+    .auction-status-banner span {
+      color: var(--terracotta);
+      margin-left: 0.5rem;
+    }
+
+    /* ==========================================================================
+       AUCTION LISTING
+       ========================================================================== */
+    .auction-listing-section {
+      padding: 3rem 0 5rem 0;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .section-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .controls-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 220px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 0.6rem 1rem 0.6rem 2.4rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background-color: var(--input-bg);
+      color: var(--text-heading);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .search-box input:focus {
+      border-color: var(--ochre-gold);
+    }
+    .search-box svg {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      stroke: var(--text-muted);
+    }
+
+    select#sortSelect {
+      padding: 0.6rem 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background-color: var(--input-bg);
+      color: var(--text-heading);
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chip {
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .chip:hover {
+      border-color: var(--ochre-gold);
+      color: var(--text-heading);
+    }
+    .chip.active {
+      background: var(--ochre-gold);
+      color: var(--white);
+      border-color: var(--ochre-gold);
+    }
+
+    /* ==========================================================================
+       LOT GRID
+       ========================================================================== */
+    .lot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .lot-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .lot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--crimson);
+    }
+
+    .lot-image-wrap {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+      background: var(--section-alt);
+    }
+    .lot-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .lot-card:hover .lot-image-wrap img {
+      transform: scale(1.05);
+    }
+
+    .lot-number-badge {
+      position: absolute;
+      top: 0.85rem;
+      left: 0.85rem;
+      padding: 0.25rem 0.75rem;
+      background: var(--mahogany-dark);
+      color: var(--sand-gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: monospace;
+      border-radius: var(--radius-sm);
+      z-index: 5;
+      letter-spacing: 0.5px;
+    }
+
+    .lot-branch-badge {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      padding: 0.2rem 0.65rem;
+      background: var(--sand-gold);
+      color: var(--crimson);
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      z-index: 5;
+      box-shadow: var(--shadow-sm);
+    }
+    .dark .lot-branch-badge {
+      background: var(--mahogany-dark);
+      color: var(--sand-gold);
+    }
+
+    .lot-body {
+      padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .lot-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.1rem;
+      line-height: 1.25;
+    }
+
+    .lot-artist {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ochre-gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .lot-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .lot-details span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .lot-details .label {
+      color: var(--text-body);
+      font-weight: 600;
+    }
+
+    .lot-starting-bid {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+    .lot-starting-bid small {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .lot-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .lot-actions .btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       DETAIL MODAL
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(24, 11, 9, 0.8);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2rem 2.25rem 2.25rem 2.25rem;
+      width: 100%;
+      max-width: 720px;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes scaleUp {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      line-height: 1;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+    }
+    .modal-close-btn:hover {
+      color: var(--text-heading);
+      background-color: var(--section-alt);
+    }
+
+    .modal-lot-number {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ochre-gold);
+      margin-bottom: 0.2rem;
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+
+    .modal-artist {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ochre-gold);
+      margin-bottom: 1rem;
+    }
+
+    .modal-image-wrap {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      background: var(--section-alt);
+      max-height: 340px;
+    }
+    .modal-image-wrap img {
+      width: 100%;
+      height: 100%;
+      max-height: 340px;
+      object-fit: cover;
+    }
+
+    .modal-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.88rem;
+    }
+    .modal-info-grid .info-label {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .modal-info-grid .info-value {
+      color: var(--text-heading);
+      font-weight: 500;
+    }
+
+    .modal-description {
+      font-size: 0.9rem;
+      color: var(--text-body);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* Auction panel inside modal */
+    .auction-panel {
+      background: var(--section-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .auction-panel .panel-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .auction-panel .panel-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .auction-panel .panel-value {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .auction-panel .panel-status {
+      font-weight: 700;
+      color: var(--terracotta);
+    }
+    .auction-panel .panel-btn {
+      min-width: 140px;
+    }
+
+    /* bid history placeholder */
+    .bid-history-placeholder {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 0.5rem 0;
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* ==========================================================================
+       TOAST (keep for informational messages)
+       ========================================================================== */
+    .toast-banner {
+      position: fixed;
+      top: 90px;
+      right: 1.5rem;
+      z-index: 110;
+      background: var(--card-bg);
+      border: 1px solid var(--terracotta);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.25rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      max-width: 400px;
+      animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast-banner .toast-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+
+    .toast-banner .toast-body {
+      flex-grow: 1;
+    }
+    .toast-banner .toast-body .toast-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .toast-banner .toast-body .toast-msg {
+      font-size: 0.8rem;
+      color: var(--text-body);
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 0 0.25rem;
+    }
+    .toast-close:hover {
+      color: var(--text-heading);
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .auction-footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      text-align: center;
+      background: var(--cream-alt);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .dark .auction-footer {
+      background: var(--section-alt);
+    }
+    .auction-footer a {
+      color: var(--text-heading);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE
+       ========================================================================== */
+    @media (max-width: 640px) {
+      .modal-card {
+        padding: 1.25rem;
+      }
+      .modal-info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+      }
+      .auction-panel {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .lot-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .controls-tools {
+        width: 100%;
+      }
+      .search-box {
+        flex: 1;
+        min-width: 140px;
+      }
+    }
+
+    .modal-card::-webkit-scrollbar {
+      width: 4px;
+    }
+    .modal-card::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .modal-card::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- =========================================
-    NAVIGATION
-    ========================================= -->
-    <nav id="main-nav" role="navigation" aria-label="Main navigation">
-        <div class="nav-inner">
-            <a href="#" class="nav-logo" aria-label="Bid For Tomorrow home">
-                <div class="nav-logo-mark">B</div>
-                Bid For Tomorrow
-            </a>
+  <!-- =========================================
+       NAVIGATION (exact existing structure)
+       ========================================= -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="Bid For Tomorrow home">
+        <div class="nav-logo-mark">B</div>
+        Bid For Tomorrow
+      </a>
 
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-            <ul class="nav-links" id="navLinks" role="list">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Branches</a></li>
-                <li><a href="#" class="active">Fall 26 Auction</a></li>
-                <li><a href="#">Causes</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#" class="nav-cta">Get Involved</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Floating Dark Mode Toggle -->
-    <button class="dark-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-    </button>
-
-    <!-- Toast Notification -->
-    <div id="toastNotification" class="toast-banner" style="display: none;" role="status" aria-live="polite">
-        <div class="toast-icon">✓</div>
-        <div class="toast-body">
-            <div class="toast-title" id="toastTitle">Bid Recorded</div>
-            <div class="toast-msg" id="toastMessage">Your reserve bid has been updated.</div>
-        </div>
-        <button type="button" class="toast-close" id="closeToastBtn">✕</button>
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Branches</a></li>
+        <li><a href="#" class="active">Fall '26 Auction</a></li>
+        <li><a href="#">Causes</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#" class="nav-cta">Get Involved</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <main>
-        <!-- =========================================
-        HERO
-        ========================================= -->
-        <header class="auction-hero">
-            <div class="container">
-                <div class="hero-badge">
-                    <span class="pulse-dot"></span>
-                    Fall 2026 Student Charity Auction
-                </div>
+  <!-- Floating Dark Mode Toggle -->
+  <button class="dark-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    </svg>
+  </button>
 
-                <h1>Original Student Fine Art · Verified Lots</h1>
-                <p>
-                    Browse authenticated physical artworks created by high school students across our Greater Toronto Area
-                    and Lexington chapters. 100% of proceeds fund audited pediatric care and youth mental health support.
-                </p>
-
-                <div class="hero-actions">
-                    <a href="#lot-grid" class="btn btn-primary">Browse All Lots</a>
-                    <a href="#" class="btn btn-outline">Healthcare Cause Allocations</a>
-                </div>
-
-                <div class="campaign-strip">
-                    <div class="campaign-dates">
-                        <strong>Fall 2026 Session</strong>
-                        Auction Countdown
-                    </div>
-                    <div class="campaign-countdown" id="campaignCountdown">
-                        <div class="cd-unit"><div class="cd-num" id="cd-d">03</div><div class="cd-label">Days</div></div>
-                        <div class="cd-unit"><div class="cd-num" id="cd-h">14</div><div class="cd-label">Hours</div></div>
-                        <div class="cd-unit"><div class="cd-num" id="cd-m">28</div><div class="cd-label">Min</div></div>
-                        <div class="cd-unit"><div class="cd-num" id="cd-s">45</div><div class="cd-label">Sec</div></div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- =========================================
-        AUCTION LISTING
-        ========================================= -->
-        <section class="auction-listing-section" id="lot-grid">
-            <div class="container">
-
-                <div class="section-header">
-                    <div>
-                        <h2>Active Auction Lots</h2>
-                        <p>Click "View Lot" to inspect full artwork details, dimensions, and provenance.</p>
-                    </div>
-                    <div class="controls-tools">
-                        <div class="search-box">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                            </svg>
-                            <input type="text" id="searchInput" placeholder="Search lots, artists..." aria-label="Search artwork" />
-                        </div>
-                        <select id="sortSelect" aria-label="Sort lots">
-                            <option value="newest">Newest</option>
-                            <option value="ending">Closing Soonest</option>
-                            <option value="bids">Most Bids</option>
-                            <option value="price-high">Bid: High to Low</option>
-                            <option value="price-low">Bid: Low to High</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Medium Filter Chips -->
-                <div class="filter-chips" id="mediumChips" role="group" aria-label="Filter lots by medium"></div>
-
-                <!-- Lot Grid -->
-                <div class="lot-grid" id="lotGrid"></div>
-
-            </div>
-        </section>
-    </main>
-
-    <!-- =========================================
-    DETAIL MODAL
-    ========================================= -->
-    <div id="detailModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-card">
-            <button type="button" id="closeModalBtn" class="modal-close-btn" aria-label="Close details">&times;</button>
-
-            <div class="modal-lot-number" id="modalLotNumber">LOT 001</div>
-            <h3 class="modal-title" id="modalTitle">Marseille</h3>
-            <div class="modal-artist" id="modalArtist">By Gloria</div>
-
-            <div class="modal-image-wrap">
-                <img id="modalImage" src="" alt="Artwork" />
-            </div>
-
-            <div class="modal-info-grid">
-                <div><span class="info-label">Medium</span><br><span class="info-value" id="modalMedium">Oil on canvas</span></div>
-                <div><span class="info-label">Dimensions</span><br><span class="info-value" id="modalDimensions">18" × 24"</span></div>
-                <div><span class="info-label">Grade</span><br><span class="info-value" id="modalGrade">Grade 11</span></div>
-                <div><span class="info-label">Branch</span><br><span class="info-value" id="modalBranch">GTA Chapter</span></div>
-                <div><span class="info-label">Starting Bid</span><br><span class="info-value" id="modalStartingBid">$65 CAD</span></div>
-                <div><span class="info-label">Current Bid</span><br><span class="info-value" id="modalCurrentBid">$145 CAD</span></div>
-            </div>
-
-            <div class="modal-description" id="modalDescription">
-                A luminous study capturing the warmth of the Mediterranean coast through layered impasto and soft
-                atmospheric perspective.
-            </div>
-
-            <div class="modal-bid-section">
-                <div>
-                    <div class="bid-label">Current Highest Bid</div>
-                    <div class="bid-amount" id="modalBidAmount">$145 CAD</div>
-                </div>
-                <button type="button" class="btn btn-primary" id="modalBidBtn">Place Bid</button>
-            </div>
-
-            <p style="font-size:0.72rem; color:var(--text-muted); margin-top:0.75rem; text-align:center;">
-                100% of winning contributions fund audited youth hospital and mental health care.
-            </p>
-        </div>
+  <!-- Toast (kept for info, not for fake bids) -->
+  <div id="toastNotification" class="toast-banner" style="display: none;" role="status" aria-live="polite">
+    <div class="toast-icon">✓</div>
+    <div class="toast-body">
+      <div class="toast-title" id="toastTitle">Notice</div>
+      <div class="toast-msg" id="toastMessage">Information</div>
     </div>
+    <button type="button" class="toast-close" id="closeToastBtn">✕</button>
+  </div>
 
+  <main>
     <!-- =========================================
-    FOOTER
-    ========================================= -->
-    <footer class="auction-footer">
-        <div class="container">
-            <p style="margin-bottom: 0.5rem;">
-                &copy; 2026 Bid For Tomorrow &bull; Student-led Fine Art Charity Auctions &bull; Greater Toronto Area &amp;
-                Massachusetts.
-            </p>
-            <p style="font-size: 0.82rem;">
-                <a href="#">Home</a> &bull;
-                <a href="#">About Us</a> &bull;
-                <a href="#">Branches</a> &bull;
-                <a href="#">Contact &amp; Sponsorship</a>
-            </p>
+         HERO — Auction Preview
+         ========================================= -->
+    <header class="auction-hero">
+      <div class="container">
+        <div class="hero-badge">
+          Fall 2026 · Student Charity Auction
         </div>
-    </footer>
+
+        <h1>Fall '26 Auction Preview</h1>
+        <p>
+          Explore original student artwork from the Greater Toronto Area and Lexington chapters.
+          This is a preview – bidding will open later this fall.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#lot-grid" class="btn btn-primary">Browse Lots</a>
+          <a href="#" class="btn btn-outline">Learn About Causes</a>
+        </div>
+
+        <div class="auction-status-banner">
+          ⏳ Auction Status: <span>Coming Fall 2026</span>
+        </div>
+      </div>
+    </header>
 
     <!-- =========================================
-    SCRIPTS
-    ========================================= -->
-    <script>
-        // =======================================================
-        // 1. THEME
-        // =======================================================
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
+         AUCTION LISTING
+         ========================================= -->
+    <section class="auction-listing-section" id="lot-grid">
+      <div class="container">
 
-        function getSavedTheme() {
-            return localStorage.getItem('bft-theme') ||
-                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        <div class="section-header">
+          <div>
+            <h2>Featured Lots</h2>
+            <p>Original artwork by student artists, available for preview.</p>
+          </div>
+          <div class="controls-tools">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="searchInput" placeholder="Search lots, artists..." aria-label="Search artwork" />
+            </div>
+            <select id="sortSelect" aria-label="Sort lots">
+              <option value="newest">Newest</option>
+              <option value="artist">Artist A–Z</option>
+              <option value="medium">Medium</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Medium filter chips -->
+        <div class="filter-chips" id="mediumChips" role="group" aria-label="Filter lots by medium"></div>
+
+        <!-- Lot Grid -->
+        <div class="lot-grid" id="lotGrid"></div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================
+       DETAIL MODAL (individual lot view)
+       ========================================= -->
+  <div id="detailModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <button type="button" id="closeModalBtn" class="modal-close-btn" aria-label="Close details">&times;</button>
+
+      <div class="modal-lot-number" id="modalLotNumber">LOT 001</div>
+      <h3 class="modal-title" id="modalTitle">Marseille</h3>
+      <div class="modal-artist" id="modalArtist">By Gloria</div>
+
+      <div class="modal-image-wrap">
+        <img id="modalImage" src="" alt="Artwork" />
+      </div>
+
+      <div class="modal-info-grid">
+        <div><span class="info-label">Medium</span><br><span class="info-value" id="modalMedium">Oil on canvas</span></div>
+        <div><span class="info-label">Dimensions</span><br><span class="info-value" id="modalDimensions">18" × 24"</span></div>
+        <div><span class="info-label">Grade</span><br><span class="info-value" id="modalGrade">Grade 11</span></div>
+        <div><span class="info-label">Branch</span><br><span class="info-value" id="modalBranch">GTA Chapter</span></div>
+        <div><span class="info-label">Starting Bid</span><br><span class="info-value" id="modalStartingBid">$65 CAD</span></div>
+      </div>
+
+      <div class="modal-description" id="modalDescription">
+        A luminous study capturing the warmth of the Mediterranean coast through layered impasto and soft atmospheric perspective.
+      </div>
+
+      <!-- Auction Panel -->
+      <div class="auction-panel">
+        <div class="panel-left">
+          <span class="panel-label">Fall '26 Auction</span>
+          <span class="panel-status">COMING SOON</span>
+          <span style="font-size:0.9rem; font-weight:600; color:var(--text-heading);" id="modalPanelStartingBid">Starting bid: $65 CAD</span>
+        </div>
+        <button class="btn btn-primary panel-btn" id="modalBidBtn" disabled>Bidding Opens Soon</button>
+      </div>
+
+      <!-- Bid history placeholder -->
+      <div class="bid-history-placeholder">
+        Bid history will appear when bidding opens.
+      </div>
+
+      <p style="font-size:0.72rem; color:var(--text-muted); margin-top:0.75rem; text-align:center;">
+        100% of proceeds fund audited youth healthcare.
+      </p>
+    </div>
+  </div>
+
+  <!-- =========================================
+       FOOTER
+       ========================================= -->
+  <footer class="auction-footer">
+    <div class="container">
+      <p style="margin-bottom: 0.5rem;">
+        &copy; 2026 Bid For Tomorrow &bull; Student-led Fine Art Charity Auctions &bull; Greater Toronto Area &amp; Massachusetts.
+      </p>
+      <p style="font-size: 0.82rem;">
+        <a href="#">Home</a> &bull;
+        <a href="#">About Us</a> &bull;
+        <a href="#">Branches</a> &bull;
+        <a href="#">Contact &amp; Sponsorship</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- =========================================
+       SCRIPTS
+       ========================================= -->
+  <script>
+    // =======================================================
+    // 1. THEME (existing)
+    // =======================================================
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function getSavedTheme() {
+      return localStorage.getItem('bft-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    }
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.body.classList.add('dark');
+        if (themeIcon) {
+          themeIcon.innerHTML =
+            `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
         }
-
-        function applyTheme(theme) {
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.body.classList.add('dark');
-                if (themeIcon) {
-                    themeIcon.innerHTML =
-                        `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
-                }
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark');
-                if (themeIcon) {
-                    themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>`;
-                }
-            }
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.body.classList.remove('dark');
+        if (themeIcon) {
+          themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>`;
         }
+      }
+    }
 
-        applyTheme(getSavedTheme());
+    applyTheme(getSavedTheme());
 
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                const isDark = document.body.classList.contains('dark');
-                const newTheme = isDark ? 'light' : 'dark';
-                localStorage.setItem('bft-theme', newTheme);
-                applyTheme(newTheme);
-            });
-        }
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.contains('dark');
+        const newTheme = isDark ? 'light' : 'dark';
+        localStorage.setItem('bft-theme', newTheme);
+        applyTheme(newTheme);
+      });
+    }
 
-        // =======================================================
-        // 2. NAV TOGGLE
-        // =======================================================
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
-        if (navToggle && navLinks) {
-            navToggle.addEventListener('click', () => {
-                const open = navLinks.classList.toggle('open');
-                navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            });
-        }
+    // =======================================================
+    // 2. NAV TOGGLE
+    // =======================================================
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
 
-        // =======================================================
-        // 3. TOAST
-        // =======================================================
-        const toastEl = document.getElementById('toastNotification');
-        const toastTitle = document.getElementById('toastTitle');
-        const toastMsg = document.getElementById('toastMessage');
-        const closeToast = document.getElementById('closeToastBtn');
-        let toastTimer = null;
+    // =======================================================
+    // 3. TOAST (info only)
+    // =======================================================
+    const toastEl = document.getElementById('toastNotification');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMessage');
+    const closeToast = document.getElementById('closeToastBtn');
+    let toastTimer = null;
 
-        function showToast(title, msg) {
-            if (!toastEl) return;
-            toastTitle.textContent = title || 'Notice';
-            toastMsg.textContent = msg || '';
-            toastEl.style.display = 'flex';
-            if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => { toastEl.style.display = 'none'; }, 5000);
-        }
+    function showToast(title, msg) {
+      if (!toastEl) return;
+      toastTitle.textContent = title || 'Notice';
+      toastMsg.textContent = msg || '';
+      toastEl.style.display = 'flex';
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastEl.style.display = 'none'; }, 5000);
+    }
 
-        if (closeToast) {
-            closeToast.addEventListener('click', () => { toastEl.style.display = 'none'; });
-        }
+    if (closeToast) {
+      closeToast.addEventListener('click', () => { toastEl.style.display = 'none'; });
+    }
 
-        // =======================================================
-        // 4. AUCTION DATA
-        // =======================================================
-        const NOW = Date.now();
-        const HOUR = 3600 * 1000;
-        const DAY = 24 * HOUR;
+    // =======================================================
+    // 4. AUCTION DATA — only starting bid, no fake current bids
+    // =======================================================
+    const LOTS = [{
+      id: 1,
+      lotNumber: 'LOT 001',
+      title: 'Marseille',
+      artist: 'Gloria',
+      grade: 'Grade 11',
+      branch: 'GTA Chapter',
+      medium: 'Oil on canvas',
+      dimensions: '18" × 24" (Solid Wood Frame)',
+      description: 'A luminous study capturing the warmth of the Mediterranean coast through layered impasto and soft atmospheric perspective. The golden light of the French port city is rendered with rich ochres and deep cerulean shadows.',
+      image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80',
+      startingBid: 65,
+      createdAt: Date.now() - (4 * 24 * 3600 * 1000)
+    }, {
+      id: 2,
+      lotNumber: 'LOT 002',
+      title: 'Stillness in Motion',
+      artist: 'Chloe Chen',
+      grade: 'Grade 12',
+      branch: 'Lexington Chapter',
+      medium: 'Mixed media & acrylic',
+      dimensions: '20" × 20" (Gallery Wrap)',
+      description: 'An introspective composition exploring the tension between movement and pause. Layered with handmade cotton rag paper, matcha earth pigments, and delicate gold leaf accents.',
+      image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80',
+      startingBid: 80,
+      createdAt: Date.now() - (3 * 24 * 3600 * 1000)
+    }, {
+      id: 3,
+      lotNumber: 'LOT 003',
+      title: 'Ravine Echoes',
+      artist: 'Lucas Zhang',
+      grade: 'Grade 10',
+      branch: 'GTA Chapter',
+      medium: 'Watercolour & ink',
+      dimensions: '12" × 16" (Matted)',
+      description: 'Inspired by Toronto\'s Don Valley waterways, this delicate work combines traditional Chinese brush techniques with contemporary watercolour washes. The ravine comes alive with subtle ink linework and translucent colour.',
+      image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80',
+      startingBid: 45,
+      createdAt: Date.now() - (5 * 24 * 3600 * 1000)
+    }, {
+      id: 4,
+      lotNumber: 'LOT 004',
+      title: 'King Street Nocturne',
+      artist: 'Maya Singh',
+      grade: 'Grade 12',
+      branch: 'GTA Chapter',
+      medium: 'Acrylic on linen',
+      dimensions: '24" × 30" (Oak Floater)',
+      description: 'A moody night scene capturing streetcar reflections on wet pavement beneath the historic architecture of downtown Toronto. Rich indigos and warm sodium-glow highlights create a cinematic urban atmosphere.',
+      image: 'https://images.unsplash.com/photo-1578925518470-4def7a0f08bb?auto=format&fit=crop&w=900&q=80',
+      startingBid: 90,
+      createdAt: Date.now() - (2 * 24 * 3600 * 1000)
+    }, {
+      id: 5,
+      lotNumber: 'LOT 005',
+      title: 'Resilient Bloom',
+      artist: 'Priyah Patel',
+      grade: 'Grade 11',
+      branch: 'Lexington Chapter',
+      medium: 'Digital giclée print',
+      dimensions: '16" × 20" (Edition 1/5)',
+      description: 'A botanical study celebrating recovery and renewal. Printed with archival museum pigment inks on cotton rag paper, this limited-edition piece explores the quiet strength of resilience through organic forms.',
+      image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=900&q=80',
+      startingBid: 50,
+      createdAt: Date.now() - (6 * 24 * 3600 * 1000)
+    }, {
+      id: 6,
+      lotNumber: 'LOT 006',
+      title: 'Seville Clementines',
+      artist: 'Emily R.',
+      grade: 'Grade 11',
+      branch: 'GTA Chapter',
+      medium: 'Oil on wood panel',
+      dimensions: '10" × 12" (Cradled Birch)',
+      description: 'A contemporary take on Dutch still life tradition, featuring high-impasto citrus textures and rich umber shadows. The vibrant orange fruit pops against a deep charcoal background.',
+      image: 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80',
+      startingBid: 70,
+      createdAt: Date.now() - (3 * 24 * 3600 * 1000)
+    }, {
+      id: 7,
+      lotNumber: 'LOT 007',
+      title: 'Untitled No. 12',
+      artist: 'Omar K.',
+      grade: 'Grade 10',
+      branch: 'Lexington Chapter',
+      medium: 'Charcoal & graphite',
+      dimensions: '18" × 24" (Paper)',
+      description: 'A powerful figurative study exploring the human form through dramatic chiaroscuro. The artist\'s confident mark-making captures both the physical presence and emotional weight of the subject.',
+      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80',
+      startingBid: 55,
+      createdAt: Date.now() - (4 * 24 * 3600 * 1000)
+    }, {
+      id: 8,
+      lotNumber: 'LOT 008',
+      title: 'Autumn Passage',
+      artist: 'Sophie W.',
+      grade: 'Grade 12',
+      branch: 'GTA Chapter',
+      medium: 'Acrylic & sand',
+      dimensions: '24" × 36" (Canvas)',
+      description: 'A textured abstract landscape that captures the fleeting beauty of autumn in the Canadian Shield. Layers of acrylic and sand create a tactile surface that shifts with the changing light.',
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
+      startingBid: 100,
+      createdAt: Date.now() - (2 * 24 * 3600 * 1000)
+    }];
 
-        const LOTS = [{
-            id: 1,
-            lotNumber: 'LOT 001',
-            title: 'Marseille',
-            artist: 'Gloria',
-            grade: 'Grade 11',
-            branch: 'GTA Chapter',
-            medium: 'Oil on canvas',
-            dimensions: '18" × 24" (Solid Wood Frame)',
-            metricDimensions: '45.7 cm × 61.0 cm',
-            framingSpecs: '1.5" Profile Solid Walnut Frame',
-            mountingType: 'Heavy D-Rings & Wire',
-            description: 'A luminous study capturing the warmth of the Mediterranean coast through layered impasto and soft atmospheric perspective. The golden light of the French port city is rendered with rich ochres and deep cerulean shadows.',
-            image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80',
-            startingBid: 65,
-            currentBid: 145,
-            bids: 8,
-            endTime: NOW + (3 * DAY) + (6 * HOUR),
-            createdAt: NOW - (4 * DAY)
-        }, {
-            id: 2,
-            lotNumber: 'LOT 002',
-            title: 'Stillness in Motion',
-            artist: 'Chloe Chen',
-            grade: 'Grade 12',
-            branch: 'Lexington Chapter',
-            medium: 'Mixed media & acrylic',
-            dimensions: '20" × 20" (Gallery Wrap)',
-            metricDimensions: '50.8 cm × 50.8 cm',
-            framingSpecs: '1.5" Deep Cradled Birch Edge',
-            mountingType: 'Corner Cleat & Hanging Wire',
-            description: 'An introspective composition exploring the tension between movement and pause. Layered with handmade cotton rag paper, matcha earth pigments, and delicate gold leaf accents.',
-            image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80',
-            startingBid: 80,
-            currentBid: 180,
-            bids: 11,
-            endTime: NOW + (2 * DAY) + (14 * HOUR),
-            createdAt: NOW - (3 * DAY)
-        }, {
-            id: 3,
-            lotNumber: 'LOT 003',
-            title: 'Ravine Echoes',
-            artist: 'Lucas Zhang',
-            grade: 'Grade 10',
-            branch: 'GTA Chapter',
-            medium: 'Watercolour & ink',
-            dimensions: '12" × 16" (Matted)',
-            metricDimensions: '30.5 cm × 40.6 cm',
-            framingSpecs: 'Conservation Mat & UV Acrylic',
-            mountingType: 'Sealed Dust Cover with Wire',
-            description: 'Inspired by Toronto\'s Don Valley waterways, this delicate work combines traditional Chinese brush techniques with contemporary watercolour washes. The ravine comes alive with subtle ink linework and translucent colour.',
-            image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=80',
-            startingBid: 45,
-            currentBid: 115,
-            bids: 6,
-            endTime: NOW + (1 * DAY) + (8 * HOUR),
-            createdAt: NOW - (5 * DAY)
-        }, {
-            id: 4,
-            lotNumber: 'LOT 004',
-            title: 'King Street Nocturne',
-            artist: 'Maya Singh',
-            grade: 'Grade 12',
-            branch: 'GTA Chapter',
-            medium: 'Acrylic on linen',
-            dimensions: '24" × 30" (Oak Floater)',
-            metricDimensions: '61.0 cm × 76.2 cm',
-            framingSpecs: '0.25" Shadow Gap Oak Floater',
-            mountingType: 'Dual D-Rings & Hardware',
-            description: 'A moody night scene capturing streetcar reflections on wet pavement beneath the historic architecture of downtown Toronto. Rich indigos and warm sodium-glow highlights create a cinematic urban atmosphere.',
-            image: 'https://images.unsplash.com/photo-1578925518470-4def7a0f08bb?auto=format&fit=crop&w=900&q=80',
-            startingBid: 90,
-            currentBid: 195,
-            bids: 9,
-            endTime: NOW + (4 * DAY) + (2 * HOUR),
-            createdAt: NOW - (2 * DAY)
-        }, {
-            id: 5,
-            lotNumber: 'LOT 005',
-            title: 'Resilient Bloom',
-            artist: 'Priyah Patel',
-            grade: 'Grade 11',
-            branch: 'Lexington Chapter',
-            medium: 'Digital giclée print',
-            dimensions: '16" × 20" (Edition 1/5)',
-            metricDimensions: '40.6 cm × 50.8 cm',
-            framingSpecs: 'Hahnemühle 310gsm German Etching',
-            mountingType: 'Archival Backing & Sleeve',
-            description: 'A botanical study celebrating recovery and renewal. Printed with archival museum pigment inks on cotton rag paper, this limited-edition piece explores the quiet strength of resilience through organic forms.',
-            image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=900&q=80',
-            startingBid: 50,
-            currentBid: 95,
-            bids: 5,
-            endTime: NOW + (18 * HOUR),
-            createdAt: NOW - (6 * DAY)
-        }, {
-            id: 6,
-            lotNumber: 'LOT 006',
-            title: 'Seville Clementines',
-            artist: 'Emily R.',
-            grade: 'Grade 11',
-            branch: 'GTA Chapter',
-            medium: 'Oil on wood panel',
-            dimensions: '10" × 12" (Cradled Birch)',
-            metricDimensions: '25.4 cm × 30.5 cm',
-            framingSpecs: '1.75" Deep Cradled Birch Edge',
-            mountingType: 'Keyhole Slot & Wire',
-            description: 'A contemporary take on Dutch still life tradition, featuring high-impasto citrus textures and rich umber shadows. The vibrant orange fruit pops against a deep charcoal background.',
-            image: 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80',
-            startingBid: 70,
-            currentBid: 160,
-            bids: 7,
-            endTime: NOW + (3 * DAY) + (1 * HOUR),
-            createdAt: NOW - (3 * DAY)
-        }, {
-            id: 7,
-            lotNumber: 'LOT 007',
-            title: 'Untitled No. 12',
-            artist: 'Omar K.',
-            grade: 'Grade 10',
-            branch: 'Lexington Chapter',
-            medium: 'Charcoal & graphite',
-            dimensions: '18" × 24" (Paper)',
-            metricDimensions: '45.7 cm × 61.0 cm',
-            framingSpecs: 'White Mat & Glass Frame',
-            mountingType: 'Hinged & Backed with Foam Core',
-            description: 'A powerful figurative study exploring the human form through dramatic chiaroscuro. The artist\'s confident mark-making captures both the physical presence and emotional weight of the subject.',
-            image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80',
-            startingBid: 55,
-            currentBid: 85,
-            bids: 4,
-            endTime: NOW + (2 * DAY) + (20 * HOUR),
-            createdAt: NOW - (4 * DAY)
-        }, {
-            id: 8,
-            lotNumber: 'LOT 008',
-            title: 'Autumn Passage',
-            artist: 'Sophie W.',
-            grade: 'Grade 12',
-            branch: 'GTA Chapter',
-            medium: 'Acrylic & sand',
-            dimensions: '24" × 36" (Canvas)',
-            metricDimensions: '61.0 cm × 91.4 cm',
-            framingSpecs: '1.5" Gallery Wrapped Canvas',
-            mountingType: 'Heavy Wire & D-Rings',
-            description: 'A textured abstract landscape that captures the fleeting beauty of autumn in the Canadian Shield. Layers of acrylic and sand create a tactile surface that shifts with the changing light.',
-            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
-            startingBid: 100,
-            currentBid: 220,
-            bids: 13,
-            endTime: NOW + (5 * DAY) + (4 * HOUR),
-            createdAt: NOW - (2 * DAY)
-        }];
+    // =======================================================
+    // 5. RENDER ENGINE
+    // =======================================================
+    let filteredLots = [...LOTS];
+    let activeMedium = 'All';
+    let selectedLot = null;
 
-        // =======================================================
-        // 5. RENDER ENGINE
-        // =======================================================
-        let filteredLots = [...LOTS];
-        let activeMedium = 'All';
-        let selectedLot = null;
+    const grid = document.getElementById('lotGrid');
+    const chipsContainer = document.getElementById('mediumChips');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
 
-        const grid = document.getElementById('lotGrid');
-        const chipsContainer = document.getElementById('mediumChips');
-        const searchInput = document.getElementById('searchInput');
-        const sortSelect = document.getElementById('sortSelect');
+    // Modal refs
+    const detailModal = document.getElementById('detailModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalLotNumber = document.getElementById('modalLotNumber');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalArtist = document.getElementById('modalArtist');
+    const modalImage = document.getElementById('modalImage');
+    const modalMedium = document.getElementById('modalMedium');
+    const modalDimensions = document.getElementById('modalDimensions');
+    const modalGrade = document.getElementById('modalGrade');
+    const modalBranch = document.getElementById('modalBranch');
+    const modalStartingBid = document.getElementById('modalStartingBid');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalPanelStartingBid = document.getElementById('modalPanelStartingBid');
+    const modalBidBtn = document.getElementById('modalBidBtn');
 
-        // Modal refs
-        const detailModal = document.getElementById('detailModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const modalLotNumber = document.getElementById('modalLotNumber');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalArtist = document.getElementById('modalArtist');
-        const modalImage = document.getElementById('modalImage');
-        const modalMedium = document.getElementById('modalMedium');
-        const modalDimensions = document.getElementById('modalDimensions');
-        const modalGrade = document.getElementById('modalGrade');
-        const modalBranch = document.getElementById('modalBranch');
-        const modalStartingBid = document.getElementById('modalStartingBid');
-        const modalCurrentBid = document.getElementById('modalCurrentBid');
-        const modalDescription = document.getElementById('modalDescription');
-        const modalBidAmount = document.getElementById('modalBidAmount');
-        const modalBidBtn = document.getElementById('modalBidBtn');
+    function formatPrice(amount) {
+      return '$' + amount.toLocaleString() + ' CAD';
+    }
 
-        function getTimeLeft(endTime) {
-            const diff = endTime - Date.now();
-            if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / (1000 * 60)) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
-            return { days, hours, minutes, seconds, expired: false };
-        }
+    function renderGrid(items) {
+      if (!items.length) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <h3 style="font-size:1.3rem;margin-bottom:0.5rem;">No lots found</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;">Try adjusting your search or filter.</p>
+          </div>
+        `;
+        return;
+      }
 
-        function formatPrice(amount) {
-            return '$' + amount.toLocaleString() + ' CAD';
-        }
+      grid.innerHTML = items.map(lot => `
+        <article class="lot-card" data-id="${lot.id}">
+          <div class="lot-image-wrap">
+            <img src="${lot.image}" alt="${lot.title}" loading="lazy" referrerpolicy="no-referrer" />
+            <span class="lot-number-badge">${lot.lotNumber}</span>
+            <span class="lot-branch-badge">${lot.branch}</span>
+          </div>
+          <div class="lot-body">
+            <h3 class="lot-title">${lot.title}</h3>
+            <div class="lot-artist">By ${lot.artist}</div>
+            <div class="lot-details">
+              <span><span class="label">Medium:</span> ${lot.medium}</span>
+              <span><span class="label">Grade:</span> ${lot.grade}</span>
+            </div>
+            <div class="lot-starting-bid">
+              ${formatPrice(lot.startingBid)} <small>starting bid</small>
+            </div>
+            <div class="lot-actions">
+              <button type="button" class="btn btn-primary view-lot-btn" data-id="${lot.id}">View Lot</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
 
-        function getEndLabel(endTime) {
-            const { days, hours, minutes, expired } = getTimeLeft(endTime);
-            if (expired) return 'Auction Closed';
-            if (days > 0) return `${days}d ${hours}h left`;
-            if (hours > 0) return `${hours}h ${minutes}m left`;
-            return `${minutes}m left`;
-        }
-
-        function renderGrid(items) {
-            if (!items.length) {
-                grid.innerHTML = `
-                    <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);">
-                        <h3 style="font-size:1.3rem;margin-bottom:0.5rem;">No lots found</h3>
-                        <p style="color:var(--text-muted);font-size:0.95rem;">Try adjusting your search or filter.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            grid.innerHTML = items.map(lot => `
-                <article class="lot-card" data-id="${lot.id}">
-                    <div class="lot-image-wrap">
-                        <img src="${lot.image}" alt="${lot.title}" loading="lazy" referrerpolicy="no-referrer" />
-                        <span class="lot-number-badge">${lot.lotNumber}</span>
-                        <span class="lot-branch-badge">${lot.branch}</span>
-                    </div>
-                    <div class="lot-body">
-                        <h3 class="lot-title">${lot.title}</h3>
-                        <div class="lot-artist">By ${lot.artist}</div>
-                        <div class="lot-details">
-                            <span><span class="label">Medium:</span> ${lot.medium}</span>
-                            <span><span class="label">Grade:</span> ${lot.grade}</span>
-                        </div>
-                        <div class="lot-starting-bid">
-                            ${formatPrice(lot.startingBid)} <small>starting bid</small>
-                        </div>
-                        <div class="lot-actions">
-                            <button type="button" class="btn btn-primary view-lot-btn" data-id="${lot.id}">View Lot</button>
-                            <button type="button" class="btn btn-outline bid-btn" data-id="${lot.id}">Bid</button>
-                        </div>
-                    </div>
-                </article>
-            `).join('');
-
-            // View Lot buttons
-            grid.querySelectorAll('.view-lot-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const id = parseInt(btn.dataset.id, 10);
-                    const found = LOTS.find(l => l.id === id);
-                    if (found) openDetailModal(found);
-                });
-            });
-
-            // Bid buttons — show toast for now
-            grid.querySelectorAll('.bid-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const id = parseInt(btn.dataset.id, 10);
-                    const found = LOTS.find(l => l.id === id);
-                    if (found) {
-                        showToast(`Bidding on ${found.lotNumber}`, `"${found.title}" — current bid ${formatPrice(found.currentBid)}`);
-                    }
-                });
-            });
-        }
-
-        function renderChips(mediums) {
-            const allChips = ['All', ...mediums];
-            chipsContainer.innerHTML = allChips.map(m => `
-                <button type="button" class="chip ${m === activeMedium ? 'active' : ''}" data-medium="${m}">${m}</button>
-            `).join('');
-
-            chipsContainer.querySelectorAll('.chip').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    activeMedium = btn.dataset.medium;
-                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                    btn.classList.add('active');
-                    applyFilters();
-                });
-            });
-        }
-
-        function applyFilters() {
-            const query = searchInput.value.toLowerCase().trim();
-            const sort = sortSelect.value;
-
-            let result = [...LOTS];
-
-            if (activeMedium !== 'All') {
-                result = result.filter(a => a.medium === activeMedium);
-            }
-
-            if (query) {
-                result = result.filter(a =>
-                    a.lotNumber.toLowerCase().includes(query) ||
-                    a.title.toLowerCase().includes(query) ||
-                    a.artist.toLowerCase().includes(query) ||
-                    a.grade.toLowerCase().includes(query) ||
-                    a.branch.toLowerCase().includes(query) ||
-                    a.medium.toLowerCase().includes(query) ||
-                    a.description.toLowerCase().includes(query)
-                );
-            }
-
-            switch (sort) {
-                case 'ending':
-                    result.sort((a, b) => a.endTime - b.endTime);
-                    break;
-                case 'bids':
-                    result.sort((a, b) => b.bids - a.bids);
-                    break;
-                case 'price-low':
-                    result.sort((a, b) => a.currentBid - b.currentBid);
-                    break;
-                case 'price-high':
-                    result.sort((a, b) => b.currentBid - a.currentBid);
-                    break;
-                case 'newest':
-                default:
-                    result.sort((a, b) => b.createdAt - a.createdAt);
-                    break;
-            }
-
-            filteredLots = result;
-            renderGrid(filteredLots);
-        }
-
-        // =======================================================
-        // 6. DETAIL MODAL
-        // =======================================================
-        function openDetailModal(lot) {
-            selectedLot = lot;
-            modalLotNumber.textContent = lot.lotNumber;
-            modalTitle.textContent = lot.title;
-            modalArtist.textContent = `By ${lot.artist} · ${lot.grade}`;
-            modalImage.src = lot.image;
-            modalImage.alt = lot.title;
-            modalMedium.textContent = lot.medium;
-            modalDimensions.textContent = lot.dimensions;
-            modalGrade.textContent = lot.grade;
-            modalBranch.textContent = lot.branch;
-            modalStartingBid.textContent = formatPrice(lot.startingBid);
-            modalCurrentBid.textContent = formatPrice(lot.currentBid);
-            modalDescription.textContent = lot.description;
-            modalBidAmount.textContent = formatPrice(lot.currentBid);
-            detailModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeDetailModal() {
-            detailModal.style.display = 'none';
-            document.body.style.overflow = '';
-            selectedLot = null;
-        }
-
-        closeModalBtn.addEventListener('click', closeDetailModal);
-        detailModal.addEventListener('click', (e) => {
-            if (e.target === detailModal) closeDetailModal();
+      // View Lot buttons
+      grid.querySelectorAll('.view-lot-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = parseInt(btn.dataset.id, 10);
+          const found = LOTS.find(l => l.id === id);
+          if (found) openDetailModal(found);
         });
+      });
+    }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && detailModal.style.display === 'flex') {
-                closeDetailModal();
-            }
+    function renderChips(mediums) {
+      const allChips = ['All', ...mediums];
+      chipsContainer.innerHTML = allChips.map(m => `
+        <button type="button" class="chip ${m === activeMedium ? 'active' : ''}" data-medium="${m}">${m}</button>
+      `).join('');
+
+      chipsContainer.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeMedium = btn.dataset.medium;
+          document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilters();
         });
+      });
+    }
 
-        // Bid button inside modal
-        modalBidBtn.addEventListener('click', () => {
-            if (selectedLot) {
-                showToast(`Bid on ${selectedLot.lotNumber}`, `"${selectedLot.title}" — current bid ${formatPrice(selectedLot.currentBid)}`);
-                closeDetailModal();
-            }
-        });
+    function applyFilters() {
+      const query = searchInput.value.toLowerCase().trim();
+      const sort = sortSelect.value;
 
-        // =======================================================
-        // 7. CAMPAIGN COUNTDOWN
-        // =======================================================
-        function startCampaignCountdown(targetEndTime) {
-            const el = (id) => document.getElementById(id);
-            function tick() {
-                const { days, hours, minutes, seconds, expired } = getTimeLeft(targetEndTime);
-                if (expired) {
-                    if (el('cd-d')) el('cd-d').textContent = '00';
-                    if (el('cd-h')) el('cd-h').textContent = '00';
-                    if (el('cd-m')) el('cd-m').textContent = '00';
-                    if (el('cd-s')) el('cd-s').textContent = '00';
-                    return;
-                }
-                if (el('cd-d')) el('cd-d').textContent = String(days).padStart(2, '0');
-                if (el('cd-h')) el('cd-h').textContent = String(hours).padStart(2, '0');
-                if (el('cd-m')) el('cd-m').textContent = String(minutes).padStart(2, '0');
-                if (el('cd-s')) el('cd-s').textContent = String(seconds).padStart(2, '0');
-            }
-            tick();
-            setInterval(tick, 1000);
-        }
+      let result = [...LOTS];
 
-        // =======================================================
-        // 8. INIT
-        // =======================================================
-        function init() {
-            const maxEnd = Math.max(...LOTS.map(a => a.endTime));
-            startCampaignCountdown(maxEnd);
+      if (activeMedium !== 'All') {
+        result = result.filter(a => a.medium === activeMedium);
+      }
 
-            const mediums = [...new Set(LOTS.map(a => a.medium))];
-            renderChips(mediums);
-            applyFilters();
+      if (query) {
+        result = result.filter(a =>
+          a.lotNumber.toLowerCase().includes(query) ||
+          a.title.toLowerCase().includes(query) ||
+          a.artist.toLowerCase().includes(query) ||
+          a.grade.toLowerCase().includes(query) ||
+          a.branch.toLowerCase().includes(query) ||
+          a.medium.toLowerCase().includes(query) ||
+          a.description.toLowerCase().includes(query)
+        );
+      }
 
-            searchInput.addEventListener('input', applyFilters);
-            sortSelect.addEventListener('change', applyFilters);
-        }
+      switch (sort) {
+        case 'artist':
+          result.sort((a, b) => a.artist.localeCompare(b.artist));
+          break;
+        case 'medium':
+          result.sort((a, b) => a.medium.localeCompare(b.medium));
+          break;
+        case 'newest':
+        default:
+          result.sort((a, b) => b.createdAt - a.createdAt);
+          break;
+      }
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
-    </script>
+      filteredLots = result;
+      renderGrid(filteredLots);
+    }
+
+    // =======================================================
+    // 6. DETAIL MODAL
+    // =======================================================
+    function openDetailModal(lot) {
+      selectedLot = lot;
+      modalLotNumber.textContent = lot.lotNumber;
+      modalTitle.textContent = lot.title;
+      modalArtist.textContent = `By ${lot.artist} · ${lot.grade}`;
+      modalImage.src = lot.image;
+      modalImage.alt = lot.title;
+      modalMedium.textContent = lot.medium;
+      modalDimensions.textContent = lot.dimensions;
+      modalGrade.textContent = lot.grade;
+      modalBranch.textContent = lot.branch;
+      modalStartingBid.textContent = formatPrice(lot.startingBid);
+      modalDescription.textContent = lot.description;
+      modalPanelStartingBid.textContent = `Starting bid: ${formatPrice(lot.startingBid)}`;
+      detailModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetailModal() {
+      detailModal.style.display = 'none';
+      document.body.style.overflow = '';
+      selectedLot = null;
+    }
+
+    closeModalBtn.addEventListener('click', closeDetailModal);
+    detailModal.addEventListener('click', (e) => {
+      if (e.target === detailModal) closeDetailModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && detailModal.style.display === 'flex') {
+        closeDetailModal();
+      }
+    });
+
+    // Bid button in modal is disabled (Bidding Opens Soon)
+    modalBidBtn.addEventListener('click', () => {
+      // No action – it's disabled, but we can show a toast if clicked (though disabled prevents click)
+      // But we can keep it as a visual element only.
+    });
+
+    // =======================================================
+    // 7. INIT
+    // =======================================================
+    function init() {
+      const mediums = [...new Set(LOTS.map(a => a.medium))];
+      renderChips(mediums);
+      applyFilters();
+
+      searchInput.addEventListener('input', applyFilters);
+      sortSelect.addEventListener('change', applyFilters);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
 
 </body>
 </html>

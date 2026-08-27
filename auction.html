@@ -1233,44 +1233,56 @@ window.supabaseClient = supabaseClient;  // optional, for console testing
     }
 
     // Fetch lots from Supabase
-    async function fetchLots() {
-  console.log('fetchLots() called');
+  async function fetchLots() {
+  console.log('📡 fetchLots() called');
   const { data, error } = await supabaseClient
     .from('lots')
-      
-    async function fetchLots() {
-      const { data, error } = await supabaseClient
-        .from('lots')
-        .select(`
-          id,
-          lot_number,
-          starting_bid,
-          status,
-          artworks:artwork_id (
-            title,
-            description,
-            image_url,
-            medium,
-            dimensions,
-            artists:artist_id (
-              name,
-              grade,
-              branch
-            )
-          )
-        `)
-        .eq('auction_id', FALL_2026_AUCTION_ID)
-        .order('lot_number');
+    .select(`
+      id,
+      lot_number,
+      starting_bid,
+      status,
+      artworks:artwork_id (
+        title,
+        description,
+        image_url,
+        medium,
+        dimensions,
+        artists:artist_id (
+          name,
+          grade,
+          branch
+        )
+      )
+    `)
+    .eq('auction_id', FALL_2026_AUCTION_ID)
+    .order('lot_number');
 
-      console.log('Raw data from Supabase:', data);
-console.log('Error from Supabase:', error);
+  console.log('Raw data from Supabase:', data);
+  console.log('Error from Supabase:', error);
 
-if (error) {
-  console.error('Error fetching lots:', error);
-  return [];
-  
-   
-      }
+  if (error) {
+    console.error('Error fetching lots:', error);
+    return [];
+  }
+
+  // Transform to match the expected structure
+  return data.map(lot => ({
+    id: lot.id,
+    lotNumber: lot.lot_number,
+    startingBid: lot.starting_bid,
+    status: lot.status,
+    title: lot.artworks.title,
+    artist: lot.artworks.artists.name,
+    grade: lot.artworks.artists.grade,
+    branch: lot.artworks.artists.branch,
+    medium: lot.artworks.medium,
+    dimensions: lot.artworks.dimensions,
+    description: lot.artworks.description,
+    image: lot.artworks.image_url,
+    createdAt: Date.now()
+  }));
+}
 
       // Transform to match the expected structure
       return data.map(lot => ({

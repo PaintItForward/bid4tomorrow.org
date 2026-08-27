@@ -1027,6 +1027,30 @@
       opacity: 1;
       transition: opacity 0.3s;
     }
+
+    /* ===== LOADING SPINNER ===== */
+    .loader-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 0;
+      grid-column: 1 / -1;
+    }
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border-subtle);
+      border-top: 4px solid var(--crimson);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .loader-wrap.hidden {
+      display: none;
+    }
   </style>
 </head>
 
@@ -1135,8 +1159,12 @@
         <!-- Medium filter chips -->
         <div class="filter-chips" id="mediumChips" role="group" aria-label="Filter lots by medium"></div>
 
-        <!-- Lot Grid -->
-        <div class="lot-grid" id="lotGrid"></div>
+        <!-- Lot Grid with loader -->
+        <div class="lot-grid" id="lotGrid">
+          <div class="loader-wrap" id="loaderWrap">
+            <div class="loader" role="status" aria-label="Loading lots"></div>
+          </div>
+        </div>
 
       </div>
     </section>
@@ -1383,6 +1411,7 @@
     let selectedLot = null;
 
     const grid = document.getElementById('lotGrid');
+    const loaderWrap = document.getElementById('loaderWrap');
     const chipsContainer = document.getElementById('mediumChips');
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
@@ -1411,9 +1440,7 @@
     // ----- LAZY LOAD HELPER -----
     function lazyLoadImage(img) {
       if (!img) return;
-      // if already has src, skip
       if (img.src && img.src.length > 0) return;
-      // use data-src if available
       const dataSrc = img.getAttribute('data-src');
       if (dataSrc) {
         img.src = dataSrc;
@@ -1436,7 +1463,6 @@
         }, { rootMargin: '200px' });
         images.forEach(img => observer.observe(img));
       } else {
-        // fallback: load all immediately
         images.forEach(img => lazyLoadImage(img));
       }
     }
@@ -1512,6 +1538,9 @@
     }
 
     function renderGrid(items) {
+      // hide loader
+      if (loaderWrap) loaderWrap.classList.add('hidden');
+
       if (!items.length) {
         grid.innerHTML = `
           <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);">
@@ -1818,8 +1847,14 @@
       // Check authentication
       await checkAuth();
       
+      // Show loader
+      if (loaderWrap) loaderWrap.classList.remove('hidden');
+      
       // Load lots
       LOTS = await fetchLots();
+      
+      // Hide loader after data arrives (or error)
+      if (loaderWrap) loaderWrap.classList.add('hidden');
       
       if (LOTS.length === 0) {
         grid.innerHTML = `

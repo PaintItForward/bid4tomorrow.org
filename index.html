@@ -1,1364 +1,1802 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GPN4QVF0X0');
-</script>
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Bid For Tomorrow",
-  "alternateName": "Bid4Tomorrow",
-  "url": "https://bid4tomorrow.org/"
-}
-</script>
-
   
-<link rel="icon" type="image/png" href="/favicon-180x180.png" sizes="180x180" />
-<link rel="icon" type="image/svg+xml" href="/circlelogo.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" type="image/svg+xml" href="/circlelogo.svg" />
-<link rel="manifest" href="/site.webmanifest" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bid For Tomorrow — Student Art Initiative</title>
-<meta name="description" content="Bid For Tomorrow is a student-led initiative auctioning art for youth health and suicide prevention across North America.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<style>
-  /* ── Canvas Layer & Layer Stacking Fixes ── */
-  .hero {
-    position: relative;
-    overflow: hidden;
-  }
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GPN4QVF0X0');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fall '26 Auction · Bid For Tomorrow</title>
+  <meta name="description" content="Preview the original student artworks featured in Bid For Tomorrow's Fall 2026 charity auction." />
 
-  /* 1. Paint canvas layer sits behind text (z-index: 1) */
-  .paint-canvas-layer {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    cursor: crosshair;
-    touch-action: none;
-  }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  /* 2. Woven Canvas Texture */
-  .hero-canvas-texture {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background-image: 
-      repeating-linear-gradient(0deg, rgba(103, 60, 52, 0.05) 0px, rgba(103, 60, 52, 0.05) 1px, transparent 1px, transparent 4px),
-      repeating-linear-gradient(90deg, rgba(103, 60, 52, 0.05) 0px, rgba(103, 60, 52, 0.05) 1px, transparent 1px, transparent 4px),
-      radial-gradient(ellipse at 50% 50%, rgba(250, 227, 177, 0.25) 0%, rgba(153, 135, 49, 0.08) 100%);
-    background-size: 4px 4px, 4px 4px, 100% 100%;
-    opacity: 0.85;
-  }
+  <style>
+    /* ==========================================================================
+       VARIABLES & THEMES (exact match to existing Bid For Tomorrow site)
+       ========================================================================== */
+    :root {
+      --sand-gold:          #FAE3B1;
+      --sand-gold-light:    #FCF1D9;
+      --sand-gold-tint:     #FDF7EB;
+      --ochre-gold:         #998731;
+      --ochre-gold-dark:    #7D6D24;
+      --ochre-gold-light:   #E9DCA6;
+      --terracotta:         #CF5527;
+      --terracotta-dark:    #A83E17;
+      --terracotta-light:   #F39875;
+      --crimson:            #7D2027;
+      --crimson-dark:       #5C141A;
+      --crimson-light:      #A93C44;
+      --mahogany:           #673C34;
+      --mahogany-dark:      #4D2B24;
+      --mahogany-mid:       #7F4C43;
+      --mahogany-light:     #AB7A71;
+      --cerulean:           #5FA8C2;
+      --cerulean-dark:      #3B829C;
+      --cerulean-light:     #D4EDF5;
 
-  .hero-canvas-weave-detail {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background-image: 
-      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.22) 0px, rgba(255, 255, 255, 0.22) 1px, transparent 1px, transparent 8px),
-      repeating-linear-gradient(-45deg, rgba(103, 60, 52, 0.04) 0px, rgba(103, 60, 52, 0.04) 1px, transparent 1px, transparent 8px);
-    background-size: 8px 8px, 8px 8px;
-    opacity: 0.75;
-  }
+      --cream:              #FAE3B1;
+      --cream-alt:          #F5DC9F;
+      --white:              #FCF6EC;
+      --border:             #998731;
+      --border-subtle:      rgba(153, 135, 49, 0.35);
 
-  .dark .hero-canvas-texture {
-    opacity: 0.9;
-    background-image: 
-      repeating-linear-gradient(0deg, rgba(250, 227, 177, 0.045) 0px, rgba(250, 227, 177, 0.045) 1px, transparent 1px, transparent 4px),
-      repeating-linear-gradient(90deg, rgba(250, 227, 177, 0.045) 0px, rgba(250, 227, 177, 0.045) 1px, transparent 1px, transparent 4px);
-  }
+      --radius-sm:          2px;
+      --radius-md:          4px;
+      --radius-lg:          8px;
+      --shadow-sm:          0 2px 8px rgba(103, 60, 52, 0.06);
+      --shadow-md:          0 8px 24px rgba(103, 60, 52, 0.1);
+      --shadow-lg:          0 20px 48px rgba(103, 60, 52, 0.14);
 
-  /* 3. Hero content sits ABOVE the paint (z-index: 10) */
-  .hero-content {
-    position: relative;
-    z-index: 10;
-    pointer-events: none; /* Clicks in empty space hit the canvas underneath */
-  }
+      --text-heading:       #4E2922;
+      --text-body:          #59322B;
+      --text-muted:         #83544C;
+      --card-bg:            #FCF6EC;
+      --section-alt:        #F6DEAA;
+      --input-bg:           #FFFFFF;
+      --nav-bg:             rgba(250, 227, 177, 0.96);
 
-  /* 4. Keep all buttons, links, cards, and toolbars interactive */
-  .hero-content a,
-  .hero-content button,
-  .hero-content input,
-  .hero-content label,
-  .hero-stat-box,
-  .hero-tag,
-  .paint-toolbar {
-    pointer-events: auto;
-  }
-
-  /* ── Studio Paint Toolbar ── */
-  .paint-toolbar {
-    margin-top: 2rem;
-    background: var(--card-bg, #FCF6EC);
-    border: 1px solid var(--border, #998731);
-    border-radius: 6px;
-    padding: 0.75rem 1.25rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    box-shadow: 0 4px 16px rgba(103, 60, 52, 0.12);
-    backdrop-filter: blur(8px);
-  }
-
-  .palette-swatches {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .palette-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-heading, #4E2922);
-  }
-
-  .swatch-btn {
-    border: 1px solid rgba(0,0,0,0.15);
-    cursor: pointer;
-    border-radius: 4px;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    background: rgba(153, 135, 49, 0.12);
-    color: var(--text-heading, #4E2922);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .swatch-btn.color-dot {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    padding: 0;
-  }
-
-  .swatch-btn:hover {
-    transform: scale(1.1);
-  }
-
-  .swatch-btn.active {
-    box-shadow: 0 0 0 2px var(--terracotta, #CF5527), 0 2px 6px rgba(0,0,0,0.25);
-    transform: scale(1.15);
-  }
-
-  .custom-color-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    border: 1px dashed var(--border, #998731);
-    background: rgba(153, 135, 49, 0.08);
-    color: var(--text-heading, #4E2922);
-  }
-
-  .custom-color-label input[type="color"] {
-    width: 22px;
-    height: 22px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-
-  .paint-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .toolbar-btn {
-    padding: 0.4rem 0.85rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid var(--border, #998731);
-    background: transparent;
-    color: var(--text-heading, #4E2922);
-    transition: all 0.2s ease;
-  }
-
-  .toolbar-btn.primary-tool {
-    background: var(--terracotta, #CF5527);
-    color: #fff;
-    border-color: var(--terracotta, #CF5527);
-  }
-
-  .toolbar-btn:hover {
-    transform: translateY(-1px);
-  }
-
-  /* ── Editorial Asymmetric Layouts ── */
-  .mission-editorial-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-  @media (min-width: 992px) {
-    .mission-editorial-grid {
-      grid-template-columns: 1.1fr 1fr;
-      gap: 4rem;
+      --hero-bg-base:       #FCF3DF;
+      --hero-gradient-start:#FDF8EC;
+      --hero-gradient-mid:  #FAECBD;
+      --hero-tag-bg:        rgba(153, 135, 49, 0.14);
+      --hero-tag-border:    #998731;
+      --hero-tag-text:      #673C34;
     }
-  }
 
-  .editorial-statement {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2rem, 3.5vw, 2.75rem);
-    line-height: 1.25;
-    color: var(--text-heading, #1F1C19);
-    margin-bottom: 1.5rem;
-  }
+    .dark {
+      --cream:              #180B09;
+      --cream-alt:          #2A1612;
+      --white:              #261310;
+      --border:             #998731;
+      --border-subtle:      rgba(153, 135, 49, 0.45);
+      --text-heading:       #FAE3B1;
+      --text-body:          #F3E3CE;
+      --text-muted:         #D6C2AC;
+      --card-bg:            #2C1713;
+      --section-alt:        #23120F;
+      --input-bg:           #22110E;
+      --nav-bg:             rgba(38, 20, 16, 0.97);
+      --hero-bg-base:       #180B09;
+      --hero-gradient-start:#120705;
+      --hero-gradient-mid:  #200D0B;
+      --hero-tag-bg:        rgba(153, 135, 49, 0.2);
+      --hero-tag-border:    #998731;
+      --hero-tag-text:      #FAE3B1;
+      --shadow-sm:          0 2px 8px rgba(0, 0, 0, 0.4);
+      --shadow-md:          0 8px 24px rgba(0, 0, 0, 0.6);
+      --shadow-lg:          0 20px 48px rgba(0, 0, 0, 0.7);
+    }
 
-  .numbered-value-card {
-    padding: 1.75rem 2rem;
-    border: 1px solid var(--border-color, #E4DCCE);
-    border-radius: 14px;
-    background: var(--card-bg, #FAF7F2);
-    margin-bottom: 1.25rem;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-  }
-  .numbered-value-card:hover {
-    border-color: var(--matcha-dark, #3D4D3D);
-  }
-  .num-marker {
-    font-family: monospace;
-    font-size: 0.85rem;
-    color: var(--text-muted, #7A746C);
-    letter-spacing: 0.05em;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* ── Causes Nameplates ── */
-  .cause-nameplate-card {
-    padding: 1.75rem;
-    border: 1px solid var(--border-color, #E2D9CC);
-    border-radius: 12px;
-    background: var(--card-bg, #FAF7F2);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 190px;
-  }
-  .cause-org-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-color, #E8E1D7);
-    color: var(--text-heading, #1F1C19);
-  }
-  .cause-tag {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted, #7A746C);
-    font-weight: 600;
-    margin-top: 1.25rem;
-  }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--cream);
+      color: var(--text-body);
+      line-height: 1.65;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* ── Gallery Dimensions Teaser ── */
-  .artwork-specs-table {
-    width: 100%;
-    margin: 1.25rem 0;
-    border-top: 1px solid var(--border-color, #E8E1D7);
-    border-bottom: 1px solid var(--border-color, #E8E1D7);
-    padding: 0.75rem 0;
-    font-size: 0.875rem;
-  }
-  .artwork-specs-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.35rem 0;
-  }
-  .artwork-specs-label {
-    color: var(--text-muted, #7A746C);
-  }
-  .artwork-specs-val {
-    font-weight: 600;
-    color: var(--text-heading, #1F1C19);
-  }
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+      color: var(--text-heading);
+      letter-spacing: -0.02em;
+    }
 
-  /* ── Inline Toast / Form Feedback ── */
-  .form-feedback-box {
-    display: none;
-    padding: 1.25rem;
-    border-radius: 10px;
-    margin-bottom: 1.25rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-  .form-feedback-box.success {
-    display: block;
-    background: #EAF2EA;
-    border: 1px solid #B4D7B4;
-    color: #234B23;
-  }
-  .form-feedback-box.error {
-    display: block;
-    background: #FDF2F2;
-    border: 1px solid #F8B4B4;
-    color: #9B1C1C;
-  }
-  .dark .form-feedback-box.success {
-    background: #1B2A1B;
-    border-color: #2C522C;
-    color: #A6E2A6;
-  }
-  .dark .form-feedback-box.error {
-    background: #2C1818;
-    border-color: #5C2424;
-    color: #F8B4B4;
-  }
-</style>
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn-primary {
+      background-color: var(--crimson);
+      color: var(--white);
+    }
+    .btn-primary:hover {
+      background-color: var(--crimson-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(125, 32, 39, 0.25);
+    }
+
+    .btn-outline {
+      border-color: var(--border);
+      background-color: transparent;
+      color: var(--text-heading);
+    }
+    .btn-outline:hover {
+      background-color: var(--cream-alt);
+      border-color: var(--crimson);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text-muted);
+    }
+    .btn-ghost:hover {
+      color: var(--text-heading);
+      background-color: var(--cream-alt);
+    }
+
+    .btn-disabled {
+      opacity: 0.6;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    /* ==========================================================================
+       NAVIGATION
+       ========================================================================== */
+    #main-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background-color: var(--nav-bg);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: 1.35rem;
+      color: var(--crimson);
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+    .dark .nav-logo {
+      color: var(--sand-gold);
+    }
+
+    .nav-logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--crimson);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--crimson);
+    }
+    .dark .nav-links a:hover {
+      color: var(--sand-gold);
+    }
+
+    .nav-links a.active {
+      color: var(--ochre-gold);
+      font-weight: 700;
+    }
+
+    .nav-cta {
+      padding: 0.6rem 1.25rem;
+      background: var(--crimson);
+      color: var(--white) !important;
+      border-radius: var(--radius-sm);
+      transition: background-color 0.2s ease;
+    }
+    .nav-cta:hover {
+      background: var(--crimson-dark);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background-color: var(--text-heading);
+      transition: 0.2s;
+    }
+
+    @media (max-width: 960px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        box-shadow: var(--shadow-md);
+      }
+      .nav-links.open { display: flex; }
+    }
+
+    .dark-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    .dark-toggle:hover {
+      transform: scale(1.08);
+    }
+
+    /* User menu styles */
+    .user-menu {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-heading);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .user-menu:hover {
+      border-color: var(--crimson);
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--ochre-gold);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.5rem;
+      min-width: 200px;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      z-index: 60;
+    }
+
+    .user-dropdown.show {
+      display: block;
+    }
+
+    .user-dropdown-item {
+      display: block;
+      width: 100%;
+      padding: 0.6rem 1rem;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--text-body);
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .user-dropdown-item:hover {
+      background: var(--cream-alt);
+      color: var(--text-heading);
+    }
+
+    /* ==========================================================================
+       HERO
+       ========================================================================== */
+    .auction-hero {
+      position: relative;
+      padding: 4rem 0 3rem 0;
+      text-align: center;
+      background: linear-gradient(180deg, var(--hero-gradient-mid) 0%, var(--hero-bg-base) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: var(--hero-tag-bg);
+      border: 1px solid var(--hero-tag-border);
+      color: var(--hero-tag-text);
+      margin-bottom: 1.25rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .auction-hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.15;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .auction-hero p {
+      font-size: clamp(1rem, 1.6vw, 1.1rem);
+      max-width: 680px;
+      margin: 0 auto 2rem auto;
+      color: var(--text-body);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .auction-status-banner {
+      display: inline-block;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.8rem 2rem;
+      box-shadow: var(--shadow-sm);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-heading);
+    }
+    .auction-status-banner span {
+      color: var(--terracotta);
+      margin-left: 0.5rem;
+    }
+
+    /* ==========================================================================
+       AUCTION LISTING
+       ========================================================================== */
+    .auction-listing-section {
+      padding: 3rem 0 5rem 0;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .section-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .controls-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 220px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 0.6rem 1rem 0.6rem 2.4rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background-color: var(--input-bg);
+      color: var(--text-heading);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .search-box input:focus {
+      border-color: var(--ochre-gold);
+    }
+    .search-box svg {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      stroke: var(--text-muted);
+    }
+
+    select#sortSelect {
+      padding: 0.6rem 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background-color: var(--input-bg);
+      color: var(--text-heading);
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chip {
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .chip:hover {
+      border-color: var(--ochre-gold);
+      color: var(--text-heading);
+    }
+    .chip.active {
+      background: var(--ochre-gold);
+      color: var(--white);
+      border-color: var(--ochre-gold);
+    }
+
+    /* ==========================================================================
+       LOT GRID
+       ========================================================================== */
+    .lot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .lot-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .lot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--crimson);
+    }
+
+    .lot-image-wrap {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+      background: var(--section-alt);
+    }
+    .lot-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .lot-card:hover .lot-image-wrap img {
+      transform: scale(1.05);
+    }
+
+    .lot-number-badge {
+      position: absolute;
+      top: 0.85rem;
+      left: 0.85rem;
+      padding: 0.25rem 0.75rem;
+      background: var(--mahogany-dark);
+      color: var(--sand-gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: monospace;
+      border-radius: var(--radius-sm);
+      z-index: 5;
+      letter-spacing: 0.5px;
+    }
+
+    .lot-branch-badge {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      padding: 0.2rem 0.65rem;
+      background: var(--sand-gold);
+      color: var(--crimson);
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      z-index: 5;
+      box-shadow: var(--shadow-sm);
+    }
+    .dark .lot-branch-badge {
+      background: var(--mahogany-dark);
+      color: var(--sand-gold);
+    }
+
+    .lot-body {
+      padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .lot-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.1rem;
+      line-height: 1.25;
+    }
+
+    .lot-artist {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ochre-gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .lot-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .lot-details span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .lot-details .label {
+      color: var(--text-body);
+      font-weight: 600;
+    }
+
+    .lot-starting-bid {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+    .lot-starting-bid small {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .lot-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .lot-actions .btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       DETAIL MODAL
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(24, 11, 9, 0.8);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2rem 2.25rem 2.25rem 2.25rem;
+      width: 100%;
+      max-width: 720px;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes scaleUp {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      line-height: 1;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+    }
+    .modal-close-btn:hover {
+      color: var(--text-heading);
+      background-color: var(--section-alt);
+    }
+
+    .modal-lot-number {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ochre-gold);
+      margin-bottom: 0.2rem;
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+
+    .modal-artist {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ochre-gold);
+      margin-bottom: 1rem;
+    }
+
+    .modal-image-wrap {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+      background: var(--section-alt);
+      max-height: 340px;
+    }
+    .modal-image-wrap img {
+      width: 100%;
+      height: 100%;
+      max-height: 340px;
+      object-fit: cover;
+    }
+
+    .modal-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.88rem;
+    }
+    .modal-info-grid .info-label {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .modal-info-grid .info-value {
+      color: var(--text-heading);
+      font-weight: 500;
+    }
+
+    .modal-description {
+      font-size: 0.9rem;
+      color: var(--text-body);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* Auction panel inside modal */
+    .auction-panel {
+      background: var(--section-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .auction-panel .panel-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .auction-panel .panel-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .auction-panel .panel-value {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .auction-panel .panel-status {
+      font-weight: 700;
+      color: var(--terracotta);
+    }
+    .auction-panel .panel-btn {
+      min-width: 140px;
+    }
+
+    /* bid history */
+    .bid-history {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding: 0.5rem 0;
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .bid-entry {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .bid-entry:last-child {
+      border-bottom: none;
+    }
+
+    /* ==========================================================================
+       TOAST
+       ========================================================================== */
+    .toast-banner {
+      position: fixed;
+      top: 90px;
+      right: 1.5rem;
+      z-index: 110;
+      background: var(--card-bg);
+      border: 1px solid var(--terracotta);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.25rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      max-width: 400px;
+      animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast-banner .toast-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+
+    .toast-banner .toast-body {
+      flex-grow: 1;
+    }
+    .toast-banner .toast-body .toast-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .toast-banner .toast-body .toast-msg {
+      font-size: 0.8rem;
+      color: var(--text-body);
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 0 0.25rem;
+    }
+    .toast-close:hover {
+      color: var(--text-heading);
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .auction-footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      text-align: center;
+      background: var(--cream-alt);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .dark .auction-footer {
+      background: var(--section-alt);
+    }
+    .auction-footer a {
+      color: var(--text-heading);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE
+       ========================================================================== */
+    @media (max-width: 640px) {
+      .modal-card {
+        padding: 1.25rem;
+      }
+      .modal-info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+      }
+      .auction-panel {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .lot-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .controls-tools {
+        width: 100%;
+      }
+      .search-box {
+        flex: 1;
+        min-width: 140px;
+      }
+    }
+
+    .modal-card::-webkit-scrollbar {
+      width: 4px;
+    }
+    .modal-card::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .modal-card::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-   <a href="#home" class="nav-logo" aria-label="Bid For Tomorrow home">
-      <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-180x180.png" alt="Bid For Tomorrow Logo" style="width: 100%; height: 100%; object-fit: cover;">
-      </div>
-      Bid For Tomorrow
-    </a>
-    <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Our Branches</a></li>
-      <li><a href="auction.html" style="font-weight:600; color:var(--matcha-dark, #3D4D3D);">Fall 26 Auction &nearr;</a></li>
-      <li><a href="#artwork">Gallery</a></li>
-      <li><a href="#auctions">Events</a></li>
-      <li><a href="#impact">Impact</a></li>
-      <li><a href="#causes">Causes</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact" class="nav-cta">Get Involved</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
+  <!-- =========================================
+       NAVIGATION
+       ========================================= -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="Bid For Tomorrow home">
+        <div class="nav-logo-mark">B</div>
+        Bid For Tomorrow
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Branches</a></li>
+        <li><a href="#" class="active">Fall '26 Auction</a></li>
+        <li><a href="#">Causes</a></li>
+        <li><a href="#">FAQ</a></li>
+        <!-- Auth buttons will be dynamically inserted here -->
+        <li id="authNavItem"></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Floating Dark Mode Toggle -->
+  <button class="dark-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    </svg>
+  </button>
+
+  <!-- Toast -->
+  <div id="toastNotification" class="toast-banner" style="display: none;" role="status" aria-live="polite">
+    <div class="toast-icon">✓</div>
+    <div class="toast-body">
+      <div class="toast-title" id="toastTitle">Notice</div>
+      <div class="toast-msg" id="toastMessage">Information</div>
+    </div>
+    <button type="button" class="toast-close" id="closeToastBtn">✕</button>
   </div>
-</nav>
 
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
-<section class="hero" id="home" aria-label="Hero">
-  <!-- 1. Background Tone -->
-  <div class="hero-bg" aria-hidden="true"></div>
+  <main>
+    <!-- =========================================
+         HERO
+         ========================================= -->
+    <header class="auction-hero">
+      <div class="container">
+        <div class="hero-badge">
+          Fall 2026 · Student Charity Auction
+        </div>
 
-  <!-- 2. Woven Canvas Texture -->
-  <div class="hero-canvas-texture" aria-hidden="true"></div>
-  <div class="hero-canvas-weave-detail" aria-hidden="true"></div>
-
-  <!-- 3. Interactive Paint Canvas Layer (Sits behind text) -->
-  <canvas id="hero-paint-canvas" class="paint-canvas-layer"></canvas>
-
-  <!-- 4. Hero Content (Sits in front of paint) -->
-  <div class="hero-content">
-   
-
-    <h1>Don't bide your time&mdash; <br><em>Bid For Tomorrow.</em></h1>
-    <p class="hero-sub">A student-led art initiative using auctions to support physical and mental youth health across North America.</p>
-
-    <div class="hero-buttons">
-      <a href="auction.html" class="btn btn-primary">View Fall 26 Auction Lots</a>
-      <a href="#artwork" class="btn btn-outline">Explore Gallery</a>
-      <a href="#contact" class="btn btn-outline">Get Involved</a>
-    </div>
-
-    <hr class="hero-rule">
-
-    <div class="hero-stats" aria-label="Organization highlights">
-      <div class="hero-stat-box">
-        <div class="hero-stat-num"><span class="count-up" data-target="7">0</span>+</div>
-        <div class="hero-stat-label">Student Artists</div>
-      </div>
-
-      <div class="hero-stat-box">
-        <div class="hero-stat-num"><span class="count-up" data-target="19">0</span></div>
-        <div class="hero-stat-label">Artworks Created</div>
-      </div>
-
-      <div class="hero-stat-box">
-        <div class="hero-stat-num">100%</div>
-        <div class="hero-stat-label">Student Directed</div>
-      </div>
-
-      <div class="hero-stat-box cerulean-accent">
-        <div class="hero-stat-num">GTA &amp; MA</div>
-        <div class="hero-stat-label">Community Focus</div>
-      </div>
-    </div>
-
-    <!-- 5. Interactive Studio Color Selector Toolbar -->
-    <div class="paint-toolbar" id="paint-toolbar">
-      <div class="palette-swatches">
-        <span class="palette-label">Paint Color:</span>
-        <button type="button" class="swatch-btn active" data-color="rainbow" title="Rainbow Multi-color">🌈 Multi</button>
-        <button type="button" class="swatch-btn color-dot" data-color="#CF5527" style="background:#CF5527;" title="Terracotta"></button>
-        <button type="button" class="swatch-btn color-dot" data-color="#7D2027" style="background:#7D2027;" title="Crimson"></button>
-        <button type="button" class="swatch-btn color-dot" data-color="#998731" style="background:#998731;" title="Ochre"></button>
-        <button type="button" class="swatch-btn color-dot" data-color="#5FA8C2" style="background:#5FA8C2;" title="Cerulean"></button>
-        <button type="button" class="swatch-btn color-dot" data-color="#673C34" style="background:#673C34;" title="Mahogany"></button>
-        
-        <!-- Custom Color Picker Input -->
-        <label class="custom-color-label" title="Choose any custom color">
-          🎨 Custom
-          <input type="color" id="custom-color-picker" value="#CF5527">
-        </label>
-      </div>
-
-      <div class="paint-actions">
-        <button type="button" id="btn-throw-splatter" class="toolbar-btn primary-tool">Throw Splatter</button>
-        <button type="button" id="btn-clear-paint" class="toolbar-btn">Clear Canvas</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
-<section class="section gallery-section" id="artwork">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <h2>Student Artwork Gallery</h2>
-      <p>Explore original pieces handcrafted by youth artists. Click any lot to inspect dimensions, medium details, and prepare for bidding in the upcoming auction.</p>
-    </div>
-
-    <div class="artwork-carousel fade-up">
-      <button class="carousel-btn" id="prevBtn" aria-label="Previous slide">&#10094;</button>
-      <div class="carousel-window">
-        <div class="carousel-track" id="carouselTrack"></div>
-      </div>
-      <button class="carousel-btn" id="nextBtn" aria-label="Next slide">&#10095;</button>
-    </div>
-
-    <div class="carousel-dots" id="carouselDots"></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ EDITORIAL MISSION & VALUES ═══════════════════════════ -->
-<section class="section mission-section" id="mission">
-  <div class="container">
-    <div class="mission-editorial-grid">
-      <div class="fade-up">
-        <h2 class="editorial-statement">
-          When youth compassion meets creative expression, small acts of kindness become lasting community care.
-        </h2>
-        <p style="color:var(--text-body); line-height:1.7; margin-bottom:1.5rem;">
-          Bid For Tomorrow was founded on the conviction that high school artists have profound potential to effect direct change. Through public exhibition auctions, we connect emerging youth creators across the Greater Toronto Area and New England with charity partners fighting pediatric illness and mental health distress.
+        <h1>Fall '26 Auction DEMO</h1>
+        <p>
+          Explore original student artwork from the Greater Toronto Area and Lexington chapters.
+          This is a demo – bidding will open later this fall.
         </p>
-        <div style="padding:1.5rem; border-radius:12px; background:var(--card-bg); border:1px solid var(--border-color); margin-top:1.5rem;">
-          <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); font-weight:600; margin-bottom:0.25rem;">Our Sustainable Model</div>
-          <p style="font-size:0.9rem; margin:0; line-height:1.5;">
-            Auction proceeds are divided between our designated youth healthcare charities and direct allocations to student artists to support their continuing education and creative supplies.
-          </p>
-        </div>
-      </div>
 
-      <div class="fade-up">
-        <div class="numbered-value-card">
-          <div class="num-marker">01</div>
-          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Creativity as Agency</h3>
-          <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
-            Imagination is one of the most potent tools young people possess. We elevate classroom work into public exhibitions that command respect and financial impact.
-          </p>
+        <div class="hero-actions">
+          <a href="#lot-grid" class="btn btn-primary">Browse Lots</a>
+          <a href="#" class="btn btn-outline">Learn About Causes</a>
         </div>
 
-        <div class="numbered-value-card">
-          <div class="num-marker">02</div>
-          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Direct Health Advocacy</h3>
-          <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
-            Every canvas painted and every bid placed funds tangible hospital resources, pediatric equipment, and mental health counseling for youth.
-          </p>
-        </div>
-
-        <div class="numbered-value-card">
-          <div class="num-marker">03</div>
-          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Student Leadership Right Now</h3>
-          <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
-            Students curate our galleries, manage event operations, and direct community outreach—proving youth lead through immediate action.
-          </p>
+        <div class="auction-status-banner">
+          ⏳ Auction Status: <span>Coming Fall 2026</span>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </header>
 
-<!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
-<section class="section stats-section" id="impact">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <h2>Initiative Impact</h2>
-      <p>Figures updated continuously as exhibitions and community outreach expand.</p>
-    </div>
+    <!-- =========================================
+         AUCTION LISTING
+         ========================================= -->
+    <section class="auction-listing-section" id="lot-grid">
+      <div class="container">
 
-    <div class="stats-grid fade-up" aria-label="Impact statistics">
-      <div class="stat-item">
-        <span class="stat-number count-up" data-target="8">0</span>
-        <div class="stat-label">Student Artists</div>
-      </div>
-
-      <div class="stat-item">
-        <span class="stat-number count-up" data-target="19">0</span>
-        <div class="stat-label">Art Pieces Created</div>
-      </div>
-
-      <div class="stat-item">
-        <span class="stat-number">2</span>
-        <div class="stat-label">Active Chapters (GTA &amp; MA)</div>
-      </div>
-
-      <div class="stat-item">
-        <span class="stat-number">Fall '26</span>
-        <div class="stat-label">Inaugural Auction</div>
-      </div>
-
-      <div class="stat-item">
-        <span class="stat-number">100%</span>
-        <div class="stat-label">Charity &amp; Artist Directed</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ EVENTS & AUCTIONS ═══════════════════════════ -->
-<section class="section auctions-section" id="auctions">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <h2>Events &amp; Auctions</h2>
-      <p>Browse auction lots, check exhibition dates, and submit early bidder registrations.</p>
-    </div>
-    <div class="auction-cards" id="auction-cards"></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ CAUSES ═══════════════════════════ -->
-<!-- ═══════════════════════════ CAUSE ═══════════════════════════ -->
-<section class="section causes-section" id="causes">
-  <div class="container">
-    <div class="section-header fade-up" style="margin-bottom:2rem; text-align:left;">
-      <h2>The Cause We Support</h2>
-      <p>Bid For Tomorrow directs proceeds toward Holland Bloorview Kids Rehabilitation Hospital to support youth health, rehabilitation, and inclusion.</p>
-    </div>
-    
-    <div class="causes-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.5rem;">
-      <div class="cause-nameplate-card fade-up">
-        <div>
-          <div class="cause-org-title">Holland Bloorview</div>
-          <p style="font-size:0.875rem; color:var(--text-body); margin-top:0.85rem; line-height:1.5;">
-            Pioneering pediatric rehabilitation hospital creating an inclusive world of belonging for children and youth with disabilities.
-          </p>
-          <a href="https://hollandbloorview.ca/" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin-top:1rem; font-size:0.875rem; font-weight:600; text-decoration:underline;">Learn more at hollandbloorview.ca &rarr;</a>
-        </div>
-        <div class="cause-tag">Rehabilitation &amp; Inclusion</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════ TESTIMONIALS ═══════════════════════════ -->
-<section class="section-sm testimonials-section" id="testimonials">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2rem;">
-      <h2>Voices from the Community</h2>
-      <p>Reflections from participating student artists, attendees, and coordinators.</p>
-    </div>
-  </div>
-  <div class="testimonials-wrapper" aria-label="Testimonials">
-    <div class="testimonials-track" id="testimonials-track"></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ GET INVOLVED ═══════════════════════════ -->
-<section class="section involved-section" id="get-involved">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <h2>Get Involved</h2>
-      <p>Choose your pathway to support youth creativity and health advocacy.</p>
-    </div>
-    <div class="involved-grid">
-      <div class="involved-card involved-card-1 fade-up">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        </div>
-        <div class="involved-title">Submit Artwork</div>
-        <div class="involved-desc">Are you a student artist? Apply to feature your paintings, illustrations, or sculptures in the upcoming Fall 2026 auction.</div>
-        <a href="https://form.jotform.com/261786048210052" class="btn btn-primary" target="_blank" rel="noopener">Submit Artwork</a>
-      </div>
-
-      <div class="involved-card involved-card-2 fade-up fade-up-delay-1">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        </div>
-        <div class="involved-title">Fall 2026 Auction</div>
-        <div class="involved-desc">Browse auction lots, examine physical dimensions, and submit bidder pre-registration for early catalogue access.</div>
-        <a href="auction.html" class="btn btn-primary">View Auction Lots</a>
-      </div>
-
-      <div class="involved-card involved-card-3 fade-up fade-up-delay-2">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
-        <div class="involved-title">Volunteer With Us</div>
-        <div class="involved-desc">Help curate gallery exhibitions, coordinate participating artists, and earn verified secondary school community hours.</div>
-        <a href="https://form.jotform.com/261786840237061" class="btn btn-primary" target="_blank" rel="noopener">Apply to Volunteer</a>
-      </div>
-
-      <div class="involved-card involved-card-4 fade-up fade-up-delay-3">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-        </div>
-        <div class="involved-title">Become a Sponsor</div>
-        <div class="involved-desc">Community businesses and philanthropic organizations can partner with Bid For Tomorrow to match student fundraising.</div>
-        <a href="https://form.jotform.com/261786652654267" class="btn btn-primary" target="_blank" rel="noopener">Become a Sponsor</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ FAQ ═══════════════════════════ -->
-<section class="section faq-section" id="faq">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <h2>Frequently Asked Questions</h2>
-    </div>
-    <div class="faq-list" id="faq-list" role="list"></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
-<section class="section contact-section" id="contact">
-  <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <h2>Connect with Bid For Tomorrow</h2>
-    </div>
-    <div class="contact-inner">
-      <div class="contact-info fade-up">
-        <p>Whether you want to submit artwork, register as an auction bidder, volunteer, or discuss sponsorship, we would love to hear from you.</p>
-        
-        <div class="contact-item">
-          <div class="contact-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div class="section-header">
+          <div>
+            <h2>Featured Lots</h2>
+            <p>Original artwork by student artists, available for preview.</p>
           </div>
-          <div class="contact-item-text"><a href="mailto:paint.it.forward.art@gmail.com">paint.it.forward.art@gmail.com</a></div>
-        </div>
-        
-        <div class="contact-item">
-          <div class="contact-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="var(--matcha-dark)" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </div>
-          <div class="contact-item-text"><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">@paint_itforward</a></div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="contact-item-text">Greater Toronto Area, ON &bull; Lexington, Massachusetts, USA</div>
-        </div>
-      </div>
-
-      <div class="contact-form-box fade-up">
-        <div id="formFeedback" class="form-feedback-box" role="alert"></div>
-
-        <form id="contactForm">
-          <h3>Send us a message</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="first-name">First Name</label>
-              <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name" required>
+          <div class="controls-tools">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="searchInput" placeholder="Search lots, artists..." aria-label="Search artwork" />
             </div>
-            <div class="form-group">
-              <label for="last-name">Last Name</label>
-              <input type="text" id="last-name" name="last_name" placeholder="Smith" autocomplete="family-name">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" required>
-          </div>
-          <div class="form-group">
-            <label for="reason">I am interested in&hellip;</label>
-            <select id="reason" name="reason">
-              <option value="">Select an option</option>
-              <option value="Bidding on Artwork">Bidding on Artwork (Fall 26 Auction)</option>
-              <option value="Submitting Artwork">Submitting Student Artwork</option>
-              <option value="Volunteering">Volunteering at Events</option>
-              <option value="Sponsorship">Community Sponsorship</option>
-              <option value="General Inquiry">General Inquiry</option>
+            <select id="sortSelect" aria-label="Sort lots">
+              <option value="newest">Newest</option>
+              <option value="artist">Artist A–Z</option>
+              <option value="medium">Medium</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Tell us a bit about yourself and how you'd like to get involved..."></textarea>
+        </div>
+
+        <!-- Medium filter chips -->
+        <div class="filter-chips" id="mediumChips" role="group" aria-label="Filter lots by medium"></div>
+
+        <!-- Lot Grid -->
+        <div class="lot-grid" id="lotGrid"></div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================
+       DETAIL MODAL
+       ========================================= -->
+  <div id="detailModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <button type="button" id="closeModalBtn" class="modal-close-btn" aria-label="Close details">&times;</button>
+
+      <div class="modal-lot-number" id="modalLotNumber">LOT 001</div>
+      <h3 class="modal-title" id="modalTitle">Marseille</h3>
+      <div class="modal-artist" id="modalArtist">By Gloria</div>
+
+      <div class="modal-image-wrap">
+        <img id="modalImage" src="" alt="Artwork" />
+      </div>
+
+      <div class="modal-info-grid">
+        <div><span class="info-label">Medium</span><br><span class="info-value" id="modalMedium">Oil on canvas</span></div>
+        <div><span class="info-label">Dimensions</span><br><span class="info-value" id="modalDimensions">18" × 24"</span></div>
+        <div><span class="info-label">Grade</span><br><span class="info-value" id="modalGrade">Grade 11</span></div>
+        <div><span class="info-label">Branch</span><br><span class="info-value" id="modalBranch">GTA Chapter</span></div>
+        <div><span class="info-label">Starting Bid</span><br><span class="info-value" id="modalStartingBid">$65 CAD</span></div>
+      </div>
+
+      <div class="modal-description" id="modalDescription">
+        A luminous study capturing the warmth of the Mediterranean coast through layered impasto and soft atmospheric perspective.
+      </div>
+
+      <!-- Auction Panel -->
+      <div class="auction-panel">
+        <div class="panel-left">
+          <span class="panel-label">Fall '26 Auction</span>
+          <span class="panel-status" id="modalAuctionStatus">COMING SOON</span>
+          <span style="font-size:0.9rem; font-weight:600; color:var(--text-heading);" id="modalPanelStartingBid">Starting bid: $65 CAD</span>
+        </div>
+        <button class="btn btn-primary panel-btn" id="modalBidBtn" disabled>Bidding Opens Soon</button>
+      </div>
+
+      <!-- Bid history container -->
+      <div id="bidHistoryContainer"></div>
+
+      <p style="font-size:0.72rem; color:var(--text-muted); margin-top:0.75rem; text-align:center;">
+        proceeds fund audited youth healthcare and support young artists.
+      </p>
+    </div>
+  </div>
+
+  <!-- =========================================
+       FOOTER
+       ========================================= -->
+  <footer class="auction-footer">
+    <div class="container">
+      <p style="margin-bottom: 0.5rem;">
+        &copy; 2026 Bid For Tomorrow &bull; Student-led Fine Art Charity Auctions &bull; Greater Toronto Area &amp; Massachusetts.
+      </p>
+      <p style="font-size: 0.82rem;">
+        <a href="#">Home</a> &bull;
+        <a href="#">About Us</a> &bull;
+        <a href="#">Branches</a> &bull;
+        <a href="#">Contact &amp; Sponsorship</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- =========================================
+       SCRIPTS
+       ========================================= -->
+  <script>
+    // =======================================================
+    // 1. SUPABASE CONFIGURATION
+    // =======================================================
+    const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
+    window.supabaseClient = supabaseClient;
+
+    // =======================================================
+    // 2. THEME
+    // =======================================================
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function getSavedTheme() {
+      return localStorage.getItem('bft-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    }
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.body.classList.add('dark');
+        if (themeIcon) {
+          themeIcon.innerHTML =
+            `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
+        }
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.body.classList.remove('dark');
+        if (themeIcon) {
+          themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>`;
+        }
+      }
+    }
+
+    applyTheme(getSavedTheme());
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.contains('dark');
+        const newTheme = isDark ? 'light' : 'dark';
+        localStorage.setItem('bft-theme', newTheme);
+        applyTheme(newTheme);
+      });
+    }
+
+    // =======================================================
+    // 3. NAV TOGGLE
+    // =======================================================
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+
+    // =======================================================
+    // 4. AUTHENTICATION
+    // =======================================================
+    let currentUser = null;
+
+    // Check authentication status
+    async function checkAuth() {
+      const { data: { session }, error } = await supabaseClient.auth.getSession();
+      if (session) {
+        currentUser = session.user;
+        updateAuthUI(session.user);
+      } else {
+        currentUser = null;
+        updateAuthUI(null);
+      }
+    }
+
+    // Update navigation based on auth status
+    function updateAuthUI(user) {
+      const authNavItem = document.getElementById('authNavItem');
+      
+      if (user) {
+        // User is logged in
+        const initial = user.email ? user.email[0].toUpperCase() : 'U';
+        authNavItem.innerHTML = `
+          <div class="user-menu" id="userMenu">
+            <div class="user-avatar">${initial}</div>
+            <span>${user.user_metadata?.full_name || user.email.split('@')[0]}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </div>
-          <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;justify-content:center;">
-            Send Message
-          </button> 
-        </form>
-      </div>
-
-      <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-      <script>
-      emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
-
-      const contactForm = document.getElementById("contactForm");
-      const feedbackBox = document.getElementById("formFeedback");
-      const submitBtn = document.getElementById("submitBtn");
-
-      contactForm.addEventListener("submit", function(event) {
-          event.preventDefault();
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Sending...";
-
-          emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
-          .then(() => {
-              feedbackBox.className = "form-feedback-box success";
-              feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
-              contactForm.reset();
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Send Message";
-          })
-          .catch((error) => {
-              feedbackBox.className = "form-feedback-box error";
-              feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or reach us directly at paint.it.forward.art@gmail.com.";
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Send Message";
-              console.error(error);
-          });
-      });
-      </script>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-<footer role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#home" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
-        <p>Turning Creativity Into Impact. A student-led initiative empowering young artists to support youth physical and mental health across North America.</p>
-        <p class="footer-note">Nonprofit registration in progress.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="branches.html">Our Branches</a></li>
-          <li><a href="auction.html">Fall 26 Auction</a></li>
-          <li><a href="#artwork">Gallery</a></li>
-          <li><a href="#causes">Causes We Support</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Get Involved</h4>
-        <ul>
-          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
-          <li><a href="auction.html">Bid on Artwork</a></li>
-          <li><a href="https://form.jotform.com/261786840237061" target="_blank" rel="noopener">Volunteer</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="mailto:paint.it.forward.art@gmail.com">Email Us</a></li>
-          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Student-led initiative, Greater Toronto Area &amp; Massachusetts.</p>
-    </div>
-  </div>
-</footer>
-
-<!-- Dark mode toggle -->
-<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-</button>
-
-<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
-<script>
-/* ── STANDALONE PAINT HERO SIMULATION ── */
-(function initPaintHero() {
-  const canvas = document.getElementById('hero-paint-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d', { alpha: true });
-
-  const defaultPalette = ['#CF5527', '#7D2027', '#998731', '#5FA8C2', '#673C34', '#A83E17'];
-  let activeColor = 'rainbow'; // 'rainbow' or hex string
-  let droplets = [];
-  let colorIdx = 0;
-  let isPointerDown = false;
-  let lastPointer = null;
-  let lastSplash = 0;
-
-  function hexToRgb(hex) {
-    let bigint = parseInt(hex.replace('#', ''), 16);
-    return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
-  }
-
-  function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = canvas.clientWidth * dpr;
-    canvas.height = canvas.clientHeight * dpr;
-    ctx.resetTransform?.();
-    ctx.scale(dpr, dpr);
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  function getCurrentColor() {
-    if (activeColor !== 'rainbow') {
-      return hexToRgb(activeColor);
-    }
-    const colorHex = defaultPalette[colorIdx % defaultPalette.length];
-    colorIdx++;
-    return hexToRgb(colorHex);
-  }
-
-  function createSplash(x, y, vel = { x: 0, y: 0 }) {
-    const color = getCurrentColor();
-    const now = performance.now();
-    const radius = 22 + Math.random() * 24;
-
-    // Create 2-4 dripping streams flowing down with gravity
-    const dripCount = Math.floor(2 + Math.random() * 3);
-    const drips = [];
-    for (let i = 0; i < dripCount; i++) {
-      const offsetX = (Math.random() - 0.5) * radius * 1.3;
-      const offsetY = Math.abs(offsetX) * 0.3 + (radius * 0.45);
-      const dripW = Math.max(1.8, radius * 0.22);
-      drips.push({
-        offsetX, offsetY,
-        currentLength: 0,
-        maxLength: 70 + Math.random() * 140,
-        speed: 0.8 + Math.random() * 1.4,
-        trail: [{ x: offsetX, y: offsetY, width: dripW }],
-        tearRadius: dripW * 1.4,
-        meander: (Math.random() - 0.5) * 1.5,
-        settled: false
-      });
-    }
-
-    // Organic splatter blob contours
-    const points = [];
-    for (let i = 0; i < 14; i++) {
-      const ang = (i / 14) * Math.PI * 2;
-      const lobe = Math.random() < 0.35 ? (1.3 + Math.random() * 0.9) : (0.75 + Math.random() * 0.4);
-      points.push({ x: Math.cos(ang) * radius * lobe, y: Math.sin(ang) * radius * lobe });
-    }
-
-    droplets.push({
-      x, y, vx: vel.x * 0.08, vy: vel.y * 0.08,
-      radius: 1, baseRadius: radius,
-      color, alpha: 0.96, maxAlpha: 0.96,
-      birthTime: now, lifespan: 11000, dryDelay: 4000,
-      points, drips
-    });
-
-    // Satellite splatter droplets
-    const satCount = 14 + Math.floor(Math.random() * 12);
-    for (let i = 0; i < satCount; i++) {
-      const satAng = Math.random() * Math.PI * 2;
-      const satDist = (radius * 0.9 + Math.random() * 90);
-      const satR = 3.5 + Math.random() * 7;
-      droplets.push({
-        x: x + Math.cos(satAng) * satDist,
-        y: y + Math.sin(satAng) * satDist,
-        vx: 0, vy: 0, radius: 1, baseRadius: satR,
-        color, alpha: 0.9, maxAlpha: 0.9,
-        birthTime: now, lifespan: 11000, dryDelay: 4000,
-        points: []
-      });
-    }
-  }
-
-  function render(time) {
-    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    const surviving = [];
-
-    for (let d of droplets) {
-      const age = time - d.birthTime;
-      if (age >= d.lifespan) continue;
-
-      let alpha = d.maxAlpha;
-      if (age > d.dryDelay) {
-        alpha = d.maxAlpha * (1 - Math.pow((age - d.dryDelay) / (d.lifespan - d.dryDelay), 1.3));
-      }
-      if (alpha <= 0.01) continue;
-
-      if (d.radius < d.baseRadius) d.radius += (d.baseRadius - d.radius) * 0.4 + 0.6;
-
-      // Update drips
-      if (d.drips) {
-        for (let drip of d.drips) {
-          if (!drip.settled && drip.currentLength < drip.maxLength) {
-            drip.currentLength += drip.speed * Math.max(0.2, 1 - (drip.currentLength / drip.maxLength) * 0.7);
-            const curX = drip.offsetX + (Math.sin(drip.currentLength * 0.06) * 0.7) + (drip.meander * 0.35);
-            const curY = drip.offsetY + drip.currentLength;
-            drip.trail.push({ x: curX, y: curY, width: Math.max(1.2, drip.trail[0].width * (1 - (drip.currentLength / drip.maxLength) * 0.5)) });
-            if (drip.currentLength >= drip.maxLength) drip.settled = true;
+          <div class="user-dropdown" id="userDropdown">
+            <button class="user-dropdown-item" onclick="signOutUser()">Sign Out</button>
+          </div>
+        `;
+        
+        // Add dropdown toggle
+        setTimeout(() => {
+          const userMenu = document.getElementById('userMenu');
+          const userDropdown = document.getElementById('userDropdown');
+          if (userMenu && userDropdown) {
+            userMenu.addEventListener('click', (e) => {
+              e.stopPropagation();
+              userDropdown.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', () => {
+              userDropdown.classList.remove('show');
+            });
           }
-        }
-      }
-
-      ctx.save();
-      // Draw drips under the splat
-      if (d.drips) {
-        ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
-        for (let drip of d.drips) {
-          if (drip.trail.length > 1) {
-            ctx.beginPath();
-            for (let seg of drip.trail) ctx.arc(d.x + seg.x, d.y + seg.y, seg.width, 0, Math.PI * 2);
-            ctx.fill();
-            const tip = drip.trail[drip.trail.length - 1];
-            ctx.beginPath();
-            ctx.arc(d.x + tip.x, d.y + tip.y, drip.tearRadius, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-      }
-
-      // Draw splat body
-      ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
-      if (d.points && d.points.length > 2) {
-        ctx.beginPath();
-        const scale = d.radius / d.baseRadius;
-        ctx.moveTo(d.x + d.points[0].x * scale, d.y + d.points[0].y * scale);
-        for (let p = 1; p < d.points.length; p++) {
-          const midX = d.x + (d.points[p - 1].x + d.points[p].x) * 0.5 * scale;
-          const midY = d.y + (d.points[p - 1].y + d.points[p].y) * 0.5 * scale;
-          ctx.quadraticCurveTo(d.x + d.points[p - 1].x * scale, d.y + d.points[p - 1].y * scale, midX, midY);
-        }
-        ctx.closePath();
-        ctx.fill();
-
-        // Glossy wet paint highlight
-        if (age < d.dryDelay && d.radius > 6) {
-          ctx.fillStyle = `rgba(255,255,255,${alpha * 0.35 * (1 - age / d.dryDelay)})`;
-          ctx.beginPath();
-          ctx.ellipse(d.x - d.radius * 0.28, d.y - d.radius * 0.28, d.radius * 0.28, d.radius * 0.18, -Math.PI / 4, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        }, 0);
       } else {
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
-        ctx.fill();
+        // User is not logged in
+        authNavItem.innerHTML = `
+          <a href="login.html" class="btn-ghost" style="padding: 0.5rem 1rem;">Login</a>
+          <a href="signup.html" class="nav-cta">Sign Up</a>
+        `;
       }
-      ctx.restore();
-      surviving.push(d);
     }
 
-    droplets = surviving;
-    requestAnimationFrame(render);
-  }
-  requestAnimationFrame(render);
-
-  // Mouse & Touch events on the canvas
-  canvas.addEventListener('pointerdown', (e) => {
-    isPointerDown = true;
-    const r = canvas.getBoundingClientRect();
-    lastPointer = { x: e.clientX, y: e.clientY, time: performance.now() };
-    createSplash(e.clientX - r.left, e.clientY - r.top);
-  });
-
-  canvas.addEventListener('pointermove', (e) => {
-    if (!lastPointer) return;
-    const now = performance.now();
-    const dt = Math.max(1, now - lastPointer.time);
-    const speed = Math.hypot(e.clientX - lastPointer.x, e.clientY - lastPointer.y) / dt;
-    if (isPointerDown && (speed > 0.35 || now - lastSplash > 120)) {
-      const r = canvas.getBoundingClientRect();
-      createSplash(e.clientX - r.left, e.clientY - r.top, { x: (e.clientX - lastPointer.x) / dt * 16, y: (e.clientY - lastPointer.y) / dt * 16 });
-      lastSplash = now;
-    }
-    lastPointer = { x: e.clientX, y: e.clientY, time: now };
-  });
-
-  window.addEventListener('pointerup', () => { isPointerDown = false; lastPointer = null; });
-
-  // ── Color Swatch & Custom Color Picker Listeners ──
-  const swatchButtons = document.querySelectorAll('.swatch-btn');
-  swatchButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      swatchButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeColor = btn.dataset.color;
-    });
-  });
-
-  const customPicker = document.getElementById('custom-color-picker');
-  if (customPicker) {
-    customPicker.addEventListener('input', (e) => {
-      swatchButtons.forEach(b => b.classList.remove('active'));
-      activeColor = e.target.value;
-    });
-  }
-
-  // ── Throw Splatter Button ──
-  const throwBtn = document.getElementById('btn-throw-splatter');
-  if (throwBtn) {
-    throwBtn.addEventListener('click', () => {
-      const r = canvas.getBoundingClientRect();
-      createSplash(r.width * (0.25 + Math.random() * 0.5), r.height * (0.2 + Math.random() * 0.45));
-    });
-  }
-
-  // ── Clear Canvas Button ──
-  const clearBtn = document.getElementById('btn-clear-paint');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      droplets = [];
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    });
-  }
-
-  // Initial welcome splash
-  setTimeout(() => {
-    const r = canvas.getBoundingClientRect();
-    createSplash(r.width * 0.78, r.height * 0.3);
-  }, 600);
-})();
-
-/* ── AUCTION CARDS DATA ── */
-const auctions = [
-  {
-    title: "Fall Auction 2026",
-    link: "auction.html",
-    note: "Date and venue to be announced. Pre-register for early lot viewings and digital catalogue access."
-  }
-];
-
-/* ── HERO STAT COUNTERS ── */
-document.addEventListener("DOMContentLoaded", () => {
-  const counters = document.querySelectorAll(".hero-stats .count-up, .stats-section .count-up");
-
-  const animateCounter = (counter) => {
-    const target = parseInt(counter.dataset.target, 10);
-    const duration = 800;
-    const startTime = performance.now();
-
-    const updateCounter = (currentTime) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const currentValue = Math.floor(progress * target);
-      counter.textContent = currentValue;
-
-      if (progress < 1) {
-        requestAnimationFrame(updateCounter);
-      } else {
-        counter.textContent = target;
+    // Sign out function
+    window.signOutUser = async function() {
+      const { error } = await supabaseClient.auth.signOut();
+      if (!error) {
+        currentUser = null;
+        updateAuthUI(null);
+        showToast('Signed Out', 'You have been signed out successfully');
       }
     };
-    requestAnimationFrame(updateCounter);
-  };
 
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll(".count-up").forEach(animateCounter);
-        obs.unobserve(entry.target);
+    // Listen for auth changes
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        currentUser = session.user;
+        updateAuthUI(session.user);
+        showToast('Welcome!', 'You are now logged in');
+      } else if (event === 'SIGNED_OUT') {
+        currentUser = null;
+        updateAuthUI(null);
       }
     });
-  }, { threshold: 0.3 });
 
-  const heroStats = document.querySelector(".hero-stats");
-  const statsSection = document.querySelector(".stats-section");
-  if (heroStats) observer.observe(heroStats);
-  if (statsSection) observer.observe(statsSection);
-});
+    // =======================================================
+    // 5. TOAST
+    // =======================================================
+    const toastEl = document.getElementById('toastNotification');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMessage');
+    const closeToast = document.getElementById('closeToastBtn');
+    let toastTimer = null;
 
-/* ── AUTHENTIC TESTIMONIAL DATA ── */
-const testimonials = [
-  { text: "Seeing my watercolor piece displayed at an exhibition with real bidders was surreal. It proved to me that art made in a high school classroom can genuinely fund pediatric hospital care.", name: "Elena M.", role: "Grade 11 Student Artist, GTA" },
-  { text: "The artistic maturity and curation in the room rivaled commercial gallery events. We bid on two pieces for our office and love sharing the students' story with clients.", name: "Marcus Vance", role: "Community Supporter & Bidder" },
-  { text: "Coordinating our Lexington branch gave our school art club a tangible, inspiring purpose. It connected us directly with causes that matter deeply to our generation.", name: "Chloe Chen", role: "Grade 12 Lead, Lexington Branch" },
-  { text: "Participating in Bid For Tomorrow helped me see how small acts of creative giving turn into meaningful support for youth mental health.", name: "Lucas Zhang", role: "Student Artist, Grade 10" },
-  { text: "The energy in the gallery was authentic and moving. Young people taking charge of philanthropy in their own local communities.", name: "Priyah Patel", role: "Volunteer Coordinator" }
-];
-
-/* ── FAQ DATA ── */
-const faqs = [
-  { q: "How do I bid on artwork in the Fall 2026 auction?", a: "You can pre-register on our Auction page to receive the digital lot catalogue and venue details. Bidding will be available both in-person and via an online lot registration form." },
-  { q: "Can students or their families buy the artwork they submitted?", a: "Students and families are welcome to participate as bidders, but artwork cannot be bought back through arrangements intended to guarantee or artificially inflate sale prices. Our auctions are structured for authentic fundraising." },
-  { q: "Will student artists receive proceeds from their artwork?", a: "Yes! While a major portion of proceeds funds designated hospital and mental health charities, we also allocate a percentage back to the student artist for education and art materials. Artists also receive verified volunteer hours." },
-  { q: "How can students submit artwork?", a: "Students can apply through our Submit Artwork form in the Get Involved section. We accept oil, acrylic, watercolor, mixed media, and digital prints." },
-  { q: "Which charities does Bid For Tomorrow support?", a: "We support the SickKids Foundation, Kids Help Phone, Holland Bloorview Kids Rehabilitation Hospital, and the Toronto Arts Foundation." }
-];
-
-/* ── RENDER AUCTIONS ── */
-const aContainer = document.getElementById("auction-cards");
-if (aContainer) {
-  auctions.forEach(a => {
-    const targetLink = a.link || "auction.html";
-    aContainer.innerHTML += `
-      <article class="auction-card">
-        <div class="auction-card-header">
-          <a href="${targetLink}" style="text-decoration:none;color:inherit;display:block;">
-            <div class="auction-title">${a.title}</div>
-          </a>
-        </div>
-        <div class="auction-body">
-          <div class="auction-detail">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Date: Fall 2026 (Announcement Soon)
-          </div>
-          <div class="auction-detail">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Location: GTA Gallery Venue &amp; Online
-          </div>
-          <div class="tbd-badge">Bidder Pre-Registration Open</div>
-          <p style="font-size:0.85rem; color:var(--text-body); margin-bottom:1.25rem;">${a.note}</p>
-          <a href="${targetLink}" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;">
-            View Fall 26 Auction Lots &rarr;
-          </a>
-        </div>
-      </article>`;
-  });
-}
-
-/* ── RENDER TESTIMONIALS ── */
-const track = document.getElementById("testimonials-track");
-if (track) {
-  [...testimonials, ...testimonials].forEach(t => {
-    track.innerHTML += `
-      <div class="testimonial-card">
-        <span class="testimonial-opener" aria-hidden="true">&ldquo;</span>
-        <p class="testimonial-text">${t.text}</p>
-        <div class="testimonial-author">
-          <div>
-            <div class="testimonial-name">${t.name}</div>
-            <div class="testimonial-role">${t.role}</div>
-          </div>
-        </div>
-      </div>`;
-  });
-}
-
-/* ── RENDER FAQ ── */
-const faqList = document.getElementById("faq-list");
-if (faqList) {
-  faqs.forEach((f, i) => {
-    faqList.innerHTML += `
-      <div class="faq-item" role="listitem">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-${i}"
-             onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleFaq(this)">
-          ${f.q}
-          <span class="faq-toggle" aria-hidden="true">+</span>
-        </div>
-        <div class="faq-answer" id="faq-${i}" role="region">${f.a}</div>
-      </div>`;
-  });
-}
-
-function toggleFaq(btn) {
-  const item = btn.closest(".faq-item");
-  const isOpen = item.classList.contains("open");
-  document.querySelectorAll(".faq-item.open").forEach(i => i.classList.remove("open"));
-  if (!isOpen) item.classList.add("open");
-  btn.setAttribute("aria-expanded", !isOpen);
-}
-
-/* ── NAV TOGGLE ── */
-const navToggleBtn = document.getElementById("nav-toggle");
-if (navToggleBtn) {
-  navToggleBtn.addEventListener("click", function() {
-    const links = document.getElementById("nav-links");
-    links.classList.toggle("open");
-    this.setAttribute("aria-expanded", links.classList.contains("open"));
-  });
-}
-document.querySelectorAll(".nav-links a").forEach(a => {
-  a.addEventListener("click", () => document.getElementById("nav-links")?.classList.remove("open"));
-});
-
-/* ── DARK MODE ── */
-const darkBtn = document.getElementById("dark-toggle");
-const iconEl = document.getElementById("toggle-icon");
-const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-const sunPath = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-
-if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  document.body.classList.add("dark");
-  document.documentElement.classList.add("dark");
-  if (iconEl) iconEl.innerHTML = sunPath;
-}
-if (darkBtn) {
-  darkBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
-    if (iconEl) iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
-  });
-}
-
-/* ── GALLERY (WITH DIMENSIONS & AUCTION CTA) ── */
-(function() {
-  let artworks = [];
-  const track = document.getElementById('carouselTrack');
-  const dotsContainer = document.getElementById('carouselDots');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  let currentIndex = 0;
-  let autoplayInterval = null;
-
-  async function loadArtworks() {
-    try {
-      const response = await fetch("artwork.json");
-      if (!response.ok) throw new Error("artwork.json not found");
-      artworks = await response.json();
-    } catch (e) {
-      artworks = [
-        {
-          title: "Golden Hour in Algonquin",
-          artist: "Elena M. (Grade 11)",
-          branch: "GTA",
-          medium: "Oil on Canvas",
-          dimensions: "18\" × 24\" (Framed)",
-          startingBid: "$65 CAD",
-          description: "Capturing the serene warmth of autumn light cutting through pine canopy in Northern Ontario.",
-          status: "Fall 2026 Lot",
-          image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80"
-        },
-        {
-          title: "Fragments of Stillness",
-          artist: "Chloe Chen (Grade 12)",
-          branch: "Lexington",
-          medium: "Mixed Media & Acrylic",
-          dimensions: "20\" × 20\" (Gallery Wrap)",
-          startingBid: "$80 CAD",
-          description: "An exploration of youthful introspection, layered with textured handmade paper and earthy matcha pigments.",
-          status: "Fall 2026 Lot",
-          image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80"
-        }
-      ];
+    function showToast(title, msg) {
+      if (!toastEl) return;
+      toastTitle.textContent = title || 'Notice';
+      toastMsg.textContent = msg || '';
+      toastEl.style.display = 'flex';
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastEl.style.display = 'none'; }, 5000);
     }
-    renderCarousel();
-    startAutoplay();
-  }
 
-  function renderCarousel() {
-    if (!track || !dotsContainer) return;
-    track.innerHTML = '';
-    dotsContainer.innerHTML = '';
+    if (closeToast) {
+      closeToast.addEventListener('click', () => { toastEl.style.display = 'none'; });
+    }
 
-    artworks.forEach((art, idx) => {
-      const dimensions = art.dimensions || "Dimensions Available in Lot";
-      const medium = art.medium || "Original Medium";
+    // =======================================================
+    // 6. AUCTION LOGIC
+    // =======================================================
+    let LOTS = [];
+    let activeMedium = 'All';
+    let selectedLot = null;
 
-      track.innerHTML += `
-        <div class="artwork-slide">
-          <div class="artwork-image">
-            <img src="${art.image}" alt="${art.title}">
+    const grid = document.getElementById('lotGrid');
+    const chipsContainer = document.getElementById('mediumChips');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+
+    const detailModal = document.getElementById('detailModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalLotNumber = document.getElementById('modalLotNumber');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalArtist = document.getElementById('modalArtist');
+    const modalImage = document.getElementById('modalImage');
+    const modalMedium = document.getElementById('modalMedium');
+    const modalDimensions = document.getElementById('modalDimensions');
+    const modalGrade = document.getElementById('modalGrade');
+    const modalBranch = document.getElementById('modalBranch');
+    const modalStartingBid = document.getElementById('modalStartingBid');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalPanelStartingBid = document.getElementById('modalPanelStartingBid');
+    const modalBidBtn = document.getElementById('modalBidBtn');
+    const modalAuctionStatus = document.getElementById('modalAuctionStatus');
+    const bidHistoryContainer = document.getElementById('bidHistoryContainer');
+
+    function formatPrice(amount) {
+      return '$' + amount.toLocaleString() + ' CAD';
+    }
+
+    // Fetch lots from Supabase
+    async function fetchLots() {
+      try {
+        const { data: simpleData, error: simpleError } = await supabaseClient
+          .from('lots')
+          .select('*')
+          .eq('auction_id', FALL_2026_AUCTION_ID);
+        
+        if (simpleError) {
+          console.error('Error fetching lots:', simpleError);
+          return [];
+        }
+        
+        if (!simpleData || simpleData.length === 0) {
+          return [];
+        }
+        
+        const lotsWithDetails = [];
+        
+        for (const lot of simpleData) {
+          let artwork = null;
+          if (lot.artwork_id) {
+            const { data: artworkData, error: artworkError } = await supabaseClient
+              .from('artworks')
+              .select('*')
+              .eq('id', lot.artwork_id)
+              .single();
+            
+            if (!artworkError && artworkData) {
+              artwork = artworkData;
+            }
+          }
+          
+          let artist = null;
+          if (artwork && artwork.artist_id) {
+            const { data: artistData, error: artistError } = await supabaseClient
+              .from('artists')
+              .select('*')
+              .eq('id', artwork.artist_id)
+              .single();
+            
+            if (!artistError && artistData) {
+              artist = artistData;
+            }
+          }
+          
+          lotsWithDetails.push({
+            id: lot.id,
+            lotNumber: lot.lot_number || `LOT ${String(lot.id).padStart(3, '0')}`,
+            startingBid: lot.starting_bid || 0,
+            status: lot.status || 'coming_soon',
+            title: artwork?.title || 'Untitled',
+            artist: artist?.name || 'Unknown Artist',
+            grade: artist?.grade || 'N/A',
+            branch: artist?.branch || 'N/A',
+            medium: artwork?.medium || 'Mixed Media',
+            dimensions: artwork?.dimensions || 'N/A',
+            description: artwork?.description || 'No description available.',
+            image: artwork?.image_url || 'https://via.placeholder.com/400x300?text=Artwork',
+            createdAt: Date.now()
+          });
+        }
+        
+        return lotsWithDetails;
+      } catch (error) {
+        console.error('Error in fetchLots:', error);
+        return [];
+      }
+    }
+
+    function renderGrid(items) {
+      if (!items.length) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <h3 style="font-size:1.3rem;margin-bottom:0.5rem;">No lots found</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;">Try adjusting your search or filter.</p>
           </div>
-          <div class="artwork-details">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <span class="branch">${art.branch ?? 'GTA'} Chapter</span>
-              <span class="status-badge">${art.status || 'Upcoming Lot'}</span>
-            </div>
-            <h3>${art.title}</h3>
-            <p class="artist">By ${art.artist}</p>
+        `;
+        return;
+      }
 
-            <div class="artwork-specs-table">
-              <div class="artwork-specs-row">
-                <span class="artwork-specs-label">Medium</span>
-                <span class="artwork-specs-val">${medium}</span>
-              </div>
-              <div class="artwork-specs-row">
-                <span class="artwork-specs-label">Dimensions</span>
-                <span class="artwork-specs-val">${dimensions}</span>
-              </div>
-              ${art.startingBid ? `
-              <div class="artwork-specs-row">
-                <span class="artwork-specs-label">Starting Estimate</span>
-                <span class="artwork-specs-val" style="color:var(--matcha-dark);">${art.startingBid}</span>
-              </div>` : ''}
-            </div>
-
-            <p class="artwork-description">${art.description}</p>
-
-            <a href="auction.html" class="btn btn-primary" style="margin-top:1.25rem; width:100%; justify-content:center; text-decoration:none;">
-              View Lot &amp; Full Dimensions in Fall Auction &rarr;
-            </a>
+      grid.innerHTML = items.map(lot => `
+        <article class="lot-card" data-id="${lot.id}">
+          <div class="lot-image-wrap">
+            <img src="${lot.image}" alt="${lot.title}" loading="lazy" referrerpolicy="no-referrer" />
+            <span class="lot-number-badge">${lot.lotNumber}</span>
+            <span class="lot-branch-badge">${lot.branch}</span>
           </div>
-        </div>
-      `;
+          <div class="lot-body">
+            <h3 class="lot-title">${lot.title}</h3>
+            <div class="lot-artist">By ${lot.artist}</div>
+            <div class="lot-details">
+              <span><span class="label">Medium:</span> ${lot.medium}</span>
+              <span><span class="label">Grade:</span> ${lot.grade}</span>
+            </div>
+            <div class="lot-starting-bid">
+              ${formatPrice(lot.startingBid)} <small>starting bid</small>
+            </div>
+            <div class="lot-actions">
+              <button type="button" class="btn btn-primary view-lot-btn" data-id="${lot.id}">View Lot</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      grid.querySelectorAll('.view-lot-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          const found = LOTS.find(l => l.id === id);
+          if (found) openDetailModal(found);
+        });
+      });
+    }
+
+    function renderChips(mediums) {
+      const allChips = ['All', ...mediums];
+      chipsContainer.innerHTML = allChips.map(m => `
+        <button type="button" class="chip ${m === activeMedium ? 'active' : ''}" data-medium="${m}">${m}</button>
+      `).join('');
+
+      chipsContainer.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeMedium = btn.dataset.medium;
+          document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilters();
+        });
+      });
+    }
+
+    function applyFilters() {
+      const query = searchInput.value.toLowerCase().trim();
+      const sort = sortSelect.value;
+
+      let result = [...LOTS];
+
+      if (activeMedium !== 'All') {
+        result = result.filter(a => a.medium === activeMedium);
+      }
+
+      if (query) {
+        result = result.filter(a =>
+          String(a.lotNumber).toLowerCase().includes(query) ||
+          a.title.toLowerCase().includes(query) ||
+          a.artist.toLowerCase().includes(query) ||
+          a.grade.toLowerCase().includes(query) ||
+          a.branch.toLowerCase().includes(query) ||
+          a.medium.toLowerCase().includes(query) ||
+          a.description.toLowerCase().includes(query)
+        );
+      }
+
+      switch (sort) {
+        case 'artist':
+          result.sort((a, b) => a.artist.localeCompare(b.artist));
+          break;
+        case 'medium':
+          result.sort((a, b) => a.medium.localeCompare(b.medium));
+          break;
+        case 'newest':
+        default:
+          result.sort((a, b) => b.createdAt - a.createdAt);
+          break;
+      }
+
+      renderGrid(result);
+    }
+
+    // =======================================================
+    // 7. BIDDING FUNCTIONS
+    // =======================================================
+    
+    // Get current highest bid for a lot
+    async function getCurrentBid(lotId) {
+      try {
+        const { data, error } = await supabaseClient
+          .rpc('get_highest_bid', {
+            lot_uuid: lotId
+          });
+        
+        if (error) throw error;
+        return data[0] || null;
+      } catch (error) {
+        console.error('Error fetching highest bid:', error);
+        return null;
+      }
+    }
+
+    // Get bid history for a lot
+    async function getBidHistory(lotId) {
+      try {
+        const { data, error } = await supabaseClient
+          .rpc('get_bid_history', {
+            lot_uuid: lotId,
+            limit_count: 10
+          });
+        
+        if (error) throw error;
+        return data;
+      } catch (error) {
+        console.error('Error fetching bid history:', error);
+        return [];
+      }
+    }
+
+    // Place a bid
+    async function placeBid(lotId, amount) {
+      if (!currentUser) {
+        showToast('Login Required', 'Please log in to place a bid');
+        window.location.href = 'login.html?redirect=auction.html';
+        return false;
+      }
+      
+      try {
+        const { data, error } = await supabaseClient
+          .from('bids')
+          .insert([{
+            lot_id: lotId,
+            bidder_id: currentUser.id,
+            amount: amount
+          }])
+          .select()
+          .single();
+        
+        if (error) throw error;
+        
+        showToast('Bid Placed!', `Your bid of ${formatPrice(amount)} has been placed successfully`);
+        
+        // Refresh bid history
+        if (selectedLot) {
+          await updateModalWithBids(selectedLot);
+        }
+        
+        return true;
+      } catch (error) {
+        console.error('Error placing bid:', error);
+        showToast('Error', error.message);
+        return false;
+      }
+    }
+
+    // Update modal with bid information
+    async function updateModalWithBids(lot) {
+      const highestBid = await getCurrentBid(lot.id);
+      const bidHistory = await getBidHistory(lot.id);
+      
+      // Update current bid display
+      if (highestBid) {
+        modalPanelStartingBid.textContent = `Current bid: ${formatPrice(highestBid.amount)}`;
+      } else {
+        modalPanelStartingBid.textContent = `Starting bid: ${formatPrice(lot.startingBid)}`;
+      }
+      
+      // Create bid history HTML
+      if (bidHistory && bidHistory.length > 0) {
+        bidHistoryContainer.innerHTML = `
+          <div class="bid-history">
+            <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-heading); font-weight: 700;">Bid History</h4>
+            ${bidHistory.map(bid => `
+              <div class="bid-entry">
+                <span>${bid.bidder_name || 'Anonymous'}</span>
+                <span style="font-weight: 600;">${formatPrice(bid.amount)}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        bidHistoryContainer.innerHTML = `
+          <div class="bid-history">
+            <p style="font-size: 0.85rem; color: var(--text-muted);">No bids yet. Be the first to bid!</p>
+          </div>
+        `;
+      }
+      
+      // Update bid button
+      updateBidButton(lot, highestBid);
+    }
+
+    // Update bid button based on auction status and user login
+    function updateBidButton(lot, highestBid) {
+      if (!currentUser) {
+        modalBidBtn.disabled = false;
+        modalBidBtn.textContent = 'Login to Bid';
+        modalBidBtn.onclick = () => {
+          window.location.href = 'login.html?redirect=auction.html';
+        };
+        return;
+      }
+      
+      if (lot.status === 'live') {
+        modalBidBtn.disabled = false;
+        modalBidBtn.textContent = 'Place Bid';
+        modalBidBtn.onclick = () => {
+          const currentHighest = highestBid ? highestBid.amount : lot.startingBid;
+          const minBid = currentHighest + 5;
+          const bidAmount = prompt(`Enter your bid (minimum ${formatPrice(minBid)}):`);
+          
+          if (bidAmount && !isNaN(bidAmount) && parseFloat(bidAmount) >= minBid) {
+            placeBid(lot.id, parseFloat(bidAmount));
+          } else if (bidAmount && !isNaN(bidAmount) && parseFloat(bidAmount) < minBid) {
+            showToast('Invalid Bid', `Bid must be at least ${formatPrice(minBid)}`);
+          }
+        };
+      } else if (lot.status === 'ended') {
+        modalBidBtn.disabled = true;
+        modalBidBtn.textContent = 'Auction Ended';
+      } else {
+        modalBidBtn.disabled = true;
+        modalBidBtn.textContent = 'Bidding Opens Soon';
+      }
+    }
+
+    // =======================================================
+    // 8. DETAIL MODAL
+    // =======================================================
+    async function openDetailModal(lot) {
+      selectedLot = lot;
+      modalLotNumber.textContent = lot.lotNumber;
+      modalTitle.textContent = lot.title;
+      modalArtist.textContent = `By ${lot.artist} · ${lot.grade}`;
+      modalImage.src = lot.image;
+      modalImage.alt = lot.title;
+      modalMedium.textContent = lot.medium;
+      modalDimensions.textContent = lot.dimensions;
+      modalGrade.textContent = lot.grade;
+      modalBranch.textContent = lot.branch;
+      modalStartingBid.textContent = formatPrice(lot.startingBid);
+      modalDescription.textContent = lot.description;
+      
+      // Update auction status
+      if (lot.status === 'live') {
+        modalAuctionStatus.textContent = 'LIVE NOW';
+        modalAuctionStatus.style.color = 'green';
+      } else if (lot.status === 'ended') {
+        modalAuctionStatus.textContent = 'ENDED';
+        modalAuctionStatus.style.color = 'red';
+      } else {
+        modalAuctionStatus.textContent = 'COMING SOON';
+        modalAuctionStatus.style.color = 'var(--terracotta)';
+      }
+      
+      detailModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      
+      // Load bid information
+      await updateModalWithBids(lot);
+    }
+
+    function closeDetailModal() {
+      detailModal.style.display = 'none';
+      document.body.style.overflow = '';
+      selectedLot = null;
+    }
+
+    closeModalBtn.addEventListener('click', closeDetailModal);
+    detailModal.addEventListener('click', (e) => {
+      if (e.target === detailModal) closeDetailModal();
     });
 
-    artworks.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', () => goToSlide(i));
-      dotsContainer.appendChild(dot);
-    });
-  }
-
-  function goToSlide(index) {
-    if (artworks.length === 0 || !track) return;
-    currentIndex = (index < 0) ? artworks.length - 1 : (index >= artworks.length) ? 0 : index;
-    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-    document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
-    resetAutoplay();
-  }
-
-  function nextSlide() { goToSlide(currentIndex + 1); }
-  function prevSlide() { goToSlide(currentIndex - 1); }
-
-  function startAutoplay() {
-    stopAutoplay();
-    if (artworks.length > 1) autoplayInterval = setInterval(nextSlide, 5500);
-  }
-  function stopAutoplay() { if (autoplayInterval) { clearInterval(autoplayInterval); autoplayInterval = null; } }
-  function resetAutoplay() { stopAutoplay(); startAutoplay(); }
-
-  if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-  if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-
-  loadArtworks();
-})();
-
-/* ── FADE-UP ANIMATIONS ── */
-document.addEventListener('DOMContentLoaded', () => {
-  const els = document.querySelectorAll('.fade-up');
-  const io = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && detailModal.style.display === 'flex') {
+        closeDetailModal();
       }
     });
-  }, { threshold: 0.08 });
-  els.forEach(el => io.observe(el));
-});
-</script>
+
+    // =======================================================
+    // 9. INITIALIZATION
+    // =======================================================
+    async function init() {
+      // Check authentication
+      await checkAuth();
+      
+      // Load lots
+      LOTS = await fetchLots();
+      
+      if (LOTS.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);">
+            <h3 style="font-size:1.3rem;margin-bottom:0.5rem;">No lots available</h3>
+            <p style="color:var(--text-muted);font-size:0.95rem;">Check back soon for the Fall 2026 auction preview.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const mediums = [...new Set(LOTS.map(a => a.medium))];
+      renderChips(mediums);
+      applyFilters();
+
+      searchInput.addEventListener('input', applyFilters);
+      sortSelect.addEventListener('change', applyFilters);
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+
 </body>
 </html>

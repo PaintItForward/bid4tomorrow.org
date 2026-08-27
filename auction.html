@@ -1463,10 +1463,20 @@ if (error) {
       sortSelect.addEventListener('change', applyFilters);
     }
 
+console.log('📄 Document readyState:', document.readyState);
+if (document.readyState === 'loading') {
+  console.log('⏳ Waiting for DOMContentLoaded...');
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  console.log('⚡ Running init immediately...');
+  init();
+}
+      
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init);
     } else {
       init();
+      
 
       
     }

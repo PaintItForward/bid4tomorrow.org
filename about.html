@@ -1069,6 +1069,113 @@ svg:not([width]) {
         </div>
       </div>
     </section>
+
+    <!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
+      <h2>Connect with Bid For Tomorrow</h2>
+    </div>
+    <div class="contact-inner">
+      <div class="contact-info fade-up">
+        <p>Whether you want to submit artwork, register as an auction bidder, volunteer, or discuss sponsorship, we would love to hear from you.</p>
+
+        <div class="contact-item">
+          <div class="contact-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-item-text"><a href="mailto:bid4tomorrow@gmail.com">bid4tomorrow@gmail.com</a></div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="var(--matcha-dark)" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <div class="contact-item-text"><a href="https://www.instagram.com/bid4tomorrow/" target="_blank" rel="noopener noreferrer">@bid4tomorrow</a></div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-item-text">Greater Toronto Area, ON &bull; Lexington, Massachusetts, USA</div>
+        </div>
+      </div>
+
+      <div class="contact-form-box fade-up">
+        <div id="formFeedback" class="form-feedback-box" role="alert"></div>
+
+        <form id="contactForm">
+          <h3>Send us a message</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">First Name</label>
+              <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name" required>
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name</label>
+              <input type="text" id="last-name" name="last_name" placeholder="Smith" autocomplete="family-name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="reason">I am interested in&hellip;</label>
+            <select id="reason" name="reason">
+              <option value="">Select an option</option>
+              <option value="Bidding on Artwork">Bidding on Artwork (Fall 26 Auction)</option>
+              <option value="Submitting Artwork">Submitting Student Artwork</option>
+              <option value="Volunteering">Volunteering at Events</option>
+              <option value="Sponsorship">Community Sponsorship</option>
+              <option value="General Inquiry">General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us a bit about yourself and how you'd like to get involved..."></textarea>
+          </div>
+          <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;justify-content:center;">
+            Send Message
+          </button> 
+        </form>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+      <script>
+      emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
+
+      const contactForm = document.getElementById("contactForm");
+      const feedbackBox = document.getElementById("formFeedback");
+      const submitBtn = document.getElementById("submitBtn");
+
+      contactForm.addEventListener("submit", function(event) {
+          event.preventDefault();
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Sending...";
+
+          emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
+          .then(() => {
+              feedbackBox.className = "form-feedback-box success";
+              feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
+              contactForm.reset();
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Message";
+          })
+          .catch((error) => {
+              feedbackBox.className = "form-feedback-box error";
+              feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or reach us directly at paint.it.forward.art@gmail.com.";
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Message";
+              console.error(error);
+          });
+      });
+      </script>
+    </div>
+  </div>
+</section>
+    
   </main>
 
   <!-- Theme Toggle Script -->

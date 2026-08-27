@@ -2,71 +2,322 @@
 <html lang="en" data-theme="light">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GPN4QVF0X0');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GPN4QVF0X0');
+  </script>
+  
   <meta charset="UTF-8"> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Bid For Tomorrow</title>
-  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style> 
-    .auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 7rem 1.5rem 3rem; background: var(--cream); }
-    .auth-card { width: 100%; max-width: 420px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-md); }
-    .auth-card h1 { font-size: 2rem; margin-bottom: .5rem; }
-    .auth-card p { color: var(--text-body); margin-bottom: 2rem; }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: .4rem; }
-    .form-group input { width: 100%; padding: .8rem 1rem; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--radius-sm); color: var(--input-text); font: inherit; }
-    .auth-links { display: flex; justify-content: space-between; margin-top: 1rem; font-size: .85rem; }
-    .auth-links a { color: var(--matcha-dark); text-decoration: none; }
-    .auth-error { display: none; background: #F9E5E5; color: #8B3A3A; padding: .8rem; border-radius: var(--radius-sm); margin-bottom: 1rem; }
+    :root {
+      --sand-gold: #FAE3B1;
+      --ochre-gold: #998731;
+      --terracotta: #CF5527;
+      --crimson: #7D2027;
+      --crimson-dark: #5C141A;
+      --mahogany: #673C34;
+      --cream: #FAE3B1;
+      --white: #FCF6EC;
+      --text-heading: #4E2922;
+      --text-body: #59322B;
+      --text-muted: #83544C;
+      --card-bg: #FCF6EC;
+      --input-bg: #FFFFFF;
+      --border: #998731;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --radius-lg: 8px;
+      --shadow-md: 0 8px 24px rgba(103, 60, 52, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+    }
+
+    .auth-page { 
+      min-height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      padding: 2rem; 
+      background: linear-gradient(135deg, #FAE3B1 0%, #FCF3DF 100%);
+    }
+
+    .auth-card { 
+      width: 100%; 
+      max-width: 420px; 
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      border-radius: var(--radius-lg); 
+      padding: 2.5rem; 
+      box-shadow: var(--shadow-md); 
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      color: var(--crimson);
+      margin-bottom: 0.25rem;
+    }
+
+    .logo p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .form-group { 
+      margin-bottom: 1.25rem; 
+    }
+
+    .form-group label { 
+      display: block; 
+      font-size: .78rem; 
+      letter-spacing: .06em; 
+      text-transform: uppercase; 
+      color: var(--text-muted); 
+      margin-bottom: .4rem; 
+      font-weight: 600;
+    }
+
+    .form-group input { 
+      width: 100%; 
+      padding: .8rem 1rem; 
+      background: var(--input-bg); 
+      border: 1px solid var(--border); 
+      border-radius: var(--radius-sm); 
+      color: var(--text-body); 
+      font: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.1);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: .8rem;
+      background: var(--crimson);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn-primary:hover {
+      background: var(--crimson-dark);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .auth-links { 
+      display: flex; 
+      justify-content: space-between; 
+      margin-top: 1.5rem; 
+      font-size: .85rem; 
+    }
+
+    .auth-links a { 
+      color: var(--crimson); 
+      text-decoration: none; 
+      font-weight: 600;
+    }
+
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+
+    .auth-error { 
+      display: none; 
+      background: #F9E5E5; 
+      color: #8B3A3A; 
+      padding: .8rem; 
+      border-radius: var(--radius-sm); 
+      margin-bottom: 1rem; 
+      font-size: 0.9rem;
+    }
+
+    .success-message {
+      display: none;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: .8rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <nav>… same as artwork-detail …</nav>
   <main class="auth-page">
     <div class="auth-card">
-      <span class="eyebrow">Bidder Login</span>
-      <h1>Welcome Back</h1>
-      <p>Log in to continue bidding on student artwork.</p>
+      <div class="logo">
+        <h1>Bid For Tomorrow</h1>
+        <p>Welcome back! Log in to continue bidding.</p>
+      </div>
+
       <div class="auth-error" id="authError"></div>
+      <div class="success-message" id="successMessage">
+        Login successful! Redirecting...
+      </div>
+
       <form id="loginForm">
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" required autocomplete="email">
+          <input type="email" id="email" required autocomplete="email" placeholder="your@email.com">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" required autocomplete="current-password">
+          <input type="password" id="password" required autocomplete="current-password" placeholder="Your password">
         </div>
-        <button class="btn btn-primary" style="width:100%;">Login</button>
+        <button type="submit" class="btn-primary" id="loginBtn">Login</button>
       </form>
+
       <div class="auth-links">
         <a href="signup.html">Create account</a>
         <a href="reset-password.html">Forgot password?</a>
       </div>
     </div>
   </main>
-  <script src="assets/js/main.js"></script>
+
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    // Initialize Supabase
+    const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Get form elements
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const authError = document.getElementById('authError');
+    const successMessage = document.getElementById('successMessage');
+
+    // Handle login form submission
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('email').value;
+      
+      const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
+      
+      // Reset error messages
+      authError.style.display = 'none';
+      
+      // Disable button and show loading state
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in...';
+      
       try {
-        await PIF.request('/auth/login', { method: 'POST', body: { email, password } });
-        const redirect = new URLSearchParams(location.search).get('redirect') || 'dashboard.html';
-        location.href = redirect;
-      } catch (err) {
-        document.getElementById('authError').textContent = err.message;
-        document.getElementById('authError').style.display = 'block';
+        // Sign in with Supabase Auth
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+        
+        if (error) throw error;
+        
+        // Check if user exists in public.users table
+        if (data.user) {
+          const { data: userProfile, error: profileError } = await supabaseClient
+            .from('users')
+            .select('*')
+            .eq('id', data.user.id)
+            .single();
+          
+          if (profileError && profileError.code === 'PGRST116') {
+            // User profile doesn't exist, create it
+            const { error: createError } = await supabaseClient
+              .from('users')
+              .insert([{
+                id: data.user.id,
+                full_name: data.user.user_metadata?.full_name || email.split('@')[0],
+                email: email,
+                role: 'bidder',
+                is_admin: false
+              }]);
+            
+            if (createError) {
+              console.error('Error creating user profile:', createError);
+            }
+          }
+        }
+        
+        // Show success message
+        successMessage.style.display = 'block';
+        loginForm.style.display = 'none';
+        
+        // Redirect after short delay
+        setTimeout(() => {
+          const redirect = new URLSearchParams(window.location.search).get('redirect');
+          if (redirect) {
+            window.location.href = redirect;
+          } else {
+            // Default redirect to auction page or dashboard
+            window.location.href = 'auction.html';
+          }
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Login error:', error);
+        
+        // Show error message
+        authError.textContent = error.message || 'Invalid email or password';
+        authError.style.display = 'block';
+        
+        // Re-enable button
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
       }
     });
+
+    // Check if user is already logged in
+    async function checkExistingSession() {
+      const { data: { session }, error } = await supabaseClient.auth.getSession();
+      
+      if (session) {
+        // User is already logged in
+        const redirect = new URLSearchParams(window.location.search).get('redirect');
+        if (redirect) {
+          window.location.href = redirect;
+        } else {
+          window.location.href = 'auction.html';
+        }
+      }
+    }
+    
+    // Run on page load
+    checkExistingSession();
   </script>
 </body>
 </html>

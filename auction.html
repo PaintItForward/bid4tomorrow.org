@@ -1122,9 +1122,11 @@
     // =======================================================
     const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    
+    // Change this line - remove 'const' since supabase is already declared by the CDN
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
     const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
-    window.supabaseClient = supabase;
+    window.supabaseClient = supabaseClient;
 
     // =======================================================
     // 2. THEME (existing)
@@ -1234,81 +1236,89 @@
     async function fetchLots() {
       console.log('📡 Fetching lots from Supabase...');
       
-      // First, let's check what tables actually exist
-      const { data: tables, error: tablesError } = await supabase
-        .from('lots')
-        .select('*')
-        .limit(1);
-      
-      console.log('Tables check:', tables);
-      console.log('Tables error:', tablesError);
-      
-      // Try a simpler query first to see the structure
-      const { data: simpleData, error: simpleError } = await supabase
-        .from('lots')
-        .select('*')
-        .eq('auction_id', FALL_2026_AUCTION_ID);
-      
-      console.log('Simple lots data:', simpleData);
-      console.log('Simple lots error:', simpleError);
-      
-      if (simpleError) {
-        console.error('Error fetching lots:', simpleError);
+      try {
+        // First, let's check the simple query
+        const { data: simpleData, error: simpleError } = await supabaseClient
+          .from('lots')
+          .select('*')
+          .eq('auction_id', FALL_2026_AUCTION_ID);
+        
+        console.log('Simple lots data:', simpleData);
+        console.log('Simple lots error:', simpleError);
+        
+        if (simpleError) {
+          console.error('Error fetching lots:', simpleError);
+          return [];
+        }
+        
+        if (!simpleData || simpleData.length === 0) {
+          console.log('No lots found for this auction');
+          return [];
+        }
+        
+        // Process each lot
+        const lotsWithDetails = [];
+        
+        for (const lot of simpleData) {
+          console.log('Processing lot:', lot);
+          
+          // Fetch artwork details
+          let artwork = null;
+          if (lot.artwork_id) {
+            const { data: artworkData, error: artworkError } = await supabaseClient
+              .from('artworks')
+              .select('*')
+              .eq('id', lot.artwork_id)
+              .single();
+            
+            if (!artworkError && artworkData) {
+              artwork = artworkData;
+              console.log('Found artwork:', artwork);
+            } else {
+              console.log('Artwork error or not found:', artworkError);
+            }
+          }
+          
+          // Fetch artist details
+          let artist = null;
+          if (artwork && artwork.artist_id) {
+            const { data: artistData, error: artistError } = await supabaseClient
+              .from('artists')
+              .select('*')
+              .eq('id', artwork.artist_id)
+              .single();
+            
+            if (!artistError && artistData) {
+              artist = artistData;
+              console.log('Found artist:', artist);
+            } else {
+              console.log('Artist error or not found:', artistError);
+            }
+          }
+          
+          lotsWithDetails.push({
+            id: lot.id,
+            lotNumber: lot.lot_number || `LOT ${String(lot.id).padStart(3, '0')}`,
+            startingBid: lot.starting_bid || 0,
+            status: lot.status || 'coming_soon',
+            title: artwork?.title || 'Untitled',
+            artist: artist?.name || 'Unknown Artist',
+            grade: artist?.grade || 'N/A',
+            branch: artist?.branch || 'N/A',
+            medium: artwork?.medium || 'Mixed Media',
+            dimensions: artwork?.dimensions || 'N/A',
+            description: artwork?.description || 'No description available.',
+            image: artwork?.image_url || 'https://via.placeholder.com/400x300?text=Artwork',
+            createdAt: Date.now()
+          });
+        }
+        
+        console.log('Processed lots:', lotsWithDetails);
+        return lotsWithDetails;
+      } catch (error) {
+        console.error('Error in fetchLots:', error);
         return [];
       }
-      
-      // If simple query works, then try to get related data
-      // You may need to adjust these table names based on your actual schema
-      const lotsWithDetails = [];
-      
-      for (const lot of simpleData || []) {
-        // Fetch artwork details
-        let artwork = null;
-        if (lot.artwork_id) {
-          const { data: artworkData, error: artworkError } = await supabase
-            .from('artworks')
-            .select('*')
-            .eq('id', lot.artwork_id)
-            .single();
-          
-          if (!artworkError && artworkData) {
-            artwork = artworkData;
-          }
-        }
-        
-        // Fetch artist details
-        let artist = null;
-        if (artwork && artwork.artist_id) {
-          const { data: artistData, error: artistError } = await supabase
-            .from('artists')
-            .select('*')
-            .eq('id', artwork.artist_id)
-            .single();
-          
-          if (!artistError && artistData) {
-            artist = artistData;
-          }
-        }
-        
-        lotsWithDetails.push({
-          id: lot.id,
-          lotNumber: lot.lot_number || `LOT ${String(lot.id).padStart(3, '0')}`,
-          startingBid: lot.starting_bid || 0,
-          status: lot.status || 'coming_soon',
-          title: artwork?.title || 'Untitled',
-          artist: artist?.name || 'Unknown Artist',
-          grade: artist?.grade || 'N/A',
-          branch: artist?.branch || 'N/A',
-          medium: artwork?.medium || 'Mixed Media',
-          dimensions: artwork?.dimensions || 'N/A',
-          description: artwork?.description || 'No description available.',
-          image: artwork?.image_url || 'https://via.placeholder.com/400x300?text=Artwork',
-          createdAt: Date.now()
-        });
-      }
-      
-      console.log('Processed lots:', lotsWithDetails);
-      return lotsWithDetails;
     }
 
     function renderGrid(items) {

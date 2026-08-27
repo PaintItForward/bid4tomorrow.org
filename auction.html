@@ -1770,7 +1770,7 @@
         modalBidBtn.textContent = 'Place Bid';
         modalBidBtn.onclick = () => {
           const currentHighest = highestBid ? highestBid.amount : lot.startingBid;
-          const minBid = currentHighest + 5;
+          const minBid = currentHighest + lot.bidIncrement;
           const bidAmount = prompt(`Enter your bid (minimum ${formatPrice(minBid)}):`);
           
           if (bidAmount && !isNaN(bidAmount) && parseFloat(bidAmount) >= minBid) {
@@ -1779,7 +1779,7 @@
             showToast('Invalid Bid', `Bid must be at least ${formatPrice(minBid)}`);
           }
         };
-      } else if (lot.status === 'ended') {
+      } else if (lot.status === 'closed' || lot.status === 'sold') {
         modalBidBtn.disabled = true;
         modalBidBtn.textContent = 'Auction Ended';
       } else {
@@ -1806,7 +1806,7 @@
       modalDescription.textContent = lot.description;
       
       // Update auction status
-      if (lot.status === 'live') {
+      if (lot.status === 'open') {
         modalAuctionStatus.textContent = 'LIVE NOW';
         modalAuctionStatus.style.color = 'green';
       } else if (lot.status === 'ended') {

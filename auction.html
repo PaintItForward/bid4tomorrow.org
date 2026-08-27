@@ -1116,15 +1116,15 @@
   <!-- =========================================
        SCRIPTS
        ========================================= -->
-  <script>
+<script>
     // =======================================================
-    // 1. SUPABASE CONFIGURATION (with your actual anon key)
+    // 1. SUPABASE CONFIGURATION
     // =======================================================
-   const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
-window.supabaseClient = supabase;  // for console testing
+    const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    const FALL_2026_AUCTION_ID = 'aa4e9ed0-fc28-4220-a360-d1784842e48f';
+    window.supabaseClient = supabase;
 
     // =======================================================
     // 2. THEME (existing)
@@ -1200,19 +1200,17 @@ window.supabaseClient = supabase;  // for console testing
     }
 
     // =======================================================
-    // 5. AUCTION LOGIC — fetch from Supabase (replaces static data)
+    // 5. AUCTION LOGIC
     // =======================================================
     let LOTS = [];
     let activeMedium = 'All';
     let selectedLot = null;
 
-    // DOM refs
     const grid = document.getElementById('lotGrid');
     const chipsContainer = document.getElementById('mediumChips');
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
 
-    // Modal refs
     const detailModal = document.getElementById('detailModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const modalLotNumber = document.getElementById('modalLotNumber');
@@ -1233,54 +1231,84 @@ window.supabaseClient = supabase;  // for console testing
     }
 
     // Fetch lots from Supabase
-  async function fetchLots() {
-  console.log('📡 fetchLots() called');
-  const { data, error } = await supabaseClient
-    .from('lots')
-    .select(`
-      id,
-      lot_number,
-      starting_bid,
-      status,
-      artworks:artwork_id (
-        title,
-        description,
-        image_url,
-        medium,
-        dimensions,
-        artists:artist_id (
-          name,
-          grade,
-          branch
-        )
-      )
-    `)
-    .eq('auction_id', FALL_2026_AUCTION_ID)
-    .order('lot_number');
-
-  console.log('Raw data from Supabase:', data);
-  console.log('Error from Supabase:', error);
-
-  if (error) {
-    console.error('Error fetching lots:', error);
-    return [];
-  }
-      // Transform to match the expected structure
-      return data.map(lot => ({
-        id: lot.id,
-        lotNumber: lot.lot_number,
-        startingBid: lot.starting_bid,
-        status: lot.status,
-        title: lot.artworks.title,
-        artist: lot.artworks.artists.name,
-        grade: lot.artworks.artists.grade,
-        branch: lot.artworks.artists.branch,
-        medium: lot.artworks.medium,
-        dimensions: lot.artworks.dimensions,
-        description: lot.artworks.description,
-        image: lot.artworks.image_url,
-        createdAt: Date.now() // or use a real timestamp if available
-      }));
+    async function fetchLots() {
+      console.log('📡 Fetching lots from Supabase...');
+      
+      // First, let's check what tables actually exist
+      const { data: tables, error: tablesError } = await supabase
+        .from('lots')
+        .select('*')
+        .limit(1);
+      
+      console.log('Tables check:', tables);
+      console.log('Tables error:', tablesError);
+      
+      // Try a simpler query first to see the structure
+      const { data: simpleData, error: simpleError } = await supabase
+        .from('lots')
+        .select('*')
+        .eq('auction_id', FALL_2026_AUCTION_ID);
+      
+      console.log('Simple lots data:', simpleData);
+      console.log('Simple lots error:', simpleError);
+      
+      if (simpleError) {
+        console.error('Error fetching lots:', simpleError);
+        return [];
+      }
+      
+      // If simple query works, then try to get related data
+      // You may need to adjust these table names based on your actual schema
+      const lotsWithDetails = [];
+      
+      for (const lot of simpleData || []) {
+        // Fetch artwork details
+        let artwork = null;
+        if (lot.artwork_id) {
+          const { data: artworkData, error: artworkError } = await supabase
+            .from('artworks')
+            .select('*')
+            .eq('id', lot.artwork_id)
+            .single();
+          
+          if (!artworkError && artworkData) {
+            artwork = artworkData;
+          }
+        }
+        
+        // Fetch artist details
+        let artist = null;
+        if (artwork && artwork.artist_id) {
+          const { data: artistData, error: artistError } = await supabase
+            .from('artists')
+            .select('*')
+            .eq('id', artwork.artist_id)
+            .single();
+          
+          if (!artistError && artistData) {
+            artist = artistData;
+          }
+        }
+        
+        lotsWithDetails.push({
+          id: lot.id,
+          lotNumber: lot.lot_number || `LOT ${String(lot.id).padStart(3, '0')}`,
+          startingBid: lot.starting_bid || 0,
+          status: lot.status || 'coming_soon',
+          title: artwork?.title || 'Untitled',
+          artist: artist?.name || 'Unknown Artist',
+          grade: artist?.grade || 'N/A',
+          branch: artist?.branch || 'N/A',
+          medium: artwork?.medium || 'Mixed Media',
+          dimensions: artwork?.dimensions || 'N/A',
+          description: artwork?.description || 'No description available.',
+          image: artwork?.image_url || 'https://via.placeholder.com/400x300?text=Artwork',
+          createdAt: Date.now()
+        });
+      }
+      
+      console.log('Processed lots:', lotsWithDetails);
+      return lotsWithDetails;
     }
 
     function renderGrid(items) {
@@ -1321,7 +1349,7 @@ window.supabaseClient = supabase;  // for console testing
       grid.querySelectorAll('.view-lot-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const id = parseInt(btn.dataset.id, 10);
+          const id = btn.dataset.id;
           const found = LOTS.find(l => l.id === id);
           if (found) openDetailModal(found);
         });
@@ -1356,7 +1384,7 @@ window.supabaseClient = supabase;  // for console testing
 
       if (query) {
         result = result.filter(a =>
-          a.lotNumber.toLowerCase().includes(query) ||
+          String(a.lotNumber).toLowerCase().includes(query) ||
           a.title.toLowerCase().includes(query) ||
           a.artist.toLowerCase().includes(query) ||
           a.grade.toLowerCase().includes(query) ||
@@ -1382,9 +1410,6 @@ window.supabaseClient = supabase;  // for console testing
       renderGrid(result);
     }
 
-    // =======================================================
-    // 6. DETAIL MODAL
-    // =======================================================
     function openDetailModal(lot) {
       selectedLot = lot;
       modalLotNumber.textContent = lot.lotNumber;
@@ -1420,24 +1445,16 @@ window.supabaseClient = supabase;  // for console testing
       }
     });
 
-    // Bid button is disabled – just for show
-    modalBidBtn.addEventListener('click', () => {
-      // no action – button is disabled
-    });
-
     // =======================================================
-    // 7. INIT — load data and render
+    // 7. INIT — Single init function
     // =======================================================
     async function init() {
-      console.log('🚀 init() called');
+      console.log('🚀 Initializing auction page...');
       console.log('🔄 Loading auction lots from Supabase...');
-        
-    async function init() {
-      console.log('🔄 Loading auction lots from Supabase...');
+      
       LOTS = await fetchLots();
       console.log(`✅ Loaded ${LOTS.length} lots.`);
-      console.log('First lot sample:', LOTS[0]); // peek at first item
-
+      
       if (LOTS.length === 0) {
         grid.innerHTML = `
           <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);">
@@ -1456,24 +1473,12 @@ window.supabaseClient = supabase;  // for console testing
       sortSelect.addEventListener('change', applyFilters);
     }
 
-console.log('📄 Document readyState:', document.readyState);
-if (document.readyState === 'loading') {
-  console.log('⏳ Waiting for DOMContentLoaded...');
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  console.log('⚡ Running init immediately...');
-  init();
-}
-      
+    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init);
     } else {
       init();
-      
-
-      
     }
 </script>
-
 </body>
 </html>

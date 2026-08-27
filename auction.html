@@ -1233,7 +1233,11 @@ window.supabaseClient = supabaseClient;  // optional, for console testing
     }
 
     // Fetch lots from Supabase
-    
+    async function fetchLots() {
+  console.log('fetchLots() called');
+  const { data, error } = await supabaseClient
+    .from('lots')
+      
     async function fetchLots() {
       const { data, error } = await supabaseClient
         .from('lots')
@@ -1432,9 +1436,14 @@ if (error) {
     // 7. INIT — load data and render
     // =======================================================
     async function init() {
+      console.log('🚀 init() called');
+      console.log('🔄 Loading auction lots from Supabase...');
+        
+    async function init() {
       console.log('🔄 Loading auction lots from Supabase...');
       LOTS = await fetchLots();
       console.log(`✅ Loaded ${LOTS.length} lots.`);
+      console.log('First lot sample:', LOTS[0]); // peek at first item
 
       if (LOTS.length === 0) {
         grid.innerHTML = `
@@ -1458,6 +1467,8 @@ if (error) {
       document.addEventListener('DOMContentLoaded', init);
     } else {
       init();
+
+      
     }
   </script>
 

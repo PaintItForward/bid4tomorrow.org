@@ -1,19 +1,296 @@
-<form id="signupForm">
-  <div class="form-group">
-    <label for="name">Full Name</label>
-    <input type="text" id="name" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up · Bid For Tomorrow</title>
+  
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <style>
+    :root {
+      --sand-gold: #FAE3B1;
+      --ochre-gold: #998731;
+      --terracotta: #CF5527;
+      --crimson: #7D2027;
+      --crimson-dark: #5C141A;
+      --mahogany: #673C34;
+      --cream: #FAE3B1;
+      --white: #FCF6EC;
+      --text-heading: #4E2922;
+      --text-body: #59322B;
+      --text-muted: #83544C;
+      --card-bg: #FCF6EC;
+      --input-bg: #FFFFFF;
+      --border: #998731;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+      --shadow-md: 0 8px 24px rgba(103, 60, 52, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #FAE3B1 0%, #FCF3DF 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .signup-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      color: var(--crimson);
+      margin-bottom: 0.25rem;
+    }
+
+    .logo p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-heading);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--input-bg);
+      color: var(--text-body);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.1);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--crimson);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .btn-primary:hover {
+      background: var(--crimson-dark);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    .success-message {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .login-link a {
+      color: var(--crimson);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="logo">
+      <h1>Bid For Tomorrow</h1>
+      <p>Create your account to start bidding</p>
+    </div>
+
+    <div class="success-message" id="successMessage">
+      Account created! Check your email to confirm your account.
+    </div>
+
+    <form id="signupForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" required autocomplete="name">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required autocomplete="email">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required minlength="8" autocomplete="new-password">
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" required autocomplete="new-password">
+        <div class="error-message" id="passwordError">Passwords do not match</div>
+      </div>
+      
+      <button type="submit" class="btn-primary" id="submitBtn">Create Account</button>
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Login</a>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" id="email" required autocomplete="email">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" id="password" required minlength="8">
-  </div>
-  <div class="form-group">
-    <label for="confirmPassword">Confirm Password</label>
-    <input type="password" id="confirmPassword" required>
-  </div>
-  <button class="btn btn-primary" style="width:100%;">Create Account</button>
-</form>
+
+  <script>
+    // Initialize Supabase
+    const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Get form elements
+    const signupForm = document.getElementById('signupForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+    const passwordError = document.getElementById('passwordError');
+
+    // Handle form submission
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Get form values
+      const fullName = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        passwordError.style.display = 'block';
+        return;
+      } else {
+        passwordError.style.display = 'none';
+      }
+      
+      // Disable button and show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating Account...';
+      
+      try {
+        // Sign up with Supabase Auth
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: fullName
+            }
+          }
+        });
+        
+        if (error) throw error;
+        
+        // If user was created successfully, add to public.users table
+        if (data.user) {
+          const { error: profileError } = await supabaseClient
+            .from('users')
+            .insert([{
+              id: data.user.id,
+              full_name: fullName,
+              email: email,
+              role: 'bidder',
+              is_admin: false
+            }]);
+          
+          if (profileError) {
+            console.error('Error creating user profile:', profileError);
+            // Don't throw - the auth user was created, just profile failed
+          }
+        }
+        
+        // Show success message
+        successMessage.style.display = 'block';
+        signupForm.style.display = 'none';
+        
+      } catch (error) {
+        console.error('Signup error:', error);
+        alert(error.message || 'An error occurred during signup');
+      } finally {
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+      }
+    });
+
+    // Real-time password matching check
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+      const password = document.getElementById('password').value;
+      if (this.value !== password) {
+        passwordError.style.display = 'block';
+      } else {
+        passwordError.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

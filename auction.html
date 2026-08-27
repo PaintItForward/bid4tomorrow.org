@@ -1267,10 +1267,9 @@ if (error) {
   return [];
   
    
-      }
-
+}
       // Transform to match the expected structure
-      return data.map(lot => ({
+return data.map(lot => ({
         id: lot.id,
         lotNumber: lot.lot_number,
         startingBid: lot.starting_bid,
@@ -1284,8 +1283,8 @@ if (error) {
         description: lot.artworks.description,
         image: lot.artworks.image_url,
         createdAt: Date.now() // or use a real timestamp if available
-      }));
-    }
+ }));
+}
 
    function renderGrid(items) {
   console.log('🎨 renderGrid - items length:', items.length);
@@ -1455,6 +1454,5 @@ if (error) {
   console.log('✅ Init complete');
 }
   </script>
-
 </body>
 </html>

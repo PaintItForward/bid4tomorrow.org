@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About Us | Bid For Tomorrow</title>
-  <meta name="description" content="Learn about Bid For Tomorrow — a student-led nonprofit giving young artists a platform while supporting meaningful causes through art auctions.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Bid For Tomorrow is a student-led nonprofit giving young artists a platform while supporting meaningful causes through art auctions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ============================================
-       THEME TOKENS — from brand palette
-       ============================================ */
+    /* ===== THEME TOKENS (from brand palette) ===== */
     :root {
       --sand-gold: #FAE3B1;
       --sand-gold-light: #FCF1D9;
@@ -32,7 +30,7 @@
       --white: #FCF6EC;
       --espresso: #673C34;
       --border: #998731;
-      --border-subtle: rgba(153, 135, 49, 0.35);
+      --border-subtle: rgba(153, 135, 49, 0.25);
       --card-bg: #FFFFFF;
       --card-border: #E2D9CC;
       --section-alt: #F4EFEA;
@@ -40,12 +38,11 @@
       --text-heading: #2C221E;
       --text-body: #5C4D46;
       --text-muted: #8C7A72;
-      --radius-sm: 6px;
-      --radius-md: 12px;
-      --shadow-sm: 0 2px 10px rgba(44, 34, 30, 0.05);
-      --shadow-md: 0 8px 24px rgba(44, 34, 30, 0.08);
-      --shadow-lg: 0 16px 40px rgba(44, 34, 30, 0.12);
-      --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --shadow-sm: 0 2px 8px rgba(44, 34, 30, 0.04);
+      --shadow-md: 0 8px 24px rgba(44, 34, 30, 0.07);
+      --transition: 0.25s ease;
       --nav-bg: rgba(250, 247, 242, 0.92);
       --hero-bg-base: #FCF3DF;
       --hero-subtext: #5C362F;
@@ -58,14 +55,6 @@
       --input-border: #998731;
       --input-text: #4E2922;
       --contact-bg: #FCF6EC;
-      --involved-1-bg: #FCF3DD;
-      --involved-2-bg: #F8ECE1;
-      --involved-3-bg: #EBF4F7;
-      --involved-4-bg: #FCEEEA;
-      --involved-border-1: #998731;
-      --involved-border-2: #673C34;
-      --involved-border-3: #5FA8C2;
-      --involved-border-4: #CF5527;
     }
 
     /* Dark mode */
@@ -74,7 +63,7 @@
       --white: #221B18;
       --beige: #331C18;
       --border: #3A2F2A;
-      --border-subtle: rgba(153, 135, 49, 0.45);
+      --border-subtle: rgba(153, 135, 49, 0.3);
       --text-heading: #F5EFEB;
       --text-body: #C9BCB5;
       --text-muted: #8F8078;
@@ -85,25 +74,18 @@
       --nav-bg: rgba(24, 19, 17, 0.94);
       --hero-bg-base: #180B09;
       --hero-heading: #FAE3B1;
-      --hero-subtext: rgba(250, 227, 177, 0.9);
+      --hero-subtext: rgba(250, 227, 177, 0.85);
       --hero-border: #998731;
       --footer-bg: #0F0C0A;
       --input-bg: #22110E;
       --input-border: #998731;
       --input-text: #FAE3B1;
       --contact-bg: #2C1713;
-      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
-      --involved-1-bg: #332414;
-      --involved-2-bg: #321B17;
-      --involved-3-bg: #142830;
-      --involved-4-bg: #381C15;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
-    /* ============================================
-       RESET & BASE
-       ============================================ */
+    /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; background: var(--cream); }
     body {
@@ -111,42 +93,41 @@
       color: var(--text-heading);
       background: var(--cream);
       -webkit-font-smoothing: antialiased;
-      transition: background 0.3s ease, color 0.3s ease;
-      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+      line-height: 1.6;
     }
     h1, h2, h3, h4 {
       font-family: 'Playfair Display', Georgia, serif;
       font-weight: 600;
-      line-height: 1.25;
+      line-height: 1.2;
       color: var(--text-heading);
     }
-    h1 { font-size: clamp(2.4rem, 5vw, 4.2rem); }
-    h2 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); }
+    h1 { font-size: clamp(2.8rem, 6vw, 5rem); letter-spacing: -0.02em; }
+    h2 { font-size: clamp(2rem, 3.4vw, 2.8rem); letter-spacing: -0.01em; }
     h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
     p {
       font-family: 'Source Sans 3', sans-serif;
       font-size: 1.05rem;
-      line-height: 1.65;
+      line-height: 1.7;
       color: var(--text-body);
     }
     .eyebrow {
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--terracotta);
       display: inline-block;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.6rem;
     }
     body.dark .eyebrow { color: var(--sand-gold); }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    .section { padding: 85px 0; }
+    .section { padding: 80px 0; }
+    .section-sm { padding: 56px 0; }
     img { max-width: 100%; display: block; }
 
-    /* ============================================
-       NAVIGATION
-       ============================================ */
+    /* ===== NAVIGATION ===== */
     #main-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
       background: var(--nav-bg);
@@ -157,188 +138,156 @@
     }
     .nav-inner {
       max-width: 1240px; margin: 0 auto; padding: 0 1.5rem;
-      height: 72px; display: flex; align-items: center; justify-content: space-between;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo {
-      display: inline-flex; align-items: center; gap: 0.75rem;
+      display: inline-flex; align-items: center; gap: 0.6rem;
       text-decoration: none; color: var(--text-heading);
-      font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 700;
+      font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700;
       flex-shrink: 0;
     }
     .nav-logo-mark {
-      width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+      width: 34px; height: 34px; min-width: 34px; min-height: 34px;
       border-radius: 50%; background: var(--section-alt);
       border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .nav-logo-mark img { width: 100%; height: 100%; object-fit: cover; }
     .nav-links {
-      display: flex; align-items: center; gap: 0.35rem; list-style: none;
+      display: flex; align-items: center; gap: 0.2rem; list-style: none;
     }
     .nav-links a {
-      text-decoration: none; color: var(--text-body); font-size: 0.88rem; font-weight: 500;
-      padding: 0.45rem 0.85rem; border-radius: var(--radius-sm);
-      transition: color 0.3s, background 0.3s;
+      text-decoration: none; color: var(--text-body); font-size: 0.85rem; font-weight: 500;
+      padding: 0.4rem 0.8rem; border-radius: var(--radius-sm);
+      transition: color 0.25s, background 0.25s;
     }
     .nav-links a:hover, .nav-links a.active {
-      color: var(--terracotta); background: rgba(194, 87, 55, 0.08);
+      color: var(--terracotta); background: rgba(194, 87, 55, 0.06);
     }
     .nav-cta {
       background: var(--terracotta) !important; color: #FFFFFF !important;
-      font-weight: 600 !important; padding: 0.5rem 1.15rem !important;
+      font-weight: 600 !important; padding: 0.45rem 1.1rem !important;
       border-radius: var(--radius-sm) !important;
     }
-    .nav-cta:hover { background: var(--terracotta-dark) !important; transform: translateY(-1px); }
+    .nav-cta:hover { background: var(--terracotta-dark) !important; }
     .nav-toggle {
       display: none; background: none; border: none; cursor: pointer;
-      padding: 0.5rem; flex-direction: column; gap: 5px;
+      padding: 0.4rem; flex-direction: column; gap: 4px;
     }
-    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--text-heading); border-radius: 2px; transition: 0.3s; }
+    .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--text-heading); border-radius: 2px; transition: 0.3s; }
 
     /* Floating dark toggle */
     .dark-toggle {
-      position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
-      width: 46px; height: 46px; border-radius: 50%;
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
+      width: 44px; height: 44px; border-radius: 50%;
       background: var(--card-bg); color: var(--text-heading);
       border: 1px solid var(--border); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-md); transition: 0.3s;
+      box-shadow: var(--shadow-md); transition: 0.25s;
     }
-    .dark-toggle:hover { transform: scale(1.08); border-color: var(--terracotta); color: var(--terracotta); }
+    .dark-toggle:hover { transform: scale(1.06); border-color: var(--terracotta); color: var(--terracotta); }
 
-    /* ============================================
-       HERO
-       ============================================ */
+    /* ===== HERO ===== */
     .hero {
-      min-height: 92vh; background: var(--hero-bg-base);
-      position: relative; overflow: hidden;
+      min-height: 85vh; background: var(--hero-bg-base);
       display: flex; align-items: center;
-      padding-top: 72px; border-bottom: 1px solid var(--hero-border);
+      padding-top: 68px; border-bottom: 1px solid var(--hero-border);
       transition: background 0.3s, border-color 0.3s;
     }
     .hero-content {
-      position: relative; z-index: 2;
-      padding: 4rem 2rem 5rem;
-      max-width: 1280px; margin: 0 auto; width: 100%;
+      max-width: 1280px; margin: 0 auto; padding: 3rem 1.5rem 4rem; width: 100%;
     }
+    .hero-content .eyebrow { margin-bottom: 0.5rem; }
     .hero h1 {
-      max-width: 900px; margin: 0 auto 1.2rem;
-      font-weight: 600; font-size: clamp(2.7rem, 5.2vw, 4.5rem);
-      line-height: 1.12; letter-spacing: -0.02em;
+      max-width: 880px; margin: 0 0 1.2rem;
       color: var(--hero-heading);
     }
-    .hero-story {
-      max-width: 740px; margin: 2rem auto 0;
-      text-align: left; line-height: 1.8;
+    .hero p {
+      max-width: 660px;
+      font-size: 1.15rem;
+      color: var(--hero-subtext);
+      line-height: 1.8;
     }
-    .hero-story p {
-      font-size: 1.1rem; color: var(--hero-subtext);
-      margin-bottom: 1.25rem;
-    }
-    .hero-story .highlight { font-weight: 700; color: var(--terracotta); }
-    body.dark .hero-story .highlight { color: var(--terracotta-light); }
+    .hero p strong { color: var(--terracotta); }
 
-    /* ============================================
-       ABOUT PREVIEW (Our Story)
-       ============================================ */
-    .about-preview {
+    /* ===== OUR STORY ===== */
+    .story-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
     }
-    .about-image-wrapper {
-      width: 100%; max-width: 380px; aspect-ratio: 1/1;
+    .story-image {
+      width: 100%; max-width: 400px; aspect-ratio: 1/1;
       border-radius: var(--radius-md); background: var(--section-alt);
       border: 1px solid var(--border); padding: 2.5rem;
       display: flex; align-items: center; justify-content: center;
       box-shadow: var(--shadow-sm);
     }
-    .about-image { width: 100%; height: 100%; max-height: 240px; object-fit: contain; }
-    .about-text h2 { margin-bottom: 1.25rem; }
-    .about-text p { margin-bottom: 1.15rem; }
+    .story-image img { width: 100%; height: 100%; max-height: 220px; object-fit: contain; }
+    .story-text h2 { margin-bottom: 1.25rem; }
+    .story-text p { margin-bottom: 1.2rem; }
 
-    /* ============================================
-       WHAT WE DO — Pillars
-       ============================================ */
-    .pillars-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem; margin-top: 3rem;
+    /* ===== WHAT WE DO — no cards, clean typography ===== */
+    .what-we-do-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 3rem; margin-top: 2.5rem;
     }
-    .pillar-card {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-top: 4px solid var(--terracotta);
-      border-radius: var(--radius-md); padding: 2rem 1.75rem;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.3s, box-shadow 0.3s;
+    .wwd-item {
+      border-top: 3px solid var(--terracotta);
+      padding-top: 1.5rem;
     }
-    .pillar-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .pillar-icon-box {
-      width: 48px; height: 48px; min-width: 48px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.25rem;
-      background: rgba(194, 87, 55, 0.1); color: var(--terracotta);
-    }
-    .pillar-card h3 { font-size: 1.25rem; margin-bottom: 0.6rem; }
-    .pillar-card p { font-size: 0.95rem; color: var(--text-body); line-height: 1.7; }
+    .wwd-item:nth-child(2) { border-top-color: var(--ochre-gold); }
+    .wwd-item:nth-child(3) { border-top-color: var(--cerulean); }
+    .wwd-item h3 { margin-bottom: 0.4rem; }
+    .wwd-item p { font-size: 0.98rem; margin: 0; }
 
-    /* ============================================
-       HOW IT WORKS — Process Steps
-       ============================================ */
-    .process-grid {
+    /* ===== HOW IT WORKS — no cards, clean steps ===== */
+    .process-steps {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem; margin-top: 3rem;
+      gap: 2.5rem; margin-top: 2.5rem;
     }
-    .process-step {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: var(--radius-md); padding: 2rem 1.5rem; text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
+    .step {
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--border-subtle);
     }
-    .process-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .process-step .step-number {
+    .step .num {
       font-family: 'Playfair Display', serif;
-      font-size: 2.6rem; font-weight: 700;
-      opacity: 0.4; display: block;
-      line-height: 1;
+      font-size: 2rem; font-weight: 700;
+      color: var(--terracotta);
+      opacity: 0.4;
+      display: block;
+      margin-bottom: 0.3rem;
     }
-    .process-step:nth-child(1) .step-number { color: var(--terracotta); }
-    .process-step:nth-child(2) .step-number { color: var(--ochre-gold); }
-    .process-step:nth-child(3) .step-number { color: var(--cerulean); }
-    .process-step:nth-child(4) .step-number { color: var(--mahogany); }
-    .process-step h3 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
-    .process-step p { font-size: 0.95rem; }
+    .step h3 { margin-bottom: 0.3rem; }
+    .step p { font-size: 0.95rem; margin: 0; }
 
-    /* ============================================
-       MISSION — strong visual moment
-       ============================================ */
+    /* ===== MISSION ===== */
     .mission-section {
       background: var(--section-green);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 100px 0;
+      padding: 90px 0;
       text-align: center;
     }
     .mission-section h2 {
-      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      max-width: 780px; margin: 0 auto;
+      font-size: clamp(2.6rem, 5.5vw, 4.4rem);
       line-height: 1.1;
-      max-width: 800px;
-      margin: 0 auto;
     }
 
-    /* ============================================
-       TEAM — Flip Cards
-       ============================================ */
-    .team-preview-section { background: var(--section-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    /* ===== TEAM ===== */
+    .team-section { background: var(--section-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .team-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2.5rem; max-width: 960px; margin: 3rem auto 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem; max-width: 880px; margin: 2.5rem auto 0;
     }
     .team-card-flipper {
-      perspective: 1400px; width: 100%; height: 680px;
+      perspective: 1400px; width: 100%; height: 640px;
       cursor: pointer; position: relative; background: transparent; border: none; padding: 0;
       outline: none;
     }
     .team-card-inner {
       position: relative; width: 100%; height: 100%;
       transform-style: preserve-3d;
-      transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.6s cubic-bezier(0.34, 1.4, 0.64, 1);
       border-radius: var(--radius-md);
     }
     .team-card-flipper.flipped .team-card-inner { transform: rotateY(180deg); }
@@ -349,10 +298,10 @@
       border: 1px solid var(--card-border); box-shadow: var(--shadow-sm);
       display: flex; flex-direction: column; overflow: hidden;
     }
-    .team-card-front { border-top: 4px solid var(--terracotta); transform: rotateY(0deg); z-index: 2; }
+    .team-card-front { border-top: 3px solid var(--terracotta); transform: rotateY(0deg); z-index: 2; }
     .team-card-back {
-      border-top: 4px solid var(--ochre-gold);
-      transform: rotateY(180deg); padding: 2.2rem 1.8rem;
+      border-top: 3px solid var(--ochre-gold);
+      transform: rotateY(180deg); padding: 2rem 1.8rem;
       justify-content: space-between; z-index: 1; overflow-y: auto;
     }
     .team-card-flipper.flipped .team-card-front { z-index: 1; pointer-events: none; }
@@ -363,221 +312,214 @@
     }
     .team-image-container img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
     .team-flip-indicator {
-      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-      padding: 6px 14px; border-radius: 20px;
-      display: flex; align-items: center; gap: 8px;
-      color: white; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
-      opacity: 0.8; transition: opacity 0.3s;
+      position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+      padding: 5px 12px; border-radius: 16px;
+      display: flex; align-items: center; gap: 6px;
+      color: #fff; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
+      opacity: 0.7; transition: opacity 0.3s;
     }
     .team-card-flipper:hover .team-flip-indicator { opacity: 1; }
-    .team-flip-indicator svg { width: 14px; height: 14px; stroke: white; }
-    .team-info-front { padding: 1.5rem 1.5rem 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .team-info-front h3 { margin-bottom: 0.35rem; }
-    .team-info-front p { font-size: 0.9rem; color: var(--text-body); line-height: 1.6; }
-    .team-back-header { margin-bottom: 1.25rem; }
-    .team-back-header h3 { margin-bottom: 0.2rem; }
+    .team-flip-indicator svg { width: 12px; height: 12px; stroke: #fff; }
+    .team-info-front { padding: 1.25rem 1.5rem 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .team-info-front h3 { margin-bottom: 0.2rem; }
+    .team-info-front .role { font-size: 0.8rem; color: var(--terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    body.dark .team-info-front .role { color: var(--terracotta-light); }
+    .team-info-front p { font-size: 0.9rem; color: var(--text-body); line-height: 1.6; margin-top: 0.5rem; }
+    .team-back-header { margin-bottom: 1rem; }
+    .team-back-header h3 { margin-bottom: 0.1rem; }
     .team-bio-text {
       font-size: 0.95rem; line-height: 1.7; color: var(--text-body);
-      font-style: italic; margin-bottom: 1.25rem;
+      font-style: italic; margin-bottom: 1rem;
     }
     .team-focus-points { list-style: none; padding: 0; }
     .team-focus-points li {
-      display: flex; align-items: center; gap: 0.65rem;
       font-size: 0.88rem; color: var(--text-body);
-      padding: 0.4rem 0; border-bottom: 1px solid var(--border-subtle);
+      padding: 0.3rem 0; border-bottom: 1px solid var(--border-subtle);
     }
     .team-focus-points li:last-child { border-bottom: none; }
-    .team-focus-points li::before {
-      content: "—"; color: var(--terracotta); font-weight: 300; margin-right: 0.25rem;
-    }
+    .team-focus-points li::before { content: "—"; color: var(--terracotta); margin-right: 0.5rem; }
     .team-back-footer {
       display: flex; justify-content: space-between; align-items: center;
-      padding-top: 1rem; border-top: 1px solid var(--border-subtle); margin-top: 1rem;
+      padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); margin-top: 0.8rem;
     }
     .btn-flip-back {
-      background: var(--terracotta); color: #FFFFFF; border: none;
-      padding: 0.4rem 1rem; border-radius: var(--radius-sm);
-      font-size: 0.75rem; font-weight: 600; cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
+      background: var(--terracotta); color: #fff; border: none;
+      padding: 0.35rem 0.9rem; border-radius: var(--radius-sm);
+      font-size: 0.7rem; font-weight: 600; cursor: pointer;
+      transition: background 0.25s;
     }
-    .btn-flip-back:hover { background: var(--terracotta-dark); transform: scale(1.05); }
+    .btn-flip-back:hover { background: var(--terracotta-dark); }
 
-    /* ============================================
-       WHERE WE'RE GOING
-       ============================================ */
+    /* ===== WHERE WE'RE GOING ===== */
     .future-section {
-      padding: 90px 0; background: var(--white);
+      padding: 80px 0; background: var(--white);
       border-bottom: 1px solid var(--border);
       text-align: center;
     }
-    .future-section .future-path {
+    .future-path {
       display: flex; justify-content: center; align-items: center;
-      gap: 2.5rem; margin-top: 2.5rem; flex-wrap: wrap;
+      gap: 2rem; margin-top: 2rem; flex-wrap: wrap;
     }
-    .future-section .future-path .node {
+    .future-path .node {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-weight: 600;
+      font-size: 1.4rem; font-weight: 600;
     }
-    .future-section .future-path .node-1 { color: var(--terracotta); }
-    .future-section .future-path .node-2 { color: var(--ochre-gold); }
-    .future-section .future-path .node-3 { color: var(--cerulean); }
-    .future-section .future-path .arrow {
-      font-size: 1.8rem; color: var(--text-muted);
-    }
+    .future-path .node-1 { color: var(--terracotta); }
+    .future-path .node-2 { color: var(--ochre-gold); }
+    .future-path .node-3 { color: var(--cerulean); }
+    .future-path .arrow { font-size: 1.6rem; color: var(--text-muted); }
 
-    /* ============================================
-       FINAL CTA
-       ============================================ */
+    /* ===== FINAL CTA ===== */
     .cta-section {
-      padding: 100px 0; background: var(--section-alt);
+      padding: 80px 0; background: var(--section-alt);
       border-bottom: 1px solid var(--border);
       text-align: center;
     }
-    .cta-section .cta-buttons {
+    .cta-buttons {
       display: flex; gap: 1rem; justify-content: center;
-      flex-wrap: wrap; margin-top: 2rem;
+      flex-wrap: wrap; margin-top: 1.8rem;
     }
     .btn-primary {
-      display: inline-block; padding: 0.9rem 2.2rem;
+      display: inline-block; padding: 0.8rem 2rem;
       border-radius: 999px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.08em;
-      text-decoration: none; font-size: 0.85rem;
-      background: var(--terracotta); color: #FFFFFF;
+      text-decoration: none; font-size: 0.8rem;
+      background: var(--terracotta); color: #fff;
       border: none; cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
+      transition: background 0.25s, transform 0.25s;
     }
     .btn-primary:hover { background: var(--terracotta-dark); transform: translateY(-2px); }
     .btn-secondary {
-      display: inline-block; padding: 0.9rem 2.2rem;
+      display: inline-block; padding: 0.8rem 2rem;
       border-radius: 999px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.08em;
-      text-decoration: none; font-size: 0.85rem;
+      text-decoration: none; font-size: 0.8rem;
       background: transparent; color: var(--text-heading);
       border: 1px solid var(--border); cursor: pointer;
-      transition: border-color 0.3s, color 0.3s, transform 0.3s;
+      transition: border-color 0.25s, color 0.25s, transform 0.25s;
     }
     .btn-secondary:hover { border-color: var(--terracotta); color: var(--terracotta); transform: translateY(-2px); }
 
-    /* ============================================
-       CONTACT
-       ============================================ */
-    .contact-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 85px 0; }
-    .contact-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4.5rem; align-items: start; }
-    .contact-info > p { margin-bottom: 2rem; font-size: 1.05rem; color: var(--text-body); }
-    .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+    /* ===== CONTACT ===== */
+    .contact-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 80px 0; }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; }
+    .contact-info > p { margin-bottom: 1.8rem; }
+    .contact-item { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
     .contact-item-icon {
-      width: 40px; height: 40px; border-radius: var(--radius-sm);
+      width: 36px; height: 36px; border-radius: var(--radius-sm);
       background: var(--sand-gold-light); display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; border: 1px solid var(--ochre-gold);
     }
-    body.dark .contact-item-icon { background: #36261A; border-color: var(--ochre-gold); }
-    .contact-item-icon svg { width: 18px; height: 18px; stroke: var(--crimson); fill: none; stroke-width: 1.8; }
+    body.dark .contact-item-icon { background: #36261A; }
+    .contact-item-icon svg { width: 16px; height: 16px; stroke: var(--crimson); fill: none; stroke-width: 1.8; }
     body.dark .contact-item-icon svg { stroke: var(--sand-gold); }
-    .contact-item-text { font-size: 0.95rem; color: var(--text-body); }
+    .contact-item-text { font-size: 0.95rem; color: var(--text-body); display: flex; align-items: center; gap: 0.5rem; }
     .contact-item-text a { color: var(--terracotta); text-decoration: none; font-weight: 600; }
     .contact-item-text a:hover { text-decoration: underline; }
+    .contact-item-text .ig-icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; fill: currentColor; }
     .contact-form-box {
       background: var(--contact-bg); border: 1px solid var(--card-border);
-      border-top: 4px solid var(--terracotta); border-radius: var(--radius-sm);
-      padding: 2.5rem; box-shadow: var(--shadow-sm);
+      border-top: 3px solid var(--terracotta); border-radius: var(--radius-sm);
+      padding: 2.25rem; box-shadow: var(--shadow-sm);
     }
-    .contact-form-box h3 { margin-bottom: 1.6rem; color: var(--text-heading); font-family: 'Playfair Display', serif; font-size: 1.4rem; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
-    .form-group { margin-bottom: 1.2rem; }
+    .contact-form-box h3 { margin-bottom: 1.4rem; font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
     .form-group label {
       display: block; font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1.5px; color: var(--text-heading); margin-bottom: 0.45rem;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-heading); margin-bottom: 0.3rem;
     }
     .form-group input, .form-group textarea {
       width: 100%; background: var(--input-bg); border: 1px solid var(--input-border);
-      border-radius: var(--radius-sm); padding: 0.75rem 0.95rem;
+      border-radius: var(--radius-sm); padding: 0.65rem 0.9rem;
       color: var(--input-text); font-family: 'Source Sans 3', sans-serif; font-size: 0.95rem;
-      outline: none; transition: border-color 0.3s, box-shadow 0.3s;
+      outline: none; transition: border-color 0.25s, box-shadow 0.25s;
     }
     .form-group input:focus, .form-group textarea:focus {
-      border-color: var(--terracotta); box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.18);
+      border-color: var(--terracotta); box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.12);
     }
-    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group textarea { resize: vertical; min-height: 100px; }
 
-    /* ============================================
-       FOOTER
-       ============================================ */
+    /* ===== FOOTER ===== */
     footer {
-      background: var(--footer-bg); padding: 5.5rem 0 2.5rem;
+      background: var(--footer-bg); padding: 4rem 0 2rem;
       border-top: 1px solid var(--ochre-gold);
     }
     .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
     .footer-top {
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3.5rem;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem;
     }
     .footer-brand .footer-logo {
-      display: inline-flex; align-items: center; gap: 0.65rem;
-      font-family: 'Playfair Display', Georgia, serif; font-size: 1.35rem; font-weight: 900;
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 900;
       letter-spacing: -0.5px; text-transform: uppercase;
-      color: var(--sand-gold); text-decoration: none; margin-bottom: 1rem;
+      color: var(--sand-gold); text-decoration: none; margin-bottom: 0.8rem;
     }
-    .footer-brand p { font-size: 0.9rem; color: rgba(250, 227, 177, 0.75); line-height: 1.65; max-width: 280px; }
-    .footer-note { margin-top: 0.85rem; font-size: 0.75rem !important; letter-spacing: 1px; color: var(--ochre-gold) !important; }
+    .footer-brand p { font-size: 0.88rem; color: rgba(250, 227, 177, 0.7); line-height: 1.6; max-width: 260px; }
+    .footer-note { margin-top: 0.6rem; font-size: 0.7rem !important; letter-spacing: 1px; color: var(--ochre-gold) !important; }
     .footer-col h4 {
-      font-family: 'Source Sans 3', sans-serif; font-size: 0.75rem; font-weight: 700;
-      letter-spacing: 2px; text-transform: uppercase; color: var(--sand-gold); margin-bottom: 1.2rem;
+      font-family: 'Source Sans 3', sans-serif; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--sand-gold); margin-bottom: 1rem;
     }
     .footer-col ul { list-style: none; }
-    .footer-col li { margin-bottom: 0.6rem; }
-    .footer-col a { text-decoration: none; color: rgba(250, 227, 177, 0.75); font-size: 0.88rem; transition: color 0.3s; }
+    .footer-col li { margin-bottom: 0.5rem; }
+    .footer-col a { text-decoration: none; color: rgba(250, 227, 177, 0.65); font-size: 0.85rem; transition: color 0.25s; }
     .footer-col a:hover { color: var(--sand-gold); }
     .footer-bottom {
       display: flex; justify-content: space-between; align-items: center;
-      padding-top: 2rem; border-top: 1px solid rgba(153, 135, 49, 0.4);
+      padding-top: 1.5rem; border-top: 1px solid rgba(153, 135, 49, 0.3);
     }
-    .footer-bottom p { font-family: 'Source Sans 3', sans-serif; font-size: 0.78rem; letter-spacing: 0.5px; color: var(--ochre-gold); }
-    .social-links { display: flex; gap: 0.65rem; }
+    .footer-bottom p { font-family: 'Source Sans 3', sans-serif; font-size: 0.75rem; letter-spacing: 0.5px; color: var(--ochre-gold); }
+    .social-links { display: flex; gap: 0.5rem; }
     .social-link {
-      width: 36px; height: 36px; border-radius: var(--radius-sm);
-      background: rgba(250, 227, 177, 0.08); border: 1px solid var(--ochre-gold);
+      width: 34px; height: 34px; border-radius: var(--radius-sm);
+      background: rgba(250, 227, 177, 0.06); border: 1px solid var(--ochre-gold);
       display: flex; align-items: center; justify-content: center; text-decoration: none;
-      transition: background 0.3s, transform 0.3s;
+      transition: background 0.25s, transform 0.25s;
     }
     .social-link:hover { background: var(--terracotta); border-color: var(--terracotta); transform: translateY(-2px); }
-    .social-link svg { width: 16px; height: 16px; fill: var(--sand-gold); }
-    .social-link:hover svg { fill: #FFFFFF; }
+    .social-link svg { width: 15px; height: 15px; fill: var(--sand-gold); }
+    .social-link:hover svg { fill: #fff; }
 
-    /* ============================================
-       RESPONSIVE
-       ============================================ */
-    @media (max-width: 1100px) {
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
       .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
     }
-    @media (max-width: 900px) {
-      .about-preview { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
-      .about-image-wrapper { margin: 0 auto; }
+    @media (max-width: 860px) {
+      .story-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+      .story-image { margin: 0 auto; }
       .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .what-we-do-grid { grid-template-columns: 1fr; gap: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+      .wwd-item { text-align: center; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
       .team-grid { grid-template-columns: 1fr; }
-      .process-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
       .nav-links {
-        display: none; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0;
-        background: var(--nav-bg); padding: 1.5rem; border-bottom: 1px solid var(--card-border);
-        box-shadow: var(--shadow-lg);
+        display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0;
+        background: var(--nav-bg); padding: 1.25rem; border-bottom: 1px solid var(--card-border);
+        box-shadow: var(--shadow-md);
       }
       .nav-links.open { display: flex; }
       .nav-toggle { display: flex; }
       .form-row { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr; }
-      .team-card-flipper { height: 600px; }
-      .hero { min-height: 80vh; }
-      .process-grid { grid-template-columns: 1fr 1fr; }
-      .future-section .future-path { gap: 1.25rem; }
-      .future-section .future-path .node { font-size: 1.2rem; }
-      .future-section .future-path .arrow { font-size: 1.2rem; }
+      .team-card-flipper { height: 580px; }
+      .hero { min-height: 70vh; }
+      .process-steps { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+      .step { text-align: center; }
+      .future-path { gap: 1rem; }
+      .future-path .node { font-size: 1.1rem; }
+      .future-path .arrow { font-size: 1.2rem; }
     }
-    @media (max-width: 500px) {
-      .process-grid { grid-template-columns: 1fr; }
-      .team-card-flipper { height: 550px; }
-      .hero-content { padding: 3rem 1rem 3rem; }
+    @media (max-width: 480px) {
+      .team-card-flipper { height: 540px; }
+      .hero-content { padding: 2rem 1rem 2.5rem; }
+      .section { padding: 56px 0; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+      .cta-buttons .btn-primary, .cta-buttons .btn-secondary { width: 100%; max-width: 300px; text-align: center; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -606,12 +548,12 @@
         <li><a href="about.html" class="active">About Us</a></li>
         <li><a href="branches.html">Our Branches</a></li>
         <li><a href="auction.html" style="font-weight:600; color:var(--terracotta);">Fall 26 Auction &nearr;</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#auctions">Events</a></li>
-        <li><a href="#impact">Impact</a></li>
-        <li><a href="#causes">Causes</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact" class="nav-cta">Get Involved</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li><a href="index.html#auctions">Events</a></li>
+        <li><a href="index.html#impact">Impact</a></li>
+        <li><a href="index.html#causes">Causes</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
       </ul>
     </div>
   </nav>
@@ -632,13 +574,7 @@
       <div class="hero-content">
         <span class="eyebrow">About Bid For Tomorrow</span>
         <h1>We believe student art can do more.</h1>
-        <div class="hero-story">
-          <p><strong class="highlight">Bid For Tomorrow</strong> is a student-led nonprofit that gives young artists a platform to share their work while using art to support causes that matter.</p>
-          <p>Gloria was drawn to the excitement of auctions and the way a piece of art could bring people together. She began wondering how that same idea could be used to support causes that matter.</p>
-          <p>That became Bid For Tomorrow — giving student artists a platform to showcase and sell their work while knowing that their creativity is also helping others.</p>
-          <p>Brian and Gloria connected through their shared passion for art and a belief that creating a piece should be about more than the piece itself. Art can create opportunities, bring people together, and make an impact.</p>
-          <p>We're starting with student artists and causes supporting youth physical and mental health, with a bigger goal ahead: <strong class="highlight">to build a worldwide initiative where creativity gives back.</strong></p>
-        </div>
+        <p><strong>Bid For Tomorrow</strong> is a student-led nonprofit that gives young artists a platform to share their work while using art to support causes that matter.</p>
       </div>
     </header>
 
@@ -647,13 +583,11 @@
     ========================================== -->
     <section class="section">
       <div class="container">
-        <div class="about-preview">
-          <div class="about-preview-visual">
-            <div class="about-image-wrapper">
-              <img src="B4Tlogo.jpg" alt="Bid For Tomorrow team" class="about-image">
-            </div>
+        <div class="story-grid">
+          <div class="story-image">
+            <img src="B4Tlogo.jpg" alt="Bid For Tomorrow team">
           </div>
-          <div class="about-text">
+          <div class="story-text">
             <span class="eyebrow">Our Story</span>
             <h2>Where it started</h2>
             <p><strong>What if a student could sell their artwork and know that the money was helping someone else?</strong></p>
@@ -665,33 +599,24 @@
     </section>
 
     <!-- ==========================================
-    WHAT WE DO
+    WHAT WE DO — clean, no cards
     ========================================== -->
     <section class="section" style="background: var(--section-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
       <div class="container">
-        <div style="text-align: center; max-width: 740px; margin: 0 auto;">
+        <div style="max-width: 740px;">
           <span class="eyebrow">What We Do</span>
-          <h2>Three pillars, one mission</h2>
+          <h2 style="margin-bottom: 0.5rem;">Three ways we make an impact</h2>
         </div>
-        <div class="pillars-grid">
-          <div class="pillar-card">
-            <div class="pillar-icon-box">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-            </div>
+        <div class="what-we-do-grid">
+          <div class="wwd-item">
             <h3>For Artists</h3>
             <p>A platform for young artists to exhibit and sell their work.</p>
           </div>
-          <div class="pillar-card" style="border-top-color: var(--ochre-gold);">
-            <div class="pillar-icon-box" style="background: rgba(184, 134, 11, 0.1); color: var(--ochre-gold);">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93 9.17 9.17"/><path d="M14.83 9.17 19.07 4.93"/><path d="M14.83 14.83 19.07 19.07"/><path d="M9.17 14.83 4.93 19.07"/></svg>
-            </div>
+          <div class="wwd-item">
             <h3>For Communities</h3>
             <p>A way to bring people together around art and meaningful causes.</p>
           </div>
-          <div class="pillar-card" style="border-top-color: var(--cerulean);">
-            <div class="pillar-icon-box" style="background: rgba(59, 122, 140, 0.1); color: var(--cerulean);">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
+          <div class="wwd-item">
             <h3>For Causes</h3>
             <p>Fundraising driven by young people and their creativity.</p>
           </div>
@@ -700,32 +625,32 @@
     </section>
 
     <!-- ==========================================
-    HOW IT WORKS
+    HOW IT WORKS — clean steps, no cards
     ========================================== -->
     <section class="section">
       <div class="container">
-        <div style="text-align: center; max-width: 740px; margin: 0 auto;">
+        <div style="max-width: 740px;">
           <span class="eyebrow">How It Works</span>
-          <h2>A simple process</h2>
+          <h2 style="margin-bottom: 0.5rem;">A simple process</h2>
         </div>
-        <div class="process-grid">
-          <div class="process-step">
-            <span class="step-number">01</span>
+        <div class="process-steps">
+          <div class="step">
+            <span class="num">01</span>
             <h3>Create</h3>
             <p>Students create and submit their artwork.</p>
           </div>
-          <div class="process-step">
-            <span class="step-number">02</span>
+          <div class="step">
+            <span class="num">02</span>
             <h3>Exhibit</h3>
             <p>Artwork is presented through Bid For Tomorrow.</p>
           </div>
-          <div class="process-step">
-            <span class="step-number">03</span>
+          <div class="step">
+            <span class="num">03</span>
             <h3>Auction</h3>
             <p>People bid on and purchase student artwork.</p>
           </div>
-          <div class="process-step">
-            <span class="step-number">04</span>
+          <div class="step">
+            <span class="num">04</span>
             <h3>Give</h3>
             <p>Funds support causes focused on creating a better tomorrow for young people and communities.</p>
           </div>
@@ -734,7 +659,7 @@
     </section>
 
     <!-- ==========================================
-    MISSION — strong visual moment
+    MISSION
     ========================================== -->
     <section class="mission-section">
       <div class="container">
@@ -746,12 +671,12 @@
     <!-- ==========================================
     MEET THE TEAM
     ========================================== -->
-    <section class="section team-preview-section">
+    <section class="section team-section">
       <div class="container">
-        <div style="text-align: center; max-width: 740px; margin: 0 auto;">
+        <div style="max-width: 740px;">
           <span class="eyebrow">Meet the Team</span>
-          <h2>The people behind Bid For Tomorrow</h2>
-          <p style="font-size: 1.05rem; margin-top: 0.75rem; color: var(--text-body);">Click on any profile to flip and read their personal introduction.</p>
+          <h2 style="margin-bottom: 0.5rem;">The people behind Bid For Tomorrow</h2>
+          <p style="font-size: 1rem; color: var(--text-body);">Click on any profile to flip and read their personal introduction.</p>
         </div>
         <div class="team-grid">
 
@@ -768,22 +693,22 @@
                 </div>
                 <div class="team-info-front">
                   <div>
-                    <span class="eyebrow" style="margin-bottom:0.35rem;">Co-Founder · Executive Director</span>
+                    <span class="role">Co-Founder · Executive Director</span>
                     <h3>Gloria Xu</h3>
                     <p>Leads Bid For Tomorrow's day-to-day operations, digital platforms, auction development, artist relations, and organizational strategy.</p>
                   </div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.85rem; border-top:1px solid var(--border);">
-                    <span style="font-size:0.76rem; font-weight:700; color:var(--terracotta); text-transform:uppercase; letter-spacing:0.5px;">Executive Leadership</span>
-                    <span style="font-size:0.76rem; color:var(--text-muted);">↻ Tap</span>
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.7rem; border-top:1px solid var(--border-subtle);">
+                    <span style="font-size:0.7rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Toronto</span>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">↻ Tap</span>
                   </div>
                 </div>
               </div>
               <div class="team-card-back">
                 <div>
                   <div class="team-back-header">
-                    <span class="eyebrow" style="margin-bottom:0.25rem;">Self Introduction</span>
+                    <span class="eyebrow" style="margin-bottom:0.2rem;">Self Introduction</span>
                     <h3>Gloria Xu</h3>
-                    <span style="font-size:0.82rem; color:var(--terracotta); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Co-Founder · Executive Director</span>
+                    <span style="font-size:0.8rem; color:var(--terracotta); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Co-Founder · Executive Director</span>
                   </div>
                   <p class="team-bio-text">"I've always believed that art is a part of everyday life—it gives us a way to express ourselves, connect with others, and see the world differently. Through Bid For Tomorrow, I want to create opportunities for young artists while using their creativity to make a meaningful difference in the lives of others."</p>
                   <ul class="team-focus-points">
@@ -793,7 +718,7 @@
                   </ul>
                 </div>
                 <div class="team-back-footer">
-                  <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Toronto Branch</span>
+                  <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Toronto</span>
                   <button type="button" class="btn-flip-back"><span>← Return</span></button>
                 </div>
               </div>
@@ -813,22 +738,22 @@
                 </div>
                 <div class="team-info-front">
                   <div>
-                    <span class="eyebrow" style="margin-bottom:0.35rem;">Co-Founder · Director of Growth</span>
+                    <span class="role">Co-Founder · Director of Growth</span>
                     <h3>Brian Lu</h3>
                     <p>Leads fundraising, community outreach, strategic partnerships, volunteer recruitment, and long-term organizational growth.</p>
                   </div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.85rem; border-top:1px solid var(--border);">
-                    <span style="font-size:0.76rem; font-weight:700; color:var(--terracotta); text-transform:uppercase; letter-spacing:0.5px;">Growth & External Relations</span>
-                    <span style="font-size:0.76rem; color:var(--text-muted);">↻ Tap</span>
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.7rem; border-top:1px solid var(--border-subtle);">
+                    <span style="font-size:0.7rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Toronto</span>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">↻ Tap</span>
                   </div>
                 </div>
               </div>
               <div class="team-card-back">
                 <div>
                   <div class="team-back-header">
-                    <span class="eyebrow" style="margin-bottom:0.25rem;">Self Introduction</span>
+                    <span class="eyebrow" style="margin-bottom:0.2rem;">Self Introduction</span>
                     <h3>Brian Lu</h3>
-                    <span style="font-size:0.82rem; color:var(--terracotta); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Co-Founder · Director of Growth</span>
+                    <span style="font-size:0.8rem; color:var(--terracotta); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Co-Founder · Director of Growth</span>
                   </div>
                   <p class="team-bio-text">"I believe art has a place in everyone's life, whether it's something we create, experience, or share with others. Bid For Tomorrow brings that idea together with my passion for helping people, and I hope to help grow an organization where creativity can become a meaningful way to give back and create positive change."</p>
                   <ul class="team-focus-points">
@@ -838,7 +763,7 @@
                   </ul>
                 </div>
                 <div class="team-back-footer">
-                  <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Toronto Branch</span>
+                  <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Toronto</span>
                   <button type="button" class="btn-flip-back"><span>← Return</span></button>
                 </div>
               </div>
@@ -855,10 +780,10 @@
     <section class="future-section">
       <div class="container">
         <span class="eyebrow">Where We're Going</span>
-        <h2 style="margin-bottom: 1.5rem;">Toronto is our starting point.</h2>
-        <p style="font-size: 1.15rem; max-width: 680px; margin: 0 auto;">Our goal is to build a model that can be brought to new communities by student leaders around the world.</p>
+        <h2 style="margin-bottom: 0.5rem;">The GTA is our starting point.</h2>
+        <p style="font-size: 1.05rem; max-width: 640px; margin: 0 auto;">Our goal is to build a model that can be brought to new communities by student leaders around the world.</p>
         <div class="future-path">
-          <span class="node node-1">Toronto</span>
+          <span class="node node-1">GTA</span>
           <span class="arrow">→</span>
           <span class="node node-2">New Communities</span>
           <span class="arrow">→</span>
@@ -873,10 +798,10 @@
     <section class="cta-section">
       <div class="container">
         <span class="eyebrow">Help Build the Next Tomorrow</span>
-        <h2 style="margin-bottom: 1.2rem; max-width: 700px; margin-left: auto; margin-right: auto;">Whether you're an artist, volunteer, supporter, or bidder, there's a place for you at Bid For Tomorrow.</h2>
+        <h2 style="margin-bottom: 0.8rem; max-width: 700px; margin-left: auto; margin-right: auto;">Whether you're an artist, volunteer, supporter, or bidder, there's a place for you at Bid For Tomorrow.</h2>
         <div class="cta-buttons">
-          <a href="#" class="btn-primary">Submit Your Artwork</a>
-          <a href="#contact" class="btn-secondary">Get Involved</a>
+          <a href="index.html#contact" class="btn-primary">Submit Your Artwork</a>
+          <a href="index.html#contact" class="btn-secondary">Get Involved</a>
         </div>
       </div>
     </section>
@@ -886,7 +811,7 @@
     ========================================== -->
     <section class="contact-section" id="contact">
       <div class="container">
-        <div style="text-align:center; margin-bottom:2.5rem;">
+        <div style="margin-bottom: 2rem;">
           <h2>Connect with Bid For Tomorrow</h2>
         </div>
         <div class="contact-inner">
@@ -897,8 +822,13 @@
               <div class="contact-item-text"><a href="mailto:bid4tomorrow@gmail.com">bid4tomorrow@gmail.com</a></div>
             </div>
             <div class="contact-item">
-              <div class="contact-item-icon"><svg viewBox="0 0 24 24" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg></div>
-              <div class="contact-item-text"><a href="https://instagram.com/bid4tomorrow" target="_blank">@bid4tomorrow</a></div>
+              <div class="contact-item-icon">
+                <svg viewBox="0 0 24 24" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg>
+              </div>
+              <div class="contact-item-text">
+                <a href="https://instagram.com/bid4tomorrow" target="_blank">@bid4tomorrow</a>
+                <svg class="ig-icon" viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17" cy="7" r="1"/></svg>
+              </div>
             </div>
           </div>
           <div class="contact-form-box">
@@ -909,7 +839,7 @@
                 <div class="form-group"><label for="email">Email</label><input type="email" id="email" placeholder="you@example.com" required></div>
               </div>
               <div class="form-group"><label for="message">Message</label><textarea id="message" placeholder="Tell us how you'd like to get involved…" required></textarea></div>
-              <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send</button>
+              <button type="submit" class="btn-primary" style="width:100%; justify-content:center; border-radius:999px;">Send</button>
             </form>
           </div>
         </div>
@@ -925,7 +855,7 @@
         <div class="footer-brand">
           <a href="index.html" class="footer-logo">Bid For Tomorrow</a>
           <p>Student-led nonprofit connecting young artists with causes that matter through art auctions and community.</p>
-          <p class="footer-note">Toronto, ON &middot; Lexington, MA</p>
+          <p class="footer-note">Greater Toronto Area &middot; Lexington, MA</p>
         </div>
         <div class="footer-col">
           <h4>Pages</h4>
@@ -933,11 +863,14 @@
         </div>
         <div class="footer-col">
           <h4>Community</h4>
-          <ul><li><a href="#contact">Get Involved</a></li><li><a href="#">Submit Artwork</a></li><li><a href="#">Volunteer</a></li></ul>
+          <ul><li><a href="index.html#contact">Get Involved</a></li><li><a href="index.html#contact">Submit Artwork</a></li><li><a href="index.html#contact">Volunteer</a></li></ul>
         </div>
         <div class="footer-col">
           <h4>Connect</h4>
-          <ul><li><a href="mailto:bid4tomorrow@gmail.com">Email Us</a></li><li><a href="https://instagram.com/bid4tomorrow" target="_blank">Instagram</a></li></ul>
+          <ul>
+            <li><a href="mailto:bid4tomorrow@gmail.com">Email Us</a></li>
+            <li><a href="https://instagram.com/bid4tomorrow" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;">Instagram <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17" cy="7" r="1"/></svg></a></li>
+          </ul>
         </div>
       </div>
       <div class="footer-bottom">
@@ -956,14 +889,12 @@
 
   <script>
     // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
-    themeToggle.addEventListener('click', () => {
-      html.classList.toggle('dark');
-      localStorage.setItem('bft-theme', html.classList.contains('dark') ? 'dark' : 'light');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('bft-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     });
 
-    // Mobile nav toggle
+    // Mobile nav
     document.getElementById('navToggle').addEventListener('click', () => {
       document.getElementById('navLinks').classList.toggle('open');
     });

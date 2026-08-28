@@ -51,6 +51,266 @@
     .about-text p {
       margin-bottom: 1.15rem;
     }
+
+    /* More natural pillar cards - removing AI feel */
+    .pillar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-top: 4px solid var(--terracotta);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pillar-icon-box {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      min-height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      background: rgba(194, 87, 55, 0.1);
+    }
+
+    .pillar-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .pillar-card p {
+      font-size: 0.95rem;
+      color: var(--text-body);
+      line-height: 1.7;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    /* Remove checkmark bulletpoints from team cards */
+    .team-focus-points {
+      list-style: none;
+      padding: 0;
+    }
+
+    .team-focus-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.88rem;
+      color: var(--text-body);
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    .team-focus-points li:last-child {
+      border-bottom: none;
+    }
+
+    .team-focus-points svg {
+      display: none;
+    }
+
+    /* More natural styling for team focus points */
+    .team-focus-points li::before {
+      content: "—";
+      color: var(--terracotta);
+      font-weight: 300;
+      margin-right: 0.25rem;
+    }
+
+    /* Contact section fix */
+    .contact-section {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: background var(--transition);
+      padding: 85px 0;
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4.5rem;
+      align-items: start;
+    }
+
+    .contact-info > p {
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+      color: var(--text-body);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .contact-item-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--sand-gold-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--ochre-gold);
+      transition: background var(--transition);
+    }
+
+    body.dark .contact-item-icon {
+      background: #36261A;
+      border-color: var(--ochre-gold);
+    }
+
+    .contact-item-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--crimson);
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    body.dark .contact-item-icon svg {
+      stroke: var(--sand-gold);
+    }
+
+    .contact-item-text {
+      font-size: 0.95rem;
+      color: var(--text-body);
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .contact-item-text a {
+      color: var(--terracotta);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-item-text a:hover {
+      text-decoration: underline;
+    }
+
+    .contact-form-box {
+      background: var(--contact-bg);
+      border: 1px solid var(--card-border);
+      border-top: 4px solid var(--terracotta);
+      border-radius: var(--radius-sm);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .contact-form-box h3 {
+      margin-bottom: 1.6rem;
+      color: var(--text-heading);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-heading);
+      margin-bottom: 0.45rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.95rem;
+      color: var(--input-text);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.18);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-group select {
+      cursor: pointer;
+    }
+
+    body.dark .form-group select option {
+      background: #221A17;
+      color: #FAE3B1;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-feedback-box {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .form-feedback-box.success {
+      display: block;
+      background: rgba(59, 122, 140, 0.12);
+      border: 1px solid var(--cerulean);
+      color: var(--cerulean-dark);
+    }
+
+    .form-feedback-box.error {
+      display: block;
+      background: rgba(194, 87, 55, 0.12);
+      border: 1px solid var(--terracotta);
+      color: var(--terracotta-dark);
+    }
+
+    @media (max-width: 900px) {
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
   </style>
 
   <!-- Immediate Theme Loader -->
@@ -181,15 +441,15 @@
         <div style="text-align: center; max-width: 740px; margin: 0 auto;">
           <span class="eyebrow">Our Core Foundation</span>
           <h2>The Principles That Guide Us</h2>
-          <p style="font-size: 1.05rem; margin-top: 0.75rem;">
+          <p style="font-size: 1.05rem; margin-top: 0.75rem; color: var(--text-body);">
             Every auction, workshop, and chapter launch operates under four foundational commitments.
           </p>
         </div>
 
         <div class="pillars-grid">
           <div class="pillar-card">
-            <div class="pillar-icon-box" style="background: rgba(194, 87, 55, 0.12); color: var(--terracotta);">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="pillar-icon-box" style="background: rgba(194, 87, 55, 0.1); color: var(--terracotta);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
               </svg>
             </div>
@@ -200,8 +460,8 @@
           </div>
 
           <div class="pillar-card" style="border-top-color: var(--ochre-gold);">
-            <div class="pillar-icon-box" style="background: rgba(184, 134, 11, 0.12); color: var(--ochre-gold);">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="pillar-icon-box" style="background: rgba(184, 134, 11, 0.1); color: var(--ochre-gold);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="m4.93 4.93 4.24 4.24"/>
                 <path d="m14.83 9.17 4.24-4.24"/>
@@ -216,8 +476,8 @@
           </div>
 
           <div class="pillar-card" style="border-top-color: var(--cerulean);">
-            <div class="pillar-icon-box" style="background: rgba(59, 122, 140, 0.12); color: var(--cerulean);">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="pillar-icon-box" style="background: rgba(59, 122, 140, 0.1); color: var(--cerulean);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
@@ -230,9 +490,9 @@
             </p>
           </div>
 
-          <div class="pillar-card">
-            <div class="pillar-icon-box" style="background: rgba(194, 87, 55, 0.12); color: var(--terracotta);">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <div class="pillar-card" style="border-top-color: var(--terracotta);">
+            <div class="pillar-icon-box" style="background: rgba(194, 87, 55, 0.1); color: var(--terracotta);">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="2" y1="12" x2="22" y2="12"/>
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -255,7 +515,7 @@
         <div style="text-align: center; max-width: 740px; margin: 0 auto;">
           <span class="eyebrow">The People Behind Bid For Tomorrow</span>
           <h2>Meet Our Leadership</h2>
-          <p style="font-size: 1.05rem; margin-top: 0.75rem;">
+          <p style="font-size: 1.05rem; margin-top: 0.75rem; color: var(--text-body);">
             Click on any team member profile to rotate the card and read their personal introduction, artistic philosophy, and leadership focus.
           </p>
         </div>
@@ -321,24 +581,9 @@
                   </p>
 
                   <ul class="team-focus-points">
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Executive Leadership & Team Coordination
-                    </li>
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Digital Auction & Website Development
-                    </li>
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Artist Relations & Auction Operations
-                    </li>
+                    <li>Executive Leadership & Team Coordination</li>
+                    <li>Digital Auction & Website Development</li>
+                    <li>Artist Relations & Auction Operations</li>
                   </ul>
                 </div>
 
@@ -412,24 +657,9 @@
                   </p>
 
                   <ul class="team-focus-points">
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Fundraising & Donor Relations
-                    </li>
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Community & Strategic Partnerships
-                    </li>
-                    <li>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      Outreach, Expansion & Branch Development
-                    </li>
+                    <li>Fundraising & Donor Relations</li>
+                    <li>Community & Strategic Partnerships</li>
+                    <li>Outreach, Expansion & Branch Development</li>
                   </ul>
                 </div>
 
@@ -451,13 +681,13 @@
     <!-- =========================================
          CONTACT SECTION
     ========================================= -->
-    <section class="section contact-section" id="contact">
+    <section class="contact-section" id="contact">
       <div class="container">
-        <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
+        <div class="section-header section-header-center" style="margin-bottom:2.5rem;">
           <h2>Connect with Bid For Tomorrow</h2>
         </div>
         <div class="contact-inner">
-          <div class="contact-info fade-up">
+          <div class="contact-info">
             <p>Whether you want to submit artwork, register as an auction bidder, volunteer, or discuss sponsorship, we would love to hear from you.</p>
 
             <div class="contact-item">
@@ -469,7 +699,7 @@
 
             <div class="contact-item">
               <div class="contact-item-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="var(--matcha-dark)" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <svg viewBox="0 0 24 24" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
               </div>
               <div class="contact-item-text"><a href="https://www.instagram.com/bid4tomorrow/" target="_blank" rel="noopener noreferrer">@bid4tomorrow</a></div>
             </div>
@@ -482,7 +712,7 @@
             </div>
           </div>
 
-          <div class="contact-form-box fade-up">
+          <div class="contact-form-box">
             <div id="formFeedback" class="form-feedback-box" role="alert"></div>
 
             <form id="contactForm">

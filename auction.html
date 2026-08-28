@@ -253,7 +253,9 @@
       color: var(--ochre-gold);
       font-weight: 700;
     }
-
+    .nav-links a {
+          white-space: nowrap; 
+    }
     .nav-cta {
       padding: 0.6rem 1.25rem;
       background: var(--crimson);
@@ -281,8 +283,9 @@
       background-color: var(--text-heading);
       transition: 0.2s;
     }
-
-    @media (max-width: 960px) {
+    
+   
+    @media (max-width: 1150px) {
       .nav-toggle { display: flex; }
       .nav-links {
         display: none;
@@ -324,6 +327,7 @@
     }
 
     /* User menu styles */
+    
     .user-menu {
       position: relative;
       display: inline-flex;
@@ -337,8 +341,8 @@
       color: var(--text-heading);
       font-weight: 600;
       font-size: 0.9rem;
+      white-space: nowrap; 
     }
-
     .user-menu:hover {
       border-color: var(--crimson);
     }

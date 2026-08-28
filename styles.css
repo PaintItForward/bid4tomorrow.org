@@ -483,6 +483,26 @@ body.dark .editorial-watermark {
 ========================================= */
 
 /* Hero Section */
+  /* Hero story text styles */
+    .hero-story {
+      max-width: 740px;
+      margin: 2rem auto 0;
+      text-align: left;
+      line-height: 1.8;
+    }
+
+    .hero-story p {
+      font-size: 1.1rem;
+      color: var(--text-body);
+      margin-bottom: 1.25rem;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+
+    .hero-story .highlight {
+      font-weight: 700;
+      color: var(--terracotta);
+    }
+
 .hero {
   min-height: 92vh;
   background: var(--hero-bg-base);

@@ -199,10 +199,22 @@
       color: var(--terracotta);
       text-decoration: none;
       font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .contact-item-text a:hover {
       text-decoration: underline;
+    }
+
+    .contact-item-text .instagram-icon-inline {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      stroke: none;
+      fill: currentColor;
     }
 
     .contact-form-box {
@@ -717,224 +729,4 @@
 
             <div class="contact-item">
               <div class="contact-item-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              </div>
-              <div class="contact-item-text"><a href="https://www.instagram.com/bid4tomorrow/" target="_blank" rel="noopener noreferrer">@bid4tomorrow</a></div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-item-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <div class="contact-item-text">Greater Toronto Area, ON &bull; Lexington, Massachusetts, USA</div>
-            </div>
-          </div>
-
-          <div class="contact-form-box">
-            <div id="formFeedback" class="form-feedback-box" role="alert"></div>
-
-            <form id="contactForm">
-              <h3>Send us a message</h3>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="first-name">First Name</label>
-                  <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name" required>
-                </div>
-                <div class="form-group">
-                  <label for="last-name">Last Name</label>
-                  <input type="text" id="last-name" name="last_name" placeholder="Smith" autocomplete="family-name">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" required>
-              </div>
-              <div class="form-group">
-                <label for="reason">I am interested in&hellip;</label>
-                <select id="reason" name="reason">
-                  <option value="">Select an option</option>
-                  <option value="Bidding on Artwork">Bidding on Artwork (Fall 26 Auction)</option>
-                  <option value="Submitting Artwork">Submitting Student Artwork</option>
-                  <option value="Volunteering">Volunteering at Events</option>
-                  <option value="Sponsorship">Community Sponsorship</option>
-                  <option value="General Inquiry">General Inquiry</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" name="message" placeholder="Tell us a bit about yourself and how you'd like to get involved..."></textarea>
-              </div>
-              <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;justify-content:center;">
-                Send Message
-              </button> 
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-  </main>
-
-  <!-- =========================================
-       FOOTER
-  ========================================= -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-        
-        <!-- Column 1: Brand -->
-        <div class="footer-brand">
-          <a href="index.html" class="footer-logo">Bid For Tomorrow</a>
-          <p>Connecting young artists, student leaders, and communities through art auctions and charitable giving.</p>
-          <p class="footer-note">Founded by student artists and youth organizers.</p>
-        </div>
-
-        <!-- Column 2: Navigation -->
-        <div class="footer-col">
-          <h4>Explore</h4>
-          <ul>
-            <li><a href="index.html#artworks">Gallery</a></li>
-            <li><a href="index.html#auctions">Events</a></li>
-            <li><a href="auction.html">Live Auction</a></li>
-            <li><a href="index.html#impact">Impact</a></li>
-          </ul>
-        </div>
-
-        <!-- Column 3: Organization -->
-        <div class="footer-col">
-          <h4>Organization</h4>
-          <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="branches.html">Our Branches</a></li>
-            <li><a href="index.html#causes">Causes</a></li>
-            <li><a href="index.html#faq">FAQ</a></li>
-          </ul>
-        </div>
-
-        <!-- Column 4: Get Involved -->
-        <div class="footer-col">
-          <h4>Get Involved</h4>
-          <ul>
-            <li><a href="index.html#contact">Submit Artwork</a></li>
-            <li><a href="index.html#contact">Register to Bid</a></li>
-            <li><a href="index.html#contact">Volunteer</a></li>
-            <li><a href="index.html#contact">Sponsorship</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2026 Bid For Tomorrow. All rights reserved.</p>
-        
-        <div class="social-links">
-          <a href="https://www.instagram.com/bid4tomorrow/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-          </a>
-          <a href="mailto:bid4tomorrow@gmail.com" class="social-link email-link" aria-label="Email Us">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- EmailJS Script -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
-
-    const contactForm = document.getElementById("contactForm");
-    const feedbackBox = document.getElementById("formFeedback");
-    const submitBtn = document.getElementById("submitBtn");
-
-    if (contactForm) {
-      contactForm.addEventListener("submit", function(event) {
-        event.preventDefault();
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Sending...";
-
-        emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
-        .then(() => {
-          feedbackBox.className = "form-feedback-box success";
-          feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
-          contactForm.reset();
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Send Message";
-        })
-        .catch((error) => {
-          feedbackBox.className = "form-feedback-box error";
-          feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or reach us directly at bid4tomorrow@gmail.com.";
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Send Message";
-          console.error(error);
-        });
-      });
-    }
-
-    // Theme Toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const mobileNavThemeToggle = document.getElementById('mobileNavThemeToggle');
-    const html = document.documentElement;
-
-    function updateTheme() {
-      const isDark = html.classList.contains('dark');
-      localStorage.setItem('bft-theme', isDark ? 'dark' : 'light');
-    }
-
-    if (themeToggle) {
-      themeToggle.addEventListener('click', () => {
-        html.classList.toggle('dark');
-        updateTheme();
-      });
-    }
-
-    if (mobileNavThemeToggle) {
-      mobileNavThemeToggle.addEventListener('click', () => {
-        html.classList.toggle('dark');
-        updateTheme();
-      });
-    }
-
-    // Team card flip functionality
-    document.querySelectorAll('.team-card-flipper').forEach(card => {
-      card.addEventListener('click', () => {
-        card.classList.toggle('flipped');
-        card.setAttribute('aria-expanded', card.classList.contains('flipped'));
-      });
-
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
-      });
-    });
-
-    // Flip back button
-    document.querySelectorAll('.btn-flip-back').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        btn.closest('.team-card-flipper').click();
-      });
-    });
-
-    // Mobile nav toggle
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.getElementById('nav-links');
-
-    if (navToggle) {
-      navToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('open');
-        navToggle.setAttribute('aria-expanded', navLinks.classList.contains('open'));
-      });
-    }
-  </script>
-
-</body>
-</html>
+                <svg viewBox="0 0 24 24" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2

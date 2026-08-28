@@ -1073,7 +1073,7 @@
       </button>
 
       <div class="nav-right">
-        <ul class="nav-links" id="nav-links" role="list">
+        <ul class="nav-links" id="navLinks">
           <li><a href="about.html">About Us</a></li>
           <li><a href="branches.html">Our Branches</a></li>
           <li><a href="auction.html" class='active' style="font-weight:600; color:var(--matcha-dark, #3D4D3D);">Fall 26 Auction</a></li>
@@ -1083,6 +1083,7 @@
           <li><a href="index.html#causes">Causes</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
           <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
+          <li id="authNavItem"></li>
         </ul>
     </div>
   </nav>
@@ -1319,6 +1320,11 @@
     // Update navigation based on auth status
     function updateAuthUI(user) {
       const authNavItem = document.getElementById('authNavItem');
+    
+      if (!authNavItem) {
+        console.warn('authNavItem not found on this page.');
+        return;
+      }
       
       if (user) {
         // User is logged in

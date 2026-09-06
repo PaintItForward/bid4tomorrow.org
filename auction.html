@@ -1942,16 +1942,16 @@
       modalDescription.textContent = lot.description;
       
       // Update auction status
-      if (lot.status === 'open') {
-        modalAuctionStatus.textContent = 'LIVE NOW';
-        modalAuctionStatus.style.color = 'green';
-      } else if (lot.status === 'ended') {
-        modalAuctionStatus.textContent = 'ENDED';
-        modalAuctionStatus.style.color = 'red';
-      } else {
-        modalAuctionStatus.textContent = 'COMING SOON';
-        modalAuctionStatus.style.color = 'var(--terracotta)';
-      }
+    if (lot.status === 'open') {
+      modalAuctionStatus.textContent = 'LIVE NOW';
+      modalAuctionStatus.style.color = 'green';
+    } else if (lot.status === 'closed' || lot.status === 'sold' || lot.status === 'ended') {
+      modalAuctionStatus.textContent = 'ENDED';
+      modalAuctionStatus.style.color = 'red';
+    } else {
+      modalAuctionStatus.textContent = 'COMING SOON';
+      modalAuctionStatus.style.color = 'var(--terracotta)';
+    }
       
       detailModal.style.display = 'flex';
       document.body.style.overflow = 'hidden';

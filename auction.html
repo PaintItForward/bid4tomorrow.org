@@ -15,7 +15,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fall '26 Auction · Bid For Tomorrow</title>
-  <meta name="description" content="Preview the original student artworks featured in Bid For Tomorrow's Fall 2026 charity auction." />
+  <meta name="description" content="Preview and bid on original student artworks featured in Bid For Tomorrow's Fall 2026 charity auction." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +23,7 @@
 
   <style>
     /* ==========================================================================
-       VARIABLES & THEMES (exact match to existing Bid For Tomorrow site)
+       VARIABLES & THEMES
        ========================================================================== */
     :root {
       --sand-gold:          #FAE3B1;
@@ -177,12 +177,6 @@
       background-color: var(--cream-alt);
     }
 
-    .btn-disabled {
-      opacity: 0.6;
-      pointer-events: none;
-      cursor: default;
-    }
-
     /* ==========================================================================
        NAVIGATION
        ========================================================================== */
@@ -232,7 +226,7 @@
       justify-content: center;
       font-weight: 700;
       font-size: 1.1rem;
-      overflow: hidden; /* Ensure image fits */
+      overflow: hidden;
     }
     .nav-logo-mark img {
       width: 100%;
@@ -335,7 +329,6 @@
     }
 
     /* User menu styles */
-    
     .user-menu {
       position: relative;
       display: inline-flex;
@@ -718,7 +711,132 @@
     }
 
     /* ==========================================================================
-       DETAIL MODAL
+       DETAIL VIEW (replaces separate artwork-detail page)
+       ========================================================================== */
+    #detailView {
+      display: none;
+      padding: 3rem 0 5rem 0;
+      min-height: 80vh;
+    }
+
+    .detail-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    .back-to-auction {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .back-to-auction:hover {
+      color: var(--crimson);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .detail-media {
+      position: relative;
+    }
+    .main-image {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--section-alt);
+      box-shadow: var(--shadow-md);
+      cursor: zoom-in;
+    }
+    .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .45s ease;
+    }
+    .main-image:hover img {
+      transform: scale(1.04);
+    }
+    .zoom-btn {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      background: rgba(62,48,42,.65);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: .55rem 1rem;
+      font-size: .8rem;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background .3s;
+    }
+    .zoom-btn:hover {
+      background: rgba(62,48,42,.85);
+    }
+
+    .detail-info h1 {
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      margin-bottom: .5rem;
+    }
+    .detail-artist {
+      font-size: 1.1rem;
+      color: var(--text-body);
+      margin-bottom: 1.5rem;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .meta-item .label {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: block;
+    }
+    .meta-item .value {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--text-heading);
+      font-weight: 500;
+    }
+    .statement {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .statement p {
+      font-style: italic;
+      color: var(--text-body);
+    }
+
+    @media (max-width: 900px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .detail-container {
+        padding: 0 1.5rem;
+      }
+    }
+
+    /* ==========================================================================
+       MODAL (for quick bid)
        ========================================================================== */
     .modal-overlay {
       position: fixed;
@@ -778,126 +896,6 @@
     .modal-close-btn:hover {
       color: var(--text-heading);
       background-color: var(--section-alt);
-    }
-
-    .modal-lot-number {
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--ochre-gold);
-      margin-bottom: 0.2rem;
-    }
-
-    .modal-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.15rem;
-    }
-
-    .modal-artist {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--ochre-gold);
-      margin-bottom: 1rem;
-    }
-
-    .modal-image-wrap {
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      margin-bottom: 1.25rem;
-      background: var(--section-alt);
-      max-height: 340px;
-    }
-    .modal-image-wrap img {
-      width: 100%;
-      height: 100%;
-      max-height: 340px;
-      object-fit: cover;
-    }
-
-    .modal-info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem 1.5rem;
-      margin-bottom: 1rem;
-      font-size: 0.88rem;
-    }
-    .modal-info-grid .info-label {
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    .modal-info-grid .info-value {
-      color: var(--text-heading);
-      font-weight: 500;
-    }
-
-    .modal-description {
-      font-size: 0.9rem;
-      color: var(--text-body);
-      line-height: 1.6;
-      margin-bottom: 1.25rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    /* Auction panel inside modal */
-    .auction-panel {
-      background: var(--section-alt);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.25rem 1.5rem;
-      margin-top: 0.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .auction-panel .panel-left {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-    .auction-panel .panel-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-    .auction-panel .panel-value {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--text-heading);
-    }
-    .auction-panel .panel-status {
-      font-weight: 700;
-      color: var(--terracotta);
-    }
-    .auction-panel .panel-btn {
-      min-width: 140px;
-    }
-
-    /* bid history */
-    .bid-history {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      padding: 0.5rem 0;
-      margin-top: 0.5rem;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    .bid-entry {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.3rem 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .bid-entry:last-child {
-      border-bottom: none;
     }
 
     /* ==========================================================================
@@ -992,15 +990,6 @@
       .modal-card {
         padding: 1.25rem;
       }
-      .modal-info-grid {
-        grid-template-columns: 1fr;
-        gap: 0.25rem;
-      }
-      .auction-panel {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-      }
       .lot-grid {
         grid-template-columns: 1fr;
       }
@@ -1074,9 +1063,8 @@
   <nav id="main-nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
       <a href="#" class="nav-logo" aria-label="Bid For Tomorrow home">
-        
         <div class="nav-logo-mark">
-  <img src="B4Tlogo.jpg" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+          <img src="B4Tlogo.jpg" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         Bid For Tomorrow
       </a>
@@ -1101,6 +1089,7 @@
           <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
           <li id="authNavItem"></li>
         </ul>
+      </div>
     </div>
   </nav>
 
@@ -1123,18 +1112,18 @@
 
   <main>
     <!-- =========================================
-         HERO
+         HERO SECTION
          ========================================= -->
-    <header class="auction-hero">
+    <header class="auction-hero" id="heroSection">
       <div class="container">
         <div class="hero-badge">
           Fall 2026 · Student Charity Auction
         </div>
 
-        <h1>Fall '26 Auction DEMO</h1>
+        <h1>Fall '26 Auction</h1>
         <p>
           Explore original student artwork from the Greater Toronto Area and Lexington chapters.
-          This is a demo – bidding will open later this fall.
+          Place your bids and support young artists and youth health initiatives.
         </p>
 
         <div class="hero-actions">
@@ -1143,21 +1132,20 @@
         </div>
 
         <div class="auction-status-banner">
-          ⏳ Auction Status: <span>Coming Fall 2026</span>
+          ⏳ Auction Status: <span id="auctionStatusText">Open for Bidding</span>
         </div>
       </div>
     </header>
 
     <!-- =========================================
-         AUCTION LISTING
+         AUCTION LISTING SECTION
          ========================================= -->
-    <section class="auction-listing-section" id="lot-grid">
+    <section class="auction-listing-section" id="listingSection">
       <div class="container">
-
         <div class="section-header">
           <div>
             <h2>Featured Lots</h2>
-            <p>Original artwork by student artists, available for preview.</p>
+            <p>Original artwork by student artists, available for bidding.</p>
           </div>
           <div class="controls-tools">
             <div class="search-box">
@@ -1168,9 +1156,11 @@
               <input type="text" id="searchInput" placeholder="Search lots, artists..." aria-label="Search artwork" />
             </div>
             <select id="sortSelect" aria-label="Sort lots">
-              <option value="newest">Newest</option>
+              <option value="lot_number">Lot Number</option>
               <option value="artist">Artist A–Z</option>
               <option value="medium">Medium</option>
+              <option value="price_low">Price: Low to High</option>
+              <option value="price_high">Price: High to Low</option>
             </select>
           </div>
         </div>
@@ -1184,66 +1174,79 @@
             <div class="loader" role="status" aria-label="Loading lots"></div>
           </div>
         </div>
+      </div>
+    </section>
 
+    <!-- =========================================
+         DETAIL VIEW SECTION (replaces artwork-detail.html)
+         ========================================= -->
+    <section id="detailView">
+      <div class="detail-container">
+        <a class="back-to-auction" id="backToAuction">
+          ← Back to All Lots
+        </a>
+        
+        <div class="detail-grid">
+          <div class="detail-media">
+            <div class="main-image" id="mainImage">
+              <img id="detailImage" src="" alt="">
+              <button class="zoom-btn" id="zoomBtn" aria-label="Zoom artwork">Zoom</button>
+            </div>
+          </div>
+          
+          <div class="detail-info">
+            <span class="hero-badge" id="detailStatusBadge" style="margin-bottom: 1rem;">Live Auction</span>
+            <h1 id="detailTitle">Loading…</h1>
+            <p class="detail-artist" id="detailArtist"></p>
+
+            <div class="meta-grid">
+              <div class="meta-item"><span class="label">Medium</span><span class="value" id="detailMedium"></span></div>
+              <div class="meta-item"><span class="label">Dimensions</span><span class="value" id="detailDimensions"></span></div>
+              <div class="meta-item"><span class="label">Grade</span><span class="value" id="detailGrade"></span></div>
+              <div class="meta-item"><span class="label">Branch</span><span class="value" id="detailBranch"></span></div>
+              <div class="meta-item"><span class="label">Starting Bid</span><span class="value" id="detailStartingBid"></span></div>
+              <div class="meta-item"><span class="label">Lot Number</span><span class="value" id="detailLotNumber"></span></div>
+            </div>
+
+            <div class="statement">
+              <p id="detailDescription"></p>
+            </div>
+
+            <!-- Bidding Panel -->
+            <div class="auction-panel" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <span class="panel-label">Current Highest Bid</span>
+                <span style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--crimson);" id="detailCurrentBid">$—</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <span class="panel-label">Minimum Next Bid</span>
+                <span style="font-weight: 600;" id="detailMinBid">$—</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                <span class="panel-label">Total Bids</span>
+                <span id="detailBidCount">0</span>
+              </div>
+              <div id="detailBidForm">
+                <label for="detailBidInput" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Your bid (CAD):</label>
+                <input type="number" id="detailBidInput" min="0" step="10" placeholder="Enter your bid" style="width: 100%; padding: 0.75rem; margin-bottom: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--input-bg); color: var(--text-heading);">
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">By placing this bid, you agree that your bid is binding and that you will complete payment if you win.</p>
+                <button class="btn btn-primary" id="detailPlaceBidBtn" style="width: 100%;">Place Bid</button>
+              </div>
+              <div id="detailClosedMsg" style="display: none;">
+                <p style="text-align: center; font-weight: 600; color: var(--text-muted);">Auction Closed</p>
+              </div>
+            </div>
+
+            <!-- Bid History -->
+            <h3 style="margin-bottom: 1rem;">Bid History</h3>
+            <div id="detailBidHistory" style="background: var(--section-alt); border-radius: var(--radius-sm); padding: 1rem;">
+              <p style="color: var(--text-muted);">No bids yet. Be the first to bid!</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
-
-
-<!-- Quick How It Works for Auction Page -->
-<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1.25rem 1.5rem; margin:0 auto 2rem auto; max-width:1200px; text-align:center;">
-  <p style="margin:0; font-size:0.9rem;">
-    <strong>New here?</strong> Students create → We exhibit → You bid → Money goes to artists + youth health.
-    <a href="index.html#how-it-works" style="font-weight:700; text-decoration:underline; margin-left:0.5rem;">See full breakdown →</a>
-  </p>
-</div>
-
-  
-  <!-- =========================================
-       DETAIL MODAL
-       ========================================= -->
-  <div id="detailModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-card">
-      <button type="button" id="closeModalBtn" class="modal-close-btn" aria-label="Close details">&times;</button>
-
-      <div class="modal-lot-number" id="modalLotNumber">LOT 001</div>
-      <h3 class="modal-title" id="modalTitle">Marseille</h3>
-      <div class="modal-artist" id="modalArtist">By Gloria</div>
-
-      <div class="modal-image-wrap">
-        <img id="modalImage" src="" alt="Artwork" />
-      </div>
-
-      <div class="modal-info-grid">
-        <div><span class="info-label">Medium</span><br><span class="info-value" id="modalMedium">Oil on canvas</span></div>
-        <div><span class="info-label">Dimensions</span><br><span class="info-value" id="modalDimensions">18" × 24"</span></div>
-        <div><span class="info-label">Grade</span><br><span class="info-value" id="modalGrade">Grade 11</span></div>
-        <div><span class="info-label">Branch</span><br><span class="info-value" id="modalBranch">GTA Chapter</span></div>
-        <div><span class="info-label">Starting Bid</span><br><span class="info-value" id="modalStartingBid">$65 CAD</span></div>
-      </div>
-
-      <div class="modal-description" id="modalDescription">
-        A luminous study capturing the warmth of the Mediterranean coast through layered impasto and soft atmospheric perspective.
-      </div>
-
-      <!-- Auction Panel -->
-      <div class="auction-panel">
-        <div class="panel-left">
-          <span class="panel-label">Fall '26 Auction</span>
-          <span class="panel-status" id="modalAuctionStatus">COMING SOON</span>
-          <span style="font-size:0.9rem; font-weight:600; color:var(--text-heading);" id="modalPanelStartingBid">Starting bid: $65 CAD</span>
-        </div>
-        <button class="btn btn-primary panel-btn" id="modalBidBtn" disabled>Bidding Opens Soon</button>
-      </div>
-
-      <!-- Bid history container -->
-      <div id="bidHistoryContainer" style="margin-top: 1rem; padding: 0.75rem; background: var(--section-alt); border-radius: var(--radius-sm);"></div>
-
-      <p style="font-size:0.72rem; color:var(--text-muted); margin-top:0.75rem; text-align:center;">
-        proceeds fund audited youth healthcare and support young artists.
-      </p>
-    </div>
-  </div>
 
   <!-- =========================================
        FOOTER
@@ -1273,6 +1276,7 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
     const FALL_2026_AUCTION_ID = '101afb93-7d37-4276-8602-026acbda56ed';
+    const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/your_payment_link_here'; // TODO: Replace with actual Stripe link
     window.supabaseClient = supabaseClient;
 
     // =======================================================
@@ -1291,8 +1295,7 @@
         document.documentElement.classList.add('dark');
         document.body.classList.add('dark');
         if (themeIcon) {
-          themeIcon.innerHTML =
-            `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
+          themeIcon.innerHTML = `<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>`;
         }
       } else {
         document.documentElement.classList.remove('dark');
@@ -1331,7 +1334,6 @@
     // =======================================================
     let currentUser = null;
 
-    // Check authentication status
     async function checkAuth() {
       const { data: { session }, error } = await supabaseClient.auth.getSession();
       if (session) {
@@ -1343,17 +1345,11 @@
       }
     }
 
-    // Update navigation based on auth status
     function updateAuthUI(user) {
       const authNavItem = document.getElementById('authNavItem');
-    
-      if (!authNavItem) {
-        console.warn('authNavItem not found on this page.');
-        return;
-      }
+      if (!authNavItem) return;
       
       if (user) {
-        // User is logged in
         const initial = user.email ? user.email[0].toUpperCase() : 'U';
         const displayName = user.user_metadata?.full_name || (user.email ? user.email.split('@')[0] : 'User');
         authNavItem.innerHTML = `
@@ -1369,7 +1365,6 @@
           </div>
         `;
         
-        // Add dropdown toggle
         setTimeout(() => {
           const userMenu = document.getElementById('userMenu');
           const userDropdown = document.getElementById('userDropdown');
@@ -1381,7 +1376,6 @@
               userDropdown.classList.toggle('show');
             });
             
-            // Close dropdown when clicking outside
             document.addEventListener('click', () => {
               userDropdown.classList.remove('show');
             });
@@ -1391,7 +1385,6 @@
           }
         }, 0);
       } else {
-        // User is not logged in
         authNavItem.innerHTML = `
           <a href="login.html" class="btn-ghost" style="padding: 0.5rem 1rem;">Login</a>
           <a href="signup.html" class="nav-cta">Sign Up</a>
@@ -1399,21 +1392,16 @@
       }
     }
 
-    // Sign out function
     async function signOutUser() {
       const { error } = await supabaseClient.auth.signOut();
       if (!error) {
         currentUser = null;
         updateAuthUI(null);
         showToast('Signed Out', 'You have been signed out successfully');
-      } else {
-        console.error('Sign out error:', error);
-        showToast('Error', 'Failed to sign out');
       }
     }
     window.signOutUser = signOutUser;
 
-    // Listen for auth changes
     supabaseClient.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN') {
         currentUser = session.user;
@@ -1459,23 +1447,9 @@
     const chipsContainer = document.getElementById('mediumChips');
     const searchInput = document.getElementById('searchInput');
     const sortSelect = document.getElementById('sortSelect');
-
-    const detailModal = document.getElementById('detailModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modalLotNumber = document.getElementById('modalLotNumber');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalArtist = document.getElementById('modalArtist');
-    const modalImage = document.getElementById('modalImage');
-    const modalMedium = document.getElementById('modalMedium');
-    const modalDimensions = document.getElementById('modalDimensions');
-    const modalGrade = document.getElementById('modalGrade');
-    const modalBranch = document.getElementById('modalBranch');
-    const modalStartingBid = document.getElementById('modalStartingBid');
-    const modalDescription = document.getElementById('modalDescription');
-    const modalPanelStartingBid = document.getElementById('modalPanelStartingBid');
-    const modalBidBtn = document.getElementById('modalBidBtn');
-    const modalAuctionStatus = document.getElementById('modalAuctionStatus');
-    const bidHistoryContainer = document.getElementById('bidHistoryContainer');
+    const listingSection = document.getElementById('listingSection');
+    const heroSection = document.getElementById('heroSection');
+    const detailView = document.getElementById('detailView');
 
     function formatPrice(amount) {
       if (amount === null || amount === undefined || isNaN(amount)) return '$0 CAD';
@@ -1493,7 +1467,6 @@
       }
     }
 
-    // Intersection Observer for lazy loading images inside grid
     function setupLazyLoading() {
       const images = document.querySelectorAll('#lotGrid img.lazy[data-src]');
       if ('IntersectionObserver' in window) {
@@ -1519,7 +1492,8 @@
         const { data: simpleData, error: simpleError } = await supabaseClient
           .from('lots')
           .select('*')
-          .eq('auction_id', FALL_2026_AUCTION_ID);
+          .eq('auction_id', FALL_2026_AUCTION_ID)
+          .order('lot_number', { ascending: true });
         
         if (simpleError) {
           console.error('Error fetching lots:', simpleError);
@@ -1545,8 +1519,6 @@
               
               if (!artworkError && artworkData) {
                 artwork = artworkData;
-              } else {
-                console.warn('Could not fetch artwork:', artworkError);
               }
             } catch (e) {
               console.error('Artwork query error:', e);
@@ -1564,20 +1536,36 @@
               
               if (!artistError && artistData) {
                 artist = artistData;
-              } else {
-                console.warn('Could not fetch artist:', artistError);
               }
             } catch (e) {
               console.error('Artist query error:', e);
             }
           }
           
+          // Get current highest bid for this lot
+          let currentBid = null;
+          try {
+            const { data: bidData, error: bidError } = await supabaseClient
+              .from('bids')
+              .select('amount')
+              .eq('lot_id', lot.id)
+              .order('amount', { ascending: false })
+              .limit(1);
+            
+            if (!bidError && bidData && bidData.length > 0) {
+              currentBid = bidData[0].amount;
+            }
+          } catch (e) {
+            console.warn('Could not fetch current bid for lot:', lot.id, e);
+          }
+          
           lotsWithDetails.push({
             id: lot.id,
             lotNumber: lot.lot_number || `LOT ${String(lot.id).padStart(3, '0')}`,
             startingBid: lot.starting_bid || 0,
+            currentBid: currentBid,
             status: lot.status || 'preview',
-            bidIncrement: lot.bid_increment || 10, // Ensure default is 10
+            bidIncrement: lot.bid_increment || 10,
             title: artwork?.title || 'Untitled',
             artist: artist?.name || 'Unknown Artist',
             grade: artist?.grade || 'N/A',
@@ -1599,7 +1587,6 @@
     }
 
     function renderGrid(items) {
-      // hide loader
       if (loaderWrap) loaderWrap.classList.add('hidden');
 
       if (!items.length) {
@@ -1612,41 +1599,44 @@
         return;
       }
 
-      grid.innerHTML = items.map(lot => `
-        <article class="lot-card" data-id="${lot.id}">
-          <div class="lot-image-wrap">
-            <img class="lazy" data-src="${lot.image}" alt="${lot.title}" loading="lazy" referrerpolicy="no-referrer" />
-            <span class="lot-number-badge">${lot.lotNumber}</span>
-            <span class="lot-branch-badge">${lot.branch}</span>
-          </div>
-          <div class="lot-body">
-            <h3 class="lot-title">${lot.title}</h3>
-            <div class="lot-artist">By ${lot.artist}</div>
-            <div class="lot-details">
-              <span><span class="label">Medium:</span> ${lot.medium}</span>
-              <span><span class="label">Grade:</span> ${lot.grade}</span>
+      grid.innerHTML = items.map(lot => {
+        const displayPrice = lot.currentBid || lot.startingBid;
+        const priceLabel = lot.currentBid ? 'current bid' : 'starting bid';
+        
+        return `
+          <article class="lot-card" data-id="${lot.id}">
+            <div class="lot-image-wrap">
+              <img class="lazy" data-src="${lot.image}" alt="${lot.title}" loading="lazy" referrerpolicy="no-referrer" />
+              <span class="lot-number-badge">${lot.lotNumber}</span>
+              <span class="lot-branch-badge">${lot.branch}</span>
             </div>
-            <div class="lot-starting-bid">
-              ${formatPrice(lot.startingBid)} <small>starting bid</small>
+            <div class="lot-body">
+              <h3 class="lot-title">${lot.title}</h3>
+              <div class="lot-artist">By ${lot.artist}</div>
+              <div class="lot-details">
+                <span><span class="label">Medium:</span> ${lot.medium}</span>
+                <span><span class="label">Grade:</span> ${lot.grade}</span>
+              </div>
+              <div class="lot-starting-bid">
+                ${formatPrice(displayPrice)} <small>${priceLabel}</small>
+              </div>
+              <div class="lot-actions">
+                <button type="button" class="btn btn-primary view-details-btn" data-id="${lot.id}">View Details</button>
+              </div>
             </div>
-            <div class="lot-actions">
-              <button type="button" class="btn btn-primary view-lot-btn" data-id="${lot.id}">View Lot</button>
-            </div>
-          </div>
-        </article>
-      `).join('');
+          </article>
+        `;
+      }).join('');
 
-      // Re-attach event listeners
-      grid.querySelectorAll('.view-lot-btn').forEach(btn => {
+      grid.querySelectorAll('.view-details-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const id = btn.dataset.id;
           const found = LOTS.find(l => l.id === id);
-          if (found) openDetailModal(found);
+          if (found) showDetailView(found);
         });
       });
 
-      // Set up lazy loading for newly added images
       setupLazyLoading();
     }
 
@@ -1696,25 +1686,31 @@
         case 'medium':
           result.sort((a, b) => a.medium.localeCompare(b.medium));
           break;
-        case 'newest':
+        case 'price_low':
+          result.sort((a, b) => (a.currentBid || a.startingBid) - (b.currentBid || b.startingBid));
+          break;
+        case 'price_high':
+          result.sort((a, b) => (b.currentBid || b.startingBid) - (a.currentBid || a.startingBid));
+          break;
+        case 'lot_number':
         default:
-          result.sort((a, b) => b.createdAt - a.createdAt);
+          result.sort((a, b) => {
+            const numA = parseInt(a.lotNumber.replace(/[^0-9]/g, '')) || 0;
+            const numB = parseInt(b.lotNumber.replace(/[^0-9]/g, '')) || 0;
+            return numA - numB;
+          });
           break;
       }
 
       renderGrid(result);
     }
 
-       // =======================================================
+    // =======================================================
     // 7. BIDDING FUNCTIONS
     // =======================================================
     
-    // Get current highest bid for a lot
     async function getCurrentBid(lotId) {
       try {
-        console.log('Fetching highest bid for lot:', lotId);
-        
-        // Direct query to get highest bid
         const { data, error } = await supabaseClient
           .from('bids')
           .select('amount, bidder_id, created_at')
@@ -1728,11 +1724,9 @@
         }
         
         if (!data || data.length === 0) {
-          console.log('No bids found for this lot');
           return null;
         }
         
-        console.log('Highest bid found:', data[0]);
         return data[0];
       } catch (error) {
         console.error('Error in getCurrentBid:', error);
@@ -1740,25 +1734,20 @@
       }
     }
 
-    // Get bid history for a lot
     async function getBidHistory(lotId) {
       try {
-        console.log('Fetching bid history for lot:', lotId);
-        
-        // Query bids table directly, ordering by newest first
         const { data, error } = await supabaseClient
           .from('bids')
           .select('*')
           .eq('lot_id', lotId)
           .order('created_at', { ascending: false })
-          .limit(10);
+          .limit(20);
         
         if (error) {
           console.error('Error fetching bid history:', error);
           return [];
         }
         
-        console.log('Bid history data:', data);
         return data || [];
       } catch (error) {
         console.error('Error fetching bid history:', error);
@@ -1766,7 +1755,33 @@
       }
     }
 
-    // Place a bid
+    async function getBidderNames(bidderIds) {
+      const names = {};
+      
+      try {
+        const { data: profilesData, error: profilesError } = await supabaseClient
+          .from('profiles')
+          .select('id, full_name')
+          .in('id', bidderIds);
+        
+        if (!profilesError && profilesData) {
+          profilesData.forEach(p => {
+            names[p.id] = p.full_name;
+          });
+        }
+      } catch (e) {
+        console.warn('Could not fetch profiles:', e);
+      }
+      
+      for (const id of bidderIds) {
+        if (!names[id]) {
+          names[id] = 'Bidder ' + (id ? id.substring(0, 4).toUpperCase() : 'Unknown');
+        }
+      }
+      
+      return names;
+    }
+
     async function placeBid(lotId, amount) {
       if (!currentUser) {
         showToast('Login Required', 'Please log in to place a bid');
@@ -1775,32 +1790,22 @@
       }
       
       try {
-        // Get current highest bid
         const highestBid = await getCurrentBid(lotId);
         const lot = selectedLot || LOTS.find(l => l.id === lotId);
         const bidIncrement = lot?.bidIncrement || 10;
         
-        // Calculate minimum required bid
         let minRequired;
         if (highestBid && highestBid.amount) {
-          // If there's already a bid, require increment above highest
           minRequired = highestBid.amount + bidIncrement;
         } else {
-          // If no bids, starting bid is the minimum
           minRequired = lot?.startingBid || bidIncrement;
         }
         
-        console.log('Current highest bid:', highestBid?.amount || 'No bids yet');
-        console.log('Minimum required bid:', minRequired);
-        console.log('Attempted bid amount:', amount);
-        
-        // Validate bid amount
         if (amount < minRequired) {
           showToast('Bid Too Low', `Minimum bid is ${formatPrice(minRequired)}`);
           return false;
         }
         
-        // Insert the bid
         const { data, error } = await supabaseClient
           .from('bids')
           .insert([{
@@ -1811,17 +1816,19 @@
           .select()
           .single();
         
-        if (error) {
-          console.error('Insert bid error:', error);
-          throw error;
-        }
+        if (error) throw error;
         
-        console.log('Bid inserted:', data);
         showToast('Bid Placed!', `Your bid of ${formatPrice(amount)} has been placed successfully`);
         
-        // Refresh bid history and current bid display
+        // Update local data
         if (selectedLot) {
-          await updateModalWithBids(selectedLot);
+          selectedLot.currentBid = amount;
+          const lotIndex = LOTS.findIndex(l => l.id === lotId);
+          if (lotIndex !== -1) {
+            LOTS[lotIndex].currentBid = amount;
+          }
+          await updateDetailView(selectedLot);
+          applyFilters();
         }
         
         return true;
@@ -1832,129 +1839,69 @@
       }
     }
 
-    // Update modal with bid information
-    async function updateModalWithBids(lot) {
-      try {
-        const highestBid = await getCurrentBid(lot.id);
-        const bidHistory = await getBidHistory(lot.id);
-        
-        // Update current bid display
-        if (highestBid && highestBid.amount) {
-          modalPanelStartingBid.textContent = `Current bid: ${formatPrice(highestBid.amount)}`;
-        } else {
-          modalPanelStartingBid.textContent = `Starting bid: ${formatPrice(lot.startingBid)}`;
-        }
-        
-        // Create bid history HTML
-        if (bidHistory && bidHistory.length > 0) {
-          // Try to fetch profiles if needed (but handle if table doesn't exist)
-          let profiles = {};
-          try {
-            const bidderIds = [...new Set(bidHistory.map(b => b.bidder_id).filter(Boolean))];
-            if (bidderIds.length > 0) {
-              const { data: profilesData, error: profilesError } = await supabaseClient
-                .from('profiles')
-                .select('id, full_name')
-                .in('id', bidderIds);
-              
-              if (!profilesError && profilesData) {
-                profilesData.forEach(p => { profiles[p.id] = p.full_name; });
-              }
-            }
-          } catch (e) {
-            console.warn('Could not fetch profiles:', e);
-            // Continue without profiles
-          }
-          
-          const bidHtml = bidHistory.map(bid => {
-            let bidderName = 'Anonymous';
-            
-            if (bid.bidder_id === currentUser?.id) {
-              bidderName = 'You';
-            } else if (profiles[bid.bidder_id]) {
-              bidderName = profiles[bid.bidder_id];
-            } else if (bid.bidder_name) {
-              bidderName = bid.bidder_name;
-            }
-            
-            const bidTime = bid.created_at ? new Date(bid.created_at).toLocaleString() : '';
-            
-            return `
-              <div class="bid-entry">
-                <div>
-                  <div style="font-weight: 600;">${bidderName}</div>
-                  ${bidTime ? `<div style="font-size: 0.7rem; color: var(--text-muted);">${bidTime}</div>` : ''}
-                </div>
-                <span style="font-weight: 700; color: var(--text-heading);">${formatPrice(bid.amount)}</span>
-              </div>
-            `;
-          }).join('');
-          
-          bidHistoryContainer.innerHTML = `
-            <div class="bid-history">
-              <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-heading); font-weight: 700;">Bid History</h4>
-              ${bidHtml}
-            </div>
-          `;
-        } else {
-          bidHistoryContainer.innerHTML = `
-            <div class="bid-history">
-              <p style="font-size: 0.85rem; color: var(--text-muted);">No bids yet. Be the first to bid!</p>
-            </div>
-          `;
-        }
-        
-        // Update bid button
-        updateBidButton(lot, highestBid);
-      } catch (error) {
-        console.error('Error updating modal with bids:', error);
-        bidHistoryContainer.innerHTML = `<p style="color: var(--text-muted);">Could not load bid history.</p>`;
-      }
+    function showLegalAgreement(lotId, minBid) {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(24, 11, 9, 0.8);
+        backdrop-filter: blur(4px);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        animation: fadeIn 0.2s ease-out;
+      `;
+      
+      overlay.innerHTML = `
+        <div style="
+          background: var(--card-bg);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-md);
+          padding: 2rem;
+          max-width: 500px;
+          width: 100%;
+          box-shadow: var(--shadow-lg);
+          animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          max-height: 80vh;
+          overflow-y: auto;
+        ">
+          <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-heading);">Terms & Conditions</h3>
+          <div style="font-size: 0.9rem; color: var(--text-body); margin-bottom: 1.5rem;">
+            <p style="margin-bottom: 0.5rem;"><strong>Binding Agreement:</strong> By placing a bid, you enter into a legally binding contract to purchase the artwork if you are the winning bidder.</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Payment:</strong> Winning bidders must complete payment within 48 hours of auction close.</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Authenticity:</strong> All artworks are original student creations. No refunds or exchanges after purchase.</p>
+            <p><strong>Charitable Contribution:</strong> A portion of proceeds supports audited youth healthcare initiatives.</p>
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <button id="declineTermsBtn" style="flex: 1; padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-body); font-weight: 600; cursor: pointer;">Decline</button>
+            <button id="acceptTermsBtn" style="flex: 1; padding: 0.7rem; border: none; border-radius: var(--radius-sm); background: var(--crimson); color: var(--white); font-weight: 600; cursor: pointer;">I Agree</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      document.getElementById('declineTermsBtn').addEventListener('click', () => {
+        overlay.remove();
+        showToast('Bid Cancelled', 'You must agree to the terms to place a bid');
+      });
+      
+      document.getElementById('acceptTermsBtn').addEventListener('click', () => {
+        overlay.remove();
+        showBidModal(lotId, minBid);
+      });
+      
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
+      });
     }
 
-    // Update bid button based on auction status and user login
-    function updateBidButton(lot, highestBid) {
-      if (!modalBidBtn) return;
-      
-      if (!currentUser) {
-        modalBidBtn.disabled = false;
-        modalBidBtn.textContent = 'Login to Bid';
-        modalBidBtn.onclick = () => {
-          window.location.href = 'login.html?redirect=auction.html';
-        };
-        return;
-      }
-      
-      if (lot.status === 'open') {
-        modalBidBtn.disabled = false;
-        modalBidBtn.textContent = 'Place Bid';
-        modalBidBtn.onclick = () => {
-          let minBid;
-          if (highestBid && highestBid.amount) {
-            // If there's already a bid, require increment above highest
-            minBid = highestBid.amount + lot.bidIncrement;
-          } else {
-            // If no bids, starting bid is the minimum
-            minBid = lot.startingBid;
-          }
-          showBidModal(lot.id, minBid);
-        };
-      } else if (lot.status === 'closed' || lot.status === 'sold') {
-        modalBidBtn.disabled = true;
-        modalBidBtn.textContent = 'Auction Ended';
-      } else {
-        modalBidBtn.disabled = true;
-        modalBidBtn.textContent = 'Bidding Opens Soon';
-      }
-    }
-
-    // Show custom bid modal with confirmation
     function showBidModal(lotId, minBid) {
-      // Remove any existing bid modal
       const existingModal = document.getElementById('customBidModal');
       if (existingModal) existingModal.remove();
       
-      // Get the lot to determine bid increment
       const lot = selectedLot || LOTS.find(l => l.id === lotId);
       const bidIncrement = lot?.bidIncrement || 10;
       
@@ -1974,59 +1921,17 @@
       `;
       
       overlay.innerHTML = `
-        <div style="
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          border-radius: var(--radius-md);
-          padding: 2rem;
-          max-width: 420px;
-          width: 100%;
-          box-shadow: var(--shadow-lg);
-          animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        ">
+        <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2rem; max-width: 420px; width: 100%; box-shadow: var(--shadow-lg); animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
           <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.25rem; color: var(--text-heading);">Place Your Bid</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
-            Minimum bid: <strong style="color: var(--text-heading);">${formatPrice(minBid)}</strong>
-          </p>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">Minimum bid: <strong style="color: var(--text-heading);">${formatPrice(minBid)}</strong></p>
           <div style="margin-bottom: 1.25rem;">
             <label for="bidAmountInput" style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.35rem; color: var(--text-heading);">Your Bid (CAD)</label>
-            <input type="number" id="bidAmountInput" step="${bidIncrement}" min="${minBid}" value="${minBid}" style="
-              width: 100%;
-              padding: 0.75rem 1rem;
-              border: 1px solid var(--border);
-              border-radius: var(--radius-sm);
-              background: var(--input-bg);
-              color: var(--text-heading);
-              font-size: 1.1rem;
-              font-weight: 600;
-              outline: none;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">
+            <input type="number" id="bidAmountInput" step="${bidIncrement}" min="${minBid}" value="${minBid}" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--input-bg); color: var(--text-heading); font-size: 1.1rem; font-weight: 600; outline: none;">
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Bid increment: $${bidIncrement}.00</p>
           </div>
           <div style="display: flex; gap: 0.75rem;">
-            <button id="cancelBidBtn" style="
-              flex: 1;
-              padding: 0.7rem;
-              border: 1px solid var(--border);
-              border-radius: var(--radius-sm);
-              background: transparent;
-              color: var(--text-body);
-              font-weight: 600;
-              cursor: pointer;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">Cancel</button>
-            <button id="reviewBidBtn" style="
-              flex: 1;
-              padding: 0.7rem;
-              border: none;
-              border-radius: var(--radius-sm);
-              background: var(--ochre-gold);
-              color: var(--white);
-              font-weight: 600;
-              cursor: pointer;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">Review Bid</button>
+            <button id="cancelBidBtn" style="flex: 1; padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-body); font-weight: 600; cursor: pointer;">Cancel</button>
+            <button id="reviewBidBtn" style="flex: 1; padding: 0.7rem; border: none; border-radius: var(--radius-sm); background: var(--ochre-gold); color: var(--white); font-weight: 600; cursor: pointer;">Review Bid</button>
           </div>
         </div>
       `;
@@ -2037,9 +1942,7 @@
       input.focus();
       input.select();
       
-      document.getElementById('cancelBidBtn').addEventListener('click', () => {
-        overlay.remove();
-      });
+      document.getElementById('cancelBidBtn').addEventListener('click', () => overlay.remove());
       
       document.getElementById('reviewBidBtn').addEventListener('click', () => {
         const amount = parseFloat(input.value);
@@ -2053,22 +1956,12 @@
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) overlay.remove();
       });
-      
-      const handleKeydown = (e) => {
-        if (e.key === 'Escape') {
-          overlay.remove();
-          document.removeEventListener('keydown', handleKeydown);
-        }
-      };
-      document.addEventListener('keydown', handleKeydown);
     }
 
-    // Show bid confirmation dialog
     function showBidConfirmation(lotId, amount, previousOverlay) {
       if (previousOverlay) previousOverlay.remove();
       
       const overlay = document.createElement('div');
-      overlay.id = 'bidConfirmationModal';
       overlay.style.cssText = `
         position: fixed;
         inset: 0;
@@ -2083,47 +1976,16 @@
       `;
       
       overlay.innerHTML = `
-        <div style="
-          background: var(--card-bg);
-          border: 2px solid var(--crimson);
-          border-radius: var(--radius-md);
-          padding: 2rem;
-          max-width: 420px;
-          width: 100%;
-          box-shadow: var(--shadow-lg);
-          animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        ">
+        <div style="background: var(--card-bg); border: 2px solid var(--crimson); border-radius: var(--radius-md); padding: 2rem; max-width: 420px; width: 100%; box-shadow: var(--shadow-lg); animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
           <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--text-heading);">Confirm Your Bid</h3>
           <div style="background: var(--section-alt); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
             <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.25rem;">You are about to place a bid of:</p>
             <p style="font-size: 1.5rem; font-weight: 700; color: var(--crimson);">${formatPrice(amount)}</p>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-            By confirming, you agree to purchase this item if you are the winning bidder when the auction closes.
-          </p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">By confirming, you agree to purchase this item if you are the winning bidder.</p>
           <div style="display: flex; gap: 0.75rem;">
-            <button id="backToBidBtn" style="
-              flex: 1;
-              padding: 0.7rem;
-              border: 1px solid var(--border);
-              border-radius: var(--radius-sm);
-              background: transparent;
-              color: var(--text-body);
-              font-weight: 600;
-              cursor: pointer;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">Go Back</button>
-            <button id="confirmFinalBidBtn" style="
-              flex: 1;
-              padding: 0.7rem;
-              border: none;
-              border-radius: var(--radius-sm);
-              background: var(--crimson);
-              color: var(--white);
-              font-weight: 600;
-              cursor: pointer;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">Confirm Bid</button>
+            <button id="backToBidBtn" style="flex: 1; padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-body); font-weight: 600; cursor: pointer;">Go Back</button>
+            <button id="confirmFinalBidBtn" style="flex: 1; padding: 0.7rem; border: none; border-radius: var(--radius-sm); background: var(--crimson); color: var(--white); font-weight: 600; cursor: pointer;">Confirm Bid</button>
           </div>
         </div>
       `;
@@ -2134,7 +1996,6 @@
         overlay.remove();
         const lot = selectedLot;
         if (lot) {
-          // Recalculate min bid to be safe
           getCurrentBid(lotId).then(highest => {
             let minBid;
             if (highest && highest.amount) {
@@ -2155,86 +2016,129 @@
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) overlay.remove();
       });
-      
-      const handleKeydown = (e) => {
-        if (e.key === 'Escape') {
-          overlay.remove();
-          document.removeEventListener('keydown', handleKeydown);
-        }
-      };
-      document.addEventListener('keydown', handleKeydown);
     }
 
     // =======================================================
-    // 8. DETAIL MODAL OPEN/CLOSE
+    // 8. DETAIL VIEW FUNCTIONS
     // =======================================================
-    function openDetailModal(lot) {
-      console.log('Opening modal for lot:', lot);
+    function showDetailView(lot) {
       selectedLot = lot;
+      listingSection.style.display = 'none';
+      heroSection.style.display = 'none';
+      detailView.style.display = 'block';
+      window.scrollTo(0, 0);
+      updateDetailView(lot);
+    }
+
+    async function updateDetailView(lot) {
+      // Populate basic info
+      document.getElementById('detailTitle').textContent = lot.title;
+      document.getElementById('detailArtist').textContent = `By ${lot.artist}`;
+      document.getElementById('detailImage').src = lot.image;
+      document.getElementById('detailMedium').textContent = lot.medium || 'N/A';
+      document.getElementById('detailDimensions').textContent = lot.dimensions || 'N/A';
+      document.getElementById('detailGrade').textContent = lot.grade || 'N/A';
+      document.getElementById('detailBranch').textContent = lot.branch || 'N/A';
+      document.getElementById('detailStartingBid').textContent = formatPrice(lot.startingBid);
+      document.getElementById('detailLotNumber').textContent = lot.lotNumber;
+      document.getElementById('detailDescription').textContent = lot.description || 'No description available.';
       
-      // Populate modal fields
-      modalLotNumber.textContent = lot.lotNumber;
-      modalTitle.textContent = lot.title;
-      modalArtist.textContent = `By ${lot.artist}`;
-      modalImage.src = lot.image;
-      modalImage.alt = lot.title;
-      modalMedium.textContent = lot.medium || 'N/A';
-      modalDimensions.textContent = lot.dimensions || 'N/A';
-      modalGrade.textContent = lot.grade || 'N/A';
-      modalBranch.textContent = lot.branch || 'N/A';
-      modalStartingBid.textContent = formatPrice(lot.startingBid);
-      modalDescription.textContent = lot.description || 'No description available.';
-      
-      // Set auction status text
+      // Status
       if (lot.status === 'open') {
-        modalAuctionStatus.textContent = 'OPEN FOR BIDDING';
-        modalAuctionStatus.style.color = 'var(--terracotta)';
+        document.getElementById('detailStatusBadge').textContent = 'Live Auction';
+        document.getElementById('detailStatusBadge').style.color = 'var(--terracotta)';
+        document.getElementById('detailBidForm').style.display = 'block';
+        document.getElementById('detailClosedMsg').style.display = 'none';
       } else if (lot.status === 'closed' || lot.status === 'sold') {
-        modalAuctionStatus.textContent = 'CLOSED';
-        modalAuctionStatus.style.color = 'var(--text-muted)';
+        document.getElementById('detailStatusBadge').textContent = 'Auction Closed';
+        document.getElementById('detailStatusBadge').style.color = 'var(--text-muted)';
+        document.getElementById('detailBidForm').style.display = 'none';
+        document.getElementById('detailClosedMsg').style.display = 'block';
       } else {
-        modalAuctionStatus.textContent = 'COMING SOON';
-        modalAuctionStatus.style.color = 'var(--text-muted)';
+        document.getElementById('detailStatusBadge').textContent = 'Preview';
+        document.getElementById('detailStatusBadge').style.color = 'var(--text-muted)';
+        document.getElementById('detailBidForm').style.display = 'none';
+        document.getElementById('detailClosedMsg').style.display = 'block';
+        document.getElementById('detailClosedMsg').innerHTML = '<p style="text-align: center; font-weight: 600; color: var(--text-muted);">Bidding opens soon</p>';
       }
       
-      // Show modal
-      detailModal.style.display = 'flex';
+      // Get bid info
+      const highestBid = await getCurrentBid(lot.id);
+      const bidHistory = await getBidHistory(lot.id);
       
-      // Load bid information
-      updateModalWithBids(lot);
+      const currentBidAmount = highestBid?.amount || lot.startingBid;
+      const minBidAmount = highestBid?.amount 
+        ? highestBid.amount + lot.bidIncrement 
+        : lot.startingBid;
+      
+      document.getElementById('detailCurrentBid').textContent = formatPrice(currentBidAmount);
+      document.getElementById('detailMinBid').textContent = formatPrice(minBidAmount);
+      document.getElementById('detailBidCount').textContent = bidHistory.length;
+      document.getElementById('detailBidInput').min = minBidAmount;
+      document.getElementById('detailBidInput').value = minBidAmount;
+      
+      // Bid history
+      const historyContainer = document.getElementById('detailBidHistory');
+      if (bidHistory.length > 0) {
+        const bidderIds = [...new Set(bidHistory.map(b => b.bidder_id).filter(Boolean))];
+        const bidderNames = await getBidderNames(bidderIds);
+        
+        historyContainer.innerHTML = bidHistory.map(bid => {
+          const bidderName = bid.bidder_id === currentUser?.id 
+            ? 'You' 
+            : (bidderNames[bid.bidder_id] || 'Anonymous');
+          const time = new Date(bid.created_at).toLocaleString();
+          return `
+            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-subtle);">
+              <div>
+                <strong>${bidderName}</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">${time}</div>
+              </div>
+              <span style="font-weight: 700; color: var(--text-heading);">${formatPrice(bid.amount)}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        historyContainer.innerHTML = '<p style="color: var(--text-muted);">No bids yet. Be the first to bid!</p>';
+      }
+      
+      // Bid button
+      const bidBtn = document.getElementById('detailPlaceBidBtn');
+      if (lot.status === 'open') {
+        bidBtn.onclick = () => {
+          showLegalAgreement(lot.id, minBidAmount);
+        };
+      }
     }
 
-    function closeDetailModal() {
-      detailModal.style.display = 'none';
+    // Back to auction
+    document.getElementById('backToAuction').addEventListener('click', () => {
+      detailView.style.display = 'none';
+      heroSection.style.display = 'block';
+      listingSection.style.display = 'block';
       selectedLot = null;
-    }
+    });
 
-    // Event listeners for modal close
-    if (closeModalBtn) {
-      closeModalBtn.addEventListener('click', closeDetailModal);
-    }
-    
-    if (detailModal) {
-      detailModal.addEventListener('click', (e) => {
-        if (e.target === detailModal) closeDetailModal();
-      });
-    }
+    // Zoom functionality
+    let zoomed = false;
+    document.getElementById('zoomBtn').addEventListener('click', () => {
+      const img = document.getElementById('detailImage');
+      zoomed = !zoomed;
+      img.style.transform = zoomed ? 'scale(2)' : 'scale(1)';
+      img.parentElement.style.cursor = zoomed ? 'zoom-out' : 'zoom-in';
+    });
 
     // =======================================================
     // 9. INITIALIZATION
     // =======================================================
     async function init() {
       console.log('Initializing auction page...');
-      // Check authentication
       await checkAuth();
       
-      // Show loader
       if (loaderWrap) loaderWrap.classList.remove('hidden');
       
-      // Load lots
       LOTS = await fetchLots();
       
-      // Hide loader after data arrives (or error)
       if (loaderWrap) loaderWrap.classList.add('hidden');
       
       if (LOTS.length === 0) {

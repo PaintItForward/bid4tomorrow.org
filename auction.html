@@ -1678,77 +1678,97 @@
     // Get current highest bid for a lot
     async function getCurrentBid(lotId) {
       try {
-        const { data, error } = await supabaseClient
-          .rpc('get_highest_bid', {
-            lot_uuid: lotId
-          });
+        console.log('Fetching highest bid for lot:', lotId);
         
-        if (error) throw error;
-        return data[0] || null;
+        // Direct query to get highest bid
+        const { data, error } = await supabaseClient
+          .from('bids')
+          .select('amount, bidder_id, created_at')
+          .eq('lot_id', lotId)
+          .order('amount', { ascending: false })
+          .limit(1);
+        
+        if (error) {
+          console.error('Error fetching highest bid:', error);
+          return null;
+        }
+        
+        if (!data || data.length === 0) {
+          console.log('No bids found for this lot');
+          return null;
+        }
+        
+        console.log('Highest bid found:', data[0]);
+        return data[0];
       } catch (error) {
-        console.error('Error fetching highest bid:', error);
+        console.error('Error in getCurrentBid:', error);
         return null;
       }
     }
 
-
     // Get bid history for a lot
-        async function getBidHistory(lotId) {
-          try {
-            console.log('Fetching bid history for lot:', lotId);
-            
-            // First try the RPC function
-            const { data, error } = await supabaseClient
-              .rpc('get_bid_history', {
-                lot_uuid: lotId,
-                limit_count: 10
-              });
-            
-            if (error) {
-              console.error('RPC error:', error);
-              
-              // Fallback: query bids table directly
-              const { data: directData, error: directError } = await supabaseClient
-                .from('bids')
-                .select('*')
-                .eq('lot_id', lotId)
-                .order('created_at', { ascending: false })
-                .limit(10);
-              
-              if (directError) {
-                console.error('Direct query error:', directError);
-                return [];
-              }
-              
-              console.log('Direct bid data:', directData);
-              return directData;
-            }
-            
-            console.log('RPC bid history data:', data);
-            return data;
-          } catch (error) {
-            console.error('Error fetching bid history:', error);
-            
-            // Final fallback: try direct query
-            try {
-              const { data: directData, error: directError } = await supabaseClient
-                .from('bids')
-                .select('*')
-                .eq('lot_id', lotId)
-                .order('created_at', { ascending: false })
-                .limit(10);
-              
-              if (!directError) {
-                console.log('Fallback direct bid data:', directData);
-                return directData;
-              }
-            } catch (fallbackError) {
-              console.error('Fallback error:', fallbackError);
-            }
-            
+    async function getBidHistory(lotId) {
+      try {
+        console.log('Fetching bid history for lot:', lotId);
+        
+        // Query bids table directly with joined user data
+        const { data, error } = await supabaseClient
+          .from('bids')
+          .select(`
+            amount,
+            created_at,
+            bidder_id,
+            profiles:bidder_id (full_name, email)
+          `)
+          .eq('lot_id', lotId)
+          .order('amount', { ascending: false })
+          .limit(10);
+        
+        if (error) {
+          console.error('Error fetching bid history:', error);
+          
+          // Fallback: simple query without join
+          const { data: simpleData, error: simpleError } = await supabaseClient
+            .from('bids')
+            .select('*')
+            .eq('lot_id', lotId)
+            .order('amount', { ascending: false })
+            .limit(10);
+          
+          if (simpleError) {
+            console.error('Simple query error:', simpleError);
             return [];
           }
+          
+          console.log('Simple bid data:', simpleData);
+          return simpleData;
         }
+        
+        console.log('Bid history data:', data);
+        return data;
+      } catch (error) {
+        console.error('Error fetching bid history:', error);
+        
+        // Final fallback
+        try {
+          const { data: simpleData, error: simpleError } = await supabaseClient
+            .from('bids')
+            .select('*')
+            .eq('lot_id', lotId)
+            .order('amount', { ascending: false })
+            .limit(10);
+          
+          if (!simpleError) {
+            console.log('Fallback simple bid data:', simpleData);
+            return simpleData;
+          }
+        } catch (fallbackError) {
+          console.error('Fallback error:', fallbackError);
+        }
+        
+        return [];
+      }
+    }
 
     // Place a bid
     async function placeBid(lotId, amount) {
@@ -1759,26 +1779,23 @@
       }
       
       try {
-        // First, check the current highest bid
+        // Get current highest bid
         const highestBid = await getCurrentBid(lotId);
-        const minRequired = highestBid ? highestBid.amount + 5 : 5; // $5 minimum increment
+        const lot = selectedLot || LOTS.find(l => l.id === lotId);
+        const bidIncrement = lot?.bidIncrement || 5;
+        const minRequired = highestBid ? highestBid.amount + bidIncrement : (lot?.startingBid || bidIncrement);
         
         console.log('Current highest bid:', highestBid?.amount || 'No bids yet');
         console.log('Minimum required bid:', minRequired);
         console.log('Attempted bid amount:', amount);
         
-        // Validate the bid amount
+        // Validate bid amount
         if (amount < minRequired) {
           showToast('Bid Too Low', `Minimum bid is ${formatPrice(minRequired)}`);
           return false;
         }
         
-        // Check if bid is at least $5 above current highest
-        if (highestBid && amount <= highestBid.amount) {
-          showToast('Bid Too Low', `Your bid must be higher than the current bid of ${formatPrice(highestBid.amount)}`);
-          return false;
-        }
-        
+        // Insert the bid
         const { data, error } = await supabaseClient
           .from('bids')
           .insert([{
@@ -1820,15 +1837,37 @@
       
       // Create bid history HTML
       if (bidHistory && bidHistory.length > 0) {
+        const bidHtml = bidHistory.map(bid => {
+          let bidderName = 'Anonymous';
+          
+          // Try to get bidder name from different possible structures
+          if (bid.profiles && bid.profiles.full_name) {
+            bidderName = bid.profiles.full_name;
+          } else if (bid.profiles && bid.profiles.email) {
+            bidderName = bid.profiles.email.split('@')[0];
+          } else if (bid.bidder_name) {
+            bidderName = bid.bidder_name;
+          } else if (bid.bidder_id === currentUser?.id) {
+            bidderName = 'You';
+          }
+          
+          const bidTime = bid.created_at ? new Date(bid.created_at).toLocaleString() : '';
+          
+          return `
+            <div class="bid-entry">
+              <div>
+                <div style="font-weight: 600;">${bidderName}</div>
+                ${bidTime ? `<div style="font-size: 0.7rem; color: var(--text-muted);">${bidTime}</div>` : ''}
+              </div>
+              <span style="font-weight: 700; color: var(--text-heading);">${formatPrice(bid.amount)}</span>
+            </div>
+          `;
+        }).join('');
+        
         bidHistoryContainer.innerHTML = `
           <div class="bid-history">
             <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-heading); font-weight: 700;">Bid History</h4>
-            ${bidHistory.map(bid => `
-              <div class="bid-entry">
-                <span>${bid.bidder_name || 'Anonymous'}</span>
-                <span style="font-weight: 600;">${formatPrice(bid.amount)}</span>
-              </div>
-            `).join('')}
+            ${bidHtml}
           </div>
         `;
       } else {
@@ -1843,7 +1882,6 @@
       updateBidButton(lot, highestBid);
     }
 
-   
     // Update bid button based on auction status and user login
     function updateBidButton(lot, highestBid) {
       if (!currentUser) {
@@ -1871,7 +1909,8 @@
         modalBidBtn.textContent = 'Bidding Opens Soon';
       }
     }
-        // Show custom bid modal
+
+    // Show custom bid modal
     function showBidModal(lotId, minBid) {
       // Remove any existing bid modal
       const existingModal = document.getElementById('customBidModal');
@@ -1989,7 +2028,7 @@
     // =======================================================
     // 8. DETAIL MODAL
     // =======================================================
-     async function openDetailModal(lot) {
+    async function openDetailModal(lot) {
       // Refresh lot data from database FIRST
       const { data: freshLot, error } = await supabaseClient
         .from('lots')
@@ -2032,6 +2071,7 @@
       // Load bid information
       await updateModalWithBids(lot);
     }
+
     function closeDetailModal() {
       detailModal.style.display = 'none';
       document.body.style.overflow = '';

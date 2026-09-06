@@ -1910,121 +1910,203 @@
       }
     }
 
-    // Show custom bid modal
-    function showBidModal(lotId, minBid) {
-      // Remove any existing bid modal
-      const existingModal = document.getElementById('customBidModal');
-      if (existingModal) existingModal.remove();
-      
-      const overlay = document.createElement('div');
-      overlay.id = 'customBidModal';
-      overlay.style.cssText = `
-        position: fixed;
-        inset: 0;
-        background: rgba(24, 11, 9, 0.7);
-        backdrop-filter: blur(4px);
-        z-index: 200;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1.5rem;
-        animation: fadeIn 0.2s ease-out;
-      `;
-      
-      overlay.innerHTML = `
-        <div style="
-          background: var(--card-bg);
-          border: 1px solid var(--border);
-          border-radius: var(--radius-md);
-          padding: 2rem;
-          max-width: 420px;
-          width: 100%;
-          box-shadow: var(--shadow-lg);
-          animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        ">
-          <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.25rem; color: var(--text-heading);">Place Your Bid</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
-            Minimum bid: <strong style="color: var(--text-heading);">${formatPrice(minBid)}</strong>
-          </p>
-          <div style="margin-bottom: 1.25rem;">
-            <label for="bidAmountInput" style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.35rem; color: var(--text-heading);">Your Bid (CAD)</label>
-            <input type="number" id="bidAmountInput" step="1" min="${minBid}" value="${minBid}" style="
-              width: 100%;
-              padding: 0.75rem 1rem;
-              border: 1px solid var(--border);
-              border-radius: var(--radius-sm);
-              background: var(--input-bg);
-              color: var(--text-heading);
-              font-size: 1.1rem;
-              font-weight: 600;
-              outline: none;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">
-            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Bid increment: $5.00</p>
-          </div>
-          <div style="display: flex; gap: 0.75rem;">
-            <button id="cancelBidBtn" style="
-              flex: 1;
-              padding: 0.7rem;
-              border: 1px solid var(--border);
-              border-radius: var(--radius-sm);
-              background: transparent;
-              color: var(--text-body);
-              font-weight: 600;
-              cursor: pointer;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">Cancel</button>
-            <button id="confirmBidBtn" style="
-              flex: 1;
-              padding: 0.7rem;
-              border: none;
-              border-radius: var(--radius-sm);
-              background: var(--crimson);
-              color: var(--white);
-              font-weight: 600;
-              cursor: pointer;
-              font-family: 'Plus Jakarta Sans', sans-serif;
-            ">Confirm Bid</button>
-          </div>
-        </div>
-      `;
-      
-      document.body.appendChild(overlay);
-      
-      const input = document.getElementById('bidAmountInput');
-      input.focus();
-      input.select();
-      
-      document.getElementById('cancelBidBtn').addEventListener('click', () => {
-        overlay.remove();
-      });
-      
-      document.getElementById('confirmBidBtn').addEventListener('click', () => {
-        const amount = parseFloat(input.value);
-        if (!isNaN(amount) && amount >= minBid) {
-          overlay.remove();
-          placeBid(lotId, amount);
-        } else {
-          showToast('Invalid Bid', `Bid must be at least ${formatPrice(minBid)}`);
-        }
-      });
-      
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) overlay.remove();
-      });
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') overlay.remove();
-        if (e.key === 'Enter') {
-          const amount = parseFloat(input.value);
-          if (!isNaN(amount) && amount >= minBid) {
-            overlay.remove();
-            placeBid(lotId, amount);
-          }
-        }
-      });
-    }
-
+   
+    // Show custom bid modal with confirmation
+       function showBidModal(lotId, minBid) {
+         // Remove any existing bid modal
+         const existingModal = document.getElementById('customBidModal');
+         if (existingModal) existingModal.remove();
+         
+         const overlay = document.createElement('div');
+         overlay.id = 'customBidModal';
+         overlay.style.cssText = `
+           position: fixed;
+           inset: 0;
+           background: rgba(24, 11, 9, 0.7);
+           backdrop-filter: blur(4px);
+           z-index: 200;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding: 1.5rem;
+           animation: fadeIn 0.2s ease-out;
+         `;
+         
+         overlay.innerHTML = `
+           <div style="
+             background: var(--card-bg);
+             border: 1px solid var(--border);
+             border-radius: var(--radius-md);
+             padding: 2rem;
+             max-width: 420px;
+             width: 100%;
+             box-shadow: var(--shadow-lg);
+             animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+           ">
+             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.25rem; color: var(--text-heading);">Place Your Bid</h3>
+             <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+               Minimum bid: <strong style="color: var(--text-heading);">${formatPrice(minBid)}</strong>
+             </p>
+             <div style="margin-bottom: 1.25rem;">
+               <label for="bidAmountInput" style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.35rem; color: var(--text-heading);">Your Bid (CAD)</label>
+               <input type="number" id="bidAmountInput" step="1" min="${minBid}" value="${minBid}" style="
+                 width: 100%;
+                 padding: 0.75rem 1rem;
+                 border: 1px solid var(--border);
+                 border-radius: var(--radius-sm);
+                 background: var(--input-bg);
+                 color: var(--text-heading);
+                 font-size: 1.1rem;
+                 font-weight: 600;
+                 outline: none;
+                 font-family: 'Plus Jakarta Sans', sans-serif;
+               ">
+               <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Bid increment: $5.00</p>
+             </div>
+             <div style="display: flex; gap: 0.75rem;">
+               <button id="cancelBidBtn" style="
+                 flex: 1;
+                 padding: 0.7rem;
+                 border: 1px solid var(--border);
+                 border-radius: var(--radius-sm);
+                 background: transparent;
+                 color: var(--text-body);
+                 font-weight: 600;
+                 cursor: pointer;
+                 font-family: 'Plus Jakarta Sans', sans-serif;
+               ">Cancel</button>
+               <button id="reviewBidBtn" style="
+                 flex: 1;
+                 padding: 0.7rem;
+                 border: none;
+                 border-radius: var(--radius-sm);
+                 background: var(--ochre-gold);
+                 color: var(--white);
+                 font-weight: 600;
+                 cursor: pointer;
+                 font-family: 'Plus Jakarta Sans', sans-serif;
+               ">Review Bid</button>
+             </div>
+           </div>
+         `;
+         
+         document.body.appendChild(overlay);
+         
+         const input = document.getElementById('bidAmountInput');
+         input.focus();
+         input.select();
+         
+         document.getElementById('cancelBidBtn').addEventListener('click', () => {
+           overlay.remove();
+         });
+         
+         document.getElementById('reviewBidBtn').addEventListener('click', () => {
+           const amount = parseFloat(input.value);
+           if (!isNaN(amount) && amount >= minBid) {
+             showBidConfirmation(lotId, amount, overlay);
+           } else {
+             showToast('Invalid Bid', `Bid must be at least ${formatPrice(minBid)}`);
+           }
+         });
+         
+         overlay.addEventListener('click', (e) => {
+           if (e.target === overlay) overlay.remove();
+         });
+         
+         document.addEventListener('keydown', (e) => {
+           if (e.key === 'Escape') overlay.remove();
+         });
+       }
+       
+       // Show bid confirmation dialog
+       function showBidConfirmation(lotId, amount, previousOverlay) {
+         previousOverlay.remove();
+         
+         const overlay = document.createElement('div');
+         overlay.id = 'bidConfirmationModal';
+         overlay.style.cssText = `
+           position: fixed;
+           inset: 0;
+           background: rgba(24, 11, 9, 0.7);
+           backdrop-filter: blur(4px);
+           z-index: 201;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding: 1.5rem;
+           animation: fadeIn 0.2s ease-out;
+         `;
+         
+         overlay.innerHTML = `
+           <div style="
+             background: var(--card-bg);
+             border: 2px solid var(--crimson);
+             border-radius: var(--radius-md);
+             padding: 2rem;
+             max-width: 420px;
+             width: 100%;
+             box-shadow: var(--shadow-lg);
+             animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+           ">
+             <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--text-heading);">Confirm Your Bid</h3>
+             <div style="background: var(--section-alt); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+               <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.25rem;">You are about to place a bid of:</p>
+               <p style="font-size: 1.5rem; font-weight: 700; color: var(--crimson);">${formatPrice(amount)}</p>
+             </div>
+             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+               By confirming, you agree to purchase this item if you are the winning bidder when the auction closes.
+             </p>
+             <div style="display: flex; gap: 0.75rem;">
+               <button id="backToBidBtn" style="
+                 flex: 1;
+                 padding: 0.7rem;
+                 border: 1px solid var(--border);
+                 border-radius: var(--radius-sm);
+                 background: transparent;
+                 color: var(--text-body);
+                 font-weight: 600;
+                 cursor: pointer;
+                 font-family: 'Plus Jakarta Sans', sans-serif;
+               ">Go Back</button>
+               <button id="confirmFinalBidBtn" style="
+                 flex: 1;
+                 padding: 0.7rem;
+                 border: none;
+                 border-radius: var(--radius-sm);
+                 background: var(--crimson);
+                 color: var(--white);
+                 font-weight: 600;
+                 cursor: pointer;
+                 font-family: 'Plus Jakarta Sans', sans-serif;
+               ">Confirm Bid</button>
+             </div>
+           </div>
+         `;
+         
+         document.body.appendChild(overlay);
+         
+         document.getElementById('backToBidBtn').addEventListener('click', () => {
+           overlay.remove();
+           const lot = selectedLot;
+           if (lot) {
+             const currentHighest = lot.startingBid;
+             showBidModal(lotId, currentHighest + lot.bidIncrement);
+           }
+         });
+         
+         document.getElementById('confirmFinalBidBtn').addEventListener('click', () => {
+           overlay.remove();
+           placeBid(lotId, amount);
+         });
+         
+         overlay.addEventListener('click', (e) => {
+           if (e.target === overlay) overlay.remove();
+         });
+         
+         document.addEventListener('keydown', (e) => {
+           if (e.key === 'Escape') overlay.remove();
+         });
+       }
     // =======================================================
     // 8. DETAIL MODAL
     // =======================================================

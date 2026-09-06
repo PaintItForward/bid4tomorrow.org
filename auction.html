@@ -1771,6 +1771,7 @@
     }
 
     // Place a bid
+       // Place a bid
     async function placeBid(lotId, amount) {
       if (!currentUser) {
         showToast('Login Required', 'Please log in to place a bid');
@@ -1783,7 +1784,16 @@
         const highestBid = await getCurrentBid(lotId);
         const lot = selectedLot || LOTS.find(l => l.id === lotId);
         const bidIncrement = lot?.bidIncrement || 5;
-        const minRequired = highestBid ? highestBid.amount + bidIncrement : (lot?.startingBid || bidIncrement);
+        
+        // Calculate minimum required bid
+        let minRequired;
+        if (highestBid) {
+          // If there's already a bid, require increment above highest
+          minRequired = highestBid.amount + bidIncrement;
+        } else {
+          // If no bids, starting bid is the minimum
+          minRequired = lot?.startingBid || bidIncrement;
+        }
         
         console.log('Current highest bid:', highestBid?.amount || 'No bids yet');
         console.log('Minimum required bid:', minRequired);
@@ -1879,10 +1889,7 @@
       }
       
       // Update bid button
-      updateBidButton(lot, highestBid);
-    }
-
-    // Update bid button based on auction status and user login
+     // Update bid button based on auction status and user login
     function updateBidButton(lot, highestBid) {
       if (!currentUser) {
         modalBidBtn.disabled = false;
@@ -1897,8 +1904,14 @@
         modalBidBtn.disabled = false;
         modalBidBtn.textContent = 'Place Bid';
         modalBidBtn.onclick = () => {
-          const currentHighest = highestBid ? highestBid.amount : lot.startingBid;
-          const minBid = currentHighest + lot.bidIncrement;
+          let minBid;
+          if (highestBid) {
+            // If there's already a bid, require increment above highest
+            minBid = highestBid.amount + lot.bidIncrement;
+          } else {
+            // If no bids, starting bid is the minimum
+            minBid = lot.startingBid;
+          }
           showBidModal(lot.id, minBid);
         };
       } else if (lot.status === 'closed' || lot.status === 'sold') {
@@ -1909,13 +1922,16 @@
         modalBidBtn.textContent = 'Bidding Opens Soon';
       }
     }
-
    
-    // Show custom bid modal with confirmation
+      // Show custom bid modal with confirmation
        function showBidModal(lotId, minBid) {
          // Remove any existing bid modal
          const existingModal = document.getElementById('customBidModal');
          if (existingModal) existingModal.remove();
+         
+         // Get the lot to determine bid increment
+         const lot = selectedLot || LOTS.find(l => l.id === lotId);
+         const bidIncrement = lot?.bidIncrement || 10;
          
          const overlay = document.createElement('div');
          overlay.id = 'customBidModal';
@@ -1949,7 +1965,7 @@
              </p>
              <div style="margin-bottom: 1.25rem;">
                <label for="bidAmountInput" style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.35rem; color: var(--text-heading);">Your Bid (CAD)</label>
-               <input type="number" id="bidAmountInput" step="1" min="${minBid}" value="${minBid}" style="
+               <input type="number" id="bidAmountInput" step="${bidIncrement}" min="${minBid}" value="${minBid}" style="
                  width: 100%;
                  padding: 0.75rem 1rem;
                  border: 1px solid var(--border);
@@ -1961,7 +1977,7 @@
                  outline: none;
                  font-family: 'Plus Jakarta Sans', sans-serif;
                ">
-               <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Bid increment: $5.00</p>
+               <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Bid increment: $${bidIncrement}.00</p>
              </div>
              <div style="display: flex; gap: 0.75rem;">
                <button id="cancelBidBtn" style="
@@ -2017,7 +2033,6 @@
            if (e.key === 'Escape') overlay.remove();
          });
        }
-       
        // Show bid confirmation dialog
        function showBidConfirmation(lotId, amount, previousOverlay) {
          previousOverlay.remove();

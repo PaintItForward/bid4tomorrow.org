@@ -1781,6 +1781,7 @@
       updateBidButton(lot, highestBid);
     }
 
+   
     // Update bid button based on auction status and user login
     function updateBidButton(lot, highestBid) {
       if (!currentUser) {
@@ -1800,7 +1801,6 @@
           const minBid = currentHighest + lot.bidIncrement;
           showBidModal(lot.id, minBid);
         };
-      }
       } else if (lot.status === 'closed' || lot.status === 'sold') {
         modalBidBtn.disabled = true;
         modalBidBtn.textContent = 'Auction Ended';

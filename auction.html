@@ -232,6 +232,13 @@
       justify-content: center;
       font-weight: 700;
       font-size: 1.1rem;
+      overflow: hidden; /* Ensure image fits */
+    }
+    .nav-logo-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-md);
     }
 
     .nav-links {
@@ -1081,7 +1088,7 @@
       </button>
 
       <div class="nav-right">
-        <ul class="nav-links" id="nav-links" role="list">
+        <ul class="nav-links" id="navLinks" role="list">
           <li><a href="about.html">About Us</a></li>
           <li><a href="branches.html">Our Branches</a></li>
           <li><a href="auction.html" class='active' style="font-weight:600; color:var(--matcha-dark, #3D4D3D);">Fall 26 Auction</a></li>
@@ -1184,7 +1191,7 @@
 
 
 <!-- Quick How It Works for Auction Page -->
-<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1.25rem 1.5rem; margin-bottom:2rem; text-align:center;">
+<div style="background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1.25rem 1.5rem; margin:0 auto 2rem auto; max-width:1200px; text-align:center;">
   <p style="margin:0; font-size:0.9rem;">
     <strong>New here?</strong> Students create → We exhibit → You bid → Money goes to artists + youth health.
     <a href="index.html#how-it-works" style="font-weight:700; text-decoration:underline; margin-left:0.5rem;">See full breakdown →</a>
@@ -1348,16 +1355,17 @@
       if (user) {
         // User is logged in
         const initial = user.email ? user.email[0].toUpperCase() : 'U';
+        const displayName = user.user_metadata?.full_name || (user.email ? user.email.split('@')[0] : 'User');
         authNavItem.innerHTML = `
           <div class="user-menu" id="userMenu">
             <div class="user-avatar">${initial}</div>
-            <span>${user.user_metadata?.full_name || user.email.split('@')[0]}</span>
+            <span>${displayName}</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </div>
           <div class="user-dropdown" id="userDropdown">
-            <button class="user-dropdown-item" onclick="signOutUser()">Sign Out</button>
+            <button class="user-dropdown-item" id="signOutBtn">Sign Out</button>
           </div>
         `;
         
@@ -1365,6 +1373,8 @@
         setTimeout(() => {
           const userMenu = document.getElementById('userMenu');
           const userDropdown = document.getElementById('userDropdown');
+          const signOutBtn = document.getElementById('signOutBtn');
+          
           if (userMenu && userDropdown) {
             userMenu.addEventListener('click', (e) => {
               e.stopPropagation();
@@ -1375,6 +1385,9 @@
             document.addEventListener('click', () => {
               userDropdown.classList.remove('show');
             });
+          }
+          if (signOutBtn) {
+            signOutBtn.addEventListener('click', signOutUser);
           }
         }, 0);
       } else {
@@ -1387,14 +1400,18 @@
     }
 
     // Sign out function
-    window.signOutUser = async function() {
+    async function signOutUser() {
       const { error } = await supabaseClient.auth.signOut();
       if (!error) {
         currentUser = null;
         updateAuthUI(null);
         showToast('Signed Out', 'You have been signed out successfully');
+      } else {
+        console.error('Sign out error:', error);
+        showToast('Error', 'Failed to sign out');
       }
-    };
+    }
+    window.signOutUser = signOutUser;
 
     // Listen for auth changes
     supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -1461,6 +1478,7 @@
     const bidHistoryContainer = document.getElementById('bidHistoryContainer');
 
     function formatPrice(amount) {
+      if (amount === null || amount === undefined || isNaN(amount)) return '$0 CAD';
       return '$' + amount.toLocaleString() + ' CAD';
     }
 
@@ -1497,6 +1515,7 @@
     // Fetch lots from Supabase
     async function fetchLots() {
       try {
+        console.log('Fetching lots...');
         const { data: simpleData, error: simpleError } = await supabaseClient
           .from('lots')
           .select('*')
@@ -1508,6 +1527,7 @@
         }
         
         if (!simpleData || simpleData.length === 0) {
+          console.log('No lots found.');
           return [];
         }
         
@@ -1516,27 +1536,39 @@
         for (const lot of simpleData) {
           let artwork = null;
           if (lot.artwork_id) {
-            const { data: artworkData, error: artworkError } = await supabaseClient
-              .from('artworks')
-              .select('*')
-              .eq('id', lot.artwork_id)
-              .single();
-            
-            if (!artworkError && artworkData) {
-              artwork = artworkData;
+            try {
+              const { data: artworkData, error: artworkError } = await supabaseClient
+                .from('artworks')
+                .select('*')
+                .eq('id', lot.artwork_id)
+                .single();
+              
+              if (!artworkError && artworkData) {
+                artwork = artworkData;
+              } else {
+                console.warn('Could not fetch artwork:', artworkError);
+              }
+            } catch (e) {
+              console.error('Artwork query error:', e);
             }
           }
           
           let artist = null;
           if (artwork && artwork.artist_id) {
-            const { data: artistData, error: artistError } = await supabaseClient
-              .from('artists')
-              .select('*')
-              .eq('id', artwork.artist_id)
-              .single();
-            
-            if (!artistError && artistData) {
-              artist = artistData;
+            try {
+              const { data: artistData, error: artistError } = await supabaseClient
+                .from('artists')
+                .select('*')
+                .eq('id', artwork.artist_id)
+                .single();
+              
+              if (!artistError && artistData) {
+                artist = artistData;
+              } else {
+                console.warn('Could not fetch artist:', artistError);
+              }
+            } catch (e) {
+              console.error('Artist query error:', e);
             }
           }
           
@@ -1545,7 +1577,7 @@
             lotNumber: lot.lot_number || `LOT ${String(lot.id).padStart(3, '0')}`,
             startingBid: lot.starting_bid || 0,
             status: lot.status || 'preview',
-            bidIncrement: lot.bid_increment || 5,
+            bidIncrement: lot.bid_increment || 10, // Ensure default is 10
             title: artwork?.title || 'Untitled',
             artist: artist?.name || 'Unknown Artist',
             grade: artist?.grade || 'N/A',
@@ -1558,6 +1590,7 @@
           });
         }
         
+        console.log('Processed lots:', lotsWithDetails.length);
         return lotsWithDetails;
       } catch (error) {
         console.error('Error in fetchLots:', error);
@@ -1634,6 +1667,7 @@
     }
 
     function applyFilters() {
+      if (!LOTS.length) return;
       const query = searchInput.value.toLowerCase().trim();
       const sort = sortSelect.value;
 
@@ -1711,12 +1745,12 @@
       try {
         console.log('Fetching bid history for lot:', lotId);
         
-        // Query bids table directly
+        // Query bids table directly, ordering by newest first
         const { data, error } = await supabaseClient
           .from('bids')
           .select('*')
           .eq('lot_id', lotId)
-          .order('amount', { ascending: false })
+          .order('created_at', { ascending: false })
           .limit(10);
         
         if (error) {
@@ -1748,7 +1782,7 @@
         
         // Calculate minimum required bid
         let minRequired;
-        if (highestBid) {
+        if (highestBid && highestBid.amount) {
           // If there's already a bid, require increment above highest
           minRequired = highestBid.amount + bidIncrement;
         } else {
@@ -1777,11 +1811,15 @@
           .select()
           .single();
         
-        if (error) throw error;
+        if (error) {
+          console.error('Insert bid error:', error);
+          throw error;
+        }
         
+        console.log('Bid inserted:', data);
         showToast('Bid Placed!', `Your bid of ${formatPrice(amount)} has been placed successfully`);
         
-        // Refresh bid history
+        // Refresh bid history and current bid display
         if (selectedLot) {
           await updateModalWithBids(selectedLot);
         }
@@ -1789,67 +1827,95 @@
         return true;
       } catch (error) {
         console.error('Error placing bid:', error);
-        showToast('Error', error.message);
+        showToast('Error', error.message || 'Failed to place bid');
         return false;
       }
     }
 
     // Update modal with bid information
     async function updateModalWithBids(lot) {
-      const highestBid = await getCurrentBid(lot.id);
-      const bidHistory = await getBidHistory(lot.id);
-      
-      // Update current bid display
-      if (highestBid) {
-        modalPanelStartingBid.textContent = `Current bid: ${formatPrice(highestBid.amount)}`;
-      } else {
-        modalPanelStartingBid.textContent = `Starting bid: ${formatPrice(lot.startingBid)}`;
-      }
-      
-      // Create bid history HTML
-      if (bidHistory && bidHistory.length > 0) {
-        const bidHtml = bidHistory.map(bid => {
-          let bidderName = 'Anonymous';
-          
-          if (bid.bidder_name) {
-            bidderName = bid.bidder_name;
-          } else if (bid.bidder_id === currentUser?.id) {
-            bidderName = 'You';
+      try {
+        const highestBid = await getCurrentBid(lot.id);
+        const bidHistory = await getBidHistory(lot.id);
+        
+        // Update current bid display
+        if (highestBid && highestBid.amount) {
+          modalPanelStartingBid.textContent = `Current bid: ${formatPrice(highestBid.amount)}`;
+        } else {
+          modalPanelStartingBid.textContent = `Starting bid: ${formatPrice(lot.startingBid)}`;
+        }
+        
+        // Create bid history HTML
+        if (bidHistory && bidHistory.length > 0) {
+          // Try to fetch profiles if needed (but handle if table doesn't exist)
+          let profiles = {};
+          try {
+            const bidderIds = [...new Set(bidHistory.map(b => b.bidder_id).filter(Boolean))];
+            if (bidderIds.length > 0) {
+              const { data: profilesData, error: profilesError } = await supabaseClient
+                .from('profiles')
+                .select('id, full_name')
+                .in('id', bidderIds);
+              
+              if (!profilesError && profilesData) {
+                profilesData.forEach(p => { profiles[p.id] = p.full_name; });
+              }
+            }
+          } catch (e) {
+            console.warn('Could not fetch profiles:', e);
+            // Continue without profiles
           }
           
-          const bidTime = bid.created_at ? new Date(bid.created_at).toLocaleString() : '';
-          
-          return `
-            <div class="bid-entry">
-              <div>
-                <div style="font-weight: 600;">${bidderName}</div>
-                ${bidTime ? `<div style="font-size: 0.7rem; color: var(--text-muted);">${bidTime}</div>` : ''}
+          const bidHtml = bidHistory.map(bid => {
+            let bidderName = 'Anonymous';
+            
+            if (bid.bidder_id === currentUser?.id) {
+              bidderName = 'You';
+            } else if (profiles[bid.bidder_id]) {
+              bidderName = profiles[bid.bidder_id];
+            } else if (bid.bidder_name) {
+              bidderName = bid.bidder_name;
+            }
+            
+            const bidTime = bid.created_at ? new Date(bid.created_at).toLocaleString() : '';
+            
+            return `
+              <div class="bid-entry">
+                <div>
+                  <div style="font-weight: 600;">${bidderName}</div>
+                  ${bidTime ? `<div style="font-size: 0.7rem; color: var(--text-muted);">${bidTime}</div>` : ''}
+                </div>
+                <span style="font-weight: 700; color: var(--text-heading);">${formatPrice(bid.amount)}</span>
               </div>
-              <span style="font-weight: 700; color: var(--text-heading);">${formatPrice(bid.amount)}</span>
+            `;
+          }).join('');
+          
+          bidHistoryContainer.innerHTML = `
+            <div class="bid-history">
+              <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-heading); font-weight: 700;">Bid History</h4>
+              ${bidHtml}
             </div>
           `;
-        }).join('');
+        } else {
+          bidHistoryContainer.innerHTML = `
+            <div class="bid-history">
+              <p style="font-size: 0.85rem; color: var(--text-muted);">No bids yet. Be the first to bid!</p>
+            </div>
+          `;
+        }
         
-        bidHistoryContainer.innerHTML = `
-          <div class="bid-history">
-            <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-heading); font-weight: 700;">Bid History</h4>
-            ${bidHtml}
-          </div>
-        `;
-      } else {
-        bidHistoryContainer.innerHTML = `
-          <div class="bid-history">
-            <p style="font-size: 0.85rem; color: var(--text-muted);">No bids yet. Be the first to bid!</p>
-          </div>
-        `;
+        // Update bid button
+        updateBidButton(lot, highestBid);
+      } catch (error) {
+        console.error('Error updating modal with bids:', error);
+        bidHistoryContainer.innerHTML = `<p style="color: var(--text-muted);">Could not load bid history.</p>`;
       }
-      
-      // Update bid button
-      updateBidButton(lot, highestBid);
     }
 
     // Update bid button based on auction status and user login
     function updateBidButton(lot, highestBid) {
+      if (!modalBidBtn) return;
+      
       if (!currentUser) {
         modalBidBtn.disabled = false;
         modalBidBtn.textContent = 'Login to Bid';
@@ -1864,7 +1930,7 @@
         modalBidBtn.textContent = 'Place Bid';
         modalBidBtn.onclick = () => {
           let minBid;
-          if (highestBid) {
+          if (highestBid && highestBid.amount) {
             // If there's already a bid, require increment above highest
             minBid = highestBid.amount + lot.bidIncrement;
           } else {
@@ -1988,14 +2054,18 @@
         if (e.target === overlay) overlay.remove();
       });
       
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') overlay.remove();
-      });
+      const handleKeydown = (e) => {
+        if (e.key === 'Escape') {
+          overlay.remove();
+          document.removeEventListener('keydown', handleKeydown);
+        }
+      };
+      document.addEventListener('keydown', handleKeydown);
     }
 
     // Show bid confirmation dialog
     function showBidConfirmation(lotId, amount, previousOverlay) {
-      previousOverlay.remove();
+      if (previousOverlay) previousOverlay.remove();
       
       const overlay = document.createElement('div');
       overlay.id = 'bidConfirmationModal';
@@ -2064,8 +2134,16 @@
         overlay.remove();
         const lot = selectedLot;
         if (lot) {
-          const currentHighest = lot.startingBid;
-          showBidModal(lotId, currentHighest + lot.bidIncrement);
+          // Recalculate min bid to be safe
+          getCurrentBid(lotId).then(highest => {
+            let minBid;
+            if (highest && highest.amount) {
+              minBid = highest.amount + lot.bidIncrement;
+            } else {
+              minBid = lot.startingBid;
+            }
+            showBidModal(lotId, minBid);
+          });
         }
       });
       
@@ -2078,8 +2156,67 @@
         if (e.target === overlay) overlay.remove();
       });
       
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') overlay.remove();
+      const handleKeydown = (e) => {
+        if (e.key === 'Escape') {
+          overlay.remove();
+          document.removeEventListener('keydown', handleKeydown);
+        }
+      };
+      document.addEventListener('keydown', handleKeydown);
+    }
+
+    // =======================================================
+    // 8. DETAIL MODAL OPEN/CLOSE
+    // =======================================================
+    function openDetailModal(lot) {
+      console.log('Opening modal for lot:', lot);
+      selectedLot = lot;
+      
+      // Populate modal fields
+      modalLotNumber.textContent = lot.lotNumber;
+      modalTitle.textContent = lot.title;
+      modalArtist.textContent = `By ${lot.artist}`;
+      modalImage.src = lot.image;
+      modalImage.alt = lot.title;
+      modalMedium.textContent = lot.medium || 'N/A';
+      modalDimensions.textContent = lot.dimensions || 'N/A';
+      modalGrade.textContent = lot.grade || 'N/A';
+      modalBranch.textContent = lot.branch || 'N/A';
+      modalStartingBid.textContent = formatPrice(lot.startingBid);
+      modalDescription.textContent = lot.description || 'No description available.';
+      
+      // Set auction status text
+      if (lot.status === 'open') {
+        modalAuctionStatus.textContent = 'OPEN FOR BIDDING';
+        modalAuctionStatus.style.color = 'var(--terracotta)';
+      } else if (lot.status === 'closed' || lot.status === 'sold') {
+        modalAuctionStatus.textContent = 'CLOSED';
+        modalAuctionStatus.style.color = 'var(--text-muted)';
+      } else {
+        modalAuctionStatus.textContent = 'COMING SOON';
+        modalAuctionStatus.style.color = 'var(--text-muted)';
+      }
+      
+      // Show modal
+      detailModal.style.display = 'flex';
+      
+      // Load bid information
+      updateModalWithBids(lot);
+    }
+
+    function closeDetailModal() {
+      detailModal.style.display = 'none';
+      selectedLot = null;
+    }
+
+    // Event listeners for modal close
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', closeDetailModal);
+    }
+    
+    if (detailModal) {
+      detailModal.addEventListener('click', (e) => {
+        if (e.target === detailModal) closeDetailModal();
       });
     }
 
@@ -2087,6 +2224,7 @@
     // 9. INITIALIZATION
     // =======================================================
     async function init() {
+      console.log('Initializing auction page...');
       // Check authentication
       await checkAuth();
       
@@ -2109,12 +2247,14 @@
         return;
       }
 
-      const mediums = [...new Set(LOTS.map(a => a.medium))];
+      const mediums = [...new Set(LOTS.map(a => a.medium).filter(Boolean))];
       renderChips(mediums);
       applyFilters();
 
       searchInput.addEventListener('input', applyFilters);
       sortSelect.addEventListener('change', applyFilters);
+      
+      console.log('Auction page initialized successfully.');
     }
 
     // Initialize when DOM is ready

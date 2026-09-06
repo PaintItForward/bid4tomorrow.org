@@ -1759,6 +1759,26 @@
       }
       
       try {
+        // First, check the current highest bid
+        const highestBid = await getCurrentBid(lotId);
+        const minRequired = highestBid ? highestBid.amount + 5 : 5; // $5 minimum increment
+        
+        console.log('Current highest bid:', highestBid?.amount || 'No bids yet');
+        console.log('Minimum required bid:', minRequired);
+        console.log('Attempted bid amount:', amount);
+        
+        // Validate the bid amount
+        if (amount < minRequired) {
+          showToast('Bid Too Low', `Minimum bid is ${formatPrice(minRequired)}`);
+          return false;
+        }
+        
+        // Check if bid is at least $5 above current highest
+        if (highestBid && amount <= highestBid.amount) {
+          showToast('Bid Too Low', `Your bid must be higher than the current bid of ${formatPrice(highestBid.amount)}`);
+          return false;
+        }
+        
         const { data, error } = await supabaseClient
           .from('bids')
           .insert([{

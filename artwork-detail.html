@@ -1,25 +1,622 @@
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head> 
+  <link rel="canonical" href="https://bid4tomorrow.org/artwork-detail.html">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GPN4QVF0X0');
+  </script>
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artwork Details | Bid For Tomorrow</title>
+  <meta name="description" content="Bid on original student artwork and support charitable causes.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --sand-gold:          #FAE3B1;
+      --sand-gold-light:    #FCF1D9;
+      --ochre-gold:         #998731;
+      --terracotta:         #CF5527;
+      --crimson:            #7D2027;
+      --crimson-dark:       #5C141A;
+      --mahogany:           #673C34;
+      --mahogany-dark:      #4D2B24;
+      --cream:              #FAE3B1;
+      --cream-alt:          #F5DC9F;
+      --white:              #FCF6EC;
+      --border:             #998731;
+      --border-subtle:      rgba(153, 135, 49, 0.35);
+      --radius-sm:          2px;
+      --radius-md:          4px;
+      --radius-lg:          8px;
+      --shadow-sm:          0 2px 8px rgba(103, 60, 52, 0.06);
+      --shadow-md:          0 8px 24px rgba(103, 60, 52, 0.1);
+      --shadow-lg:          0 20px 48px rgba(103, 60, 52, 0.14);
+      --text-heading:       #4E2922;
+      --text-body:          #59322B;
+      --text-muted:         #83544C;
+      --card-bg:            #FCF6EC;
+      --section-alt:        #F6DEAA;
+      --input-bg:           #FFFFFF;
+      --nav-bg:             rgba(250, 227, 177, 0.96);
+    }
+
+    .dark {
+      --cream:              #180B09;
+      --cream-alt:          #2A1612;
+      --white:              #261310;
+      --border:             #998731;
+      --border-subtle:      rgba(153, 135, 49, 0.45);
+      --text-heading:       #FAE3B1;
+      --text-body:          #F3E3CE;
+      --text-muted:         #D6C2AC;
+      --card-bg:            #2C1713;
+      --section-alt:        #23120F;
+      --input-bg:           #22110E;
+      --nav-bg:             rgba(38, 20, 16, 0.97);
+      --shadow-sm:          0 2px 8px rgba(0, 0, 0, 0.4);
+      --shadow-md:          0 8px 24px rgba(0, 0, 0, 0.6);
+      --shadow-lg:          0 20px 48px rgba(0, 0, 0, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--cream);
+      color: var(--text-body);
+      line-height: 1.65;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      color: var(--text-heading);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Navigation */
+    #main-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background-color: var(--nav-bg);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: 1.35rem;
+      color: var(--crimson);
+      text-transform: uppercase;
+    }
+
+    .nav-logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .nav-logo-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--crimson);
+    }
+
+    .nav-cta {
+      padding: 0.6rem 1.25rem;
+      background: var(--crimson);
+      color: var(--white) !important;
+      border-radius: var(--radius-sm);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background-color: var(--text-heading);
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .nav-links.open { display: flex; }
+    }
+
+    /* Back button */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin: 2rem 0;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--crimson);
+    }
+
+    /* Detail page */
+    .detail-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2.5rem 4rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .main-image {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--section-alt);
+      box-shadow: var(--shadow-md);
+      cursor: zoom-in;
+    }
+
+    .main-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .45s ease;
+    }
+
+    .zoom-btn {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      background: rgba(62,48,42,.65);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: .55rem 1rem;
+      font-size: .8rem;
+      cursor: pointer;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: var(--terracotta);
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .detail-info h1 {
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      margin-bottom: .5rem;
+    }
+
+    .detail-artist {
+      font-size: 1.1rem;
+      color: var(--text-body);
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .meta-item .label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .meta-item .value {
+      font-size: 1rem;
+      color: var(--text-heading);
+      font-weight: 500;
+    }
+
+    .statement {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .statement p {
+      font-style: italic;
+    }
+
+    /* Bid panel */
+    .bid-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .bid-panel .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: .9rem;
+    }
+
+    .bid-panel .label {
+      font-size: .75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .bid-current-large {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--crimson);
+    }
+
+    .bid-form input {
+      width: 100%;
+      padding: .85rem 1rem;
+      margin: 1rem 0 .5rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-heading);
+      font-size: 1rem;
+    }
+
+    .legal {
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--crimson);
+      color: var(--white);
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--crimson-dark);
+    }
+
+    /* Bid history */
+    .bid-history {
+      list-style: none;
+      padding: 0;
+    }
+
+    .bid-history li {
+      display: flex;
+      justify-content: space-between;
+      padding: .8rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .bid-history .amount {
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .bid-history .time {
+      color: var(--text-muted);
+      font-size: .85rem;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      z-index: 99;
+    }
+
+    .toast-banner {
+      position: fixed;
+      top: 90px;
+      right: 1.5rem;
+      z-index: 110;
+      background: var(--card-bg);
+      border: 1px solid var(--terracotta);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.25rem;
+      box-shadow: var(--shadow-lg);
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .detail-container {
+        padding: 0 1.5rem 4rem;
+      }
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark">
+        <img src="B4Tlogo.jpg" alt="Logo">
+      </div>
+      Bid For Tomorrow
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="branches.html">Our Branches</a></li>
+      <li><a href="auction.html" class="nav-cta">Auction</a></li>
+      <li><a href="index.html#artwork">Gallery</a></li>
+      <li><a href="index.html#impact">Impact</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>
+      <li id="authNavItem"></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="detail-container">
+    <a href="auction.html" class="back-link">← Back to Auction</a>
+    
+    <div class="detail-grid">
+      <div class="detail-media">
+        <div class="main-image" id="mainImage">
+          <img id="artImage" src="" alt="">
+          <button class="zoom-btn" id="zoomBtn">Zoom</button>
+        </div>
+      </div>
+      
+      <div class="detail-info">
+        <span class="status-badge" id="statusBadge">Loading...</span>
+        <h1 id="artTitle">Loading…</h1>
+        <p class="detail-artist" id="artArtist"></p>
+
+        <div class="meta-grid">
+          <div class="meta-item"><span class="label">Medium</span><span class="value" id="artMedium"></span></div>
+          <div class="meta-item"><span class="label">Dimensions</span><span class="value" id="artDimensions"></span></div>
+          <div class="meta-item"><span class="label">Grade</span><span class="value" id="artGrade"></span></div>
+          <div class="meta-item"><span class="label">Branch</span><span class="value" id="artBranch"></span></div>
+          <div class="meta-item"><span class="label">Lot Number</span><span class="value" id="artLotNumber"></span></div>
+          <div class="meta-item"><span class="label">Starting Bid</span><span class="value" id="artStartBid"></span></div>
+        </div>
+
+        <div class="statement">
+          <p id="artStatement"></p>
+        </div>
+
+        <div class="bid-panel">
+          <div class="row">
+            <span class="label">Current Highest Bid</span>
+            <span class="bid-current-large" id="currentBid">$—</span>
+          </div>
+          <div class="row">
+            <span class="label">Minimum Next Bid</span>
+            <span id="minBid">$—</span>
+          </div>
+          <div class="row">
+            <span class="label">Total Bids</span>
+            <span id="bidCount">0</span>
+          </div>
+          <div id="bidFormWrap">
+            <div class="bid-form">
+              <label for="bidInput">Your bid:</label>
+              <input type="number" id="bidInput" min="0" step="10">
+              <p class="legal">By placing this bid, you agree that your bid is binding and that you will complete payment if you win.</p>
+              <button class="btn btn-primary" id="placeBidBtn">Place Bid</button>
+            </div>
+          </div>
+          <div id="closedMsg" style="display:none;">
+            <p>Auction Closed</p>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 1rem;">Bid History</h3>
+        <ul class="bid-history" id="bidHistory">
+          <li>Loading...</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
+
+<button class="dark-toggle" id="themeToggle" title="Toggle dark mode">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" id="themeIcon"/>
+  </svg>
+</button>
+
+<div class="toast-banner" id="toastNotification">
+  <div class="toast-body">
+    <div id="toastTitle" style="font-weight:700;"></div>
+    <div id="toastMessage"></div>
+  </div>
+</div>
+
 <script>
   // Supabase configuration
   const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
   const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
   const FALL_2026_AUCTION_ID = '101afb93-7d37-4276-8602-026acbda56ed';
-  
+  const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/your_payment_link_here';
+
   let currentUser = null;
   let currentLot = null;
+
+  // Theme
+  function getSavedTheme() {
+    return localStorage.getItem('bft-theme') || 
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }
+  }
+
+  applyTheme(getSavedTheme());
   
-  // Check auth
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const isDark = document.body.classList.contains('dark');
+    const newTheme = isDark ? 'light' : 'dark';
+    localStorage.setItem('bft-theme', newTheme);
+    applyTheme(newTheme);
+  });
+
+  // Nav toggle
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // Toast
+  function showToast(title, msg) {
+    const toast = document.getElementById('toastNotification');
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastMessage').textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 5000);
+  }
+
+  // Auth
   async function checkAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
     currentUser = session?.user || null;
-    return currentUser;
+    
+    const authNavItem = document.getElementById('authNavItem');
+    if (currentUser) {
+      const initial = currentUser.email ? currentUser.email[0].toUpperCase() : 'U';
+      const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'User';
+      authNavItem.innerHTML = `<a href="#" style="font-weight:600;">${initial} ${name}</a>`;
+    } else {
+      authNavItem.innerHTML = `<a href="login.html?redirect=artwork-detail.html?lot_id=${getLotId()}">Login</a>`;
+    }
   }
-  
+
+  // Format price
+  function formatPrice(amount) {
+    return '$' + amount.toLocaleString() + ' CAD';
+  }
+
+  // Get lot ID from URL
+  function getLotId() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lot_id') || params.get('id');
+  }
+
   // Fetch lot details
   async function fetchLotDetails(lotId) {
     try {
-      // Get lot
       const { data: lot, error: lotError } = await supabaseClient
         .from('lots')
         .select('*')
@@ -28,7 +625,6 @@
       
       if (lotError) throw lotError;
       
-      // Get artwork
       let artwork = null;
       if (lot.artwork_id) {
         const { data: artData } = await supabaseClient
@@ -39,7 +635,6 @@
         artwork = artData;
       }
       
-      // Get artist
       let artist = null;
       if (artwork?.artist_id) {
         const { data: artistData } = await supabaseClient
@@ -50,27 +645,24 @@
         artist = artistData;
       }
       
-      // Get bids
       const { data: bids } = await supabaseClient
         .from('bids')
         .select('*')
         .eq('lot_id', lotId)
         .order('amount', { ascending: false });
       
-      currentLot = {
+      return {
         ...lot,
         artwork,
         artist,
         bids: bids || []
       };
-      
-      return currentLot;
     } catch (error) {
       console.error('Error fetching lot:', error);
       return null;
     }
   }
-  
+
   // Get bidder names
   async function getBidderNames(bidderIds) {
     const names = {};
@@ -81,38 +673,40 @@
         .in('id', bidderIds);
       
       if (profilesData) {
-        profilesData.forEach(p => {
-          names[p.id] = p.full_name;
-        });
+        profilesData.forEach(p => { names[p.id] = p.full_name; });
       }
     } catch (e) {
-      console.warn('Profiles table not available');
+      console.warn('Profiles not available');
     }
     
-    // Fallback names
     for (const id of bidderIds) {
       if (!names[id]) {
         names[id] = 'Bidder ' + (id ? id.substring(0, 4).toUpperCase() : 'Unknown');
       }
     }
-    
     return names;
   }
-  
+
   // Place bid
   async function placeBid(amount) {
     if (!currentUser) {
-      alert('Please login to place a bid');
+      showToast('Login Required', 'Please login to place a bid');
       window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
       return;
     }
     
-    const minRequired = currentLot.bids[0]?.amount 
-      ? currentLot.bids[0].amount + (currentLot.bid_increment || 10)
+    const highestBid = currentLot.bids[0];
+    const minRequired = highestBid?.amount 
+      ? highestBid.amount + (currentLot.bid_increment || 10)
       : currentLot.starting_bid;
     
     if (amount < minRequired) {
-      alert(`Minimum bid is $${minRequired}`);
+      showToast('Bid Too Low', `Minimum bid is ${formatPrice(minRequired)}`);
+      return;
+    }
+    
+    // Legal agreement
+    if (!confirm('By placing this bid, you agree to purchase this item if you are the winning bidder. Continue?')) {
       return;
     }
     
@@ -127,81 +721,86 @@
       .single();
     
     if (error) {
-      alert('Error placing bid: ' + error.message);
+      showToast('Error', error.message);
       return;
     }
     
-    // Refresh lot data
+    showToast('Success', 'Bid placed successfully!');
     await init();
-    alert('Bid placed successfully!');
   }
-  
-  // Initialize page
+
+  // Initialize
   async function init() {
     await checkAuth();
     
-    const params = new URLSearchParams(window.location.search);
-    const lotId = params.get('lot_id') || params.get('id');
-    
+    const lotId = getLotId();
     if (!lotId) {
-      document.body.innerHTML = '<p>No lot specified. <a href="auction.html">Go to auction</a></p>';
+      document.body.innerHTML = '<p style="text-align:center;margin-top:3rem;">No lot specified. <a href="auction.html">Go to auction</a></p>';
       return;
     }
     
-    const lot = await fetchLotDetails(lotId);
-    if (!lot) {
-      document.body.innerHTML = '<p>Lot not found. <a href="auction.html">Go to auction</a></p>';
+    currentLot = await fetchLotDetails(lotId);
+    if (!currentLot) {
+      document.body.innerHTML = '<p style="text-align:center;margin-top:3rem;">Lot not found. <a href="auction.html">Go to auction</a></p>';
       return;
     }
     
     // Populate page
-    document.getElementById('artImage').src = lot.artwork?.image_url || '';
-    document.getElementById('artTitle').textContent = lot.artwork?.title || 'Untitled';
-    document.getElementById('artArtist').textContent = lot.artist?.name || 'Unknown Artist';
-    document.getElementById('artMedium').textContent = lot.artwork?.medium || '—';
-    document.getElementById('artDimensions').textContent = lot.artwork?.dimensions || '—';
-    document.getElementById('artStatement').textContent = lot.artwork?.description || 'No description.';
-    document.getElementById('artStartBid').textContent = `$${lot.starting_bid}`;
+    document.getElementById('artImage').src = currentLot.artwork?.image_url || '';
+    document.getElementById('artTitle').textContent = currentLot.artwork?.title || 'Untitled';
+    document.getElementById('artArtist').textContent = `By ${currentLot.artist?.name || 'Unknown Artist'}`;
+    document.getElementById('artMedium').textContent = currentLot.artwork?.medium || 'N/A';
+    document.getElementById('artDimensions').textContent = currentLot.artwork?.dimensions || 'N/A';
+    document.getElementById('artGrade').textContent = currentLot.artist?.grade || 'N/A';
+    document.getElementById('artBranch').textContent = currentLot.artist?.branch || 'N/A';
+    document.getElementById('artLotNumber').textContent = currentLot.lot_number || 'N/A';
+    document.getElementById('artStartBid').textContent = formatPrice(currentLot.starting_bid);
+    document.getElementById('artStatement').textContent = currentLot.artwork?.description || 'No description available.';
     
-    const currentBid = lot.bids[0]?.amount || lot.starting_bid;
-    const minBid = lot.bids[0]?.amount 
-      ? lot.bids[0].amount + (lot.bid_increment || 10)
-      : lot.starting_bid;
+    const highestBid = currentLot.bids[0];
+    const currentBidAmount = highestBid?.amount || currentLot.starting_bid;
+    const minBidAmount = highestBid?.amount 
+      ? highestBid.amount + (currentLot.bid_increment || 10)
+      : currentLot.starting_bid;
     
-    document.getElementById('currentBid').textContent = `$${currentBid}`;
-    document.getElementById('minBid').textContent = `$${minBid}`;
-    document.getElementById('bidCount').textContent = lot.bids.length;
-    document.getElementById('bidInput').min = minBid;
-    document.getElementById('bidInput').value = minBid;
+    document.getElementById('currentBid').textContent = formatPrice(currentBidAmount);
+    document.getElementById('minBid').textContent = formatPrice(minBidAmount);
+    document.getElementById('bidCount').textContent = currentLot.bids.length;
+    document.getElementById('bidInput').min = minBidAmount;
+    document.getElementById('bidInput').value = minBidAmount;
     
     // Status
-    if (lot.status === 'closed' || lot.status === 'sold') {
+    if (currentLot.status === 'open') {
+      document.getElementById('statusBadge').textContent = 'Live Auction';
+    } else if (currentLot.status === 'closed' || currentLot.status === 'sold') {
       document.getElementById('statusBadge').textContent = 'Auction Closed';
       document.getElementById('bidFormWrap').style.display = 'none';
       document.getElementById('closedMsg').style.display = 'block';
-      document.getElementById('winningBidText').textContent = `Winning bid: $${currentBid}`;
-    } else if (lot.status === 'open') {
-      document.getElementById('statusBadge').textContent = 'Live Auction';
     } else {
       document.getElementById('statusBadge').textContent = 'Preview';
       document.getElementById('bidFormWrap').style.display = 'none';
+      document.getElementById('closedMsg').style.display = 'block';
     }
     
     // Bid history
     const historyEl = document.getElementById('bidHistory');
     historyEl.innerHTML = '';
     
-    if (lot.bids.length > 0) {
-      const bidderIds = [...new Set(lot.bids.map(b => b.bidder_id))];
+    if (currentLot.bids.length > 0) {
+      const bidderIds = [...new Set(currentLot.bids.map(b => b.bidder_id))];
       const bidderNames = await getBidderNames(bidderIds);
       
-      lot.bids.forEach(bid => {
+      currentLot.bids.forEach(bid => {
         const li = document.createElement('li');
         const bidderName = bid.bidder_id === currentUser?.id 
           ? 'You' 
           : (bidderNames[bid.bidder_id] || 'Anonymous');
         const time = new Date(bid.created_at).toLocaleString();
-        li.innerHTML = `<span class="amount">$${bid.amount}</span><span>${bidderName}</span><span class="time">${time}</span>`;
+        li.innerHTML = `
+          <span class="amount">${formatPrice(bid.amount)}</span>
+          <span>${bidderName}</span>
+          <span class="time">${time}</span>
+        `;
         historyEl.appendChild(li);
       });
     } else {
@@ -211,20 +810,25 @@
     // Bid button
     document.getElementById('placeBidBtn').addEventListener('click', () => {
       const amount = parseInt(document.getElementById('bidInput').value);
-      if (amount >= minBid) {
-        if (confirm(`Place bid of $${amount}?`)) {
-          placeBid(amount);
-        }
-      } else {
-        alert(`Minimum bid is $${minBid}`);
-      }
+      placeBid(amount);
+    });
+    
+    // Zoom
+    let zoomed = false;
+    document.getElementById('zoomBtn').addEventListener('click', () => {
+      const img = document.getElementById('artImage');
+      zoomed = !zoomed;
+      img.style.transform = zoomed ? 'scale(2)' : 'scale(1)';
     });
   }
-  
-  // Run when DOM ready
+
+  // Run
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
 </script>
+
+</body>
+</html>

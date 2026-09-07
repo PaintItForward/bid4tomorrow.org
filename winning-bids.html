@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid For Tomorrow — Winning Bids</title>
+    <style>
+        :root { --crimson:#7D2027; --sand-gold:#FAE3B1; --ochre-gold:#998731; --mahogany:#673C34; --bg-light:#fcf9f6; --card-light:#fff; --text-light:#2c2420; --border-light:#e7dccc; --shadow-light:0 6px 18px rgba(45,35,25,0.06); --bg-dark:#1b1714; --card-dark:#2a2420; --text-dark:#f3ece4; --border-dark:#493f38; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg-light); color:var(--text-light); transition:0.3s; display:flex; flex-direction:column; min-height:100vh; }
+        body.dark-mode { background:var(--bg-dark); color:var(--text-dark); }
+        h1,h2,h3 { font-family:'Playfair Display',serif; }
+        .container { width:min(1200px,92%); margin:0 auto; }
+        .site-header { background:rgba(253,246,238,0.9); backdrop-filter:blur(12px); box-shadow:var(--shadow-light); border-bottom:1px solid var(--border-light); position:sticky; top:0; z-index:50; }
+        body.dark-mode .site-header { background:rgba(25,21,18,0.9); }
+        .header-inner { display:flex; align-items:center; justify-content:space-between; padding:0.8rem 0; flex-wrap:wrap; }
+        .nav-logo { font-size:1.8rem; color:var(--crimson); }
+        .nav-links { display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap; }
+        .nav-links a:hover { color:var(--crimson); }
+        .cta-button { background:var(--crimson); color:white; padding:0.5rem 1.3rem; border-radius:50px; }
+        .user-menu { position:relative; display:flex; align-items:center; gap:0.6rem; cursor:pointer; }
+        .avatar-icon { width:38px; height:38px; border-radius:50%; background:var(--sand-gold); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--crimson); }
+        .dropdown-menu { position:absolute; right:0; top:50px; background:var(--card-light); box-shadow:var(--shadow-light); border-radius:12px; border:1px solid var(--border-light); padding:0.6rem 0; min-width:200px; display:none; }
+        .dropdown-menu.open { display:block; }
+        .dropdown-item { display:flex; align-items:center; gap:10px; padding:0.7rem 1.2rem; cursor:pointer; }
+        .dark-toggle { background:none; border:1px solid var(--border-light); border-radius:50%; width:38px; height:38px; cursor:pointer; }
+        .hamburger { display:none; }
+        @media(max-width:768px){ .nav-links{display:none; width:100%;} .nav-links.show{display:flex;} .hamburger{display:block;} }
+        .card { background:var(--card-light); border-radius:20px; border:1px solid var(--border-light); box-shadow:var(--shadow-light); padding:1.8rem; }
+        body.dark-mode .card { background:var(--card-dark); border-color:var(--border-dark); }
+        .toast-container { position:fixed; bottom:20px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:10px; }
+        .toast { padding:1rem 1.5rem; border-radius:10px; background:#2c2420; color:white; }
+        .toast.success { background:#1e7a3c; } .toast.error { background:#b23b3b; }
+        .empty-state { text-align:center; padding:3rem; color:#888; }
+        .winning-badge { background:#1e7a3c20; color:#1e7a3c; padding:0.25rem 0.8rem; border-radius:50px; font-weight:600; }
+        .bid-item { display:flex; justify-content:space-between; align-items:center; padding:1rem 0; border-bottom:1px solid var(--border-light); }
+        .stripe-btn { background:var(--ochre-gold); color:white; border:none; padding:0.6rem 1.2rem; border-radius:50px; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <header class="site-header"><div class="container header-inner">
+        <a href="index.html" class="nav-logo">Bid For Tomorrow</a>
+        <button class="hamburger" id="hamburgerBtn">☰</button>
+        <nav class="nav-links" id="navLinks"><a href="about.html">About Us</a><a href="branches.html">Our Branches</a><a href="auction.html">Fall 26 Auction</a><a href="gallery.html">Gallery</a><a href="events.html">Events</a><a href="how-it-works.html">How It Works</a><a href="impact.html">Impact</a><a href="causes.html">Causes</a><a href="faq.html">FAQ</a><a href="get-involved.html" class="cta-button">Get Involved</a></nav>
+        <div style="display:flex; gap:0.5rem;"><button class="dark-toggle" id="darkToggle">🌙</button><div class="user-menu" id="userMenu"><div class="avatar-icon" id="avatarDisplay">U</div><span id="userNameDisplay"></span><div class="dropdown-menu" id="dropdownMenu"><div class="dropdown-item" data-link="account.html">👤 My Account</div><div class="dropdown-item" data-link="my-bids.html">👜 My Bids</div><div class="dropdown-item" data-link="winning-bids.html">🏆 Winning Bids</div><div class="dropdown-item" data-link="watchlist.html">❤️ Watchlist</div><div class="dropdown-item" id="signOutBtn">🚪 Sign Out</div></div></div></div>
+    </div></header>
+    <main class="container" style="flex:1; padding:2rem 0;">
+        <h1>🏆 Winning Bids</h1>
+        <div id="winningContainer" style="margin-top:1.5rem;"></div>
+        <div id="emptyState" class="empty-state" style="display:none;">You are not currently winning any lots.</div>
+    </main>
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://zezgamocqdkqfaqzompd.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/your_payment_link_here';
+
+        function showToast(msg, type='success') { const c=document.getElementById('toastContainer'); const t=document.createElement('div'); t.className=`toast ${type}`; t.innerText=msg; c.appendChild(t); setTimeout(()=>t.remove(),3000); }
+        document.getElementById('darkToggle').addEventListener('click', ()=>{ document.body.classList.toggle('dark-mode'); localStorage.setItem('darkMode', document.body.classList.contains('dark-mode')); });
+        if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
+        document.getElementById('hamburgerBtn').addEventListener('click', ()=>document.getElementById('navLinks').classList.toggle('show'));
+        const userMenu=document.getElementById('userMenu'); const dropdown=document.getElementById('dropdownMenu');
+        userMenu.addEventListener('click',(e)=>{e.stopPropagation(); dropdown.classList.toggle('open');});
+        document.addEventListener('click',()=>dropdown.classList.remove('open'));
+        document.querySelectorAll('.dropdown-item[data-link]').forEach(el=>el.addEventListener('click',()=>window.location.href=el.getAttribute('data-link')));
+        document.getElementById('signOutBtn').addEventListener('click', async()=>{ await supabase.auth.signOut(); window.location.href='login.html'; });
+
+        async function loadWinningBids() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if(!user) { window.location.href='login.html?redirect=winning-bids.html'; return; }
+            document.getElementById('avatarDisplay').innerText = user.email?.[0]?.toUpperCase() || 'U';
+            document.getElementById('userNameDisplay').innerText = user.user_metadata?.full_name || user.email;
+
+            // get highest bid per lot and check if current user is winner
+            const { data: allBids, error } = await supabase
+                .from('bids')
+                .select('lot_id, bidder_id, amount, created_at, lots ( lot_number, starting_bid, bid_increment, artworks ( title, id ) )')
+                .order('amount', { ascending: false });
+            if(error) { showToast('Error loading bids: '+error.message, 'error'); return; }
+            const winningMap = new Map();
+            allBids.forEach(bid => { if(!winningMap.has(bid.lot_id)) winningMap.set(bid.lot_id, bid); });
+            const myWins = [];
+            winningMap.forEach((bid, lotId) => { if(bid.bidder_id === user.id) myWins.push(bid); });
+            const container = document.getElementById('winningContainer');
+            const empty = document.getElementById('emptyState');
+            if(myWins.length===0) { container.innerHTML=''; empty.style.display='block'; return; }
+            empty.style.display='none';
+            container.innerHTML = myWins.map(bid => {
+                const lot = bid.lots || {};
+                const artwork = lot.artworks || {};
+                const nextMin = bid.amount + (lot.bid_increment || 10);
+                return `<div class="bid-item">
+                    <div><span class="winning-badge">WINNING</span> <strong>Lot #${lot.lot_number}</strong> — ${artwork.title || 'Artwork'}</div>
+                    <div>Current: $${bid.amount.toLocaleString()} CAD</div>
+                    <div>Min next: $${nextMin.toLocaleString()}</div>
+                    <div><a href="artwork-detail.html?lot_id=${bid.lot_id}" style="color:var(--crimson);">View</a> 
+                    <button class="stripe-btn" onclick="window.open('${STRIPE_PAYMENT_LINK}','_blank')">Pay</button></div>
+                </div>`;
+            }).join('');
+        }
+        loadWinningBids();
+    </script>
+</body>
+</html>

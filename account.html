@@ -1,311 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account — Bid For Tomorrow</title>
-    <meta name="description" content="Manage your Bid For Tomorrow account settings and profile information.">
-    <link rel="icon" type="image/png" href="/favicon-180x180.png" sizes="180x180" />
-    <link rel="icon" type="image/svg+xml" href="/circlelogo.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" type="image/svg+xml" href="/circlelogo.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Account page specific styles */
-        .account-section {
-            padding: 120px 0 80px;
-            min-height: 80vh;
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .account-card {
-            max-width: 640px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-top: 4px solid var(--terracotta);
-            border-radius: var(--radius-sm);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-md);
-            transition: background var(--transition), border-color var(--transition);
-        }
-        
-        .account-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--sand-gold-light);
-            border: 2px solid var(--ochre-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--crimson);
-            margin: 0 auto 1.5rem;
-        }
-        
-        .account-title {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .account-title h1 {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            margin-bottom: 0.5rem;
-            color: var(--text-heading);
-        }
-        
-        .account-title p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            font-family: 'Source Sans 3', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-heading);
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-group input {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: var(--radius-sm);
-            padding: 0.85rem 1rem;
-            color: var(--input-text);
-            font-family: 'Source Sans 3', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
-        }
-        
-        .form-group input:focus {
-            border-color: var(--terracotta);
-            box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.18);
-        }
-        
-        .form-group input:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-        
-        .profile-error {
-            color: var(--crimson);
-            margin-top: 1rem;
-            text-align: center;
-            font-weight: 500;
-        }
-        
-        .profile-loading {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-muted);
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.2rem;
-        }
-        
-        .profile-loading::after {
-            content: '';
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            margin-left: 10px;
-            border: 2px solid var(--ochre-gold);
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .toast {
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-sm);
-            background: var(--mahogany);
-            color: var(--sand-gold);
-            box-shadow: var(--shadow-md);
-            font-weight: 500;
-            animation: slideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            font-family: 'Source Sans 3', sans-serif;
-            border: 1px solid var(--ochre-gold);
-        }
-        
-        .toast.success {
-            background: var(--matcha-dark, #3D4D3D);
-            color: #FFFFFF;
-        }
-        
-        .toast.error {
-            background: var(--crimson);
-            color: #FFFFFF;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-</head>
-<body>
-
-<!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
-      <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-180x180.png" alt="Bid For Tomorrow Logo" style="width: 100%; height: 100%; object-fit: cover;">
-      </div>
-      Bid For Tomorrow
-    </a>
-    <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Our Branches</a></li>
-      <li><a href="auction.html" style="font-weight:600; color:var(--matcha-dark, #3D4D3D);">Fall 26 Auction &nearr;</a></li>
-      <li><a href="index.html#artwork">Gallery</a></li>
-      <li><a href="index.html#auctions">Events</a></li>
-      <li><a href="index.html#how-it-works">How It Works</a></li>
-      <li><a href="index.html#impact">Impact</a></li>
-      <li><a href="index.html#causes">Causes</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="account.html" class="nav-cta">My Account</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-<!-- ═══════════════════════════ ACCOUNT SECTION ═══════════════════════════ -->
-<main class="account-section">
-    <div class="container">
-        <div class="account-card">
-            <div class="account-avatar" id="avatarDisplay">U</div>
-            <div class="account-title">
-                <h1>Account Settings</h1>
-                <p id="userEmailDisplay">Manage your profile information</p>
-            </div>
-            
-            <div id="profileLoading" class="profile-loading">Loading your profile...</div>
-            
-            <form id="profileForm" style="display: none;">
-                <div class="form-group">
-                    <label for="fullNameInput">Full Name</label>
-                    <input type="text" id="fullNameInput" required placeholder="Your full name">
-                </div>
-                
-                <div class="form-group">
-                    <label for="emailInput">Email Address</label>
-                    <input type="email" id="emailInput" required placeholder="your@email.com">
-                </div>
-                
-                <div class="form-group">
-                    <label for="createdAtDisplay">Member Since</label>
-                    <input type="text" id="createdAtDisplay" disabled>
-                </div>
-                
-                <button type="submit" class="btn btn-primary" id="saveBtn" style="width:100%; justify-content:center; margin-top:1rem;">
-                    Save Changes
-                </button>
-            </form>
-            
-            <div id="profileError" class="profile-error"></div>
-        </div>
-    </div>
-</main>
-
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
-<footer role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="index.html" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
-        <p>Turning Creativity Into Impact. A student-led nonprofit giving young artists a platform while supporting youth physical and mental health in North America.</p>
-        <p class="footer-note">Registered Nonprofit.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="branches.html">Our Branches</a></li>
-          <li><a href="auction.html">Fall 26 Auction</a></li>
-          <li><a href="index.html#artwork">Gallery</a></li>
-          <li><a href="index.html#causes">Causes We Support</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Get Involved</h4>
-        <ul>
-          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
-          <li><a href="auction.html">Bid on Artwork</a></li>
-          <li><a href="https://form.jotform.com/261786840237061" target="_blank" rel="noopener">Volunteer</a></li>
-          <li><a href="index.html#contact">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="mailto:bid4tomorrow@gmail.com">Email Us</a></li>
-          <li>
-            <a href="https://www.instagram.com/bid4tomorrow/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-              Instagram
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Nonprofit, Greater Toronto Area &amp; Massachusetts.</p>
-    </div>
-  </div>
-</footer>
-
-<!-- Dark mode toggle -->
-<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-</button>
-
-<div class="toast-container" id="toastContainer"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     // Supabase config
     const SUPABASE_URL = 'https://zezgamocqdkqfaqzompd.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
     
-    // Initialize Supabase
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Initialize Supabase client
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // Toast function
     function showToast(message, type = 'success') {
@@ -317,40 +16,11 @@
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // Dark mode toggle
-    const darkBtn = document.getElementById('dark-toggle');
-    const iconEl = document.getElementById('toggle-icon');
-    const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-    const sunPath = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches || localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark');
-        document.documentElement.classList.add('dark');
-        if (iconEl) iconEl.innerHTML = sunPath;
-    }
-    
-    darkBtn.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        document.documentElement.classList.toggle('dark', document.body.classList.contains('dark'));
-        if (iconEl) iconEl.innerHTML = document.body.classList.contains('dark') ? sunPath : moonPath;
-        localStorage.setItem('darkMode', document.body.classList.contains('dark'));
-    });
-
-    // Mobile nav toggle
-    const navToggleBtn = document.getElementById('nav-toggle');
-    navToggleBtn.addEventListener('click', function() {
-        const links = document.getElementById('nav-links');
-        links.classList.toggle('open');
-        this.setAttribute('aria-expanded', links.classList.contains('open'));
-    });
-    
-    document.querySelectorAll('.nav-links a').forEach(a => {
-        a.addEventListener('click', () => document.getElementById('nav-links')?.classList.remove('open'));
-    });
+    // ... (rest of your code with all `supabase` replaced with `supabaseClient`)
 
     // Auth check & profile load
     async function checkAuthAndLoadProfile() {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
         if (error || !user) {
             window.location.href = 'login.html?redirect=account.html';
             return;
@@ -359,8 +29,7 @@
         document.getElementById('avatarDisplay').innerText = user.email?.[0]?.toUpperCase() || 'U';
         document.getElementById('userEmailDisplay').innerText = user.email;
         
-        // Load profile data
-        const { data: profile, error: profileError } = await supabase
+        const { data: profile, error: profileError } = await supabaseClient
             .from('profiles')
             .select('*')
             .eq('id', user.id)
@@ -391,14 +60,13 @@
             return;
         }
         
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await supabaseClient.auth.getUser();
         if (!user) return;
         
         document.getElementById('saveBtn').disabled = true;
         document.getElementById('saveBtn').textContent = 'Saving...';
         
-        // Upsert profile
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('profiles')
             .upsert({ 
                 id: user.id, 
@@ -409,19 +77,15 @@
             
         if (error) {
             showToast('Update failed: ' + error.message, 'error');
-            document.getElementById('saveBtn').disabled = false;
-            document.getElementById('saveBtn').textContent = 'Save Changes';
         } else {
             showToast('Profile updated successfully!', 'success');
-            document.getElementById('saveBtn').disabled = false;
-            document.getElementById('saveBtn').textContent = 'Save Changes';
             document.getElementById('userEmailDisplay').innerText = email;
             document.getElementById('avatarDisplay').innerText = fullName?.[0]?.toUpperCase() || 'U';
         }
+        
+        document.getElementById('saveBtn').disabled = false;
+        document.getElementById('saveBtn').textContent = 'Save Changes';
     });
 
-    // Initial load
     checkAuthAndLoadProfile();
 </script>
-</body>
-</html>

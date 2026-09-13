@@ -1139,15 +1139,11 @@
       return;
     }
     
-    const { data, error } = await supabaseClient
-      .from('bids')
-      .insert([{
-        lot_id: currentLot.id,
-        bidder_id: currentUser.id,
-        amount: amount
-      }])
-      .select()
-      .single();
+  const { data, error } = await supabaseClient
+  .rpc('place_bid', {
+    p_lot_id: currentLot.id,
+    p_amount: amount
+  });
     
     if (error) {
       showToast('Error', error.message);

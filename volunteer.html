@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="canonical" href="https://bid4tomorrow.org/volunteer.html">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GPN4QVF0X0');
+</script>
+
+<link rel="icon" type="image/png" href="/favicon-180x180.png" sizes="180x180" />
+<link rel="icon" type="image/svg+xml" href="/circlelogo.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" type="image/svg+xml" href="/circlelogo.svg" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volunteer With Us — Bid For Tomorrow</title>
+<meta name="description" content="Volunteer with Bid For Tomorrow. Support student artists and community initiatives, and learn how eligible activities can be documented and verified for secondary-school community involvement.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Pill nav */
+  .nav-links { gap: 0.4rem; }
+  .nav-links a {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.48rem 0.85rem;
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    transition: background var(--transition), color var(--transition),
+                border-color var(--transition), transform var(--transition);
+  }
+  .nav-links a:hover {
+    background: var(--terracotta); border-color: var(--terracotta);
+    color: #FFFFFF; transform: translateY(-1px);
+  }
+  .nav-links a.nav-badge-pill { background: rgba(95,168,194,0.12) !important; }
+  .nav-links a.nav-cta        { background: var(--terracotta) !important; }
+  .nav-links a.nav-current {
+    background: var(--terracotta); border-color: var(--terracotta); color: #FFFFFF;
+  }
+  @media (max-width: 1100px) {
+    .nav-toggle { display: block; }
+    .nav-links {
+      display: none; flex-direction: column; align-items: stretch;
+      position: absolute; top: 72px; left: 0; right: 0;
+      background: var(--nav-bg);
+      padding: 1.25rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      box-shadow: var(--shadow-lg);
+      gap: 0.55rem;
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a {
+      width: 100%; justify-content: center; text-align: center;
+      padding: 0.85rem 1.25rem; font-size: 0.82rem;
+    }
+  }
+
+  /* Page hero */
+  .page-hero {
+    padding: 9rem 2rem 3.5rem;
+    text-align: center;
+    background: var(--hero-bg-base);
+    border-bottom: 1px solid var(--hero-border);
+  }
+  .page-hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    line-height: 1.12; color: var(--hero-heading);
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+  }
+  .page-hero p {
+    max-width: 720px; margin: 0 auto;
+    font-size: 1.05rem; line-height: 1.65; color: var(--hero-subtext);
+  }
+
+  /* Volunteer layout */
+  .volunteer-grid {
+    display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start;
+  }
+  @media (min-width: 992px) {
+    .volunteer-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
+  }
+  .volunteer-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; color: var(--text-heading);
+    margin: 0 0 1rem;
+  }
+  .volunteer-block p {
+    color: var(--text-body); line-height: 1.7; margin-bottom: 1rem;
+  }
+  .volunteer-list {
+    list-style: none; padding: 0; margin: 0 0 1rem;
+  }
+  .volunteer-list li {
+    padding: 0.7rem 0 0.7rem 1.65rem; position: relative;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--text-body); font-size: 0.95rem;
+  }
+  .volunteer-list li:last-child { border-bottom: none; }
+  .volunteer-list li::before {
+    content: ""; position: absolute; left: 0; top: 1.1rem;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--terracotta);
+  }
+  .steps-list {
+    counter-reset: vstep; list-style: none; padding: 0; margin: 1rem 0 1.5rem;
+  }
+  .steps-list li {
+    counter-increment: vstep; position: relative;
+    padding: 0.8rem 0 0.8rem 3rem;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--text-body); font-size: 0.95rem; line-height: 1.6;
+  }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before {
+    content: counter(vstep, decimal-leading-zero);
+    position: absolute; left: 0; top: 0.85rem;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 0.82rem; font-weight: 700;
+    color: var(--terracotta); letter-spacing: 1.5px;
+  }
+
+  /* Important box */
+  .important-box {
+    border: 1px solid var(--card-border);
+    border-top: 4px solid var(--ochre-gold);
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 1.75rem;
+    margin-top: 2rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .important-box-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600; font-size: 1.15rem;
+    margin-bottom: 0.85rem;
+    color: var(--text-heading);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .important-box-title::before {
+    content: "⚠"; color: var(--terracotta);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.2rem;
+  }
+  .important-box p {
+    font-size: 0.95rem; line-height: 1.65;
+    color: var(--text-body); margin: 0 0 0.85rem;
+  }
+  .important-box p:last-child { margin-bottom: 0; }
+
+  /* CTA row */
+  .volunteer-cta-row {
+    display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem;
+  }
+
+  /* Policy link */
+  .policy-link-row {
+    margin-top: 2.5rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--card-border);
+    font-size: 0.95rem;
+  }
+  .policy-link-row a {
+    font-weight: 700; text-decoration: none;
+    color: var(--terracotta);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+  .policy-link-row a:hover { color: var(--terracotta-dark); }
+</style>
+</head>
+<body>
+
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
+      <div class="nav-logo-mark" aria-hidden="true">
+        <img src="favicon-180x180.png" alt="" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      Bid For Tomorrow
+    </a>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="branches.html">Branches</a></li>
+      <li><a href="auction.html" class="nav-badge-pill">Fall 26 Auction ↗</a></li>
+      <li><a href="index.html#artwork">Gallery</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#impact">Impact</a></li>
+      <li><a href="index.html#causes">Causes</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="volunteer.html" class="nav-current" aria-current="page">Volunteer</a></li>
+      <li><a href="index.html#get-involved" class="nav-cta">Get Involved</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <h1>Volunteer With Bid For Tomorrow</h1>
+  <p>Help support youth creativity and community health while building meaningful volunteer experience.</p>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="volunteer-grid">
+
+      <div class="fade-up">
+        <div class="volunteer-block">
+          <h2>Who can volunteer?</h2>
+          <p>Students and community members can volunteer with Bid For Tomorrow. Student volunteers may be able to use eligible activities toward their secondary-school community involvement requirements, depending on their school's rules.</p>
+        </div>
+
+        <div class="volunteer-block" style="margin-top:2.5rem;">
+          <h2>What can I volunteer for?</h2>
+          <ul class="volunteer-list">
+            <li>Artist outreach</li>
+            <li>Community outreach</li>
+            <li>Social media and promotion</li>
+            <li>Event support</li>
+            <li>Registration and guest assistance</li>
+            <li>Fundraising support</li>
+            <li>Administrative and organizational work</li>
+          </ul>
+          <p style="font-size:0.88rem; color:var(--text-muted);">Not every activity is eligible toward every school's community involvement requirement. See the policy page for details.</p>
+        </div>
+
+        <div class="volunteer-cta-row">
+          <a href="https://form.jotform.com/261786840237061" class="btn btn-primary" target="_blank" rel="noopener">Apply to Volunteer</a>
+          <a href="index.html#get-involved" class="btn btn-outline">Other Ways to Get Involved</a>
+        </div>
+
+        <div class="policy-link-row">
+          <a href="volunteer-hours-policy.html">Volunteer Hours Policy &rarr;</a>
+        </div>
+      </div>
+
+      <div class="fade-up fade-up-delay-1">
+        <div class="volunteer-block">
+          <h2>How hours are recorded</h2>
+          <ol class="steps-list">
+            <li>Sign up for an approved volunteer activity with Bid For Tomorrow.</li>
+            <li>Complete the activity as scheduled with a Bid For Tomorrow supervisor.</li>
+            <li>Record your date and hours on the form provided.</li>
+            <li>A Bid For Tomorrow supervisor verifies the activity and hours.</li>
+            <li>Students submit the verified record through their own school's process.</li>
+          </ol>
+          <p style="font-size:0.88rem; color:var(--text-muted);">For Ontario students, students under 18 need parent/guardian involvement, and the student's school or principal ultimately determines whether an activity qualifies. Ontario's current rules require the supervising organization to verify dates and hours, while students under 18 must have a parent/guardian verify their hours through the school's process.</p>
+        </div>
+
+        <div class="important-box">
+          <div class="important-box-title">Important for Ontario students</div>
+          <p>Not every activity qualifies toward the Ontario Secondary School Diploma's 40-hour community involvement requirement. Bid For Tomorrow can verify the hours you complete with us, but your school or principal determines whether those hours can be counted.</p>
+          <p>Activities involving the handling of valuable items, including artwork, may not qualify under Ontario's rules. Please confirm your planned activity with your school <em>before</em> counting it toward your graduation requirement.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
+        <p>Turning Creativity Into Impact. A student-led nonprofit giving young artists a platform while supporting youth physical and mental health in North America.</p>
+        <p class="footer-note">Registered Nonprofit.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="branches.html">Our Branches</a></li>
+          <li><a href="auction.html">Fall 26 Auction</a></li>
+          <li><a href="index.html#artwork">Gallery</a></li>
+          <li><a href="index.html#causes">Causes We Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
+          <li><a href="auction.html">Bid on Artwork</a></li>
+          <li><a href="volunteer.html">Volunteer With Us</a></li>
+          <li><a href="volunteer-hours-policy.html">Volunteer Hours Policy</a></li>
+          <li><a href="index.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:bid4tomorrow@gmail.com">Email Us</a></li>
+          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Nonprofit, Greater Toronto Area &amp; Massachusetts.</p>
+    </div>
+  </div>
+</footer>
+
+<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</button>
+
+<script>
+const nT = document.getElementById("nav-toggle");
+if (nT) nT.addEventListener("click", function() {
+  const links = document.getElementById("nav-links");
+  links.classList.toggle("open");
+  this.setAttribute("aria-expanded", links.classList.contains("open"));
+});
+document.querySelectorAll(".nav-links a").forEach(a =>
+  a.addEventListener("click", () => document.getElementById("nav-links")?.classList.remove("open")));
+
+const dB = document.getElementById("dark-toggle");
+const iE = document.getElementById("toggle-icon");
+const moon = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+const sun  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  document.body.classList.add("dark"); document.documentElement.classList.add("dark");
+  if (iE) iE.innerHTML = sun;
+}
+if (dB) dB.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
+  if (iE) iE.innerHTML = document.body.classList.contains("dark") ? sun : moon;
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const obs = new IntersectionObserver((es, o) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); o.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+});
+</script>
+</body>
+</html>

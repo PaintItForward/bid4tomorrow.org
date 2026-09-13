@@ -1,27 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
 <link rel="canonical" href="https://bid4tomorrow.org/">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-GPN4QVF0X0');
 </script>
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Bid For Tomorrow",
-  "alternateName": "Bid4Tomorrow",
-  "url": "https://bid4tomorrow.org/"
-}
+<script type="application/ld+json">
+{ "@context":"https://schema.org","@type":"WebSite","name":"Bid For Tomorrow","alternateName":"Bid4Tomorrow","url":"https://bid4tomorrow.org/" }
 </script>
 
-  
 <link rel="icon" type="image/png" href="/favicon-180x180.png" sizes="180x180" />
 <link rel="icon" type="image/svg+xml" href="/circlelogo.svg" />
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -33,190 +24,61 @@
 <meta name="description" content="Bid For Tomorrow is a student-led nonprofit giving young artists a platform while supporting youth physical and mental health in North America.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-  /* ── Canvas Layer & Layer Stacking Fixes ── */
-  .hero {
-    position: relative;
-    overflow: hidden;
+  /* ═══ Pill-shaped nav links (desktop + mobile) ═══ */
+  .nav-links { gap: 0.4rem; }
+  .nav-links a {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.48rem 0.85rem;
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    transition: background var(--transition), color var(--transition),
+                border-color var(--transition), transform var(--transition);
   }
-
-  /* 1. Paint canvas layer sits behind text (z-index: 1) */
-  .paint-canvas-layer {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    cursor: crosshair;
-    touch-action: none;
-  }
-
-  /* 2. Woven Canvas Texture */
-  .hero-canvas-texture {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background-image: 
-      repeating-linear-gradient(0deg, rgba(103, 60, 52, 0.05) 0px, rgba(103, 60, 52, 0.05) 1px, transparent 1px, transparent 4px),
-      repeating-linear-gradient(90deg, rgba(103, 60, 52, 0.05) 0px, rgba(103, 60, 52, 0.05) 1px, transparent 1px, transparent 4px),
-      radial-gradient(ellipse at 50% 50%, rgba(250, 227, 177, 0.25) 0%, rgba(153, 135, 49, 0.08) 100%);
-    background-size: 4px 4px, 4px 4px, 100% 100%;
-    opacity: 0.85;
-  }
-
-  .hero-canvas-weave-detail {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background-image: 
-      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.22) 0px, rgba(255, 255, 255, 0.22) 1px, transparent 1px, transparent 8px),
-      repeating-linear-gradient(-45deg, rgba(103, 60, 52, 0.04) 0px, rgba(103, 60, 52, 0.04) 1px, transparent 1px, transparent 8px);
-    background-size: 8px 8px, 8px 8px;
-    opacity: 0.75;
-  }
-
-  .dark .hero-canvas-texture {
-    opacity: 0.9;
-    background-image: 
-      repeating-linear-gradient(0deg, rgba(250, 227, 177, 0.045) 0px, rgba(250, 227, 177, 0.045) 1px, transparent 1px, transparent 4px),
-      repeating-linear-gradient(90deg, rgba(250, 227, 177, 0.045) 0px, rgba(250, 227, 177, 0.045) 1px, transparent 1px, transparent 4px);
-  }
-
-  /* 3. Hero content sits ABOVE the paint (z-index: 10) */
-  .hero-content {
-    position: relative;
-    z-index: 10;
-    pointer-events: none; /* Clicks in empty space hit the canvas underneath */
-  }
-
-  /* 4. Keep all buttons, links, cards, and toolbars interactive */
-  .hero-content a,
-  .hero-content button,
-  .hero-content input,
-  .hero-content label,
-  .hero-stat-box,
-  .hero-tag,
-  .paint-toolbar {
-    pointer-events: auto;
-  }
-
-  /* ── Studio Paint Toolbar ── */
-  .paint-toolbar {
-    margin-top: 2rem;
-    background: var(--card-bg, #FCF6EC);
-    border: 1px solid var(--border, #998731);
-    border-radius: 6px;
-    padding: 0.75rem 1.25rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    box-shadow: 0 4px 16px rgba(103, 60, 52, 0.12);
-    backdrop-filter: blur(8px);
-  }
-
-  .palette-swatches {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .palette-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-heading, #4E2922);
-  }
-
-  .swatch-btn {
-    border: 1px solid rgba(0,0,0,0.15);
-    cursor: pointer;
-    border-radius: 4px;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    background: rgba(153, 135, 49, 0.12);
-    color: var(--text-heading, #4E2922);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .swatch-btn.color-dot {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    padding: 0;
-  }
-
-  .swatch-btn:hover {
-    transform: scale(1.1);
-  }
-
-  .swatch-btn.active {
-    box-shadow: 0 0 0 2px var(--terracotta, #CF5527), 0 2px 6px rgba(0,0,0,0.25);
-    transform: scale(1.15);
-  }
-
-  .custom-color-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    border: 1px dashed var(--border, #998731);
-    background: rgba(153, 135, 49, 0.08);
-    color: var(--text-heading, #4E2922);
-  }
-
-  .custom-color-label input[type="color"] {
-    width: 22px;
-    height: 22px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-
-  .paint-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .toolbar-btn {
-    padding: 0.4rem 0.85rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid var(--border, #998731);
-    background: transparent;
-    color: var(--text-heading, #4E2922);
-    transition: all 0.2s ease;
-  }
-
-  .toolbar-btn.primary-tool {
-    background: var(--terracotta, #CF5527);
-    color: #fff;
-    border-color: var(--terracotta, #CF5527);
-  }
-
-  .toolbar-btn:hover {
+  .nav-links a:hover {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    color: #FFFFFF;
     transform: translateY(-1px);
   }
+  /* Keep existing special pills intact */
+  .nav-links a.nav-badge-pill { background: rgba(95,168,194,0.12) !important; }
+  .nav-links a.nav-cta        { background: var(--terracotta) !important; }
 
-  /* ── Editorial Asymmetric Layouts ── */
+  /* Switch to hamburger sooner so pills never crowd */
+  @media (max-width: 1100px) {
+    .nav-toggle { display: block; }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      background: var(--nav-bg);
+      padding: 1.25rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      box-shadow: var(--shadow-lg);
+      gap: 0.55rem;
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.82rem;
+    }
+  }
+
+  /* ═══ Editorial mission layout (not in styles.css) ═══ */
   .mission-editorial-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -224,142 +86,184 @@
     align-items: start;
   }
   @media (min-width: 992px) {
-    .mission-editorial-grid {
-      grid-template-columns: 1.1fr 1fr;
-      gap: 4rem;
-    }
+    .mission-editorial-grid { grid-template-columns: 1.05fr 1fr; gap: 4rem; }
   }
-
   .editorial-statement {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2rem, 3.5vw, 2.75rem);
-    line-height: 1.25;
-    color: var(--text-heading, #1F1C19);
+    font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+    line-height: 1.22;
+    color: var(--text-heading);
     margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
   }
-
   .numbered-value-card {
     padding: 1.75rem 2rem;
-    border: 1px solid var(--border-color, #E4DCCE);
-    border-radius: 14px;
-    background: var(--card-bg, #FAF7F2);
-    margin-bottom: 1.25rem;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    border: 1px solid var(--card-border);
+    border-top: 4px solid var(--terracotta);
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    margin-bottom: 1.1rem;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
   }
   .numbered-value-card:hover {
-    border-color: var(--matcha-dark, #3D4D3D);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
   }
   .num-marker {
-    font-family: monospace;
-    font-size: 0.85rem;
-    color: var(--text-muted, #7A746C);
-    letter-spacing: 0.05em;
-  }
-
-  /* ── Causes Nameplates ── */
-  .cause-nameplate-card {
-    padding: 1.75rem;
-    border: 1px solid var(--border-color, #E2D9CC);
-    border-radius: 12px;
-    background: var(--card-bg, #FAF7F2);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 190px;
-  }
-  .cause-org-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
+    font-family: 'Source Sans 3', monospace;
+    font-size: 0.78rem;
     font-weight: 700;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-color, #E8E1D7);
-    color: var(--text-heading, #1F1C19);
+    letter-spacing: 1.5px;
+    color: var(--ochre-gold-dark);
   }
-  .cause-tag {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted, #7A746C);
+  body.dark .num-marker { color: var(--sand-gold); }
+
+  /* ═══ Money split panel (not in styles.css) ═══ */
+  .money-breakdown {
+    max-width: 720px;
+    margin: 3rem auto 0;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-top: 4px solid var(--terracotta);
+    border-radius: var(--radius-sm);
+    padding: 2.25rem 2rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .money-split {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .money-split-item { text-align: center; }
+  .money-split-percent {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: var(--crimson);
+    line-height: 1;
+    margin-bottom: 0.45rem;
+  }
+  body.dark .money-split-percent { color: var(--sand-gold); }
+  .money-split-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.82rem;
     font-weight: 600;
-    margin-top: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .money-split-divider {
+    width: 1px; height: 60px;
+    background: var(--card-border);
+  }
+  @media (max-width: 560px) {
+    .money-split { grid-template-columns: 1fr; gap: 0.75rem; }
+    .money-split-divider { width: 60px; height: 1px; margin: 0 auto; }
   }
 
-  /* ── Gallery Dimensions Teaser ── */
+  /* ═══ How-it-works 4-step grid ═══ */
+  .how-it-works-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 0;
+  }
+  .how-step {
+    padding: 2rem 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-top: 4px solid var(--terracotta);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .how-step:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .how-step-number {
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: #FFFFFF;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .how-step-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--text-heading);
+    margin-bottom: 0.6rem;
+  }
+  .how-step-content p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin: 0;
+  }
+  @media (max-width: 1100px) { .how-it-works-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px)  { .how-it-works-grid { grid-template-columns: 1fr; } }
+
+  /* ═══ Artwork specs table (inside carousel) ═══ */
   .artwork-specs-table {
     width: 100%;
-    margin: 1.25rem 0;
-    border-top: 1px solid var(--border-color, #E8E1D7);
-    border-bottom: 1px solid var(--border-color, #E8E1D7);
-    padding: 0.75rem 0;
-    font-size: 0.875rem;
+    margin: 0.75rem 0 1rem;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0.65rem 0;
   }
   .artwork-specs-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.35rem 0;
+    display: flex; justify-content: space-between;
+    padding: 0.3rem 0;
+    font-size: 0.88rem;
   }
-  .artwork-specs-label {
-    color: var(--text-muted, #7A746C);
-  }
-  .artwork-specs-val {
-    font-weight: 600;
-    color: var(--text-heading, #1F1C19);
-  }
+  .artwork-specs-label { color: var(--text-muted); }
+  .artwork-specs-val { font-weight: 600; color: var(--text-heading); }
 
-  /* ── Inline Toast / Form Feedback ── */
+  /* ═══ Form feedback ═══ */
   .form-feedback-box {
     display: none;
-    padding: 1.25rem;
-    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-sm);
     margin-bottom: 1.25rem;
     font-size: 0.9rem;
     line-height: 1.5;
   }
   .form-feedback-box.success {
     display: block;
-    background: #EAF2EA;
-    border: 1px solid #B4D7B4;
-    color: #234B23;
+    background: #EAF2EA; border: 1px solid #B4D7B4; color: #234B23;
   }
   .form-feedback-box.error {
     display: block;
-    background: #FDF2F2;
-    border: 1px solid #F8B4B4;
-    color: #9B1C1C;
+    background: #FDF2F2; border: 1px solid #F8B4B4; color: #9B1C1C;
   }
-  .dark .form-feedback-box.success {
-    background: #1B2A1B;
-    border-color: #2C522C;
-    color: #A6E2A6;
-  }
-  .dark .form-feedback-box.error {
-    background: #2C1818;
-    border-color: #5C2424;
-    color: #F8B4B4;
-  }
+  body.dark .form-feedback-box.success { background: #1B2A1B; border-color: #2C522C; color: #A6E2A6; }
+  body.dark .form-feedback-box.error   { background: #2C1818; border-color: #5C2424; color: #F8B4B4; }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
+<!-- ═══════════════ NAVIGATION ═══════════════ -->
 <nav id="main-nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-   <a href="#home" class="nav-logo" aria-label="Bid For Tomorrow home">
+    <a href="#home" class="nav-logo" aria-label="Bid For Tomorrow home">
       <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-180x180.png" alt="Bid For Tomorrow Logo" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="favicon-180x180.png" alt="" style="width:100%;height:100%;object-fit:cover;">
       </div>
       Bid For Tomorrow
     </a>
     <ul class="nav-links" id="nav-links" role="list">
       <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Our Branches</a></li>
-      <li><a href="auction.html" style="font-weight:600; color:var(--matcha-dark, #3D4D3D);">Fall 26 Auction &nearr;</a></li>
+      <li><a href="branches.html">Branches</a></li>
+      <li><a href="auction.html" class="nav-badge-pill">Fall 26 Auction ↗</a></li>
       <li><a href="#artwork">Gallery</a></li>
-      <li><a href="#auctions">Events</a></li>
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#impact">Impact</a></li>
       <li><a href="#causes">Causes</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="volunteer.html">Volunteer</a></li>
       <li><a href="#get-involved" class="nav-cta">Get Involved</a></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
@@ -368,27 +272,21 @@
   </div>
 </nav>
 
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero" id="home" aria-label="Hero">
-  <!-- 1. Background Tone -->
   <div class="hero-bg" aria-hidden="true"></div>
-
-  <!-- 2. Woven Canvas Texture -->
   <div class="hero-canvas-texture" aria-hidden="true"></div>
   <div class="hero-canvas-weave-detail" aria-hidden="true"></div>
-
-  <!-- 3. Interactive Paint Canvas Layer (Sits behind text) -->
   <canvas id="hero-paint-canvas" class="paint-canvas-layer"></canvas>
 
-  <!-- 4. Hero Content (Sits in front of paint) -->
   <div class="hero-content">
-
+    <span class="hero-tag">Student-led nonprofit · GTA &amp; Massachusetts</span>
 
     <h1>Don't bide your time&mdash; <br><em>Bid For Tomorrow.</em></h1>
-    <p class="hero-sub">A student-led nonprofit giving young artists a platform while supporting youth physical and mental health in North America.</p>
+    <p class="hero-sub">A student-led nonprofit giving young artists a platform while supporting youth physical and mental health across North America.</p>
 
     <div class="hero-buttons">
-      <a href="auction.html" class="btn btn-primary">View Fall 26 Auction Lots</a>
+      <a href="auction.html" class="btn btn-primary">View Fall 26 Auction</a>
       <a href="#artwork" class="btn btn-outline">Explore Gallery</a>
       <a href="#get-involved" class="btn btn-outline">Get Involved</a>
     </div>
@@ -400,41 +298,34 @@
         <div class="hero-stat-num"><span class="count-up" data-target="9">0</span>+</div>
         <div class="hero-stat-label">Student Artists</div>
       </div>
-
       <div class="hero-stat-box">
         <div class="hero-stat-num"><span class="count-up" data-target="30">0</span></div>
         <div class="hero-stat-label">Artworks Created</div>
       </div>
-
       <div class="hero-stat-box">
         <div class="hero-stat-num">100%</div>
         <div class="hero-stat-label">Student Directed</div>
       </div>
-
       <div class="hero-stat-box cerulean-accent">
         <div class="hero-stat-num">GTA &amp; MA</div>
         <div class="hero-stat-label">Community Focus</div>
       </div>
     </div>
 
-    <!-- 5. Interactive Studio Color Selector Toolbar -->
     <div class="paint-toolbar" id="paint-toolbar">
       <div class="palette-swatches">
-        <span class="palette-label">Paint Color:</span>
-        <button type="button" class="swatch-btn active" data-color="rainbow" title="Rainbow Multi-color">🌈 Multi</button>
+        <span class="palette-label">Paint:</span>
+        <button type="button" class="swatch-btn active" data-color="rainbow" title="Rainbow">🌈 Multi</button>
         <button type="button" class="swatch-btn color-dot" data-color="#CF5527" style="background:#CF5527;" title="Terracotta"></button>
         <button type="button" class="swatch-btn color-dot" data-color="#7D2027" style="background:#7D2027;" title="Crimson"></button>
         <button type="button" class="swatch-btn color-dot" data-color="#998731" style="background:#998731;" title="Ochre"></button>
         <button type="button" class="swatch-btn color-dot" data-color="#5FA8C2" style="background:#5FA8C2;" title="Cerulean"></button>
         <button type="button" class="swatch-btn color-dot" data-color="#673C34" style="background:#673C34;" title="Mahogany"></button>
-
-        <!-- Custom Color Picker Input -->
-        <label class="custom-color-label" title="Choose any custom color">
+        <label class="custom-color-label" title="Choose a custom color">
           🎨 Custom
           <input type="color" id="custom-color-picker" value="#CF5527">
         </label>
       </div>
-
       <div class="paint-actions">
         <button type="button" id="btn-throw-splatter" class="toolbar-btn primary-tool">Throw Splatter</button>
         <button type="button" id="btn-clear-paint" class="toolbar-btn">Clear Canvas</button>
@@ -443,12 +334,12 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
+<!-- ═══════════════ GALLERY ═══════════════ -->
 <section class="section gallery-section" id="artwork">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
       <h2>Student Artwork Gallery</h2>
-      <p>Explore original pieces handcrafted by youth artists. Click any lot to inspect dimensions, medium details, and prepare for bidding in the upcoming auction.</p>
+      <p>Original pieces by youth artists. Click any lot to inspect dimensions, medium, and details before bidding in the Fall 2026 auction.</p>
     </div>
 
     <div class="artwork-carousel fade-up">
@@ -463,55 +354,55 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ EDITORIAL MISSION & VALUES ═══════════════════════════ -->
+<!-- ═══════════════ MISSION & VALUES ═══════════════ -->
 <section class="section mission-section" id="mission">
   <div class="container">
     <div class="mission-editorial-grid">
       <div class="fade-up">
+        <span class="eyebrow">Our Mission</span>
         <h2 class="editorial-statement">
           When youth compassion meets creative expression, small acts of kindness become lasting community care.
         </h2>
         <p style="color:var(--text-body); line-height:1.7; margin-bottom:1.5rem;">
-          Bid For Tomorrow was founded on the conviction that high school artists have profound potential to effect direct change. Through public exhibition auctions, we connect emerging youth creators across the Greater Toronto Area and New England with charity partners fighting pediatric illness and mental health distress.
+          Bid For Tomorrow was founded on the conviction that high school artists have profound potential to effect direct change. Through public exhibition auctions, we connect emerging youth creators across the Greater Toronto Area and New England with our designated charity partner.
         </p>
-        <div style="padding:1.5rem; border-radius:12px; background:var(--card-bg); border:1px solid var(--border-color); margin-top:1.5rem;">
-          <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); font-weight:600; margin-bottom:0.25rem;">Our Sustainable Model</div>
-          <p style="font-size:0.9rem; margin:0; line-height:1.5;">
-            Auction proceeds are divided between our designated youth healthcare charities and direct allocations to student artists to support their continuing education and creative supplies.
+        <div style="padding:1.5rem; border-radius:var(--radius-sm); background:var(--card-bg); border:1px solid var(--card-border); border-left:4px solid var(--terracotta); margin-top:1.5rem;">
+          <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); font-weight:700; margin-bottom:0.4rem;">Our Sustainable Model</div>
+          <p style="font-size:0.92rem; margin:0; line-height:1.6;">
+            Every auction dollar is split 50/50. Half funds <strong>Holland Bloorview Kids Rehabilitation Hospital</strong> — our sole beneficiary — and half goes directly to the student artist for continuing education and creative supplies.
           </p>
         </div>
       </div>
 
-      <div class="fade-up">
+      <div class="fade-up fade-up-delay-1">
         <div class="numbered-value-card">
           <div class="num-marker">01</div>
-          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Creativity as Agency</h3>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin:0.5rem 0 0.5rem 0;">Creativity as Agency</h3>
           <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
             Imagination is one of the most potent tools young people possess. We elevate classroom work into public exhibitions that command respect and financial impact.
           </p>
         </div>
-
         <div class="numbered-value-card">
           <div class="num-marker">02</div>
-          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Direct Health Advocacy</h3>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin:0.5rem 0 0.5rem 0;">Direct Health Advocacy</h3>
           <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
-            Every canvas painted and every bid placed funds tangible hospital resources, pediatric equipment, and mental health counseling for youth.
+            Every canvas painted and every bid placed funds tangible pediatric rehabilitation resources at Holland Bloorview Kids Rehabilitation Hospital.
           </p>
         </div>
-
         <div class="numbered-value-card">
           <div class="num-marker">03</div>
-          <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; margin:0.5rem 0 0.5rem 0;">Student Leadership Right Now</h3>
+          <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin:0.5rem 0 0.5rem 0;">Student Leadership Right Now</h3>
           <p style="font-size:0.9rem; color:var(--text-body); line-height:1.6; margin:0;">
-            Students curate our galleries, manage event operations, and direct community outreach—proving youth lead through immediate action.
+            Students curate our galleries, manage event operations, and direct community outreach — proving youth lead through immediate action.
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ═══════════════════════════ HOW IT WORKS ═══════════════════════════ -->
-<section class="section how-it-works-section" id="how-it-works">
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="section how-section" id="how-it-works">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
       <h2>How It Works</h2>
@@ -519,64 +410,57 @@
     </div>
 
     <div class="how-it-works-grid">
-      <!-- Step 1 -->
       <div class="how-step fade-up">
         <div class="how-step-number">01</div>
         <div class="how-step-content">
           <h3>Students Create</h3>
-          <p>High school artists from our GTA and Lexington chapters submit original work — paintings, drawings, mixed media, anything they've made by hand. Each piece gets reviewed and catalogued for the upcoming auction.</p>
+          <p>High school artists from our GTA and Lexington chapters submit original work — paintings, drawings, mixed media, anything made by hand.</p>
         </div>
       </div>
-
-      <!-- Step 2 -->
       <div class="how-step fade-up fade-up-delay-1">
         <div class="how-step-number">02</div>
         <div class="how-step-content">
           <h3>We Exhibit</h3>
-          <p>Selected pieces go up on our online gallery and at in-person exhibition events. Every artwork includes details about the artist, medium, dimensions, and starting bid so you know exactly what you're looking at.</p>
+          <p>Selected pieces go up on our online gallery and at in-person events, with artist, medium, dimensions, and starting bid for every lot.</p>
         </div>
       </div>
-
-      <!-- Step 3 -->
       <div class="how-step fade-up fade-up-delay-2">
         <div class="how-step-number">03</div>
         <div class="how-step-content">
           <h3>You Bid</h3>
-          <p>Anyone can register as a bidder — no membership required. Browse the lots, place your bid online or at an event, and compete with other supporters who care about the same causes.</p>
+          <p>Anyone can register as a bidder — no membership required. Browse lots online or at an event and place your bid.</p>
         </div>
       </div>
-
-      <!-- Step 4 -->
       <div class="how-step fade-up fade-up-delay-3">
         <div class="how-step-number">04</div>
         <div class="how-step-content">
           <h3>Creativity Creates Impact</h3>
-          <p>When a piece sells, the money doesn't just disappear. A percentage goes directly to the student artist for art supplies and education costs. The rest funds youth health programs through our charity partners.</p>
+          <p>Half funds Holland Bloorview. Half goes directly to the student artist for supplies and education. Every sale is a 50/50 split.</p>
         </div>
       </div>
     </div>
 
-    <!-- Money breakdown -->
     <div class="money-breakdown fade-up">
-      <h3 style="text-align:center; margin-bottom:1.5rem; font-family:'Playfair Display', serif;">Where Does the Money Go?</h3>
+      <h3 style="text-align:center; margin-bottom:1.5rem; font-family:'Playfair Display',serif; color:var(--text-heading);">Where Does the Money Go?</h3>
       <div class="money-split">
         <div class="money-split-item">
           <div class="money-split-percent">50%</div>
-          <div class="money-split-label">Holland Bloorview Kids Rehabilitation Hospital</div>
+          <div class="money-split-label">Holland Bloorview<br>Kids Rehabilitation Hospital</div>
         </div>
         <div class="money-split-divider"></div>
         <div class="money-split-item">
           <div class="money-split-percent">50%</div>
-          <div class="money-split-label">Direct to Student Artists</div>
+          <div class="money-split-label">Direct to<br>Student Artists</div>
         </div>
       </div>
-      <p style="text-align:center; font-size:0.85rem; color:var(--text-muted); margin-top:1rem;">
-        Artists also receive verified volunteer hours for their participation, regardless of whether their piece sells.
+      <p style="text-align:center; font-size:0.85rem; color:var(--text-muted); margin-top:1.25rem;">
+        Holland Bloorview is our sole beneficiary. Submitting artwork and volunteering are separate pathways — artists receive 50% of proceeds when a piece sells; volunteers may be able to have eligible activities verified through <a href="volunteer.html" style="text-decoration:underline; color:var(--terracotta);">our Volunteer program</a>.
       </p>
     </div>
   </div>
 </section>
-<!-- ═══════════════════════════ IMPACT STATS ═══════════════════════════ -->
+
+<!-- ═══════════════ IMPACT ═══════════════ -->
 <section class="section stats-section" id="impact">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
@@ -589,31 +473,27 @@
         <span class="stat-number count-up" data-target="8">0</span>
         <div class="stat-label">Student Artists</div>
       </div>
-
       <div class="stat-item">
         <span class="stat-number count-up" data-target="19">0</span>
         <div class="stat-label">Art Pieces Created</div>
       </div>
-
       <div class="stat-item">
         <span class="stat-number">2</span>
-        <div class="stat-label">Active Chapters (GTA &amp; MA)</div>
+        <div class="stat-label">Active Chapters</div>
       </div>
-
       <div class="stat-item">
         <span class="stat-number">Fall '26</span>
         <div class="stat-label">Inaugural Auction</div>
       </div>
-
       <div class="stat-item">
-        <span class="stat-number">100%</span>
-        <div class="stat-label">Charity &amp; Artist Directed</div>
+        <span class="stat-number">50/50</span>
+        <div class="stat-label">Charity &amp; Artist Split</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ EVENTS & AUCTIONS ═══════════════════════════ -->
+<!-- ═══════════════ EVENTS & AUCTIONS ═══════════════ -->
 <section class="section auctions-section" id="auctions">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
@@ -624,32 +504,33 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ CAUSES ═══════════════════════════ -->
-<!-- ═══════════════════════════ CAUSE ═══════════════════════════ -->
+<!-- ═══════════════ CAUSES ═══════════════ -->
 <section class="section causes-section" id="causes">
   <div class="container">
     <div class="section-header fade-up" style="margin-bottom:2rem; text-align:left;">
-      <h2>The Cause We Support</h2>
-      <p>Bid For Tomorrow directs proceeds toward Holland Bloorview Kids Rehabilitation Hospital to support youth health, rehabilitation, and inclusion.</p>
+      <h2>Our Sole Beneficiary</h2>
+      <p>100% of Bid For Tomorrow's charitable proceeds go to Holland Bloorview Kids Rehabilitation Hospital, supporting youth health, rehabilitation, and inclusion.</p>
     </div>
 
-    <div class="causes-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1.5rem;">
-      <div class="cause-nameplate-card fade-up">
-        <div>
-          <div class="cause-org-title">Holland Bloorview</div>
-          <p style="font-size:0.875rem; color:var(--text-body); margin-top:0.85rem; line-height:1.5;">
-            Pioneering pediatric rehabilitation hospital creating an inclusive world of belonging for children and youth with disabilities.
-          </p>
-          <a href="https://hollandbloorview.ca/" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin-top:1rem; font-size:0.875rem; font-weight:600; text-decoration:underline;">Learn more at hollandbloorview.ca &rarr;</a>
+    <div class="causes-grid">
+      <div class="cause-card fade-up">
+        <div class="cause-logo-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-8-5.5-8-11a5 5 0 019-3 5 5 0 019 3c0 5.5-8 11-8 11z"/></svg>
         </div>
-        <div class="cause-tag">Rehabilitation &amp; Inclusion</div>
+        <div class="cause-name">Holland Bloorview</div>
+        <div class="cause-desc">
+          Pioneering pediatric rehabilitation hospital creating an inclusive world of belonging for children and youth with disabilities.
+        </div>
+        <a href="https://hollandbloorview.ca/" target="_blank" rel="noopener noreferrer"
+           style="display:inline-block; margin-top:1rem; font-size:0.875rem; font-weight:600; text-decoration:underline; color:var(--terracotta);">
+          Learn more at hollandbloorview.ca &rarr;
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ═══════════════════════════ TESTIMONIALS ═══════════════════════════ -->
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
 <section class="section-sm testimonials-section" id="testimonials">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2rem;">
@@ -662,7 +543,7 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ GET INVOLVED ═══════════════════════════ -->
+<!-- ═══════════════ GET INVOLVED ═══════════════ -->
 <section class="section involved-section" id="get-involved">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
@@ -693,8 +574,8 @@
           <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         </div>
         <div class="involved-title">Volunteer With Us</div>
-        <div class="involved-desc">Help curate gallery exhibitions, coordinate participating artists, and earn verified secondary school community hours.</div>
-        <a href="https://form.jotform.com/261786840237061" class="btn btn-primary" target="_blank" rel="noopener">Apply to Volunteer</a>
+        <div class="involved-desc">Help support student artists, community initiatives, and Bid For Tomorrow events. Eligible activities can be documented and verified for students who wish to submit hours through their school's community-involvement process.</div>
+        <a href="volunteer.html" class="btn btn-primary">Learn About Volunteering &rarr;</a>
       </div>
 
       <div class="involved-card involved-card-4 fade-up fade-up-delay-3">
@@ -709,7 +590,7 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ FAQ ═══════════════════════════ -->
+<!-- ═══════════════ FAQ ═══════════════ -->
 <section class="section faq-section" id="faq">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
@@ -719,7 +600,7 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
+<!-- ═══════════════ CONTACT ═══════════════ -->
 <section class="section contact-section" id="contact">
   <div class="container">
     <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
@@ -738,9 +619,11 @@
 
         <div class="contact-item">
           <div class="contact-item-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="var(--matcha-dark)" style="stroke:none;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <svg viewBox="0 0 24 24" fill="var(--crimson)" style="stroke:none;">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
           </div>
-          <div class="contact-item-text"><a href="https://www.instagram.com/bid4tomorrow/" target="_blank" rel="noopener noreferrer">@bid4tomorrow</a></div>
+          <div class="contact-item-text"><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">@paint_itforward</a></div>
         </div>
 
         <div class="contact-item">
@@ -753,7 +636,6 @@
 
       <div class="contact-form-box fade-up">
         <div id="formFeedback" class="form-feedback-box" role="alert"></div>
-
         <form id="contactForm">
           <h3>Send us a message</h3>
           <div class="form-row">
@@ -785,39 +667,35 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" placeholder="Tell us a bit about yourself and how you'd like to get involved..."></textarea>
           </div>
-          <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;justify-content:center;">
-            Send Message
-          </button> 
+          <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;">Send Message</button>
         </form>
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
       <script>
       emailjs.init({ publicKey: "LqatH02y3BQhhyDmA" });
-
       const contactForm = document.getElementById("contactForm");
       const feedbackBox = document.getElementById("formFeedback");
       const submitBtn = document.getElementById("submitBtn");
 
       contactForm.addEventListener("submit", function(event) {
-          event.preventDefault();
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Sending...";
-
-          emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
+        event.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+        emailjs.sendForm("service_bzg624p", "template_7fodvw9", this)
           .then(() => {
-              feedbackBox.className = "form-feedback-box success";
-              feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
-              contactForm.reset();
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Send Message";
+            feedbackBox.className = "form-feedback-box success";
+            feedbackBox.innerHTML = "<strong>Message sent successfully!</strong> Thank you for reaching out. A student coordinator will get back to you shortly.";
+            contactForm.reset();
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Send Message";
           })
           .catch((error) => {
-              feedbackBox.className = "form-feedback-box error";
-              feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or reach us directly at paint.it.forward.art@gmail.com.";
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Send Message";
-              console.error(error);
+            feedbackBox.className = "form-feedback-box error";
+            feedbackBox.innerHTML = "<strong>Could not send message.</strong> Please check your connection or email us directly at bid4tomorrow@gmail.com.";
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Send Message";
+            console.error(error);
           });
       });
       </script>
@@ -825,7 +703,7 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer role="contentinfo">
   <div class="footer-inner">
     <div class="footer-top">
@@ -849,24 +727,16 @@
         <ul>
           <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
           <li><a href="auction.html">Bid on Artwork</a></li>
-          <li><a href="https://form.jotform.com/261786840237061" target="_blank" rel="noopener">Volunteer</a></li>
+          <li><a href="volunteer.html">Volunteer With Us</a></li>
+          <li><a href="volunteer-hours-policy.html">Volunteer Hours Policy</a></li>
           <li><a href="#contact">Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Connect</h4>
         <ul>
-          <li><a href="mailto:paint.it.forward.art@gmail.com">Email Us</a></li>
-          <li>
-            <a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
-              Instagram
-            </a>
-          </li>
+          <li><a href="mailto:bid4tomorrow@gmail.com">Email Us</a></li>
+          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
         </ul>
       </div>
     </div>
@@ -875,304 +745,195 @@
     </div>
   </div>
 </footer>
-<!-- Dark mode toggle -->
+
 <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
   <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
 </button>
 
-<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════════════ -->
 <script>
-/* ── STANDALONE PAINT HERO SIMULATION ── */
+/* ── PAINT HERO ── */
 (function initPaintHero() {
   const canvas = document.getElementById('hero-paint-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d', { alpha: true });
+  const palette = ['#CF5527', '#7D2027', '#998731', '#5FA8C2', '#673C34', '#A83E17'];
+  let activeColor = 'rainbow', droplets = [], colorIdx = 0;
+  let isDown = false, last = null, lastSplash = 0;
 
-  const defaultPalette = ['#CF5527', '#7D2027', '#998731', '#5FA8C2', '#673C34', '#A83E17'];
-  let activeColor = 'rainbow'; // 'rainbow' or hex string
-  let droplets = [];
-  let colorIdx = 0;
-  let isPointerDown = false;
-  let lastPointer = null;
-  let lastSplash = 0;
-
-  function hexToRgb(hex) {
-    let bigint = parseInt(hex.replace('#', ''), 16);
-    return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
-  }
-
+  const hexToRgb = h => { const n = parseInt(h.replace('#',''),16); return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}; };
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = canvas.clientWidth * dpr;
     canvas.height = canvas.clientHeight * dpr;
-    ctx.resetTransform?.();
-    ctx.scale(dpr, dpr);
+    ctx.resetTransform?.(); ctx.scale(dpr, dpr);
   }
-  window.addEventListener('resize', resize);
-  resize();
+  window.addEventListener('resize', resize); resize();
 
-  function getCurrentColor() {
-    if (activeColor !== 'rainbow') {
-      return hexToRgb(activeColor);
-    }
-    const colorHex = defaultPalette[colorIdx % defaultPalette.length];
-    colorIdx++;
-    return hexToRgb(colorHex);
+  function getColor() {
+    if (activeColor !== 'rainbow') return hexToRgb(activeColor);
+    return hexToRgb(palette[colorIdx++ % palette.length]);
   }
 
-  function createSplash(x, y, vel = { x: 0, y: 0 }) {
-    const color = getCurrentColor();
-    const now = performance.now();
+  function splash(x, y, vel = {x:0,y:0}) {
+    const color = getColor(), now = performance.now();
     const radius = 22 + Math.random() * 24;
-
-    // Create 2-4 dripping streams flowing down with gravity
-    const dripCount = Math.floor(2 + Math.random() * 3);
     const drips = [];
+    const dripCount = Math.floor(2 + Math.random() * 3);
     for (let i = 0; i < dripCount; i++) {
-      const offsetX = (Math.random() - 0.5) * radius * 1.3;
-      const offsetY = Math.abs(offsetX) * 0.3 + (radius * 0.45);
-      const dripW = Math.max(1.8, radius * 0.22);
-      drips.push({
-        offsetX, offsetY,
-        currentLength: 0,
-        maxLength: 70 + Math.random() * 140,
-        speed: 0.8 + Math.random() * 1.4,
-        trail: [{ x: offsetX, y: offsetY, width: dripW }],
-        tearRadius: dripW * 1.4,
-        meander: (Math.random() - 0.5) * 1.5,
-        settled: false
-      });
+      const ox = (Math.random() - 0.5) * radius * 1.3;
+      const oy = Math.abs(ox) * 0.3 + (radius * 0.45);
+      const w = Math.max(1.8, radius * 0.22);
+      drips.push({ offsetX: ox, offsetY: oy, currentLength: 0,
+        maxLength: 70 + Math.random()*140, speed: 0.8 + Math.random()*1.4,
+        trail: [{x:ox, y:oy, width:w}], tearRadius: w*1.4,
+        meander: (Math.random()-0.5)*1.5, settled: false });
     }
-
-    // Organic splatter blob contours
-    const points = [];
+    const pts = [];
     for (let i = 0; i < 14; i++) {
-      const ang = (i / 14) * Math.PI * 2;
-      const lobe = Math.random() < 0.35 ? (1.3 + Math.random() * 0.9) : (0.75 + Math.random() * 0.4);
-      points.push({ x: Math.cos(ang) * radius * lobe, y: Math.sin(ang) * radius * lobe });
+      const a = (i/14)*Math.PI*2;
+      const lobe = Math.random() < 0.35 ? (1.3 + Math.random()*0.9) : (0.75 + Math.random()*0.4);
+      pts.push({x:Math.cos(a)*radius*lobe, y:Math.sin(a)*radius*lobe});
     }
-
-    droplets.push({
-      x, y, vx: vel.x * 0.08, vy: vel.y * 0.08,
-      radius: 1, baseRadius: radius,
-      color, alpha: 0.96, maxAlpha: 0.96,
-      birthTime: now, lifespan: 11000, dryDelay: 4000,
-      points, drips
-    });
-
-    // Satellite splatter droplets
-    const satCount = 14 + Math.floor(Math.random() * 12);
-    for (let i = 0; i < satCount; i++) {
-      const satAng = Math.random() * Math.PI * 2;
-      const satDist = (radius * 0.9 + Math.random() * 90);
-      const satR = 3.5 + Math.random() * 7;
-      droplets.push({
-        x: x + Math.cos(satAng) * satDist,
-        y: y + Math.sin(satAng) * satDist,
-        vx: 0, vy: 0, radius: 1, baseRadius: satR,
-        color, alpha: 0.9, maxAlpha: 0.9,
-        birthTime: now, lifespan: 11000, dryDelay: 4000,
-        points: []
-      });
+    droplets.push({ x, y, vx: vel.x*0.08, vy: vel.y*0.08,
+      radius: 1, baseRadius: radius, color, alpha: 0.96, maxAlpha: 0.96,
+      birthTime: now, lifespan: 11000, dryDelay: 4000, points: pts, drips });
+    const satN = 14 + Math.floor(Math.random()*12);
+    for (let i = 0; i < satN; i++) {
+      const a = Math.random()*Math.PI*2, d = radius*0.9 + Math.random()*90;
+      const r = 3.5 + Math.random()*7;
+      droplets.push({ x:x+Math.cos(a)*d, y:y+Math.sin(a)*d, vx:0, vy:0,
+        radius: 1, baseRadius: r, color, alpha: 0.9, maxAlpha: 0.9,
+        birthTime: now, lifespan: 11000, dryDelay: 4000, points: [] });
     }
   }
 
   function render(time) {
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-    const surviving = [];
-
-    for (let d of droplets) {
+    const keep = [];
+    for (const d of droplets) {
       const age = time - d.birthTime;
       if (age >= d.lifespan) continue;
-
       let alpha = d.maxAlpha;
-      if (age > d.dryDelay) {
-        alpha = d.maxAlpha * (1 - Math.pow((age - d.dryDelay) / (d.lifespan - d.dryDelay), 1.3));
-      }
+      if (age > d.dryDelay) alpha = d.maxAlpha * (1 - Math.pow((age - d.dryDelay) / (d.lifespan - d.dryDelay), 1.3));
       if (alpha <= 0.01) continue;
-
       if (d.radius < d.baseRadius) d.radius += (d.baseRadius - d.radius) * 0.4 + 0.6;
-
-      // Update drips
-      if (d.drips) {
-        for (let drip of d.drips) {
-          if (!drip.settled && drip.currentLength < drip.maxLength) {
-            drip.currentLength += drip.speed * Math.max(0.2, 1 - (drip.currentLength / drip.maxLength) * 0.7);
-            const curX = drip.offsetX + (Math.sin(drip.currentLength * 0.06) * 0.7) + (drip.meander * 0.35);
-            const curY = drip.offsetY + drip.currentLength;
-            drip.trail.push({ x: curX, y: curY, width: Math.max(1.2, drip.trail[0].width * (1 - (drip.currentLength / drip.maxLength) * 0.5)) });
-            if (drip.currentLength >= drip.maxLength) drip.settled = true;
-          }
+      if (d.drips) for (const drip of d.drips) {
+        if (!drip.settled && drip.currentLength < drip.maxLength) {
+          drip.currentLength += drip.speed * Math.max(0.2, 1 - (drip.currentLength/drip.maxLength)*0.7);
+          const cx = drip.offsetX + Math.sin(drip.currentLength*0.06)*0.7 + drip.meander*0.35;
+          const cy = drip.offsetY + drip.currentLength;
+          drip.trail.push({x:cx, y:cy, width: Math.max(1.2, drip.trail[0].width*(1-(drip.currentLength/drip.maxLength)*0.5))});
+          if (drip.currentLength >= drip.maxLength) drip.settled = true;
         }
       }
-
       ctx.save();
-      // Draw drips under the splat
-      if (d.drips) {
-        ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
-        for (let drip of d.drips) {
-          if (drip.trail.length > 1) {
-            ctx.beginPath();
-            for (let seg of drip.trail) ctx.arc(d.x + seg.x, d.y + seg.y, seg.width, 0, Math.PI * 2);
-            ctx.fill();
-            const tip = drip.trail[drip.trail.length - 1];
-            ctx.beginPath();
-            ctx.arc(d.x + tip.x, d.y + tip.y, drip.tearRadius, 0, Math.PI * 2);
-            ctx.fill();
-          }
+      ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
+      if (d.drips) for (const drip of d.drips) {
+        if (drip.trail.length > 1) {
+          ctx.beginPath();
+          for (const seg of drip.trail) ctx.arc(d.x+seg.x, d.y+seg.y, seg.width, 0, Math.PI*2);
+          ctx.fill();
+          const tip = drip.trail[drip.trail.length-1];
+          ctx.beginPath(); ctx.arc(d.x+tip.x, d.y+tip.y, drip.tearRadius, 0, Math.PI*2); ctx.fill();
         }
       }
-
-      // Draw splat body
-      ctx.fillStyle = `rgba(${d.color.r},${d.color.g},${d.color.b},${alpha})`;
       if (d.points && d.points.length > 2) {
         ctx.beginPath();
-        const scale = d.radius / d.baseRadius;
-        ctx.moveTo(d.x + d.points[0].x * scale, d.y + d.points[0].y * scale);
+        const s = d.radius / d.baseRadius;
+        ctx.moveTo(d.x + d.points[0].x*s, d.y + d.points[0].y*s);
         for (let p = 1; p < d.points.length; p++) {
-          const midX = d.x + (d.points[p - 1].x + d.points[p].x) * 0.5 * scale;
-          const midY = d.y + (d.points[p - 1].y + d.points[p].y) * 0.5 * scale;
-          ctx.quadraticCurveTo(d.x + d.points[p - 1].x * scale, d.y + d.points[p - 1].y * scale, midX, midY);
+          const mx = d.x + (d.points[p-1].x + d.points[p].x)*0.5*s;
+          const my = d.y + (d.points[p-1].y + d.points[p].y)*0.5*s;
+          ctx.quadraticCurveTo(d.x + d.points[p-1].x*s, d.y + d.points[p-1].y*s, mx, my);
         }
-        ctx.closePath();
-        ctx.fill();
-
-        // Glossy wet paint highlight
+        ctx.closePath(); ctx.fill();
         if (age < d.dryDelay && d.radius > 6) {
-          ctx.fillStyle = `rgba(255,255,255,${alpha * 0.35 * (1 - age / d.dryDelay)})`;
+          ctx.fillStyle = `rgba(255,255,255,${alpha*0.35*(1-age/d.dryDelay)})`;
           ctx.beginPath();
-          ctx.ellipse(d.x - d.radius * 0.28, d.y - d.radius * 0.28, d.radius * 0.28, d.radius * 0.18, -Math.PI / 4, 0, Math.PI * 2);
+          ctx.ellipse(d.x - d.radius*0.28, d.y - d.radius*0.28, d.radius*0.28, d.radius*0.18, -Math.PI/4, 0, Math.PI*2);
           ctx.fill();
         }
       } else {
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.radius, 0, Math.PI*2); ctx.fill();
       }
       ctx.restore();
-      surviving.push(d);
+      keep.push(d);
     }
-
-    droplets = surviving;
+    droplets = keep;
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
 
-  // Mouse & Touch events on the canvas
-  canvas.addEventListener('pointerdown', (e) => {
-    isPointerDown = true;
+  canvas.addEventListener('pointerdown', e => {
+    isDown = true;
     const r = canvas.getBoundingClientRect();
-    lastPointer = { x: e.clientX, y: e.clientY, time: performance.now() };
-    createSplash(e.clientX - r.left, e.clientY - r.top);
+    last = {x:e.clientX, y:e.clientY, time:performance.now()};
+    splash(e.clientX-r.left, e.clientY-r.top);
   });
-
-  canvas.addEventListener('pointermove', (e) => {
-    if (!lastPointer) return;
+  canvas.addEventListener('pointermove', e => {
+    if (!last) return;
     const now = performance.now();
-    const dt = Math.max(1, now - lastPointer.time);
-    const speed = Math.hypot(e.clientX - lastPointer.x, e.clientY - lastPointer.y) / dt;
-    if (isPointerDown && (speed > 0.35 || now - lastSplash > 120)) {
+    const dt = Math.max(1, now - last.time);
+    const sp = Math.hypot(e.clientX-last.x, e.clientY-last.y) / dt;
+    if (isDown && (sp > 0.35 || now - lastSplash > 120)) {
       const r = canvas.getBoundingClientRect();
-      createSplash(e.clientX - r.left, e.clientY - r.top, { x: (e.clientX - lastPointer.x) / dt * 16, y: (e.clientY - lastPointer.y) / dt * 16 });
+      splash(e.clientX-r.left, e.clientY-r.top, {x:(e.clientX-last.x)/dt*16, y:(e.clientY-last.y)/dt*16});
       lastSplash = now;
     }
-    lastPointer = { x: e.clientX, y: e.clientY, time: now };
+    last = {x:e.clientX, y:e.clientY, time:now};
   });
+  window.addEventListener('pointerup', () => { isDown = false; last = null; });
 
-  window.addEventListener('pointerup', () => { isPointerDown = false; lastPointer = null; });
-
-  // ── Color Swatch & Custom Color Picker Listeners ──
-  const swatchButtons = document.querySelectorAll('.swatch-btn');
-  swatchButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      swatchButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeColor = btn.dataset.color;
-    });
+  const swatches = document.querySelectorAll('.swatch-btn');
+  swatches.forEach(b => b.addEventListener('click', () => {
+    swatches.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    activeColor = b.dataset.color;
+  }));
+  const picker = document.getElementById('custom-color-picker');
+  picker?.addEventListener('input', e => {
+    swatches.forEach(x => x.classList.remove('active'));
+    activeColor = e.target.value;
   });
-
-  const customPicker = document.getElementById('custom-color-picker');
-  if (customPicker) {
-    customPicker.addEventListener('input', (e) => {
-      swatchButtons.forEach(b => b.classList.remove('active'));
-      activeColor = e.target.value;
-    });
-  }
-
-  // ── Throw Splatter Button ──
-  const throwBtn = document.getElementById('btn-throw-splatter');
-  if (throwBtn) {
-    throwBtn.addEventListener('click', () => {
-      const r = canvas.getBoundingClientRect();
-      createSplash(r.width * (0.25 + Math.random() * 0.5), r.height * (0.2 + Math.random() * 0.45));
-    });
-  }
-
-  // ── Clear Canvas Button ──
-  const clearBtn = document.getElementById('btn-clear-paint');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      droplets = [];
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    });
-  }
-
-  // Initial welcome splash
+  document.getElementById('btn-throw-splatter')?.addEventListener('click', () => {
+    const r = canvas.getBoundingClientRect();
+    splash(r.width * (0.25 + Math.random()*0.5), r.height * (0.2 + Math.random()*0.45));
+  });
+  document.getElementById('btn-clear-paint')?.addEventListener('click', () => {
+    droplets = [];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
   setTimeout(() => {
     const r = canvas.getBoundingClientRect();
-    createSplash(r.width * 0.78, r.height * 0.3);
+    splash(r.width * 0.78, r.height * 0.3);
   }, 600);
 })();
 
-/* ── AUCTION CARDS DATA ── */
-const auctions = [
-  {
-    title: "Fall Auction 2026",
-    link: "auction.html",
-    note: "Date and venue to be announced. Pre-register for early lot viewings and digital catalogue access."
-  }
-];
+/* ── AUCTION CARDS ── */
+const auctions = [{ title: "Fall Auction 2026", link: "auction.html",
+  note: "Date and venue to be announced. Pre-register for early lot viewings and digital catalogue access." }];
 
-/* ── HERO STAT COUNTERS ── */
+/* ── STAT COUNTERS ── */
 document.addEventListener("DOMContentLoaded", () => {
-  const counters = document.querySelectorAll(".hero-stats .count-up, .stats-section .count-up");
-
-  const animateCounter = (counter) => {
-    const target = parseInt(counter.dataset.target, 10);
-    const duration = 800;
-    const startTime = performance.now();
-
-    const updateCounter = (currentTime) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const currentValue = Math.floor(progress * target);
-      counter.textContent = currentValue;
-
-      if (progress < 1) {
-        requestAnimationFrame(updateCounter);
-      } else {
-        counter.textContent = target;
-      }
+  const animate = c => {
+    const target = parseInt(c.dataset.target, 10);
+    const start = performance.now();
+    const step = now => {
+      const p = Math.min((now-start)/800, 1);
+      c.textContent = Math.floor(p * target);
+      if (p < 1) requestAnimationFrame(step); else c.textContent = target;
     };
-    requestAnimationFrame(updateCounter);
+    requestAnimationFrame(step);
   };
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll(".count-up").forEach(animateCounter);
-        obs.unobserve(entry.target);
-      }
-    });
+  const obs = new IntersectionObserver((es, o) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll(".count-up").forEach(animate); o.unobserve(e.target); } });
   }, { threshold: 0.3 });
-
-  const heroStats = document.querySelector(".hero-stats");
-  const statsSection = document.querySelector(".stats-section");
-  if (heroStats) observer.observe(heroStats);
-  if (statsSection) observer.observe(statsSection);
+  const h = document.querySelector(".hero-stats");
+  const s = document.querySelector(".stats-section");
+  if (h) obs.observe(h); if (s) obs.observe(s);
 });
 
-/* ── AUTHENTIC TESTIMONIAL DATA ── */
+/* ── TESTIMONIALS ── */
 const testimonials = [
   { text: "Seeing my watercolor piece displayed at an exhibition with real bidders was surreal. It proved to me that art made in a high school classroom can genuinely fund pediatric hospital care.", name: "Elena M.", role: "Grade 11 Student Artist, GTA" },
   { text: "The artistic maturity and curation in the room rivaled commercial gallery events. We bid on two pieces for our office and love sharing the students' story with clients.", name: "Marcus Vance", role: "Community Supporter & Bidder" },
@@ -1181,179 +942,146 @@ const testimonials = [
   { text: "The energy in the gallery was authentic and moving. Young people taking charge of philanthropy in their own local communities.", name: "Priyah Patel", role: "Volunteer Coordinator" }
 ];
 
-/* ── FAQ DATA ── */
+/* ── FAQ ── */
 const faqs = [
   { q: "How do I bid on artwork in the Fall 2026 auction?", a: "You can pre-register on our Auction page to receive the digital lot catalogue and venue details. Bidding will be available both in-person and via an online lot registration form." },
   { q: "Can students or their families buy the artwork they submitted?", a: "Students and families are welcome to participate as bidders, but artwork cannot be bought back through arrangements intended to guarantee or artificially inflate sale prices. Our auctions are structured for authentic fundraising." },
-  { q: "Will student artists receive proceeds from their artwork?", a: "Yes! While a major portion of proceeds funds designated hospital and mental health charities, we also allocate a percentage back to the student artist for education and art materials. Artists also receive verified volunteer hours." },
+  { q: "Will student artists receive proceeds from their artwork?", a: "Yes. Every auction dollar is split 50/50. Half of the proceeds fund Holland Bloorview Kids Rehabilitation Hospital — our sole beneficiary — and the other half goes directly to the student artist to support continuing education and creative supplies." },
+  { q: "Can I earn volunteer hours with Bid For Tomorrow?", a: "Yes. Bid For Tomorrow offers volunteer opportunities for students and community members. Eligible activities can be documented and verified by Bid For Tomorrow. Students seeking Ontario secondary-school community involvement hours should confirm that their chosen activity qualifies with their school before participating. See our <a href=\"volunteer.html\" style=\"text-decoration:underline;color:var(--terracotta);\">Volunteer page</a> for details." },
   { q: "How can students submit artwork?", a: "Students can apply through our Submit Artwork form in the Get Involved section. We accept oil, acrylic, watercolor, mixed media, and digital prints." },
-  { q: "Which charities does Bid For Tomorrow support?", a: "We support the SickKids Foundation, Kids Help Phone, Holland Bloorview Kids Rehabilitation Hospital, and the Toronto Arts Foundation." }
+  { q: "Which charities does Bid For Tomorrow support?", a: "Bid For Tomorrow's sole beneficiary is Holland Bloorview Kids Rehabilitation Hospital. Every charitable dollar we raise goes directly to Holland Bloorview's pediatric rehabilitation programs." }
 ];
 
 /* ── RENDER AUCTIONS ── */
-const aContainer = document.getElementById("auction-cards");
-if (aContainer) {
-  auctions.forEach(a => {
-    const targetLink = a.link || "auction.html";
-    aContainer.innerHTML += `
-      <article class="auction-card">
-        <div class="auction-card-header">
-          <a href="${targetLink}" style="text-decoration:none;color:inherit;display:block;">
-            <div class="auction-title">${a.title}</div>
-          </a>
+const aC = document.getElementById("auction-cards");
+if (aC) auctions.forEach(a => {
+  const link = a.link || "auction.html";
+  aC.innerHTML += `
+    <article class="auction-card">
+      <div class="auction-card-header">
+        <a href="${link}" style="text-decoration:none;color:inherit;display:block;position:relative;z-index:1;">
+          <div class="auction-title">${a.title}</div>
+        </a>
+      </div>
+      <div class="auction-body">
+        <div class="auction-detail">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Date: Fall 2026 (Announcement Soon)
         </div>
-        <div class="auction-body">
-          <div class="auction-detail">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Date: Fall 2026 (Announcement Soon)
-          </div>
-          <div class="auction-detail">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Location: GTA Gallery Venue &amp; Online
-          </div>
-          <div class="tbd-badge">Bidder Pre-Registration Open</div>
-          <p style="font-size:0.85rem; color:var(--text-body); margin-bottom:1.25rem;">${a.note}</p>
-          <a href="${targetLink}" class="btn btn-primary" style="width:100%;justify-content:center;text-decoration:none;">
-            View Fall 26 Auction Lots &rarr;
-          </a>
+        <div class="auction-detail">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Location: GTA Gallery Venue &amp; Online
         </div>
-      </article>`;
-  });
-}
+        <div class="tbd-badge">Bidder Pre-Registration Open</div>
+        <p style="font-size:0.85rem; color:var(--text-body); margin-bottom:1.25rem;">${a.note}</p>
+        <a href="${link}" class="btn btn-primary" style="width:100%;">View Fall 26 Auction Lots &rarr;</a>
+      </div>
+    </article>`;
+});
 
 /* ── RENDER TESTIMONIALS ── */
-const track = document.getElementById("testimonials-track");
-if (track) {
-  [...testimonials, ...testimonials].forEach(t => {
-    track.innerHTML += `
-      <div class="testimonial-card">
-        <span class="testimonial-opener" aria-hidden="true">&ldquo;</span>
-        <p class="testimonial-text">${t.text}</p>
-        <div class="testimonial-author">
-          <div>
-            <div class="testimonial-name">${t.name}</div>
-            <div class="testimonial-role">${t.role}</div>
-          </div>
+const tT = document.getElementById("testimonials-track");
+if (tT) [...testimonials, ...testimonials].forEach(t => {
+  tT.innerHTML += `
+    <div class="testimonial-card">
+      <span class="testimonial-opener" aria-hidden="true">&ldquo;</span>
+      <p class="testimonial-text">${t.text}</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
-      </div>`;
-  });
-}
+        <div>
+          <div class="testimonial-name">${t.name}</div>
+          <div class="testimonial-role">${t.role}</div>
+        </div>
+      </div>
+    </div>`;
+});
 
 /* ── RENDER FAQ ── */
-const faqList = document.getElementById("faq-list");
-if (faqList) {
-  faqs.forEach((f, i) => {
-    faqList.innerHTML += `
-      <div class="faq-item" role="listitem">
-        <div class="faq-question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-${i}"
-             onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleFaq(this)">
-          ${f.q}
-          <span class="faq-toggle" aria-hidden="true">+</span>
-        </div>
-        <div class="faq-answer" id="faq-${i}" role="region">${f.a}</div>
-      </div>`;
-  });
-}
-
+const fL = document.getElementById("faq-list");
+if (fL) faqs.forEach((f, i) => {
+  fL.innerHTML += `
+    <div class="faq-item" role="listitem">
+      <div class="faq-question" role="button" tabindex="0" aria-expanded="false" aria-controls="faq-${i}"
+           onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleFaq(this)">
+        ${f.q}
+        <span class="faq-toggle" aria-hidden="true">+</span>
+      </div>
+      <div class="faq-answer" id="faq-${i}" role="region">${f.a}</div>
+    </div>`;
+});
 function toggleFaq(btn) {
   const item = btn.closest(".faq-item");
-  const isOpen = item.classList.contains("open");
+  const open = item.classList.contains("open");
   document.querySelectorAll(".faq-item.open").forEach(i => i.classList.remove("open"));
-  if (!isOpen) item.classList.add("open");
-  btn.setAttribute("aria-expanded", !isOpen);
+  if (!open) item.classList.add("open");
+  btn.setAttribute("aria-expanded", !open);
 }
 
 /* ── NAV TOGGLE ── */
-const navToggleBtn = document.getElementById("nav-toggle");
-if (navToggleBtn) {
-  navToggleBtn.addEventListener("click", function() {
-    const links = document.getElementById("nav-links");
-    links.classList.toggle("open");
-    this.setAttribute("aria-expanded", links.classList.contains("open"));
-  });
-}
-document.querySelectorAll(".nav-links a").forEach(a => {
-  a.addEventListener("click", () => document.getElementById("nav-links")?.classList.remove("open"));
+const nT = document.getElementById("nav-toggle");
+if (nT) nT.addEventListener("click", function() {
+  const links = document.getElementById("nav-links");
+  links.classList.toggle("open");
+  this.setAttribute("aria-expanded", links.classList.contains("open"));
 });
+document.querySelectorAll(".nav-links a").forEach(a =>
+  a.addEventListener("click", () => document.getElementById("nav-links")?.classList.remove("open")));
 
 /* ── DARK MODE ── */
-const darkBtn = document.getElementById("dark-toggle");
-const iconEl = document.getElementById("toggle-icon");
-const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-const sunPath = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-
+const dB = document.getElementById("dark-toggle");
+const iE = document.getElementById("toggle-icon");
+const moon = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+const sun  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
 if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  document.body.classList.add("dark");
-  document.documentElement.classList.add("dark");
-  if (iconEl) iconEl.innerHTML = sunPath;
+  document.body.classList.add("dark"); document.documentElement.classList.add("dark");
+  if (iE) iE.innerHTML = sun;
 }
-if (darkBtn) {
-  darkBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
-    if (iconEl) iconEl.innerHTML = document.body.classList.contains("dark") ? sunPath : moonPath;
-  });
-}
+if (dB) dB.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
+  if (iE) iE.innerHTML = document.body.classList.contains("dark") ? sun : moon;
+});
 
-/* ── GALLERY (WITH DIMENSIONS & AUCTION CTA) ── */
+/* ── GALLERY ── */
 (function() {
-  let artworks = [];
+  let artworks = [], idx = 0, auto = null;
   const track = document.getElementById('carouselTrack');
-  const dotsContainer = document.getElementById('carouselDots');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  let currentIndex = 0;
-  let autoplayInterval = null;
+  const dotsC = document.getElementById('carouselDots');
+  const prev = document.getElementById('prevBtn');
+  const next = document.getElementById('nextBtn');
 
-  async function loadArtworks() {
+  async function load() {
     try {
-      const response = await fetch("artwork.json");
-      if (!response.ok) throw new Error("artwork.json not found");
-      artworks = await response.json();
-    } catch (e) {
+      const r = await fetch("artwork.json");
+      if (!r.ok) throw new Error("no file");
+      artworks = await r.json();
+    } catch {
       artworks = [
-        {
-          title: "Golden Hour in Algonquin",
-          artist: "Elena M. (Grade 11)",
-          branch: "GTA",
-          medium: "Oil on Canvas",
-          dimensions: "18\" × 24\" (Framed)",
-          startingBid: "$65 CAD",
+        { title: "Golden Hour in Algonquin", artist: "Elena M. (Grade 11)", branch: "GTA",
+          medium: "Oil on Canvas", dimensions: '18" × 24" (Framed)', startingBid: "$65 CAD",
           description: "Capturing the serene warmth of autumn light cutting through pine canopy in Northern Ontario.",
           status: "Fall 2026 Lot",
-          image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80"
-        },
-        {
-          title: "Fragments of Stillness",
-          artist: "Chloe Chen (Grade 12)",
-          branch: "Lexington",
-          medium: "Mixed Media & Acrylic",
-          dimensions: "20\" × 20\" (Gallery Wrap)",
-          startingBid: "$80 CAD",
+          image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80" },
+        { title: "Fragments of Stillness", artist: "Chloe Chen (Grade 12)", branch: "Lexington",
+          medium: "Mixed Media & Acrylic", dimensions: '20" × 20" (Gallery Wrap)', startingBid: "$80 CAD",
           description: "An exploration of youthful introspection, layered with textured handmade paper and earthy matcha pigments.",
           status: "Fall 2026 Lot",
-          image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80"
-        }
+          image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80" }
       ];
     }
-    renderCarousel();
-    startAutoplay();
+    render(); start();
   }
-
-  function renderCarousel() {
-    if (!track || !dotsContainer) return;
-    track.innerHTML = '';
-    dotsContainer.innerHTML = '';
-
-    artworks.forEach((art, idx) => {
-      const dimensions = art.dimensions || "Dimensions Available in Lot";
-      const medium = art.medium || "Original Medium";
-
+  function render() {
+    if (!track || !dotsC) return;
+    track.innerHTML = ''; dotsC.innerHTML = '';
+    artworks.forEach(art => {
+      const dim = art.dimensions || "Dimensions Available in Lot";
+      const med = art.medium || "Original Medium";
       track.innerHTML += `
         <div class="artwork-slide">
-          <div class="artwork-image">
-            <img src="${art.image}" alt="${art.title}">
-          </div>
+          <div class="artwork-image"><img src="${art.image}" alt="${art.title}"></div>
           <div class="artwork-details">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="branch">${art.branch ?? 'GTA'} Chapter</span>
@@ -1361,77 +1089,45 @@ if (darkBtn) {
             </div>
             <h3>${art.title}</h3>
             <p class="artist">By ${art.artist}</p>
-
             <div class="artwork-specs-table">
-              <div class="artwork-specs-row">
-                <span class="artwork-specs-label">Medium</span>
-                <span class="artwork-specs-val">${medium}</span>
-              </div>
-              <div class="artwork-specs-row">
-                <span class="artwork-specs-label">Dimensions</span>
-                <span class="artwork-specs-val">${dimensions}</span>
-              </div>
-              ${art.startingBid ? `
-              <div class="artwork-specs-row">
-                <span class="artwork-specs-label">Starting Estimate</span>
-                <span class="artwork-specs-val" style="color:var(--matcha-dark);">${art.startingBid}</span>
-              </div>` : ''}
+              <div class="artwork-specs-row"><span class="artwork-specs-label">Medium</span><span class="artwork-specs-val">${med}</span></div>
+              <div class="artwork-specs-row"><span class="artwork-specs-label">Dimensions</span><span class="artwork-specs-val">${dim}</span></div>
+              ${art.startingBid ? `<div class="artwork-specs-row"><span class="artwork-specs-label">Starting Estimate</span><span class="artwork-specs-val" style="color:var(--crimson);">${art.startingBid}</span></div>` : ''}
             </div>
-
             <p class="artwork-description">${art.description}</p>
-
-            <a href="auction.html" class="btn btn-primary" style="margin-top:1.25rem; width:100%; justify-content:center; text-decoration:none;">
-              View Lot &amp; Full Dimensions in Fall Auction &rarr;
-            </a>
+            <a href="auction.html" class="btn btn-primary" style="margin-top:1.25rem; width:100%;">View Lot in Fall Auction &rarr;</a>
           </div>
-        </div>
-      `;
+        </div>`;
     });
-
     artworks.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', () => goToSlide(i));
-      dotsContainer.appendChild(dot);
+      const d = document.createElement('button');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => go(i));
+      dotsC.appendChild(d);
     });
   }
-
-  function goToSlide(index) {
-    if (artworks.length === 0 || !track) return;
-    currentIndex = (index < 0) ? artworks.length - 1 : (index >= artworks.length) ? 0 : index;
-    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-    document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
-    resetAutoplay();
+  function go(i) {
+    if (!artworks.length || !track) return;
+    idx = i < 0 ? artworks.length - 1 : i >= artworks.length ? 0 : i;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, k) => d.classList.toggle('active', k === idx));
+    restart();
   }
-
-  function nextSlide() { goToSlide(currentIndex + 1); }
-  function prevSlide() { goToSlide(currentIndex - 1); }
-
-  function startAutoplay() {
-    stopAutoplay();
-    if (artworks.length > 1) autoplayInterval = setInterval(nextSlide, 5500);
-  }
-  function stopAutoplay() { if (autoplayInterval) { clearInterval(autoplayInterval); autoplayInterval = null; } }
-  function resetAutoplay() { stopAutoplay(); startAutoplay(); }
-
-  if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-  if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-
-  loadArtworks();
+  const nxt = () => go(idx + 1), prv = () => go(idx - 1);
+  function start()   { stop(); if (artworks.length > 1) auto = setInterval(nxt, 5500); }
+  function stop()    { if (auto) { clearInterval(auto); auto = null; } }
+  function restart() { stop(); start(); }
+  prev?.addEventListener('click', prv);
+  next?.addEventListener('click', nxt);
+  load();
 })();
 
-/* ── FADE-UP ANIMATIONS ── */
+/* ── FADE-UP ── */
 document.addEventListener('DOMContentLoaded', () => {
-  const els = document.querySelectorAll('.fade-up');
-  const io = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
+  const obs = new IntersectionObserver((es, o) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); o.unobserve(e.target); } });
   }, { threshold: 0.08 });
-  els.forEach(el => io.observe(el));
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 });
 </script>
 </body>

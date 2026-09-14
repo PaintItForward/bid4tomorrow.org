@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="canonical" href="https://bid4tomorrow.org/volunteer-hours-policy.html">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GPN4QVF0X0');
+</script>
+
+<link rel="icon" type="image/png" href="/favicon-180x180.png" sizes="180x180" />
+<link rel="icon" type="image/svg+xml" href="/circlelogo.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" type="image/svg+xml" href="/circlelogo.svg" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volunteer Hours Policy — Bid For Tomorrow</title>
+<meta name="description" content="Detailed rules for volunteer hours at Bid For Tomorrow: verification, parent/guardian requirements, eligible and ineligible activities, and Ontario-specific guidance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* Pill nav */
+  .nav-links { gap: 0.4rem; }
+  .nav-links a {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.48rem 0.85rem;
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    transition: background var(--transition), color var(--transition),
+                border-color var(--transition), transform var(--transition);
+  }
+  .nav-links a:hover {
+    background: var(--terracotta); border-color: var(--terracotta);
+    color: #FFFFFF; transform: translateY(-1px);
+  }
+  .nav-links a.nav-badge-pill { background: rgba(95,168,194,0.12) !important; }
+  .nav-links a.nav-cta        { background: var(--terracotta) !important; }
+  .nav-links a.nav-current {
+    background: var(--terracotta); border-color: var(--terracotta); color: #FFFFFF;
+  }
+  @media (max-width: 1100px) {
+    .nav-toggle { display: block; }
+    .nav-links {
+      display: none; flex-direction: column; align-items: stretch;
+      position: absolute; top: 72px; left: 0; right: 0;
+      background: var(--nav-bg);
+      padding: 1.25rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      box-shadow: var(--shadow-lg);
+      gap: 0.55rem;
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a {
+      width: 100%; justify-content: center; text-align: center;
+      padding: 0.85rem 1.25rem; font-size: 0.82rem;
+    }
+  }
+
+  /* Page hero */
+  .page-hero {
+    padding: 9rem 2rem 3.5rem;
+    text-align: center;
+    background: var(--hero-bg-base);
+    border-bottom: 1px solid var(--hero-border);
+  }
+  .page-hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    line-height: 1.12; color: var(--hero-heading);
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+  }
+  .page-hero p {
+    max-width: 760px; margin: 0 auto;
+    font-size: 1.05rem; line-height: 1.65; color: var(--hero-subtext);
+  }
+
+  /* Policy layout */
+  .policy-body { max-width: 820px; margin: 0 auto; }
+  .policy-body h2 {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem;
+    color: var(--text-heading);
+    margin: 2.75rem 0 0.85rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .policy-body h2:first-of-type { margin-top: 0; }
+  .policy-body p {
+    color: var(--text-body); line-height: 1.75;
+    margin-bottom: 1rem; font-size: 0.97rem;
+  }
+  .policy-body ul { padding-left: 1.35rem; margin: 0 0 1rem; }
+  .policy-body ul li {
+    color: var(--text-body); line-height: 1.7;
+    margin-bottom: 0.5rem; font-size: 0.95rem;
+  }
+  .policy-body ul.eligible li::marker   { color: #3D7A3D; }
+  .policy-body ul.ineligible li::marker { color: var(--crimson); }
+
+  /* Callout */
+  .callout {
+    border: 1px solid var(--card-border);
+    border-left: 4px solid var(--terracotta);
+    background: var(--card-bg);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-body);
+    box-shadow: var(--shadow-sm);
+  }
+  .callout strong { color: var(--text-heading); }
+
+  /* Region block */
+  .region-block {
+    border: 1px solid var(--card-border);
+    border-top: 4px solid var(--cerulean);
+    border-radius: var(--radius-sm);
+    padding: 1.75rem 2rem;
+    margin: 1.25rem 0;
+    background: var(--card-bg);
+    box-shadow: var(--shadow-sm);
+  }
+  .region-block h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem;
+    color: var(--text-heading); margin: 0 0 0.75rem;
+  }
+  .region-block p { margin-bottom: 0.75rem; }
+  .region-block p:last-child { margin-bottom: 0; }
+
+  .last-updated {
+    text-align: center; font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 3rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--card-border);
+  }
+</style>
+</head>
+<body>
+
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
+      <div class="nav-logo-mark" aria-hidden="true">
+        <img src="favicon-180x180.png" alt="" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      Bid For Tomorrow
+    </a>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="branches.html">Branches</a></li>
+      <li><a href="auction.html" class="nav-badge-pill">Fall 26 Auction ↗</a></li>
+      <li><a href="index.html#artwork">Gallery</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#impact">Impact</a></li>
+      <li><a href="index.html#causes">Causes</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="volunteer.html" class="nav-current" aria-current="page">Volunteer</a></li>
+      <li><a href="index.html#get-involved" class="nav-cta">Get Involved</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <h1>Volunteer Hours Policy</h1>
+  <p>Detailed rules for how volunteer hours are recorded, verified, and submitted at Bid For Tomorrow.</p>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="policy-body">
+
+      <h2>Who can verify hours</h2>
+      <p>Volunteer hours are verified by a designated Bid For Tomorrow supervisor who directly oversaw the activity. Only activities that were pre-approved and directly supervised by Bid For Tomorrow can be verified by us.</p>
+      <p>If you are seeking hours toward a school community-involvement requirement, your school or principal is the final authority on whether an activity qualifies. Bid For Tomorrow's verification confirms that you completed the activity and the hours — it does not guarantee that your school will accept it.</p>
+
+      <h2>Parent / guardian verification</h2>
+      <p>Volunteers under 18 must have a parent or guardian involved in the sign-up and verification process. For Ontario students specifically, the student's parent or guardian must verify the hours through the school's own community-involvement process, in addition to Bid For Tomorrow's supervisor verification.</p>
+
+      <h2>Eligible activities</h2>
+      <p>Activities that have been approved in advance and directly supervised by Bid For Tomorrow may be eligible for verification, including:</p>
+      <ul class="eligible">
+        <li>Artist outreach and coordination</li>
+        <li>Community outreach and promotion</li>
+        <li>Social media and marketing support</li>
+        <li>Event setup, support, and teardown</li>
+        <li>Registration and guest assistance at events</li>
+        <li>Fundraising support</li>
+        <li>Administrative and organizational work</li>
+      </ul>
+      <p>Eligibility is always subject to your school's rules. Being approved by Bid For Tomorrow does not automatically make an activity eligible for your school's requirement.</p>
+
+      <h2>Ineligible activities</h2>
+      <p>The following types of activities generally do <strong>not</strong> qualify toward school community-involvement requirements, and Bid For Tomorrow does not verify them for that purpose:</p>
+      <ul class="ineligible">
+        <li>Activities that are part of a course requirement or for which you receive academic credit</li>
+        <li>Activities that occur during scheduled class time</li>
+        <li>Activities performed for a family member's business</li>
+        <li>Activities involving the handling of valuable items, including artwork</li>
+        <li>Activities that are unpaid work a business would normally pay an employee to perform</li>
+        <li>Fundraising for a for-profit organization</li>
+        <li>Any activity that your school or principal has indicated is not eligible</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Ontario students:</strong> Activities involving the handling of valuable items, including artwork, may not qualify under Ontario's community-involvement rules. If your planned volunteer role with Bid For Tomorrow would involve physically handling artwork, please confirm with your school before counting those hours toward your graduation requirement.
+      </div>
+
+      <h2>Sign-in / sign-out</h2>
+      <p>Volunteers are expected to sign in at the start of each activity and sign out at the end. The Bid For Tomorrow supervisor records the actual start and end times. Hours are not counted for time not worked, breaks that are not part of the volunteer role, or travel time to and from the activity.</p>
+
+      <h2>How hours are calculated</h2>
+      <p>Hours are calculated based on the actual time spent performing the approved volunteer activity, as recorded on the sign-in sheet and confirmed by the supervisor. Partial hours are rounded to the nearest quarter-hour. Bid For Tomorrow does not round up, and we do not add hours for activities that were not performed.</p>
+
+      <h2>What Bid For Tomorrow does and does not guarantee</h2>
+      <p><strong>What we do:</strong> We provide supervised volunteer opportunities, record your dates and hours accurately, and verify those records through a designated supervisor.</p>
+      <p><strong>What we do not guarantee:</strong> We cannot guarantee that any specific activity will be accepted by your school, that your school will count the hours toward a graduation requirement, or that any particular number of hours will be available. Final acceptance is always determined by your school or principal.</p>
+
+      <h2>Ontario-specific guidance</h2>
+      <div class="region-block">
+        <h3>Ontario (GTA branch)</h3>
+        <p>Ontario's community-involvement requirement asks students to complete a set number of volunteer hours, verified by a supervising organization, as part of the Ontario Secondary School Diploma. Bid For Tomorrow can serve as the supervising organization for approved activities.</p>
+        <p>Students under 18 must have a parent or guardian involved in the verification process through the school. The student's school or principal makes the final determination about whether an activity qualifies.</p>
+        <p>Because some activities — including the handling of valuable items such as artwork — may not qualify, please confirm your planned role with your school <em>before</em> participating if you intend to count the hours.</p>
+      </div>
+
+      <h2>U.S. / Lexington volunteer-hour rules are separate</h2>
+      <div class="region-block">
+        <h3>Lexington, Massachusetts branch</h3>
+        <p>Volunteer-hour requirements in Massachusetts are set by individual schools and districts, and are separate from Ontario's rules. Ontario's 40-hour community-involvement framework does not apply to the Lexington branch.</p>
+        <p>U.S. volunteers should check with their own school or program to confirm whether Bid For Tomorrow activities qualify for any local service requirement. Bid For Tomorrow verifies the hours completed with us; the receiving school or program decides whether they count.</p>
+      </div>
+
+      <div class="last-updated">
+        This policy may be updated as program rules change. Last reviewed: 2026.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
+        <p>Turning Creativity Into Impact. A student-led nonprofit giving young artists a platform while supporting youth physical and mental health in North America.</p>
+        <p class="footer-note">Registered Nonprofit.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="branches.html">Our Branches</a></li>
+          <li><a href="auction.html">Fall 26 Auction</a></li>
+          <li><a href="index.html#artwork">Gallery</a></li>
+          <li><a href="index.html#causes">Causes We Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
+          <li><a href="auction.html">Bid on Artwork</a></li>
+          <li><a href="volunteer.html">Volunteer With Us</a></li>
+          <li><a href="volunteer-hours-policy.html">Volunteer Hours Policy</a></li>
+          <li><a href="index.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:bid4tomorrow@gmail.com">Email Us</a></li>
+          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Nonprofit, Greater Toronto Area &amp; Massachusetts.</p>
+    </div>
+  </div>
+</footer>
+
+<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</button>
+
+<script>
+const nT = document.getElementById("nav-toggle");
+if (nT) nT.addEventListener("click", function() {
+  const links = document.getElementById("nav-links");
+  links.classList.toggle("open");
+  this.setAttribute("aria-expanded", links.classList.contains("open"));
+});
+document.querySelectorAll(".nav-links a").forEach(a =>
+  a.addEventListener("click", () => document.getElementById("nav-links")?.classList.remove("open")));
+
+const dB = document.getElementById("dark-toggle");
+const iE = document.getElementById("toggle-icon");
+const moon = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+const sun  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  document.body.classList.add("dark"); document.documentElement.classList.add("dark");
+  if (iE) iE.innerHTML = sun;
+}
+if (dB) dB.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
+  if (iE) iE.innerHTML = document.body.classList.contains("dark") ? sun : moon;
+});
+</script>
+</body>
+</html>

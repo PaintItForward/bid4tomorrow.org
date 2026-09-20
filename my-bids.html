@@ -359,7 +359,7 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
     
     // Initialize Supabase
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const AUCTION_ID = '101afb93-7d37-4276-8602-026acbda56ed';
 
     // Toast function
@@ -405,13 +405,13 @@
 
     // Load user's bids
     async function loadBids() {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
         if (error || !user) {
             window.location.href = 'login.html?redirect=my-bids.html';
             return;
         }
         
-        const { data: bids, error: bidsError } = await supabase
+        const { data: bids, error: bidsError } = await supabaseClient
             .from('bid_history')
             .select('bid_id, bidder_id, amount, bid_time, lot_number, artwork_title, artist_name, bid_status')
             .order('bid_time', { ascending: false });

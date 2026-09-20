@@ -432,19 +432,23 @@
         }
         
         container.innerHTML = bids.map(bid => {
-            const lot = bid.lots || {};
-            const artwork = lot.artworks || {};
-            const lotNumber = lot.lot_number || 'N/A';
-            const title = artwork.title || 'Unknown Artwork';
-            const artist = artwork.artist || 'Unknown Artist';
-            const created = new Date(bid.created_at).toLocaleDateString('en-US', {
+            const lotNumber = bid.lot_number || 'N/A';
+            const title = bid.artwork_title || 'Unknown Artwork';
+            const artist = bid.artist_name || 'Unknown Artist';
+            const status = bid.bid_status || 'pending';
+            const statusLabel = status === 'winning' ? 'Winning'
+                              : status === 'outbid'  ? 'Outbid'
+                              : status === 'lot_closed'     ? 'Lot Closed'
+                              : status === 'auction_ended'  ? 'Auction Ended'
+                              : 'Active';
+            const created = new Date(bid.bid_time).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
             });
-            
+
             return `
                 <div class="bid-row">
                     <div class="bid-info">
@@ -452,8 +456,8 @@
                         <div class="bid-artwork">${title} — ${artist}</div>
                         <div class="bid-date">Placed ${created}</div>
                     </div>
-                    <div class="bid-amount">$${bid.amount.toLocaleString()} CAD</div>
-                    <span class="bid-status pending">Active</span>
+                    <div class="bid-amount">$${Number(bid.amount).toLocaleString()} CAD</div>
+                    <span class="bid-status ${status}">${statusLabel}</span>
                     <a href="auction.html" class="bid-link">View Lot</a>
                 </div>
             `;

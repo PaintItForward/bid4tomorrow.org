@@ -1221,14 +1221,9 @@
     historyEl.innerHTML = '';
     
     if (currentLot.bids.length > 0) {
-      const bidderIds = [...new Set(currentLot.bids.map(b => b.bidder_id).filter(Boolean))];
-      const bidderNames = await getBidderNames(bidderIds);
-      
       currentLot.bids.forEach(bid => {
         const li = document.createElement('li');
-        const bidderName = bid.bidder_id === currentUser?.id 
-          ? 'You' 
-          : (bidderNames[bid.bidder_id] || 'Anonymous');
+        const bidderName = bid.is_you ? 'You' : 'Anonymous';
         const time = new Date(bid.created_at).toLocaleString();
         li.innerHTML = `
           <div>

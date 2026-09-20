@@ -412,22 +412,9 @@
         }
         
         const { data: bids, error: bidsError } = await supabase
-            .from('bids')
-            .select(`
-                id, 
-                lot_id, 
-                amount, 
-                created_at,
-                lots (
-                    lot_number,
-                    artworks (
-                        title,
-                        artist
-                    )
-                )
-            `)
-            .eq('bidder_id', user.id)
-            .order('created_at', { ascending: false });
+            .from('bid_history')
+            .select('bid_id, bidder_id, amount, bid_time, lot_number, artwork_title, artist_name, bid_status')
+            .order('bid_time', { ascending: false });
             
         document.getElementById('loadingState').style.display = 'none';
         

@@ -247,31 +247,7 @@
         
         if (error) throw error;
         
-        // Check if user exists in public.users table
-        if (data.user) {
-          const { data: userProfile, error: profileError } = await supabaseClient
-            .from('users')
-            .select('*')
-            .eq('id', data.user.id)
-            .single();
-          
-          if (profileError && profileError.code === 'PGRST116') {
-            // User profile doesn't exist, create it
-            const { error: createError } = await supabaseClient
-              .from('users')
-              .insert([{
-                id: data.user.id,
-                full_name: data.user.user_metadata?.full_name || email.split('@')[0],
-                email: email,
-                role: 'bidder',
-                is_admin: false
-              }]);
-            
-            if (createError) {
-              console.error('Error creating user profile:', createError);
-            }
-          }
-        }
+      
         
         // Show success message
         successMessage.style.display = 'block';

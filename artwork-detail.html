@@ -897,7 +897,7 @@
       }
       
       const { data: bids } = await supabaseClient
-        .from('bids')
+        .from('public_lot_bids')
         .select('*')
         .eq('lot_id', lotId)
         .order('amount', { ascending: false });

@@ -1419,7 +1419,7 @@
           let currentBid = null;
           try {
             const { data: bidData, error: bidError } = await supabaseClient
-              .from('bids')
+              .from('public_lot_bids')
               .select('amount')
               .eq('lot_id', lot.id)
               .order('amount', { ascending: false })

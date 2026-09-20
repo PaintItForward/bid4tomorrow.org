@@ -251,23 +251,7 @@
         
         if (error) throw error;
         
-        // If user was created successfully, add to public.users table
-        if (data.user) {
-          const { error: profileError } = await supabaseClient
-            .from('users')
-            .insert([{
-              id: data.user.id,
-              full_name: fullName,
-              email: email,
-              role: 'bidder',
-              is_admin: false
-            }]);
-          
-          if (profileError) {
-            console.error('Error creating user profile:', profileError);
-            // Don't throw - the auth user was created, just profile failed
-          }
-        }
+    
         
         // Show success message
         successMessage.style.display = 'block';

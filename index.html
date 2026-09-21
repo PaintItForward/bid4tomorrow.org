@@ -545,47 +545,146 @@
 
 <!-- ═══════════════ GET INVOLVED ═══════════════ -->
 <section class="section involved-section" id="get-involved">
+  <style>
+    #get-involved .gi-wrap { max-width: 800px; margin: 0 auto; }
+    #get-involved .gi-lede {
+      color: var(--text-body);
+      line-height: 1.75;
+      font-size: 1.02rem;
+      margin: 0;
+      max-width: 62ch;
+    }
+    #get-involved .gi-list {
+      margin-top: 2.75rem;
+      border-top: 1px solid var(--card-border);
+    }
+    #get-involved .gi-row {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr auto;
+      gap: 1.25rem;
+      align-items: baseline;
+      padding: 1.45rem 0;
+      border-bottom: 1px solid var(--card-border);
+      text-decoration: none;
+      color: inherit;
+      transition: padding-left 0.25s ease, border-color 0.25s ease;
+    }
+    #get-involved .gi-row:hover { padding-left: 0.55rem; }
+    #get-involved .gi-row:hover .gi-title { color: var(--terracotta); }
+    #get-involved .gi-num {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--ochre-gold-dark);
+    }
+    body.dark #get-involved .gi-num { color: var(--sand-gold); }
+    #get-involved .gi-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.28rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--text-heading);
+      margin: 0 0 0.35rem;
+      transition: color 0.25s ease;
+    }
+    #get-involved .gi-desc {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: var(--text-body);
+      margin: 0;
+      max-width: 48ch;
+    }
+    #get-involved .gi-arrow {
+      align-self: center;
+      font-size: 1.05rem;
+      color: var(--terracotta);
+      transition: transform 0.25s ease;
+    }
+    #get-involved .gi-row:hover .gi-arrow { transform: translateX(5px); }
+    #get-involved .gi-closer {
+      margin-top: 2.75rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+    #get-involved .gi-closer p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-body);
+      max-width: 44ch;
+    }
+    @media (max-width: 620px) {
+      #get-involved .gi-row { grid-template-columns: 1.9rem 1fr; gap: 0.9rem; }
+      #get-involved .gi-arrow { display: none; }
+      #get-involved .gi-closer { flex-direction: column; align-items: flex-start; }
+      #get-involved .gi-closer .btn { width: 100%; text-align: center; }
+    }
+  </style>
+
   <div class="container">
-    <div class="section-header section-header-center fade-up" style="margin-bottom:2.5rem;">
-      <h2>Get Involved</h2>
-      <p>Choose your pathway to support youth creativity and health advocacy.</p>
-    </div>
-    <div class="involved-grid">
-      <div class="involved-card involved-card-1 fade-up">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        </div>
-        <div class="involved-title">Submit Artwork</div>
-        <div class="involved-desc">Are you a student artist? Apply to feature your paintings, illustrations, or sculptures in the upcoming Fall 2026 auction.</div>
-        <a href="https://form.jotform.com/261786048210052" class="btn btn-primary" target="_blank" rel="noopener">Submit Artwork</a>
+    <div class="gi-wrap">
+
+      <div class="fade-up">
+        <span class="eyebrow">Get Involved</span>
+        <h2 style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(1.9rem,3.2vw,2.5rem); line-height:1.2; letter-spacing:-0.02em; color:var(--text-heading); margin:0.6rem 0 1.1rem;">
+          There's more than one way to help.
+        </h2>
+        <p class="gi-lede">
+          Bid For Tomorrow is run entirely by students and volunteers, and every auction depends on people who show up — artists, bidders, organizers, neighbours. Pick whichever door fits you. If none of them quite do, just ask.
+        </p>
       </div>
 
-      <div class="involved-card involved-card-2 fade-up fade-up-delay-1">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-        </div>
-        <div class="involved-title">Fall 2026 Auction</div>
-        <div class="involved-desc">Browse auction lots, examine physical dimensions, and submit bidder pre-registration for early catalogue access.</div>
-        <a href="auction.html" class="btn btn-primary">View Auction Lots</a>
+      <div class="gi-list fade-up fade-up-delay-1">
+
+        <a class="gi-row" href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">
+          <div class="gi-num">01</div>
+          <div>
+            <h3 class="gi-title">Submit artwork</h3>
+            <p class="gi-desc">Are you a student artist? Send us paintings, drawings, mixed media, or prints for the Fall 2026 auction.</p>
+          </div>
+          <div class="gi-arrow" aria-hidden="true">&rarr;</div>
+        </a>
+
+        <a class="gi-row" href="auction.html">
+          <div class="gi-num">02</div>
+          <div>
+            <h3 class="gi-title">Bid on a piece</h3>
+            <p class="gi-desc">Registration is open to anyone — no membership, no minimum. Browse the lots and take home something original.</p>
+          </div>
+          <div class="gi-arrow" aria-hidden="true">&rarr;</div>
+        </a>
+
+        <a class="gi-row" href="volunteer.html">
+          <div class="gi-num">03</div>
+          <div>
+            <h3 class="gi-title">Volunteer with us</h3>
+            <p class="gi-desc">Help hang work, run the registration table, or handle outreach. Eligible hours can be documented and verified.</p>
+          </div>
+          <div class="gi-arrow" aria-hidden="true">&rarr;</div>
+        </a>
+
+        <a class="gi-row" href="https://form.jotform.com/261786652654267" target="_blank" rel="noopener">
+          <div class="gi-num">04</div>
+          <div>
+            <h3 class="gi-title">Sponsor a lot</h3>
+            <p class="gi-desc">Local businesses and community groups can partner with us to match what our students raise.</p>
+          </div>
+          <div class="gi-arrow" aria-hidden="true">&rarr;</div>
+        </a>
+
       </div>
 
-      <div class="involved-card involved-card-3 fade-up fade-up-delay-2">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
-        <div class="involved-title">Volunteer With Us</div>
-        <div class="involved-desc">Help support student artists, community initiatives, and Bid For Tomorrow events. Eligible activities can be documented and verified for students who wish to submit hours through their school's community-involvement process.</div>
-        <a href="volunteer.html" class="btn btn-primary">Learn About Volunteering &rarr;</a>
+      <div class="gi-closer fade-up fade-up-delay-2">
+        <p>Not sure which one fits? Tell us a little about yourself and we'll point you in the right direction.</p>
+        <a href="https://form.jotform.com/261786840237061" class="btn btn-primary" target="_blank" rel="noopener">Fill out the interest form &rarr;</a>
       </div>
 
-      <div class="involved-card involved-card-4 fade-up fade-up-delay-3">
-        <div class="involved-icon-wrap" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-        </div>
-        <div class="involved-title">Become a Sponsor</div>
-        <div class="involved-desc">Community businesses and philanthropic organizations can partner with Bid For Tomorrow to match student fundraising.</div>
-        <a href="https://form.jotform.com/261786652654267" class="btn btn-primary" target="_blank" rel="noopener">Become a Sponsor</a>
-      </div>
     </div>
   </div>
 </section>

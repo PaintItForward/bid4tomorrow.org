@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="styles.css">
 <style>
   /* ═══ Pill-shaped nav links (desktop + mobile) ═══ */
-  .nav-links { gap: 0.4rem; }
+  .nav-links { gap: 0.4rem; flex-wrap: nowrap; align-items: center; }
   .nav-links a {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -36,6 +36,7 @@
     padding: 0.48rem 0.85rem;
     font-size: 0.72rem;
     letter-spacing: 1.2px;
+    white-space: nowrap;
     transition: background var(--transition), color var(--transition),
                 border-color var(--transition), transform var(--transition);
   }
@@ -49,15 +50,78 @@
   .nav-links a.nav-badge-pill { background: rgba(95,168,194,0.12) !important; }
   .nav-links a.nav-cta        { background: var(--terracotta) !important; }
 
-  /* Switch to hamburger sooner so pills never crowd */
-  @media (max-width: 1100px) {
+  /* ══════════════════════════════════════════════════════════════
+     Collapsed navigation — driven by the .nav-collapsed class that
+     JS sets from a live width measurement, so it works at every
+     zoom level instead of only at one fixed breakpoint.
+     ══════════════════════════════════════════════════════════════ */
+  #main-nav.nav-collapsed .nav-toggle { display: block; }
+
+  #main-nav.nav-collapsed .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    top: 100%;              /* sits flush under the nav at any nav height */
+    left: 0;
+    right: 0;
+    width: auto;
+    background: var(--nav-bg);
+    padding: 1.25rem 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--card-border);
+    box-shadow: var(--shadow-lg);
+    gap: 0.55rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+  }
+  #main-nav.nav-collapsed .nav-links.open { display: flex; }
+
+  #main-nav.nav-collapsed .nav-links a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.82rem;
+  }
+
+  /* ── Off-screen measuring pass: lay the links out as a single row
+        at their natural width so JS can compare them against the
+        space actually available. Never painted. ── */
+  #main-nav.nav-measuring .nav-links {
+    display: flex !important;
+    flex-direction: row !important;
+    position: static !important;
+    visibility: hidden !important;
+    width: max-content !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0.4rem !important;
+    background: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  #main-nav.nav-measuring .nav-logo,
+  #main-nav.nav-measuring .nav-links { flex: 0 0 auto !important; }
+  #main-nav.nav-measuring .nav-links a { width: auto !important; }
+  #main-nav.nav-measuring .nav-toggle { display: none !important; }
+
+  /* ── No-JS safety net (JS normally handles this at every width) ── */
+  @media (max-width: 900px) {
     .nav-toggle { display: block; }
     .nav-links {
       display: none;
       flex-direction: column;
       align-items: stretch;
       position: absolute;
-      top: 72px;
+      top: 100%;
       left: 0;
       right: 0;
       background: var(--nav-bg);
@@ -65,6 +129,8 @@
       border-bottom: 1px solid var(--card-border);
       box-shadow: var(--shadow-lg);
       gap: 0.55rem;
+      max-height: 80vh;
+      overflow-y: auto;
       backdrop-filter: blur(16px) saturate(160%);
       -webkit-backdrop-filter: blur(16px) saturate(160%);
     }
@@ -1118,15 +1184,83 @@ function toggleFaq(btn) {
   btn.setAttribute("aria-expanded", !open);
 }
 
-/* ── NAV TOGGLE ── */
-const nT = document.getElementById("nav-toggle");
-if (nT) nT.addEventListener("click", function() {
-  const links = document.getElementById("nav-links");
-  links.classList.toggle("open");
-  this.setAttribute("aria-expanded", links.classList.contains("open"));
-});
-document.querySelectorAll(".nav-links a").forEach(a =>
-  a.addEventListener("click", () => document.getElementById("nav-links")?.classList.remove("open")));
+/* ── RESPONSIVE NAV ───────────────────────────────────────────────
+   Collapses based on a live measurement of the logo + link row rather
+   than a fixed breakpoint, so it stays correct at every browser zoom
+   level, font size, and viewport width.                            */
+(function initResponsiveNav() {
+  const nav    = document.getElementById('main-nav');
+  const links  = document.getElementById('nav-links');
+  const toggle = document.getElementById('nav-toggle');
+  const inner  = nav && nav.querySelector('.nav-inner');
+  const logo   = nav && nav.querySelector('.nav-logo');
+  if (!nav || !links || !toggle || !inner) return;
+
+  /* The dropdown anchors to the nav itself, so guarantee the nav is a
+     positioning context even if styles.css left it static. */
+  if (getComputedStyle(nav).position === 'static') nav.style.position = 'relative';
+
+  const BUFFER = 32;   // px of breathing room before we collapse
+  let frame = null;
+
+  /* Measure the logo + links at their natural, unwrapped size. */
+  function measure() {
+    const wasCollapsed = nav.classList.contains('nav-collapsed');
+
+    nav.classList.add('nav-measuring');
+    nav.classList.remove('nav-collapsed');
+
+    const logoW  = logo ? logo.getBoundingClientRect().width : 0;
+    const linksW = links.getBoundingClientRect().width;
+    const cs     = getComputedStyle(inner);
+    const gap    = parseFloat(cs.columnGap) || 0;
+    const avail  = inner.clientWidth
+                 - (parseFloat(cs.paddingLeft)  || 0)
+                 - (parseFloat(cs.paddingRight) || 0);
+
+    nav.classList.remove('nav-measuring');
+    nav.classList.toggle('nav-collapsed', wasCollapsed);
+
+    return { needed: logoW + linksW + gap * 2, avail };
+  }
+
+  function update() {
+    const { needed, avail } = measure();
+    const collapse = needed + BUFFER > avail;
+    if (collapse === nav.classList.contains('nav-collapsed')) return;
+
+    nav.classList.toggle('nav-collapsed', collapse);
+    if (!collapse) {                       // back to the desktop row
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function schedule() {
+    if (frame) cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => { frame = null; update(); });
+  }
+
+  update();
+  window.addEventListener('resize', schedule, { passive: true });
+  window.addEventListener('orientationchange', schedule);
+  window.addEventListener('load', update);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+  if (window.ResizeObserver) new ResizeObserver(schedule).observe(inner);
+
+  /* Hamburger open / close */
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  /* Close the mobile menu after tapping a link */
+  links.addEventListener('click', e => {
+    if (e.target.closest('a')) {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
 
 /* ── DARK MODE ── */
 const dB = document.getElementById("dark-toggle");

@@ -1,15 +1,11 @@
-@import "tailwindcss";
 
-/**
- * Bid For Tomorrow — Theme Stylesheet
- * 
  * Color Palette:
- * --sand-gold:   #FAE3B1 (Pale warm sand / golden cream)
- * --ochre-gold:  #998731 (Warm antique ochre / olive-gold)
- * --terracotta:  #CF5527 (Vibrant rust terracotta)
- * --crimson:     #7D2027 (Deep garnet / crimson burgundy)
- * --mahogany:    #673C34 (Rich espresso / mahogany brown)
- * --cerulean:    #5FA8C2 (Muted sky cerulean / ocean teal)
+ * --sand-gold:   #FAE3B1
+ * --ochre-gold:  #998731
+ * --terracotta:  #CF5527
+ * --crimson:     #7D2027
+ * --mahogany:    #673C34
+ * --cerulean:    #5FA8C2
  */
 
 :root {

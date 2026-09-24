@@ -117,10 +117,13 @@
     ' Bid For Tomorrow. All rights reserved. Nonprofit, Greater Toronto Area &amp; Massachusetts.</p></div></div>';
   document.body.appendChild(foot);
 
-  /* ═══════════ 5. DARK MODE (one key, one behaviour, every page) ═══════════ */
+   /* ═══════════ 5. DARK MODE (dark by default; saved preference wins) ═══════════ */
   document.querySelectorAll('.dark-toggle').forEach(function (b) { b.remove(); });
-  var KEY = 'bft-theme', dark = false;
-  try { dark = (localStorage.getItem(KEY) || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark'; } catch (e) {}
+  var KEY = 'bft-theme', dark = true;
+  try {
+    var saved = localStorage.getItem(KEY);
+    dark = saved ? saved === 'dark' : true;   // no saved pref → dark
+  } catch (e) { dark = true; }
   var MOON = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
   var SUN = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
   var tb = document.createElement('button');

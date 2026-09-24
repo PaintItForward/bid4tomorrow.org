@@ -2918,3 +2918,51 @@ body.dark .branch-carousel .carousel-dot.active {
 }
 .page-hero h1 { margin: 0 0 1rem; color: var(--hero-heading); font-size: clamp(2.2rem, 4.5vw, 3.5rem); line-height: 1.12; }
 .page-hero p  { max-width: 720px; margin: 0 auto; color: var(--hero-subtext); font-size: 1.05rem; }
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE REFRESH — paste at the very END of styles.css
+   (after styles-additions.css). Every rule is scoped to
+   html:not(.dark), so dark mode is untouched.
+   The idea: paper is the page, sand-gold is an accent.
+   ═══════════════════════════════════════════════════════════════ */
+html:not(.dark) {
+  /* Surfaces: warm paper instead of mustard */
+  --cream:          #FDF8EE;   /* page background */
+  --cream-alt:      #F8EED9;
+  --white:          #FFFDF8;
+  --section-alt:    #F8EED9;   /* alternating bands */
+  --section-green:  #FBF3E1;   /* mission band */
+  --card-bg:        #FFFDF9;
+
+  /* Lines: soft warm hairlines instead of olive outlines */
+  --border:         #E2D3B0;
+  --border-subtle:  rgba(103, 60, 52, 0.12);
+  --card-border:    #E6D8BB;
+  --hero-border:    #E2D3B0;
+  --hero-stat-border: rgba(103, 60, 52, 0.14);
+
+  /* Text: darker headings, calmer body, legible muted */
+  --text-heading:   #3B211C;
+  --text-body:      #5A3A33;
+  --text-muted:     #7A5A52;
+
+  /* Accent colours used for small text, tuned to pass contrast on paper */
+  --terracotta:     #C24A1E;
+  --ochre-gold-dark:#6B5C1B;
+
+  /* Nav bar and hero: light, with sand only as a gentle glow */
+  --nav-bg:         rgba(253, 248, 238, 0.92);
+  --hero-bg-base:   #FDF6E6;
+  --hero-gradient-start: #FFFBF2;
+  --hero-gradient-mid:   #FBF0D2;
+  --hero-gradient-end:   #F7E5B8;
+}
+
+/* Linen texture read as hatching on light paper — keep it, but faint */
+html:not(.dark) .hero-canvas-texture      { opacity: 0.35; }
+html:not(.dark) .hero-canvas-weave-detail { opacity: 0.25; }
+
+/* Carousel dots used --card-border, which is now too light to see */
+html:not(.dark) .dot        { background: #CDBB93; }
+html:not(.dark) .dot.active { background: var(--terracotta); }
+html:not(.dark) .dot:hover  { background: var(--crimson); }

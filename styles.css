@@ -2861,78 +2861,18 @@ body.dark .branch-carousel .carousel-dot.active {
   background: var(--hero-bg-base); border-bottom: 1px solid var(--hero-border);
 }
 .page-hero h1 { margin: 0 0 1rem; color: var(--hero-heading); font-size: clamp(2.2rem, 4.5vw, 3.5rem); line-height: 1.12; }
-.page-hero p  { max-width: 720px; margin: 0 auto; color: var(--hero-subtext); font-size: 1.05rem; }/* ═══════════════════════════════════════════════════════════════
-   PASTE THIS AT THE VERY END OF styles.css
-   (Later rules win, so it upgrades the old nav without deleting it.)
-   ═══════════════════════════════════════════════════════════════ */
-
-/* ── NAV v2: dropdown, active state, one breakpoint (no JS measuring) ── */
-.nav-links { gap: 0.4rem; }
-.nav-links .sub-btn {
-  font: 700 0.68rem/1 'Source Sans 3', sans-serif;
-  text-transform: uppercase; letter-spacing: 0.9px;
-  padding: 0.42rem 0.7rem; white-space: nowrap; cursor: pointer;
-  color: var(--text-heading); background: var(--card-bg);
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-  transition: background var(--transition), color var(--transition), border-color var(--transition);
-}
-.nav-links .sub-btn:hover,
-.has-sub.open .sub-btn { background: var(--terracotta); border-color: var(--terracotta); color: #fff; }
-.nav-links a.active { background: var(--terracotta); border-color: var(--terracotta); color: #fff; }
-.nav-links a.nav-badge-pill.active { background: var(--cerulean-dark) !important; color: #fff !important; }
-
-.has-sub { position: relative; }
-.sub {
-  display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 200px;
-  list-style: none; padding: 0.5rem; z-index: 5;
-  background: var(--card-bg); border: 1px solid var(--border);
-  border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
-}
-.has-sub.open .sub { display: block; }
-.sub a { display: block; border: 0; background: transparent; padding: 0.6rem 0.8rem; text-align: left; }
-
-@media (max-width: 1080px) {
-  .nav-toggle { display: block; }
-  .nav-links {
-    display: none; flex-direction: column; align-items: stretch;
-    position: absolute; top: 100%; left: 0; right: 0;
-    background: var(--nav-bg); padding: 1.25rem 1.5rem 1.5rem; gap: 0.55rem;
-    border-bottom: 1px solid var(--card-border); box-shadow: var(--shadow-lg);
-    max-height: 80vh; overflow-y: auto;
-  }
-  .nav-links.open { display: flex; }
-  .nav-links a, .nav-links .sub-btn { display: block; width: 100%; text-align: center; padding: 0.85rem 1.25rem; font-size: 0.82rem; }
-  .sub { position: static; box-shadow: none; border: 0; background: transparent; padding: 0.4rem 0 0; }
-  .sub a { text-align: center; }
-}
-
-/* ── Footer: brand + 4 link columns ── */
-@media (min-width: 1101px) {
-  .footer-top { grid-template-columns: 1.6fr repeat(4, 1fr); gap: 2.5rem; }
-}
-
-/* ── Shared page pieces (were copy-pasted in volunteer.html and volunteer-hours-policy.html) ── */
-.page-top { padding-top: 72px; }               /* for pages with no hero: clears the fixed nav */
-.page-hero {
-  padding: 9rem 2rem 3.5rem; text-align: center;
-  background: var(--hero-bg-base); border-bottom: 1px solid var(--hero-border);
-}
-.page-hero h1 { margin: 0 0 1rem; color: var(--hero-heading); font-size: clamp(2.2rem, 4.5vw, 3.5rem); line-height: 1.12; }
-.page-hero p  { max-width: 720px; margin: 0 auto; color: var(--hero-subtext); font-size: 1.05rem; }
 
 /* ═══════════════════════════════════════════════════════════════
-   LIGHT MODE REFRESH — paste at the very END of styles.css
-   (after styles-additions.css). Every rule is scoped to
-   html:not(.dark), so dark mode is untouched.
-   The idea: paper is the page, sand-gold is an accent.
+   LIGHT MODE REFRESH — paper surfaces, dark footer anchor.
+   Scoped to html:not(.dark); dark mode is untouched.
    ═══════════════════════════════════════════════════════════════ */
 html:not(.dark) {
   /* Surfaces: warm paper instead of mustard */
-  --cream:          #FDF8EE;   /* page background */
+  --cream:          #FDF8EE;
   --cream-alt:      #F8EED9;
   --white:          #FFFDF8;
-  --section-alt:    #F8EED9;   /* alternating bands */
-  --section-green:  #FBF3E1;   /* mission band */
+  --section-alt:    #F8EED9;
+  --section-green:  #FBF3E1;
   --card-bg:        #FFFDF9;
 
   /* Lines: soft warm hairlines instead of olive outlines */
@@ -2947,11 +2887,11 @@ html:not(.dark) {
   --text-body:      #5A3A33;
   --text-muted:     #7A5A52;
 
-  /* Accent colours used for small text, tuned to pass contrast on paper */
+  /* Accent colours tuned for contrast on paper */
   --terracotta:     #C24A1E;
   --ochre-gold-dark:#6B5C1B;
 
-  /* Nav bar and hero: light, with sand only as a gentle glow */
+  /* Nav + hero glow */
   --nav-bg:         rgba(253, 248, 238, 0.92);
   --hero-bg-base:   #FDF6E6;
   --hero-gradient-start: #FFFBF2;
@@ -2959,11 +2899,30 @@ html:not(.dark) {
   --hero-gradient-end:   #F7E5B8;
 }
 
-/* Linen texture read as hatching on light paper — keep it, but faint */
+/* Linen texture reads as hatching on paper — keep it, but faint */
 html:not(.dark) .hero-canvas-texture      { opacity: 0.35; }
 html:not(.dark) .hero-canvas-weave-detail { opacity: 0.25; }
 
-/* Carousel dots used --card-border, which is now too light to see */
+/* Carousel dots used --card-border, now too pale to see */
 html:not(.dark) .dot        { background: #CDBB93; }
 html:not(.dark) .dot.active { background: var(--terracotta); }
 html:not(.dark) .dot:hover  { background: var(--crimson); }
+
+/* ── Footer contrast pass ─────────────────────────────────────
+   Footer stays dark in light mode, but --ochre-gold (#998731)
+   only reaches ≈4.1:1 on #3D201A — below WCAG AA for the 12px
+   .footer-note and .footer-bottom line. Lift them, plus the
+   column links, to ≥ 8:1. Headings keep --sand-gold so the
+   visual hierarchy is unchanged.
+   ───────────────────────────────────────────────────────────── */
+html:not(.dark) .footer-note,
+html:not(.dark) .footer-bottom p {
+  color: #D8C48A !important;   /* ≈ 8.5:1 on #3D201A */
+}
+html:not(.dark) .footer-brand p,
+html:not(.dark) .footer-col a {
+  color: #F0DDAE;              /* ≈ 10:1 on #3D201A */
+}
+html:not(.dark) .footer-col a:hover {
+  color: #FFFFFF;
+}

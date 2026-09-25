@@ -1,7 +1,4 @@
-/* site.js — shared nav, footer and dark mode for EVERY page.
-   Usage: one line just before </body>:  <script src="site.js"></script>
-   To add, remove or rename a link anywhere on the site, edit the arrays below. */
-(function () {
+function initSite() {
   'use strict';
 
   /* ═══════════ 1. EDIT THESE ═══════════ */
@@ -146,4 +143,11 @@
     }, { threshold: 0.08 });
     fades.forEach(function (el) { io.observe(el); });
   } else fades.forEach(function (el) { el.classList.add('visible'); });
-})();
+}
+
+/* Run now if the body already exists, otherwise wait for it. */
+if (document.body) {
+  initSite();
+} else {
+  document.addEventListener('DOMContentLoaded', initSite, { once: true });
+}

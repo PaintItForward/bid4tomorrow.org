@@ -26,123 +26,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-  /* ═══ Pill-shaped nav links (desktop + mobile) ═══ */
-  .nav-links { gap: 0.4rem; flex-wrap: nowrap; align-items: center; }
-  .nav-links a {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 0.48rem 0.85rem;
-    font-size: 0.72rem;
-    letter-spacing: 1.2px;
-    white-space: nowrap;
-    transition: background var(--transition), color var(--transition),
-                border-color var(--transition), transform var(--transition);
-  }
-  .nav-links a:hover {
-    background: var(--terracotta);
-    border-color: var(--terracotta);
-    color: #FFFFFF;
-    transform: translateY(-1px);
-  }
-  /* Keep existing special pills intact */
-  .nav-links a.nav-badge-pill { background: rgba(95,168,194,0.12) !important; }
-  .nav-links a.nav-cta        { background: var(--terracotta) !important; }
 
-  /* ══════════════════════════════════════════════════════════════
-     Collapsed navigation — driven by the .nav-collapsed class that
-     JS sets from a live width measurement, so it works at every
-     zoom level instead of only at one fixed breakpoint.
-     ══════════════════════════════════════════════════════════════ */
-  #main-nav.nav-collapsed .nav-toggle { display: block; }
-
-  #main-nav.nav-collapsed .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: stretch;
-    position: absolute;
-    top: 100%;              /* sits flush under the nav at any nav height */
-    left: 0;
-    right: 0;
-    width: auto;
-    background: var(--nav-bg);
-    padding: 1.25rem 1.5rem 1.5rem;
-    border-bottom: 1px solid var(--card-border);
-    box-shadow: var(--shadow-lg);
-    gap: 0.55rem;
-    max-height: 80vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-  }
-  #main-nav.nav-collapsed .nav-links.open { display: flex; }
-
-  #main-nav.nav-collapsed .nav-links a {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-    padding: 0.85rem 1.25rem;
-    font-size: 0.82rem;
-  }
-
-  /* ── Off-screen measuring pass: lay the links out as a single row
-        at their natural width so JS can compare them against the
-        space actually available. Never painted. ── */
-  #main-nav.nav-measuring .nav-links {
-    display: flex !important;
-    flex-direction: row !important;
-    position: static !important;
-    visibility: hidden !important;
-    width: max-content !important;
-    max-width: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    gap: 0.4rem !important;
-    background: none !important;
-    border: 0 !important;
-    box-shadow: none !important;
-    transform: none !important;
-    opacity: 0 !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-  #main-nav.nav-measuring .nav-logo,
-  #main-nav.nav-measuring .nav-links { flex: 0 0 auto !important; }
-  #main-nav.nav-measuring .nav-links a { width: auto !important; }
-  #main-nav.nav-measuring .nav-toggle { display: none !important; }
-
-  /* ── No-JS safety net (JS normally handles this at every width) ── */
-  @media (max-width: 900px) {
-    .nav-toggle { display: block; }
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      align-items: stretch;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--nav-bg);
-      padding: 1.25rem 1.5rem 1.5rem;
-      border-bottom: 1px solid var(--card-border);
-      box-shadow: var(--shadow-lg);
-      gap: 0.55rem;
-      max-height: 80vh;
-      overflow-y: auto;
-      backdrop-filter: blur(16px) saturate(160%);
-      -webkit-backdrop-filter: blur(16px) saturate(160%);
-    }
-    .nav-links.open { display: flex; }
-    .nav-links a {
-      width: 100%;
-      justify-content: center;
-      text-align: center;
-      padding: 0.85rem 1.25rem;
-      font-size: 0.82rem;
-    }
-  }
+  <style>
 
   /* ═══ Editorial mission layout (not in styles.css) ═══ */
   .mission-editorial-grid {
@@ -309,34 +194,10 @@
   body.dark .form-feedback-box.error   { background: #2C1818; border-color: #5C2424; color: #F8B4B4; }
 </style>
 </head>
+<script src="site.js"></script>
 <body>
 
-<!-- ═══════════════ NAVIGATION ═══════════════ -->
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="#home" class="nav-logo" aria-label="Bid For Tomorrow home">
-      <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-180x180.png" alt="" style="width:100%;height:100%;object-fit:cover;">
-      </div>
-      Bid For Tomorrow
-    </a>
-    <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Branches</a></li>
-      <li><a href="auction.html" class="nav-badge-pill">Fall 26 Auction ↗</a></li>
-      <li><a href="#artwork">Gallery</a></li>
-      <li><a href="#how-it-works">How It Works</a></li>
-      <li><a href="#impact">Impact</a></li>
-      <li><a href="#causes">Causes</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="volunteer.html">Volunteer</a></li>
-      <li><a href="#get-involved" class="nav-cta">Get Involved</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+
 
 <!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero" id="home" aria-label="Hero">
@@ -868,52 +729,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
-<footer role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#home" class="footer-logo" aria-label="Bid For Tomorrow home">Bid For Tomorrow</a>
-        <p>Turning Creativity Into Impact. A student-led nonprofit giving young artists a platform while supporting youth physical and mental health in North America.</p>
-        <p class="footer-note">Registered Nonprofit.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="branches.html">Our Branches</a></li>
-          <li><a href="auction.html">Fall 26 Auction</a></li>
-          <li><a href="#artwork">Gallery</a></li>
-          <li><a href="#causes">Causes We Support</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Get Involved</h4>
-        <ul>
-          <li><a href="https://form.jotform.com/261786048210052" target="_blank" rel="noopener">Submit Artwork</a></li>
-          <li><a href="auction.html">Bid on Artwork</a></li>
-          <li><a href="volunteer.html">Volunteer With Us</a></li>
-          <li><a href="volunteer-hours-policy.html">Volunteer Hours Policy</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="mailto:bid4tomorrow@gmail.com">Email Us</a></li>
-          <li><a href="https://www.instagram.com/paint_itforward/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Bid For Tomorrow. All rights reserved. Nonprofit, Greater Toronto Area &amp; Massachusetts.</p>
-    </div>
-  </div>
-</footer>
-
-<button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-  <svg id="toggle-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-</button>
 
 <script>
 /* ── PAINT HERO ── */
@@ -1262,20 +1077,6 @@ function toggleFaq(btn) {
   });
 })();
 
-/* ── DARK MODE ── */
-const dB = document.getElementById("dark-toggle");
-const iE = document.getElementById("toggle-icon");
-const moon = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-const sun  = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  document.body.classList.add("dark"); document.documentElement.classList.add("dark");
-  if (iE) iE.innerHTML = sun;
-}
-if (dB) dB.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  document.documentElement.classList.toggle("dark", document.body.classList.contains("dark"));
-  if (iE) iE.innerHTML = document.body.classList.contains("dark") ? sun : moon;
-});
 
 /* ── GALLERY ── */
 (function() {

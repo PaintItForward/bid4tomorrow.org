@@ -48,7 +48,6 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.35);
         }
 
-        /* Back arrow */
         .back-link {
             position: absolute;
             top: 14px;
@@ -149,6 +148,13 @@
             cursor: not-allowed;
         }
 
+        .form-hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
         .save-btn {
             width: 100%;
             padding: 12px;
@@ -194,6 +200,7 @@
             border-left: 4px solid var(--accent);
             box-shadow: 0 6px 20px rgba(0,0,0,0.4);
             animation: toast-in 0.2s ease;
+            max-width: 320px;
         }
 
         .toast.success { border-left-color: var(--success); }
@@ -237,6 +244,10 @@
             <div class="form-group">
                 <label for="emailInput">Email</label>
                 <input type="email" id="emailInput" autocomplete="email" />
+                <span class="form-hint">
+                    Changing this sends a confirmation link to the new address.
+                    Your login email updates after you confirm.
+                </span>
             </div>
 
             <div class="form-group">
@@ -263,7 +274,6 @@
                     e.preventDefault();
                     window.history.back();
                 }
-                // Otherwise the href="index.html" fallback takes over.
             });
         })();
 
@@ -273,7 +283,7 @@
             toast.className = `toast ${type}`;
             toast.innerText = message;
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+            setTimeout(() => toast.remove(), 4000);
         }
 
         // Auth check & profile load
@@ -307,7 +317,9 @@
             } else {
                 document.getElementById('fullNameInput').value =
                     profile.full_name || user.user_metadata?.full_name || '';
-                document.getElementById('emailInput').value = user.email || profile.email || '';
+                // Auth email is source of truth — profiles row must not override it.
+                document.getElementById('emailInput').value =
+                    user.email || profile.email || '';
                 document.getElementById('createdAtDisplay').value =
                     profile.created_at
                         ? new Date(profile.created_at).toLocaleDateString()
@@ -318,33 +330,33 @@
             document.getElementById('profileForm').style.display = 'block';
         }
 
-        // Update profile
+        // Update profile — writes to Auth (name + email) and mirrors to profiles
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-        
+
             const fullName = document.getElementById('fullNameInput').value.trim();
             const email = document.getElementById('emailInput').value.trim();
-        
+
             if (!fullName || !email) {
                 showToast('Please fill all fields', 'error');
                 return;
             }
-        
+
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
-        
+
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.disabled = true;
             saveBtn.textContent = 'Saving...';
-        
+
             const nameChanged =
                 fullName !== (user.user_metadata?.full_name || '');
             const emailChanged =
                 email.toLowerCase() !== (user.email || '').toLowerCase();
-        
+
             let authError = null;
             let emailConfirmationSent = false;
-        
+
             // 1) Update Auth display name metadata
             if (nameChanged) {
                 const { error } = await supabaseClient.auth.updateUser({
@@ -352,49 +364,50 @@
                 });
                 if (error) authError = error;
             }
-        
-            // 2) Update Auth login email (triggers confirmation email)
+
+            // 2) Update Auth login email (Supabase sends confirmation)
             if (!authError && emailChanged) {
                 const { error } = await supabaseClient.auth.updateUser({ email });
                 if (error) authError = error;
                 else emailConfirmationSent = true;
             }
-        
+
             if (authError) {
                 showToast('Update failed: ' + authError.message, 'error');
                 saveBtn.disabled = false;
                 saveBtn.textContent = 'Save Changes';
                 return;
             }
-        
-            // 3) Sync the profiles row — email mirrors Auth, not user input
+
+            // 3) Mirror to profiles — email reflects Auth, not user input
             const { error: profileError } = await supabaseClient
                 .from('profiles')
                 .upsert({
                     id: user.id,
                     full_name: fullName,
-                    email: user.email, // still the old address until confirmation
+                    email: user.email,
                     updated_at: new Date().toISOString()
                 });
-        
+
             if (profileError) {
                 showToast('Profile save failed: ' + profileError.message, 'error');
             } else if (emailConfirmationSent) {
-                showToast('Name saved. Check your email to confirm the new address.', 'success');
+                showToast(
+                    'Name saved. Check your email to confirm the new address.',
+                    'success'
+                );
             } else {
                 showToast('Profile updated successfully!', 'success');
             }
-        
-            // Update the avatar initial from the new name
+
             document.getElementById('avatarDisplay').innerText =
                 fullName?.[0]?.toUpperCase() || 'U';
-        
-            // Do NOT update the header email when a change is pending —
-            // Auth still holds the old address until the user confirms.
+
+            // Do not update the header email until confirmation lands.
             if (!emailConfirmationSent) {
                 document.getElementById('userEmailDisplay').innerText = user.email;
             }
-        
+
             saveBtn.disabled = false;
             saveBtn.textContent = 'Save Changes';
         });

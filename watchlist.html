@@ -397,7 +397,7 @@
                     starting_bid,
                     artworks (
                         title,
-                        artist
+                        artist_name
                     )
                 )
             `)
@@ -424,7 +424,7 @@
             const artwork = lot.artworks || {};
             const lotNumber = lot.lot_number || 'N/A';
             const title = artwork.title || 'Untitled Artwork';
-            const artist = artwork.artist || 'Unknown Artist';
+            const artist = artwork.artist_name || 'Unknown Artist';
             const startingBid = lot.starting_bid ? `$${lot.starting_bid.toLocaleString()} CAD` : 'TBD';
             
             return `
@@ -449,7 +449,8 @@
                 const { error } = await supabase
                     .from('watchlist')
                     .delete()
-                    .eq('id', watchId);
+                    .eq('id', watchId)
+                    .eq('user_id', user.id);
                     
                 if (error) {
                     showToast('Failed to remove from watchlist', 'error');

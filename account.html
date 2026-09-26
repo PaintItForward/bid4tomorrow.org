@@ -1,91 +1,311 @@
-<script>
-    // Supabase config
-    const SUPABASE_URL = 'https://zezgamocqdkqfaqzompd.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
-    
-    // Initialize Supabase client
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — Bid For Tomorrow</title>
 
-    // Toast function
-    function showToast(message, type = 'success') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerText = message;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    // ... (rest of your code with all `supabase` replaced with `supabaseClient`)
-
-    // Auth check & profile load
-    async function checkAuthAndLoadProfile() {
-        const { data: { user }, error } = await supabaseClient.auth.getUser();
-        if (error || !user) {
-            window.location.href = 'login.html?redirect=account.html';
-            return;
+    <style>
+        :root {
+            --bg: #0f1115;
+            --panel: #171a21;
+            --panel-2: #1e222b;
+            --border: #2a2f3a;
+            --text: #e8eaed;
+            --muted: #9aa3af;
+            --accent: #c9a227;
+            --accent-hover: #d9b23a;
+            --danger: #e5484d;
+            --success: #2f9e44;
         }
-        
-        document.getElementById('avatarDisplay').innerText = user.email?.[0]?.toUpperCase() || 'U';
-        document.getElementById('userEmailDisplay').innerText = user.email;
-        
-        const { data: profile, error: profileError } = await supabaseClient
-            .from('profiles')
-            .select('*')
-            .eq('id', user.id)
-            .single();
-            
-        if (profileError || !profile) {
-            document.getElementById('fullNameInput').value = user.user_metadata?.full_name || '';
-            document.getElementById('emailInput').value = user.email || '';
-            document.getElementById('createdAtDisplay').value = user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A';
-        } else {
-            document.getElementById('fullNameInput').value = profile.full_name || '';
-            document.getElementById('emailInput').value = profile.email || user.email;
-            document.getElementById('createdAtDisplay').value = profile.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A';
-        }
-        
-        document.getElementById('profileLoading').style.display = 'none';
-        document.getElementById('profileForm').style.display = 'block';
-    }
 
-    // Update profile
-    document.getElementById('profileForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const fullName = document.getElementById('fullNameInput').value.trim();
-        const email = document.getElementById('emailInput').value.trim();
-        
-        if (!fullName || !email) {
-            showToast('Please fill all fields', 'error');
-            return;
-        }
-        
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) return;
-        
-        document.getElementById('saveBtn').disabled = true;
-        document.getElementById('saveBtn').textContent = 'Saving...';
-        
-        const { error } = await supabaseClient
-            .from('profiles')
-            .upsert({ 
-                id: user.id, 
-                full_name: fullName, 
-                email: email, 
-                updated_at: new Date().toISOString() 
-            });
-            
-        if (error) {
-            showToast('Update failed: ' + error.message, 'error');
-        } else {
-            showToast('Profile updated successfully!', 'success');
-            document.getElementById('userEmailDisplay').innerText = email;
-            document.getElementById('avatarDisplay').innerText = fullName?.[0]?.toUpperCase() || 'U';
-        }
-        
-        document.getElementById('saveBtn').disabled = false;
-        document.getElementById('saveBtn').textContent = 'Save Changes';
-    });
+        * { box-sizing: border-box; }
 
-    checkAuthAndLoadProfile();
-</script>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .account-card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+        }
+
+        .account-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .account-header-text h1 {
+            margin: 0 0 4px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .account-header-text p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+            word-break: break-all;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 11px 13px;
+            background: var(--panel-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #21252e;
+        }
+
+        .form-group input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            background: var(--accent);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .save-btn:hover:not(:disabled) { background: var(--accent-hover); }
+        .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        #profileLoading {
+            text-align: center;
+            color: var(--muted);
+            padding: 24px 0;
+            font-size: 14px;
+        }
+
+        #profileForm { display: none; }
+
+        #toastContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 9999;
+        }
+
+        .toast {
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #fff;
+            background: var(--panel-2);
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            animation: toast-in 0.2s ease;
+        }
+
+        .toast.success { border-left-color: var(--success); }
+        .toast.error   { border-left-color: var(--danger); }
+
+        @keyframes toast-in {
+            from { transform: translateX(20px); opacity: 0; }
+            to   { transform: translateX(0);    opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toastContainer"></div>
+
+    <div class="account-card">
+        <div class="account-header">
+            <div class="avatar" id="avatarDisplay">U</div>
+            <div class="account-header-text">
+                <h1>My Account</h1>
+                <p id="userEmailDisplay">—</p>
+            </div>
+        </div>
+
+        <div id="profileLoading">Loading your profile…</div>
+
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="fullNameInput">Full Name</label>
+                <input type="text" id="fullNameInput" autocomplete="name" />
+            </div>
+
+            <div class="form-group">
+                <label for="emailInput">Email</label>
+                <input type="email" id="emailInput" autocomplete="email" />
+            </div>
+
+            <div class="form-group">
+                <label for="createdAtDisplay">Member Since</label>
+                <input type="text" id="createdAtDisplay" disabled />
+            </div>
+
+            <button type="submit" class="save-btn" id="saveBtn">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        // Supabase config
+        const SUPABASE_URL = 'https://zezgamocqdkqfaqzompd.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Auth check & profile load
+        async function checkAuthAndLoadProfile() {
+            const { data: { user }, error } = await supabaseClient.auth.getUser();
+
+            if (error || !user) {
+                window.location.href = 'login.html?redirect=account.html';
+                return;
+            }
+
+            document.getElementById('avatarDisplay').innerText =
+                user.email?.[0]?.toUpperCase() || 'U';
+            document.getElementById('userEmailDisplay').innerText = user.email;
+
+            // Narrowed SELECT: only the columns actually used on this page.
+            const { data: profile, error: profileError } = await supabaseClient
+                .from('profiles')
+                .select('full_name, email, created_at')
+                .eq('id', user.id)
+                .single();
+
+            if (profileError || !profile) {
+                document.getElementById('fullNameInput').value =
+                    user.user_metadata?.full_name || '';
+                document.getElementById('emailInput').value = user.email || '';
+                document.getElementById('createdAtDisplay').value =
+                    user.created_at
+                        ? new Date(user.created_at).toLocaleDateString()
+                        : 'N/A';
+            } else {
+                document.getElementById('fullNameInput').value = profile.full_name || '';
+                document.getElementById('emailInput').value = profile.email || user.email;
+                document.getElementById('createdAtDisplay').value =
+                    profile.created_at
+                        ? new Date(profile.created_at).toLocaleDateString()
+                        : 'N/A';
+            }
+
+            document.getElementById('profileLoading').style.display = 'none';
+            document.getElementById('profileForm').style.display = 'block';
+        }
+
+        // Update profile
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullNameInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+
+            if (!fullName || !email) {
+                showToast('Please fill all fields', 'error');
+                return;
+            }
+
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+
+            const { error } = await supabaseClient
+                .from('profiles')
+                .upsert({
+                    id: user.id,
+                    full_name: fullName,
+                    email: email,
+                    updated_at: new Date().toISOString()
+                });
+
+            if (error) {
+                showToast('Update failed: ' + error.message, 'error');
+            } else {
+                showToast('Profile updated successfully!', 'success');
+                document.getElementById('userEmailDisplay').innerText = email;
+                document.getElementById('avatarDisplay').innerText =
+                    fullName?.[0]?.toUpperCase() || 'U';
+            }
+
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save Changes';
+        });
+
+        checkAuthAndLoadProfile();
+    </script>
+</body>
+</html>

@@ -425,33 +425,48 @@
             return;
         }
         
-        // Get all bids to determine winners
-        const { data: allBids, error: bidsError } = await supabase
-            .from('bids')
-            .select(`
-                lot_id, 
-                bidder_id, 
-                amount, 
-                created_at,
-                lots (
-                    lot_number,
-                    starting_bid,
-                    bid_increment,
-                    artworks (
-                        title,
-                        artist,
-                        id
-                    )
-                )
-            `)
-            .order('amount', { ascending: false });
-            
+       // Fetch current user's winning bids via scoped RPC (bids is not readable directly)
+        const { data: wins, error: winsError } = await supabase
+            .rpc('get_my_winning_bids');
+        
         document.getElementById('loadingState').style.display = 'none';
         
-        if (bidsError) {
-            showToast('Error loading bids: ' + bidsError.message, 'error');
+        if (winsError) {
+            showToast('Error loading winning bids: ' + winsError.message, 'error');
             return;
         }
+        
+        const container = document.getElementById('winningContainer');
+        const emptyState = document.getElementById('emptyState');
+        
+        if (!wins || wins.length === 0) {
+            emptyState.style.display = 'block';
+            return;
+        }
+        
+        container.innerHTML = wins.map(w => {
+            const lotNumber = w.lot_number || 'N/A';
+            const title     = w.artwork_title || 'Untitled Artwork';
+            const artist    = w.artist_name || 'Unknown Artist';
+            const myAmount  = Number(w.my_amount) || 0;
+            const nextMin   = Number(w.next_minimum) || 0;
+        
+            return `
+                <div class="winning-row">
+                    <div class="winning-info">
+                        <div class="winning-badge">🏆 Winning</div>
+                        <div class="winning-lot">Lot #${lotNumber}</div>
+                        <div class="winning-artwork">${title} — ${artist}</div>
+                    </div>
+                    <div class="winning-amount">$${myAmount.toLocaleString()} CAD</div>
+                    <div class="winning-next-min">Min next bid: $${nextMin.toLocaleString()}</div>
+                    <div class="winning-actions">
+                        <a href="auction.html" class="winning-view-link">View</a>
+                        <button class="stripe-btn" onclick="window.open('${STRIPE_PAYMENT_LINK}','_blank')">Pay Now</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
         
         // Determine highest bid per lot
         const winningMap = new Map();

@@ -38,6 +38,7 @@
         }
 
         .account-card {
+            position: relative;
             width: 100%;
             max-width: 480px;
             background: var(--panel);
@@ -47,6 +48,37 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.35);
         }
 
+        /* Back arrow */
+        .back-link {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px 6px 6px;
+            border-radius: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .back-link:hover {
+            color: var(--text);
+            background: var(--panel-2);
+        }
+
+        .back-link svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         .account-header {
             display: flex;
             align-items: center;
@@ -54,6 +86,7 @@
             margin-bottom: 24px;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--border);
+            margin-top: 8px;
         }
 
         .avatar {
@@ -177,6 +210,14 @@
     <div id="toastContainer"></div>
 
     <div class="account-card">
+
+        <a href="index.html" class="back-link" id="backLink" aria-label="Go back">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Back
+        </a>
+
         <div class="account-header">
             <div class="avatar" id="avatarDisplay">U</div>
             <div class="account-header-text">
@@ -213,6 +254,18 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
 
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Back link: prefer browser history, fall back to index.html
+        (function setupBackLink() {
+            const backLink = document.getElementById('backLink');
+            backLink.addEventListener('click', function (e) {
+                if (window.history.length > 1 && document.referrer) {
+                    e.preventDefault();
+                    window.history.back();
+                }
+                // Otherwise the href="index.html" fallback takes over.
+            });
+        })();
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');

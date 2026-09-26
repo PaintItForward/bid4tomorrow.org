@@ -305,8 +305,9 @@
                         ? new Date(user.created_at).toLocaleDateString()
                         : 'N/A';
             } else {
-                document.getElementById('fullNameInput').value = profile.full_name || '';
-                document.getElementById('emailInput').value = profile.email || user.email;
+                document.getElementById('fullNameInput').value =
+                    profile.full_name || user.user_metadata?.full_name || '';
+                document.getElementById('emailInput').value = user.email || profile.email || '';
                 document.getElementById('createdAtDisplay').value =
                     profile.created_at
                         ? new Date(profile.created_at).toLocaleDateString()
@@ -320,40 +321,80 @@
         // Update profile
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-
+        
             const fullName = document.getElementById('fullNameInput').value.trim();
             const email = document.getElementById('emailInput').value.trim();
-
+        
             if (!fullName || !email) {
                 showToast('Please fill all fields', 'error');
                 return;
             }
-
+        
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
-
+        
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.disabled = true;
             saveBtn.textContent = 'Saving...';
-
-            const { error } = await supabaseClient
+        
+            const nameChanged =
+                fullName !== (user.user_metadata?.full_name || '');
+            const emailChanged =
+                email.toLowerCase() !== (user.email || '').toLowerCase();
+        
+            let authError = null;
+            let emailConfirmationSent = false;
+        
+            // 1) Update Auth display name metadata
+            if (nameChanged) {
+                const { error } = await supabaseClient.auth.updateUser({
+                    data: { full_name: fullName }
+                });
+                if (error) authError = error;
+            }
+        
+            // 2) Update Auth login email (triggers confirmation email)
+            if (!authError && emailChanged) {
+                const { error } = await supabaseClient.auth.updateUser({ email });
+                if (error) authError = error;
+                else emailConfirmationSent = true;
+            }
+        
+            if (authError) {
+                showToast('Update failed: ' + authError.message, 'error');
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Changes';
+                return;
+            }
+        
+            // 3) Sync the profiles row — email mirrors Auth, not user input
+            const { error: profileError } = await supabaseClient
                 .from('profiles')
                 .upsert({
                     id: user.id,
                     full_name: fullName,
-                    email: email,
+                    email: user.email, // still the old address until confirmation
                     updated_at: new Date().toISOString()
                 });
-
-            if (error) {
-                showToast('Update failed: ' + error.message, 'error');
+        
+            if (profileError) {
+                showToast('Profile save failed: ' + profileError.message, 'error');
+            } else if (emailConfirmationSent) {
+                showToast('Name saved. Check your email to confirm the new address.', 'success');
             } else {
                 showToast('Profile updated successfully!', 'success');
-                document.getElementById('userEmailDisplay').innerText = email;
-                document.getElementById('avatarDisplay').innerText =
-                    fullName?.[0]?.toUpperCase() || 'U';
             }
-
+        
+            // Update the avatar initial from the new name
+            document.getElementById('avatarDisplay').innerText =
+                fullName?.[0]?.toUpperCase() || 'U';
+        
+            // Do NOT update the header email when a change is pending —
+            // Auth still holds the old address until the user confirms.
+            if (!emailConfirmationSent) {
+                document.getElementById('userEmailDisplay').innerText = user.email;
+            }
+        
             saveBtn.disabled = false;
             saveBtn.textContent = 'Save Changes';
         });

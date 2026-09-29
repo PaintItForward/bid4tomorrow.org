@@ -21,23 +21,23 @@
             background: var(--white);
             border-bottom: 1px solid var(--border);
         }
-        
+
         .winning-header {
             text-align: center;
             margin-bottom: 3rem;
         }
-        
+
         .winning-header h1 {
             font-size: clamp(2rem, 4vw, 3rem);
             margin-bottom: 0.75rem;
             color: var(--text-heading);
         }
-        
+
         .winning-header p {
             color: var(--text-muted);
             font-size: 1.05rem;
         }
-        
+
         .winning-card {
             max-width: 900px;
             margin: 0 auto;
@@ -49,7 +49,7 @@
             box-shadow: var(--shadow-md);
             transition: background var(--transition), border-color var(--transition);
         }
-        
+
         .winning-row {
             display: flex;
             justify-content: space-between;
@@ -59,20 +59,20 @@
             transition: background var(--transition), border-color var(--transition);
             gap: 1.5rem;
         }
-        
+
         .winning-row:last-child {
             border-bottom: none;
         }
-        
+
         .winning-row:hover {
             background: var(--section-alt);
         }
-        
+
         .winning-info {
             flex: 1;
             min-width: 0;
         }
-        
+
         .winning-badge {
             display: inline-block;
             background: rgba(45, 122, 45, 0.15);
@@ -86,7 +86,7 @@
             text-transform: uppercase;
             margin-bottom: 0.5rem;
         }
-        
+
         .winning-lot {
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 1.2rem;
@@ -94,13 +94,13 @@
             color: var(--text-heading);
             margin-bottom: 0.25rem;
         }
-        
+
         .winning-artwork {
             font-size: 0.9rem;
             color: var(--text-muted);
             margin-bottom: 0.5rem;
         }
-        
+
         .winning-amount {
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 1.5rem;
@@ -108,20 +108,20 @@
             color: var(--terracotta);
             white-space: nowrap;
         }
-        
+
         .winning-next-min {
             font-size: 0.85rem;
             color: var(--text-muted);
             white-space: nowrap;
         }
-        
+
         .winning-actions {
             display: flex;
             gap: 0.75rem;
             align-items: center;
             white-space: nowrap;
         }
-        
+
         .winning-view-link {
             color: var(--terracotta);
             font-weight: 600;
@@ -129,12 +129,12 @@
             font-size: 0.9rem;
             transition: color var(--transition);
         }
-        
+
         .winning-view-link:hover {
             color: var(--terracotta-dark);
             text-decoration: underline;
         }
-        
+
         .stripe-btn {
             background: var(--ochre-gold);
             color: white;
@@ -147,13 +147,13 @@
             font-size: 0.85rem;
             transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
         }
-        
+
         .stripe-btn:hover {
             background: var(--ochre-gold-dark);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(153, 135, 49, 0.3);
         }
-        
+
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -161,20 +161,20 @@
             max-width: 500px;
             margin: 0 auto;
         }
-        
+
         .empty-state-icon {
             font-size: 3.5rem;
             margin-bottom: 1rem;
             display: block;
         }
-        
+
         .empty-state h3 {
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 1.5rem;
             color: var(--text-heading);
             margin-bottom: 0.5rem;
         }
-        
+
         .loading-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -182,7 +182,7 @@
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 1.2rem;
         }
-        
+
         .loading-state::after {
             content: '';
             display: inline-block;
@@ -194,11 +194,11 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
+
         .toast-container {
             position: fixed;
             bottom: 20px;
@@ -208,7 +208,7 @@
             flex-direction: column;
             gap: 10px;
         }
-        
+
         .toast {
             padding: 1rem 1.5rem;
             border-radius: var(--radius-sm);
@@ -220,24 +220,24 @@
             font-family: 'Source Sans 3', sans-serif;
             border: 1px solid var(--ochre-gold);
         }
-        
+
         .toast.success {
             background: #2d7a2d;
             color: #FFFFFF;
             border-color: #2d7a2d;
         }
-        
+
         .toast.error {
             background: var(--crimson);
             color: #FFFFFF;
             border-color: var(--crimson);
         }
-        
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         @media (max-width: 768px) {
             .winning-row {
                 flex-direction: column;
@@ -245,13 +245,13 @@
                 gap: 1rem;
                 padding: 1.5rem;
             }
-            
+
             .winning-actions {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.75rem;
             }
-            
+
             .winning-amount {
                 font-size: 1.3rem;
             }
@@ -294,7 +294,7 @@
             <h1>Winning Bids</h1>
             <p>Congratulations! Here are the lots where you're currently the highest bidder</p>
         </div>
-        
+
         <div class="winning-card">
             <div id="loadingState" class="loading-state">Checking your winning bids...</div>
             <div id="winningContainer"></div>
@@ -368,15 +368,27 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+    // ─────────────────────────────────────────────────────────────
     // Supabase config
+    // ─────────────────────────────────────────────────────────────
     const SUPABASE_URL = 'https://zezgamocqdkqfaqzompd.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
-    
-    // Initialize Supabase
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/your_payment_link_here';
 
-    // Toast function
+    // NOTE: `window.supabase` is the library namespace created by the CDN script above.
+    // Our own client instance MUST use a different name, otherwise we shadow the global.
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ─────────────────────────────────────────────────────────────
+    // Stripe — replace the placeholder before going live.
+    // Payment Links accept ?client_reference_id=... which is passed through
+    // to the Stripe webhook so you can match a payment to a lot.
+    // ─────────────────────────────────────────────────────────────
+    const STRIPE_PLACEHOLDER = 'https://buy.stripe.com/your_payment_link_here';
+    const STRIPE_PAYMENT_LINK = STRIPE_PLACEHOLDER;
+
+    // ─────────────────────────────────────────────────────────────
+    // Helpers
+    // ─────────────────────────────────────────────────────────────
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
@@ -386,18 +398,31 @@
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // Dark mode toggle
+    // Escape anything that gets interpolated into innerHTML.
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[ch]));
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Dark mode
+    // ─────────────────────────────────────────────────────────────
     const darkBtn = document.getElementById('dark-toggle');
     const iconEl = document.getElementById('toggle-icon');
     const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
     const sunPath = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
 
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches || localStorage.getItem('darkMode') === 'true') {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark');
         document.documentElement.classList.add('dark');
         if (iconEl) iconEl.innerHTML = sunPath;
     }
-    
+
     darkBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark');
         document.documentElement.classList.toggle('dark', document.body.classList.contains('dark'));
@@ -405,73 +430,100 @@
         localStorage.setItem('darkMode', document.body.classList.contains('dark'));
     });
 
-    // Mobile nav toggle
+    // ─────────────────────────────────────────────────────────────
+    // Mobile nav
+    // ─────────────────────────────────────────────────────────────
     const navToggleBtn = document.getElementById('nav-toggle');
-    navToggleBtn.addEventListener('click', function() {
+    navToggleBtn.addEventListener('click', function () {
         const links = document.getElementById('nav-links');
         links.classList.toggle('open');
         this.setAttribute('aria-expanded', links.classList.contains('open'));
     });
-    
+
     document.querySelectorAll('.nav-links a').forEach(a => {
         a.addEventListener('click', () => document.getElementById('nav-links')?.classList.remove('open'));
     });
 
-   // Load winning bids
+    // ─────────────────────────────────────────────────────────────
+    // Payments — one delegated listener for every "Pay Now" button
+    // ─────────────────────────────────────────────────────────────
+    document.getElementById('winningContainer').addEventListener('click', (event) => {
+        const btn = event.target.closest('.stripe-btn');
+        if (!btn) return;
+
+        if (STRIPE_PAYMENT_LINK === STRIPE_PLACEHOLDER) {
+            showToast('Payment link is not configured yet. Please contact us.', 'error');
+            return;
+        }
+
+        const lot = btn.dataset.lot || '';
+        const url = new URL(STRIPE_PAYMENT_LINK);
+        if (lot) url.searchParams.set('client_reference_id', lot);
+
+        window.open(url.toString(), '_blank', 'noopener,noreferrer');
+    });
+
+    // ─────────────────────────────────────────────────────────────
+    // Load winning bids
+    // ─────────────────────────────────────────────────────────────
     async function loadWinningBids() {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error || !user) {
+        const loadingState = document.getElementById('loadingState');
+        const container = document.getElementById('winningContainer');
+        const emptyState = document.getElementById('emptyState');
+
+        // 1. Require a signed-in user.
+        const { data: authData, error: authError } = await supabaseClient.auth.getUser();
+        const user = authData?.user;
+
+        if (authError || !user) {
             window.location.href = 'login.html?redirect=winning-bids.html';
             return;
         }
-    
-        // Fetch current user's winning bids via scoped RPC (bids is not readable directly)
-        const { data: wins, error: winsError } = await supabase
+
+        // 2. Fetch this user's winning bids via the scoped RPC.
+        //    (The `bids` table is not directly readable, which is correct.)
+        const { data: wins, error: winsError } = await supabaseClient
             .rpc('get_my_winning_bids');
-    
-        document.getElementById('loadingState').style.display = 'none';
-    
+
+        loadingState.style.display = 'none';
+
         if (winsError) {
             showToast('Error loading winning bids: ' + winsError.message, 'error');
             return;
         }
-    
-        const container = document.getElementById('winningContainer');
-        const emptyState = document.getElementById('emptyState');
-    
-        if (!wins || wins.length === 0) {
+
+        if (!Array.isArray(wins) || wins.length === 0) {
             emptyState.style.display = 'block';
             return;
         }
-    
-        container.innerHTML = wins.map(w => {
-            const lotNumber = w.lot_number || 'N/A';
+
+        container.innerHTML = wins.map((w) => {
+            const lotNumber = w.lot_number ?? 'N/A';
             const title     = w.artwork_title || 'Untitled Artwork';
             const artist    = w.artist_name || 'Unknown Artist';
             const myAmount  = Number(w.my_amount) || 0;
             const nextMin   = Number(w.next_minimum) || 0;
-    
+
             return `
                 <div class="winning-row">
                     <div class="winning-info">
-                        <div class="winning-badge">🏆 Winning</div>
-                        <div class="winning-lot">Lot #${lotNumber}</div>
-                        <div class="winning-artwork">${title} — ${artist}</div>
+                        <div class="winning-badge">Winning</div>
+                        <div class="winning-lot">Lot #${escapeHtml(lotNumber)}</div>
+                        <div class="winning-artwork">${escapeHtml(title)} — ${escapeHtml(artist)}</div>
                     </div>
                     <div class="winning-amount">$${myAmount.toLocaleString()} CAD</div>
                     <div class="winning-next-min">Min next bid: $${nextMin.toLocaleString()}</div>
                     <div class="winning-actions">
                         <a href="auction.html" class="winning-view-link">View</a>
-                        <button class="stripe-btn" onclick="window.open('${STRIPE_PAYMENT_LINK}','_blank')">Pay Now</button>
+                        <button type="button" class="stripe-btn" data-lot="${escapeHtml(lotNumber)}">Pay Now</button>
                     </div>
                 </div>
             `;
         }).join('');
     }
-    
+
     // Initial load
     loadWinningBids();
-   
 </script>
 </body>
 </html>

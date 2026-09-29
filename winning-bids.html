@@ -417,44 +417,44 @@
         a.addEventListener('click', () => document.getElementById('nav-links')?.classList.remove('open'));
     });
 
-    // Load winning bids
+   // Load winning bids
     async function loadWinningBids() {
         const { data: { user }, error } = await supabase.auth.getUser();
         if (error || !user) {
             window.location.href = 'login.html?redirect=winning-bids.html';
             return;
         }
-        
-       // Fetch current user's winning bids via scoped RPC (bids is not readable directly)
+    
+        // Fetch current user's winning bids via scoped RPC (bids is not readable directly)
         const { data: wins, error: winsError } = await supabase
             .rpc('get_my_winning_bids');
-        
+    
         document.getElementById('loadingState').style.display = 'none';
-        
+    
         if (winsError) {
             showToast('Error loading winning bids: ' + winsError.message, 'error');
             return;
         }
-        
+    
         const container = document.getElementById('winningContainer');
         const emptyState = document.getElementById('emptyState');
-        
+    
         if (!wins || wins.length === 0) {
             emptyState.style.display = 'block';
             return;
         }
-        
+    
         container.innerHTML = wins.map(w => {
             const lotNumber = w.lot_number || 'N/A';
             const title     = w.artwork_title || 'Untitled Artwork';
             const artist    = w.artist_name || 'Unknown Artist';
             const myAmount  = Number(w.my_amount) || 0;
             const nextMin   = Number(w.next_minimum) || 0;
-        
+    
             return `
                 <div class="winning-row">
                     <div class="winning-info">
-                        <div class="winning-badge"> Winning</div>
+                        <div class="winning-badge">🏆 Winning</div>
                         <div class="winning-lot">Lot #${lotNumber}</div>
                         <div class="winning-artwork">${title} — ${artist}</div>
                     </div>
@@ -467,59 +467,11 @@
                 </div>
             `;
         }).join('');
-        
-        // Determine highest bid per lot
-        const winningMap = new Map();
-        allBids.forEach(bid => {
-            if (!winningMap.has(bid.lot_id)) {
-                winningMap.set(bid.lot_id, bid);
-            }
-        });
-        
-        // Filter for current user's winning bids
-        const myWins = [];
-        winningMap.forEach((bid) => {
-            if (bid.bidder_id === user.id) {
-                myWins.push(bid);
-            }
-        });
-        
-        const container = document.getElementById('winningContainer');
-        const emptyState = document.getElementById('emptyState');
-        
-        if (myWins.length === 0) {
-            emptyState.style.display = 'block';
-            return;
-        }
-        
-        container.innerHTML = myWins.map(bid => {
-            const lot = bid.lots || {};
-            const artwork = lot.artworks || {};
-            const lotNumber = lot.lot_number || 'N/A';
-            const title = artwork.title || 'Untitled Artwork';
-            const artist = artwork.artist || 'Unknown Artist';
-            const nextMin = bid.amount + (lot.bid_increment || 10);
-            
-            return `
-                <div class="winning-row">
-                    <div class="winning-info">
-                        <div class="winning-badge">🏆 Winning</div>
-                        <div class="winning-lot">Lot #${lotNumber}</div>
-                        <div class="winning-artwork">${title} — ${artist}</div>
-                    </div>
-                    <div class="winning-amount">$${bid.amount.toLocaleString()} CAD</div>
-                    <div class="winning-next-min">Min next bid: $${nextMin.toLocaleString()}</div>
-                    <div class="winning-actions">
-                        <a href="auction.html" class="winning-view-link">View</a>
-                        <button class="stripe-btn" onclick="window.open('${STRIPE_PAYMENT_LINK}','_blank')">Pay Now</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
     }
-
+    
     // Initial load
     loadWinningBids();
+   
 </script>
 </body>
 </html>

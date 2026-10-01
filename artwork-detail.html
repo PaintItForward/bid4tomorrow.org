@@ -886,15 +886,6 @@
         artwork = artData;
       }
       
-      let artist = null;
-      if (artwork?.artist_id) {
-        const { data: artistData } = await supabaseClient
-          .from('artists')
-          .select('*')
-          .eq('id', artwork.artist_id)
-          .single();
-        artist = artistData;
-      }
       
       const { data: bids } = await supabaseClient
         .from('public_lot_bids')
@@ -905,7 +896,7 @@
       return {
         ...lot,
         artwork,
-        artist,
+        
         bids: bids || []
       };
     } catch (error) {
@@ -1176,7 +1167,7 @@
     document.getElementById('artImage').src = currentLot.artwork?.image_url || '';
     document.getElementById('artImage').alt = currentLot.artwork?.title || 'Artwork';
     document.getElementById('artTitle').textContent = currentLot.artwork?.title || 'Untitled';
-    document.getElementById('artArtist').textContent = `By ${currentLot.artist?.name || 'Unknown Artist'}`;
+    document.getElementById('artArtist').textContent = `By ${currentLot.artwork?.artist_name || 'Unknown Artist'}`;
     document.getElementById('artMedium').textContent = currentLot.artwork?.medium || 'N/A';
     document.getElementById('artDimensions').textContent = currentLot.artwork?.dimensions || 'N/A';
     document.getElementById('artGrade').textContent = currentLot.artist?.grade || 'N/A';

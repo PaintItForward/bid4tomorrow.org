@@ -1398,22 +1398,7 @@
             }
           }
           
-          let artist = null;
-          if (artwork && artwork.artist_id) {
-            try {
-              const { data: artistData, error: artistError } = await supabaseClient
-                .from('artists')
-                .select('*')
-                .eq('id', artwork.artist_id)
-                .single();
-              
-              if (!artistError && artistData) {
-                artist = artistData;
-              }
-            } catch (e) {
-              console.error('Artist query error:', e);
-            }
-          }
+         
           
           // Get current highest bid for this lot
           let currentBid = null;

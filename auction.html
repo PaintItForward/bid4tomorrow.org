@@ -730,6 +730,33 @@
       justify-content: center;
     }
 
+     .save-lot-btn {
+        flex: 0 0 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .save-lot-btn:hover {
+        border-color: var(--terracotta);
+        color: var(--terracotta);
+      }
+      .save-lot-btn.saved {
+        border-color: var(--terracotta);
+        color: var(--terracotta);
+        background: rgba(207, 85, 39, 0.08);
+      }
+      .save-lot-btn:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+
     /* ==========================================================================
        FOOTER
        ========================================================================== */
@@ -1315,6 +1342,24 @@
     let activeMedium = 'All';
     let selectedLot = null;
 
+      let savedLotIds = new Set();
+      
+      async function loadSavedLots() {
+        savedLotIds = new Set();
+        if (!currentUser) return;
+        const { data, error } = await supabaseClient
+          .from('watchlist')
+          .select('lot_id')
+          .eq('user_id', currentUser.id);
+        if (error) {
+          console.warn('Could not load watchlist:', error.message);
+          return;
+        }
+        (data || []).forEach(row => savedLotIds.add(row.lot_id));
+      }
+
+
+     
     const grid = document.getElementById('lotGrid');
     const loaderWrap = document.getElementById('loaderWrap');
     const chipsContainer = document.getElementById('mediumChips');
@@ -1479,8 +1524,20 @@
                 ${formatPrice(displayPrice)} <small>${priceLabel}</small>
               </div>
               <div class="lot-actions">
-                <a href="artwork-detail.html?lot_id=${lot.id}" class="btn btn-primary">View Details</a>
-              </div>
+                 <a href="artwork-detail.html?lot_id=${lot.id}" class="btn btn-primary">View Details</a>
+                 <button type="button"
+                         class="save-lot-btn ${savedLotIds.has(lot.id) ? 'saved' : ''}"
+                         data-lot-id="${lot.id}"
+                         aria-pressed="${savedLotIds.has(lot.id)}"
+                         aria-label="${savedLotIds.has(lot.id) ? 'Remove from watchlist' : 'Save to watchlist'}"
+                         title="${savedLotIds.has(lot.id) ? 'Remove from watchlist' : 'Save to watchlist'}">
+                   <svg viewBox="0 0 24 24" width="18" height="18"
+                        fill="${savedLotIds.has(lot.id) ? 'currentColor' : 'none'}"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                     <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                   </svg>
+                 </button>
+               </div>
             </div>
           </article>
         `;
@@ -1560,6 +1617,7 @@
     async function init() {
       console.log('Initializing auction page...');
       await checkAuth();
+      await loadSavedLots();
       
       if (loaderWrap) loaderWrap.classList.remove('hidden');
       
@@ -1583,7 +1641,61 @@
 
       searchInput.addEventListener('input', applyFilters);
       sortSelect.addEventListener('change', applyFilters);
+
+       grid.addEventListener('click', async (e) => {
+        const btn = e.target.closest('.save-lot-btn');
+        if (!btn) return;
+        e.preventDefault();
       
+        const lotId = btn.dataset.lotId;
+      
+        if (!currentUser) {
+          window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
+          return;
+        }
+      
+        const isSaved = savedLotIds.has(lotId);
+        btn.disabled = true;
+      
+        if (isSaved) {
+          const { error } = await supabaseClient
+            .from('watchlist')
+            .delete()
+            .eq('user_id', currentUser.id)
+            .eq('lot_id', lotId);
+          if (error) {
+            showToast('Error', 'Could not remove from watchlist');
+          } else {
+            savedLotIds.delete(lotId);
+            btn.classList.remove('saved');
+            btn.setAttribute('aria-pressed', 'false');
+            btn.querySelector('svg').setAttribute('fill', 'none');
+            showToast('Removed', 'Lot removed from your watchlist');
+          }
+        } else {
+          const { error } = await supabaseClient
+            .from('watchlist')
+            .insert({ user_id: currentUser.id, lot_id: lotId });
+          if (error) {
+            // 23505 = unique_violation — already saved (e.g. duplicate click)
+            if (error.code === '23505') {
+              savedLotIds.add(lotId);
+              btn.classList.add('saved');
+              btn.querySelector('svg').setAttribute('fill', 'currentColor');
+            } else {
+              showToast('Error', 'Could not save to watchlist');
+            }
+          } else {
+            savedLotIds.add(lotId);
+            btn.classList.add('saved');
+            btn.setAttribute('aria-pressed', 'true');
+            btn.querySelector('svg').setAttribute('fill', 'currentColor');
+            showToast('Saved', 'Lot added to your watchlist');
+          }
+        }
+      
+        btn.disabled = false;
+      });
       console.log('Auction page initialized successfully.');
     }
 

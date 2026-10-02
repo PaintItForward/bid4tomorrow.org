@@ -1192,13 +1192,13 @@
     
     const lotId = getLotId();
     if (!lotId) {
-      document.querySelector('.detail-container').innerHTML = '<p style="text-align:center;margin-top:3rem;">No lot specified. <a href="auction.html">Go to auction</a></p>';
+      document.querySelector('.detail-container').innerHTML = '<p style="text-align:center;margin-top:3rem;">No lot specified. <a href="auction.html" style="text-decoration: underline;">Go to auction</a></p>';
       return;
     }
     
     currentLot = await fetchLotDetails(lotId);
     if (!currentLot) {
-      document.querySelector('.detail-container').innerHTML = '<p style="text-align:center;margin-top:3rem;">Lot not found. <a href="auction.html">Go to auction</a></p>';
+      document.querySelector('.detail-container').innerHTML = '<p style="text-align:center;margin-top:3rem;">Lot not found. <a href="auction.html" style="text-decoration: underline;">Go to auction</a></p>';
       return;
     }
 

@@ -1183,6 +1183,69 @@
     showToast('Success', 'Bid placed successfully!');
     await init();
   }
+  // =======================================================
+  // WATCHLIST BUTTON
+  // =======================================================
+  function updateSaveButtonUI() {
+    const btn = document.getElementById('saveLotBtn');
+    const label = document.getElementById('saveLotBtnLabel');
+    if (!btn || !label) return;
+    const svg = btn.querySelector('svg');
+    if (isLotSaved) {
+      btn.classList.add('saved');
+      btn.setAttribute('aria-pressed', 'true');
+      svg.setAttribute('fill', 'currentColor');
+      label.textContent = 'Saved to Watchlist';
+    } else {
+      btn.classList.remove('saved');
+      btn.setAttribute('aria-pressed', 'false');
+      svg.setAttribute('fill', 'none');
+      label.textContent = 'Save to Watchlist';
+    }
+  }
+
+  function wireSaveButton() {
+    const btn = document.getElementById('saveLotBtn');
+    if (!btn) return;
+    btn.addEventListener('click', async () => {
+      if (!currentUser) {
+        window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
+        return;
+      }
+      btn.disabled = true;
+      if (isLotSaved) {
+        const { error } = await supabaseClient
+          .from('watchlist')
+          .delete()
+          .eq('user_id', currentUser.id)
+          .eq('lot_id', currentLot.id);
+        if (error) {
+          showToast('Error', 'Could not remove from watchlist');
+        } else {
+          isLotSaved = false;
+          updateSaveButtonUI();
+          showToast('Removed', 'Lot removed from your watchlist');
+        }
+      } else {
+        const { error } = await supabaseClient
+          .from('watchlist')
+          .insert({ user_id: currentUser.id, lot_id: currentLot.id });
+        if (error) {
+          if (error.code === '23505') {
+            isLotSaved = true;
+            updateSaveButtonUI();
+          } else {
+            showToast('Error', 'Could not save to watchlist');
+          }
+        } else {
+          isLotSaved = true;
+          updateSaveButtonUI();
+          showToast('Saved', 'Lot added to your watchlist');
+        }
+      }
+      btn.disabled = false;
+    });
+  }
 
   // =======================================================
   // INITIALIZATION
@@ -1307,9 +1370,11 @@
   }
 
   // Run
-  if (document.readyState === 'loading') {
+   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
+    init();
+  }
     function updateSaveButtonUI() {
       const btn = document.getElementById('saveLotBtn');
       const label = document.getElementById('saveLotBtnLabel');

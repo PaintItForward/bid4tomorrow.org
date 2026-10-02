@@ -336,7 +336,7 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
     
     // Initialize Supabase
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // Toast function
     function showToast(message, type = 'success') {
@@ -381,13 +381,13 @@
 
     // Load user's watchlist
     async function loadWatchlist() {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
         if (error || !user) {
             window.location.href = 'login.html?redirect=watchlist.html';
             return;
         }
         
-        const { data: watchlist, error: watchlistError } = await supabase
+        const { data: watchlist, error: watchlistError } = await supabaseClient
             .from('watchlist')
             .select(`
                 id, 
@@ -446,7 +446,7 @@
         document.querySelectorAll('.watchlist-remove-btn').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const watchId = e.target.getAttribute('data-watchid');
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('watchlist')
                     .delete()
                     .eq('id', watchId)

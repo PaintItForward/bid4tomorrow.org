@@ -173,6 +173,35 @@
   .artwork-specs-label { color: var(--text-muted); }
   .artwork-specs-val { font-weight: 600; color: var(--text-heading); }
 
+  /* ═══ Dimension badge on carousel images ═══ */
+  .artwork-image { position: relative; }
+  .artwork-dim-badge {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(24, 18, 15, 0.72);
+    color: #F6EFE6;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  @media (max-width: 600px) {
+    .artwork-dim-badge {
+      font-size: 0.66rem;
+      padding: 0.34rem 0.65rem;
+      right: 0.6rem;
+      bottom: 0.6rem;
+    }
+  }
+
   /* ═══ Form feedback ═══ */
   .form-feedback-box {
     display: none;
@@ -1090,33 +1119,44 @@ function toggleFaq(btn) {
   async function load() {
     try {
       const r = await fetch("artwork.json");
-      if (!r.ok) throw new Error("no file");
+      if (!r.ok) throw new Error("Could not load artwork.json");
       artworks = await r.json();
-    } catch {
-      artworks = [
-        { title: "Golden Hour in Algonquin", artist: "Elena M. (Grade 11)", branch: "GTA",
-          medium: "Oil on Canvas", dimensions: '18" × 24" (Framed)', startingBid: "$65 CAD",
-          description: "Capturing the serene warmth of autumn light cutting through pine canopy in Northern Ontario.",
-          status: "Fall 2026 Lot",
-          image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=900&q=80" },
-        { title: "Fragments of Stillness", artist: "Chloe Chen (Grade 12)", branch: "Lexington",
-          medium: "Mixed Media & Acrylic", dimensions: '20" × 20" (Gallery Wrap)', startingBid: "$80 CAD",
-          description: "An exploration of youthful introspection, layered with textured handmade paper and earthy matcha pigments.",
-          status: "Fall 2026 Lot",
-          image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=80" }
-      ];
+    } catch (err) {
+      console.error("Gallery load failed:", err);
+      artworks = [];
     }
-    render(); start();
+    render();
+    start();
   }
+
+  /* Pull dimensions straight from the JSON entry. Treat N/A, TBD, and
+     empty strings as "no dimensions recorded" so the row can be omitted. */
+  function getDimensions(art) {
+    const raw = art.dimensions ?? art.dimension ?? art.size ?? art.dims;
+    if (raw == null) return "";
+    const v = String(raw).trim();
+    if (!v) return "";
+    const upper = v.toUpperCase();
+    if (upper === "N/A" || upper === "TBD" || upper === "NA") return "";
+    return v;
+  }
+
   function render() {
     if (!track || !dotsC) return;
-    track.innerHTML = ''; dotsC.innerHTML = '';
+    track.innerHTML = '';
+    dotsC.innerHTML = '';
+
     artworks.forEach(art => {
-      const dim = art.dimensions || "Dimensions Available in Lot";
+      const dim = getDimensions(art);                 // <- variable from artwork.json
+      const dimShort = dim.replace(/\s*\(.*?\)\s*/g, '').trim();
       const med = art.medium || "Original Medium";
+
       track.innerHTML += `
         <div class="artwork-slide">
-          <div class="artwork-image"><img src="${art.image}" alt="${art.title}"></div>
+          <div class="artwork-image">
+            <img src="${art.image}" alt="${art.title}">
+            ${dimShort ? `<span class="artwork-dim-badge">${dimShort}</span>` : ''}
+          </div>
           <div class="artwork-details">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="branch">${art.branch ?? 'GTA'} Chapter</span>
@@ -1126,7 +1166,7 @@ function toggleFaq(btn) {
             <p class="artist">By ${art.artist}</p>
             <div class="artwork-specs-table">
               <div class="artwork-specs-row"><span class="artwork-specs-label">Medium</span><span class="artwork-specs-val">${med}</span></div>
-              <div class="artwork-specs-row"><span class="artwork-specs-label">Dimensions</span><span class="artwork-specs-val">${dim}</span></div>
+              ${dim ? `<div class="artwork-specs-row"><span class="artwork-specs-label">Dimensions</span><span class="artwork-specs-val">${dim}</span></div>` : ''}
               ${art.startingBid ? `<div class="artwork-specs-row"><span class="artwork-specs-label">Starting Estimate</span><span class="artwork-specs-val" style="color:var(--crimson);">${art.startingBid}</span></div>` : ''}
             </div>
             <p class="artwork-description">${art.description}</p>
@@ -1134,6 +1174,7 @@ function toggleFaq(btn) {
           </div>
         </div>`;
     });
+
     artworks.forEach((_, i) => {
       const d = document.createElement('button');
       d.className = 'dot' + (i === 0 ? ' active' : '');
@@ -1141,6 +1182,7 @@ function toggleFaq(btn) {
       dotsC.appendChild(d);
     });
   }
+
   function go(i) {
     if (!artworks.length || !track) return;
     idx = i < 0 ? artworks.length - 1 : i >= artworks.length ? 0 : i;

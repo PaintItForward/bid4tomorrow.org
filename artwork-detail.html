@@ -722,6 +722,7 @@
   const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
   const FALL_2026_AUCTION_ID = '101afb93-7d37-4276-8602-026acbda56ed';
   const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/your_payment_link_here';
+  const CONSENT_DOCUMENT_VERSION = 'v1.0-draft';
 
   let currentUser = null;
   let currentLot = null;
@@ -969,69 +970,157 @@
     }
     return names;
   }
+// =======================================================
+// CONSENT CHECK
+// =======================================================
+async function hasRequiredConsents() {
+  if (!currentUser) return false;
+  try {
+    const required = ['bidder_terms', 'privacy_notice', 'binding_bids'];
+    const { data, error } = await supabaseClient
+      .from('consents')
+      .select('consent_type')
+      .eq('user_id', currentUser.id)
+      .eq('document_version', CONSENT_DOCUMENT_VERSION)
+      .eq('granted', true)
+      .in('consent_type', required);
 
-  // =======================================================
-  // LEGAL AGREEMENT MODAL
-  // =======================================================
-  function showLegalAgreement(minBid) {
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    overlay.style.cssText = `
-      position: fixed;
-      inset: 0;
-      background: rgba(24, 11, 9, 0.8);
-      backdrop-filter: blur(4px);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      animation: fadeIn 0.2s ease-out;
-    `;
-    
-    overlay.innerHTML = `
-      <div style="
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: 2rem;
-        max-width: 500px;
-        width: 100%;
-        box-shadow: var(--shadow-lg);
-        animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        max-height: 80vh;
-        overflow-y: auto;
-      ">
-        <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-heading);">Terms & Conditions</h3>
-        <div style="font-size: 0.9rem; color: var(--text-body); margin-bottom: 1.5rem;">
-          <p style="margin-bottom: 0.5rem;"><strong>Binding Agreement:</strong> By placing a bid, you enter into a legally binding contract to purchase the artwork if you are the winning bidder.</p>
-          <p style="margin-bottom: 0.5rem;"><strong>Payment:</strong> Winning bidders must complete payment within 48 hours of auction close.</p>
-          <p style="margin-bottom: 0.5rem;"><strong>Authenticity:</strong> All artworks are original student creations. No refunds or exchanges after purchase.</p>
-          <p><strong>Charitable Contribution:</strong> A portion of proceeds supports audited youth healthcare initiatives.</p>
-        </div>
-        <div style="display: flex; gap: 0.75rem;">
-          <button id="declineTermsBtn" style="flex: 1; padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-body); font-weight: 600; cursor: pointer;">Decline</button>
-          <button id="acceptTermsBtn" style="flex: 1; padding: 0.7rem; border: none; border-radius: var(--radius-sm); background: var(--crimson); color: var(--white); font-weight: 600; cursor: pointer;">I Agree</button>
-        </div>
-      </div>
-    `;
-    
-    document.body.appendChild(overlay);
-    
-    document.getElementById('declineTermsBtn').addEventListener('click', () => {
-      overlay.remove();
-      showToast('Bid Cancelled', 'You must agree to the terms to place a bid');
-    });
-    
-    document.getElementById('acceptTermsBtn').addEventListener('click', () => {
-      overlay.remove();
-      showBidModal(minBid);
-    });
-    
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.remove();
-    });
+    if (error) {
+      console.warn('Consent check failed:', error.message);
+      return false;
+    }
+    const granted = new Set((data || []).map(r => r.consent_type));
+    return required.every(t => granted.has(t));
+  } catch (e) {
+    console.warn('Consent check error:', e);
+    return false;
   }
+}
+// =======================================================
+// CONSENT MODAL (fallback for users without stored consents)
+// =======================================================
+function showConsentModal(minBid) {
+  const existing = document.getElementById('consentModal');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'consentModal';
+  overlay.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: rgba(24, 11, 9, 0.8);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: fadeIn 0.2s ease-out;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      max-height: 85vh;
+      overflow-y: auto;
+    ">
+      <h3 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--text-heading);">Before you bid</h3>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        Please review and accept the following before placing your bid.
+      </p>
+
+      <div style="background: var(--section-alt); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 0.6rem;">Required</div>
+        <label style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--text-body); margin-bottom:0.75rem; cursor:pointer;">
+          <input type="checkbox" id="cmAgreeTerms" style="margin-top:0.25rem; accent-color: var(--crimson);">
+          <span>I agree to the <a href="/terms.html" target="_blank" rel="noopener" style="color: var(--crimson); font-weight:600;">Bidder Terms &amp; Conditions</a>.</span>
+        </label>
+        <label style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--text-body); margin-bottom:0.75rem; cursor:pointer;">
+          <input type="checkbox" id="cmAckPrivacy" style="margin-top:0.25rem; accent-color: var(--crimson);">
+          <span>I have read and acknowledge the <a href="/privacy.html" target="_blank" rel="noopener" style="color: var(--crimson); font-weight:600;">Privacy Notice</a>.</span>
+        </label>
+        <label style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--text-body); cursor:pointer;">
+          <input type="checkbox" id="cmAckBinding" style="margin-top:0.25rem; accent-color: var(--crimson);">
+          <span>I understand a bid is a binding commitment to purchase if I win.</span>
+        </label>
+      </div>
+
+      <div style="background: var(--section-alt); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 0.6rem;">Optional</div>
+        <label style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--text-body); cursor:pointer;">
+          <input type="checkbox" id="cmMarketing" style="margin-top:0.25rem; accent-color: var(--crimson);">
+          <span>Yes, send me occasional auction updates and newsletters.</span>
+        </label>
+      </div>
+
+      <p id="cmError" style="display:none; color:#d32f2f; font-size:0.85rem; margin-bottom:1rem;">
+        Please accept all required items to continue.
+      </p>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button id="cmDeclineBtn" style="flex: 1; padding: 0.7rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-body); font-weight: 600; cursor: pointer;">Cancel</button>
+        <button id="cmAcceptBtn" style="flex: 1; padding: 0.7rem; border: none; border-radius: var(--radius-sm); background: var(--crimson); color: var(--white); font-weight: 600; cursor: pointer;">Accept &amp; Continue</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  const cleanup = () => overlay.remove();
+
+  document.getElementById('cmDeclineBtn').addEventListener('click', () => {
+    cleanup();
+    showToast('Bid Cancelled', 'You must accept the terms to place a bid');
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) cleanup();
+  });
+
+  document.getElementById('cmAcceptBtn').addEventListener('click', async () => {
+    const agreeTerms = document.getElementById('cmAgreeTerms').checked;
+    const ackPrivacy = document.getElementById('cmAckPrivacy').checked;
+    const ackBinding = document.getElementById('cmAckBinding').checked;
+    const marketing  = document.getElementById('cmMarketing').checked;
+    const errEl = document.getElementById('cmError');
+
+    if (!agreeTerms || !ackPrivacy || !ackBinding) {
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+
+    const btn = document.getElementById('cmAcceptBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    const rows = [];
+    if (agreeTerms) rows.push({ user_id: currentUser.id, consent_type: 'bidder_terms',   document_version: CONSENT_DOCUMENT_VERSION, granted: true,  source: 'artwork_detail' });
+    if (ackPrivacy) rows.push({ user_id: currentUser.id, consent_type: 'privacy_notice', document_version: CONSENT_DOCUMENT_VERSION, granted: true,  source: 'artwork_detail' });
+    if (ackBinding) rows.push({ user_id: currentUser.id, consent_type: 'binding_bids',   document_version: CONSENT_DOCUMENT_VERSION, granted: true,  source: 'artwork_detail' });
+    rows.push({ user_id: currentUser.id, consent_type: 'marketing', document_version: CONSENT_DOCUMENT_VERSION, granted: marketing, source: 'artwork_detail' });
+
+    const { error } = await supabaseClient.from('consents').insert(rows);
+
+    if (error) {
+      console.warn('Consent insert failed:', error.message);
+      btn.disabled = false;
+      btn.textContent = 'Accept & Continue';
+      errEl.textContent = 'Could not save consent. Please try again.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    cleanup();
+    showBidModal(minBid);
+  });
+}
 
   // =======================================================
   // BID MODAL
@@ -1352,13 +1441,18 @@
     // Bid button
     const placeBidBtn = document.getElementById('placeBidBtn');
     if (placeBidBtn) {
-      placeBidBtn.onclick = () => {
+      placeBidBtn.onclick = async () => {
         if (!currentUser) {
           showToast('Login Required', 'Please login to place a bid');
           window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
           return;
         }
-        showLegalAgreement(minBidAmount);
+        const ok = await hasRequiredConsents();
+        if (ok) {
+          showBidModal(minBidAmount);
+        } else {
+          showConsentModal(minBidAmount);
+        }
       };
     }
     

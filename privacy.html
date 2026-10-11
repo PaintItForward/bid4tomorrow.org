@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Notice (DRAFT) | Bid For Tomorrow</title>
+  <meta name="robots" content="noindex" />
+  <link rel="canonical" href="https://bid4tomorrow.org/privacy.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --sand-gold: #FAE3B1;
+      --ochre-gold: #998731;
+      --terracotta: #CF5527;
+      --crimson: #7D2027;
+      --crimson-dark: #5C141A;
+      --cream: #FAE3B1;
+      --white: #FCF6EC;
+      --text-heading: #4E2922;
+      --text-body: #59322B;
+      --text-muted: #83544C;
+      --card-bg: #FCF6EC;
+      --border: #998731;
+      --radius-sm: 2px;
+      --radius-md: 4px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cream);
+      color: var(--text-body);
+      line-height: 1.7;
+    }
+
+    .draft-banner {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #7D2027;
+      color: #FCF6EC;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+    }
+
+    .draft-banner strong { text-transform: uppercase; }
+
+    .wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .back { display: inline-block; margin-bottom: 1.5rem; color: var(--crimson); font-weight: 600; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--text-heading);
+      margin-bottom: 0.35rem;
+    }
+
+    .meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      color: var(--text-heading);
+      margin: 2rem 0 0.75rem;
+    }
+
+    p, li { font-size: 0.95rem; color: var(--text-body); }
+
+    ul { padding-left: 1.25rem; margin-bottom: 1rem; }
+    li { margin-bottom: 0.4rem; }
+
+    .notice {
+      background: #FFF4E0;
+      border-left: 4px solid var(--ochre-gold);
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-sm);
+      margin: 1rem 0 2rem;
+      font-size: 0.9rem;
+      color: var(--text-body);
+    }
+
+    a { color: var(--crimson); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: rgba(153, 135, 49, 0.15); font-weight: 700; color: var(--text-heading); }
+  </style>
+</head>
+<body>
+
+<div class="draft-banner">
+  <strong>Draft</strong> — Not legal advice. Pending review by qualified counsel before launch. Do not rely on this text.
+</div>
+
+<main class="wrap">
+  <a class="back" href="/">← Back to Bid For Tomorrow</a>
+
+  <h1>Privacy Notice</h1>
+  <div class="meta">
+    Version: v1.0-draft &nbsp;·&nbsp; Effective: TBD (pending legal review)
+  </div>
+
+  <div class="notice">
+    This is an early draft prepared to support platform development. It has not been reviewed or approved by a lawyer. It is subject to change. Do not treat this as a final privacy notice.
+  </div>
+
+  <h2>1. Who we are</h2>
+  <p>Bid For Tomorrow operates an auction platform for student artwork. The organization operates in Canada and plans a branch in Lexington, Massachusetts, United States. The specific legal entity, address, and privacy contact will be confirmed before launch.</p>
+
+  <h2>2. What we collect</h2>
+  <table>
+    <tr><th>Category</th><th>Examples</th><th>Why</th></tr>
+    <tr>
+      <td>Account information</td>
+      <td>Name, email address, password (stored securely by Supabase Auth)</td>
+      <td>To create and secure your account</td>
+    </tr>
+    <tr>
+      <td>Bidding activity</td>
+      <td>Bids you place, timestamps, lot references</td>
+      <td>To run the auction and determine winners</td>
+    </tr>
+    <tr>
+      <td>Consent records</td>
+      <td>Which terms you accepted, version, timestamp</td>
+      <td>To record your acknowledgement of required terms</td>
+    </tr>
+    <tr>
+      <td>Marketing preference</td>
+      <td>Whether you opted in to updates</td>
+      <td>To respect your choice about non-essential emails</td>
+    </tr>
+    <tr>
+      <td>Artist submission data (if you submit artwork)</td>
+      <td>Artist name, guardian contact (for minors), artwork details, images</td>
+      <td>To list and administer artwork in the auction</td>
+    </tr>
+  </table>
+  <p>We do not ask for identity documents, payment card numbers on this site, or other sensitive information unless a specific need is disclosed in advance.</p>
+
+  <h2>3. What we do not collect</h2>
+  <ul>
+    <li>We do not store payment card numbers in our database.</li>
+    <li>We do not collect more personal information than is needed to run the auction.</li>
+    <li>We do not sell personal information.</li>
+  </ul>
+
+  <h2>4. How we use information</h2>
+  <ul>
+    <li>To operate your account and let you place bids.</li>
+    <li>To determine winners and coordinate payment and handoff.</li>
+    <li>To record your consent for required terms and your marketing preference.</li>
+    <li>To contact you about auctions you participate in.</li>
+    <li>To send optional marketing only if you have opted in.</li>
+    <li>To meet legal and accounting obligations.</li>
+  </ul>
+
+  <h2>5. Legal bases (where applicable)</h2>
+  <p>Depending on your location, we rely on one or more of the following: performance of a contract, your consent, our legitimate interests in operating the platform, and compliance with legal obligations. This section will be expanded by counsel for both Canadian and Massachusetts contexts.</p>
+
+  <h2>6. Sharing</h2>
+  <p>We use service providers to run the platform, including Supabase for authentication and data storage, and email delivery providers for confirmation and notification emails. We share only the information necessary for those providers to perform their services. We do not sell personal information. Bidders’ identities are not publicly displayed; public auction pages show amounts only, not bidder names.</p>
+
+  <h2>7. Retention</h2>
+  <p>Account information is retained while your account is active. Consent records are retained to preserve an auditable record. Bid history is retained for auction administration and, where required, for legal or accounting reasons. Retention periods will be finalized with counsel.</p>
+
+  <h2>8. Your choices</h2>
+  <ul>
+    <li>You can change your display name and email in your <a href="/account.html">account settings</a>.</li>
+    <li>You can opt in or out of marketing emails. Required auction emails (like a winning-bid notification) are not marketing and cannot be opted out of while you are participating.</li>
+    <li>You can request access to, correction of, or deletion of your personal information by contacting us.</li>
+  </ul>
+
+  <h2>9. Children and minors</h2>
+  <p>Bidders must be 18 or older, or have a parent or legal guardian’s consent. Artists under 18 participate through a parent or guardian, who provides consent. Guardian information is used only to verify consent and to administer the artwork; it is not published.</p>
+
+  <h2>10. Security</h2>
+  <p>We use industry-standard authentication and database access controls. Passwords are handled by Supabase Auth. We restrict access to private records so that authenticated users can only read their own information. We do not store passwords or access tokens in our application database. No system is perfectly secure; we will notify affected users of a material breach as required by applicable law.</p>
+
+  <h2>11. Cross-border transfers</h2>
+  <p>We operate in Canada and plan a branch in the United States. Your information may be processed in either country. Where required, we use appropriate safeguards for cross-border transfers. Details will be confirmed by counsel.</p>
+
+  <h2>12. Changes to this notice</h2>
+  <p>We may update this notice. Material changes will be reflected in a new version identifier. When the change is material and affects required acknowledgements, we will ask you to acknowledge the updated notice.</p>
+
+  <h2>13. Contact</h2>
+  <p>Privacy questions and requests: [PRIVACY CONTACT TO BE CONFIRMED].</p>
+
+  <p style="margin-top:3rem; font-size:0.8rem; color:var(--text-muted);">
+    END OF DRAFT — v1.0-draft — Not for publication without legal review.
+  </p>
+</main>
+
+</body>
+</html>

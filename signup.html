@@ -5,10 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up · Bid For Tomorrow</title>
-  
+
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
+
   <style>
     :root {
       --sand-gold: #FAE3B1;
@@ -52,7 +52,7 @@
       border-radius: var(--radius-md);
       padding: 2.5rem;
       width: 100%;
-      max-width: 450px;
+      max-width: 480px;
       box-shadow: var(--shadow-md);
     }
 
@@ -85,7 +85,9 @@
       color: var(--text-heading);
     }
 
-    input {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 1px solid var(--border);
@@ -97,10 +99,70 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    input:focus {
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
       outline: none;
       border-color: var(--terracotta);
       box-shadow: 0 0 0 3px rgba(207, 85, 39, 0.1);
+    }
+
+    .consent-group {
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.55);
+      margin-bottom: 1rem;
+    }
+
+    .consent-group-title {
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-weight: 400;
+      font-size: 0.87rem;
+      color: var(--text-body);
+      margin-bottom: 0.7rem;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+
+    .checkbox-label:last-child {
+      margin-bottom: 0;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: auto;
+      margin-top: 0.2rem;
+      flex-shrink: 0;
+      accent-color: var(--crimson);
+      cursor: pointer;
+    }
+
+    .checkbox-label a {
+      color: var(--crimson);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .checkbox-label a:hover {
+      text-decoration: underline;
+    }
+
+    .consent-error {
+      color: #d32f2f;
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+      display: none;
     }
 
     .btn-primary {
@@ -115,6 +177,7 @@
       cursor: pointer;
       transition: background-color 0.2s;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      margin-top: 0.5rem;
     }
 
     .btn-primary:hover {
@@ -173,28 +236,53 @@
       Account created! Check your email to confirm your account.
     </div>
 
-    <form id="signupForm">
+    <form id="signupForm" novalidate>
       <div class="form-group">
         <label for="name">Full Name</label>
         <input type="text" id="name" required autocomplete="name">
       </div>
-      
+
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" required autocomplete="email">
       </div>
-      
+
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" required minlength="8" autocomplete="new-password">
       </div>
-      
+
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
         <input type="password" id="confirmPassword" required autocomplete="new-password">
         <div class="error-message" id="passwordError">Passwords do not match</div>
       </div>
-      
+
+      <div class="consent-group">
+        <div class="consent-group-title">Required</div>
+        <label class="checkbox-label">
+          <input type="checkbox" id="agreeTerms">
+          <span>I agree to the <a href="/terms.html" target="_blank" rel="noopener">Bidder Terms &amp; Conditions</a>.</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="ackPrivacy">
+          <span>I have read and acknowledge the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Notice</a>.</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="ackBinding">
+          <span>I understand that placing a bid is a binding commitment to purchase the artwork if I win.</span>
+        </label>
+        <div class="consent-error" id="consentError">Please accept all required items to continue.</div>
+      </div>
+
+      <div class="consent-group">
+        <div class="consent-group-title">Optional</div>
+        <label class="checkbox-label">
+          <input type="checkbox" id="optMarketing">
+          <span>Yes, send me occasional auction updates and newsletters.</span>
+        </label>
+      </div>
+
       <button type="submit" class="btn-primary" id="submitBtn">Create Account</button>
     </form>
 
@@ -209,22 +297,37 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+    // Document version identifier. Bump only when the published documents materially change.
+    const CONSENT_DOCUMENT_VERSION = 'v1.0-draft';
+
     // Get form elements
     const signupForm = document.getElementById('signupForm');
     const submitBtn = document.getElementById('submitBtn');
     const successMessage = document.getElementById('successMessage');
     const passwordError = document.getElementById('passwordError');
+    const consentError = document.getElementById('consentError');
 
     // Handle form submission
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       // Get form values
       const fullName = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
-      
+
+      const agreeTerms = document.getElementById('agreeTerms').checked;
+      const ackPrivacy = document.getElementById('ackPrivacy').checked;
+      const ackBinding = document.getElementById('ackBinding').checked;
+      const optMarketing = document.getElementById('optMarketing').checked;
+
+      // Validate required fields
+      if (!fullName || !email || !password || !confirmPassword) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
       // Validate passwords match
       if (password !== confirmPassword) {
         passwordError.style.display = 'block';
@@ -232,11 +335,18 @@
       } else {
         passwordError.style.display = 'none';
       }
-      
+
+      // Validate required consents
+      if (!agreeTerms || !ackPrivacy || !ackBinding) {
+        consentError.style.display = 'block';
+        return;
+      }
+      consentError.style.display = 'none';
+
       // Disable button and show loading state
       submitBtn.disabled = true;
       submitBtn.textContent = 'Creating Account...';
-      
+
       try {
         // Sign up with Supabase Auth
         const { data, error } = await supabaseClient.auth.signUp({
@@ -244,19 +354,24 @@
           password: password,
           options: {
             data: {
-              full_name: fullName
+              full_name: fullName,
+              consent_v1: {
+                bidder_terms: agreeTerms,
+                privacy_notice: ackPrivacy,
+                binding_bids: ackBinding,
+                marketing: optMarketing,
+                document_version: CONSENT_DOCUMENT_VERSION
+              }
             }
           }
         });
-        
+
         if (error) throw error;
-        
-    
-        
+
         // Show success message
         successMessage.style.display = 'block';
         signupForm.style.display = 'none';
-        
+
       } catch (error) {
         console.error('Signup error:', error);
         alert(error.message || 'An error occurred during signup');
@@ -275,6 +390,18 @@
       } else {
         passwordError.style.display = 'none';
       }
+    });
+
+    // Clear consent error when a required box is checked
+    ['agreeTerms', 'ackPrivacy', 'ackBinding'].forEach((id) => {
+      document.getElementById(id).addEventListener('change', () => {
+        const agreeTerms = document.getElementById('agreeTerms').checked;
+        const ackPrivacy = document.getElementById('ackPrivacy').checked;
+        const ackBinding = document.getElementById('ackBinding').checked;
+        if (agreeTerms && ackPrivacy && ackBinding) {
+          consentError.style.display = 'none';
+        }
+      });
     });
   </script>
 </body>

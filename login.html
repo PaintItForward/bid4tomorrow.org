@@ -9,15 +9,15 @@
     gtag('js', new Date());
     gtag('config', 'G-GPN4QVF0X0');
   </script>
-  
-  <meta charset="UTF-8"> 
+
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Bid For Tomorrow</title>
-  
+
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
-  <style> 
+
+  <style>
     :root {
       --sand-gold: #FAE3B1;
       --ochre-gold: #998731;
@@ -51,23 +51,23 @@
       min-height: 100vh;
     }
 
-    .auth-page { 
-      min-height: 100vh; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      padding: 2rem; 
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
       background: linear-gradient(135deg, #FAE3B1 0%, #FCF3DF 100%);
     }
 
-    .auth-card { 
-      width: 100%; 
-      max-width: 420px; 
-      background: var(--card-bg); 
-      border: 1px solid var(--border); 
-      border-radius: var(--radius-lg); 
-      padding: 2.5rem; 
-      box-shadow: var(--shadow-md); 
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
     }
 
     .logo {
@@ -87,27 +87,27 @@
       color: var(--text-muted);
     }
 
-    .form-group { 
-      margin-bottom: 1.25rem; 
+    .form-group {
+      margin-bottom: 1.25rem;
     }
 
-    .form-group label { 
-      display: block; 
-      font-size: .78rem; 
-      letter-spacing: .06em; 
-      text-transform: uppercase; 
-      color: var(--text-muted); 
-      margin-bottom: .4rem; 
+    .form-group label {
+      display: block;
+      font-size: .78rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: .4rem;
       font-weight: 600;
     }
 
-    .form-group input { 
-      width: 100%; 
-      padding: .8rem 1rem; 
-      background: var(--input-bg); 
-      border: 1px solid var(--border); 
-      border-radius: var(--radius-sm); 
-      color: var(--text-body); 
+    .form-group input {
+      width: 100%;
+      padding: .8rem 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-body);
       font: inherit;
       transition: border-color 0.2s;
     }
@@ -141,16 +141,16 @@
       cursor: not-allowed;
     }
 
-    .auth-links { 
-      display: flex; 
-      justify-content: space-between; 
-      margin-top: 1.5rem; 
-      font-size: .85rem; 
+    .auth-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      font-size: .85rem;
     }
 
-    .auth-links a { 
-      color: var(--crimson); 
-      text-decoration: none; 
+    .auth-links a {
+      color: var(--crimson);
+      text-decoration: none;
       font-weight: 600;
     }
 
@@ -158,13 +158,13 @@
       text-decoration: underline;
     }
 
-    .auth-error { 
-      display: none; 
-      background: #F9E5E5; 
-      color: #8B3A3A; 
-      padding: .8rem; 
-      border-radius: var(--radius-sm); 
-      margin-bottom: 1rem; 
+    .auth-error {
+      display: none;
+      background: #F9E5E5;
+      color: #8B3A3A;
+      padding: .8rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
       font-size: 0.9rem;
     }
 
@@ -224,35 +224,132 @@
     const authError = document.getElementById('authError');
     const successMessage = document.getElementById('successMessage');
 
+    // ---------------------------------------------------------------
+    // Consent persistence on first authenticated login.
+    // Signup stores intent in user_metadata.consent_v1 because
+    // Confirm Email is ON and signUp() returns no session.
+    // This runs once per user, guarded by the "any consents?" check.
+    // The authoritative security check reads the consents table, not
+    // this metadata, so forged metadata cannot grant extra rights.
+    // ---------------------------------------------------------------
+    async function persistSignupConsentIfNeeded(user) {
+      if (!user) return;
+      try {
+        // 1. Skip if any consent row already exists for this user.
+        const { data: existing, error: checkErr } = await supabaseClient
+          .from('consents')
+          .select('id')
+          .eq('user_id', user.id)
+          .limit(1);
+
+        if (checkErr) {
+          console.warn('Consent check failed:', checkErr.message);
+          return;
+        }
+        if (existing && existing.length > 0) {
+          return;
+        }
+
+        // 2. Read signup intent from metadata.
+        const cv1 = user.user_metadata && user.user_metadata.consent_v1;
+        if (!cv1 || typeof cv1 !== 'object') {
+          // Older accounts or signups outside signup.html.
+          // Step 4 (fallback modal) will handle these.
+          return;
+        }
+
+        const version = typeof cv1.document_version === 'string'
+          ? cv1.document_version
+          : 'v1.0-draft';
+
+        const rows = [];
+
+        // Required consents: only record if actually true.
+        if (cv1.bidder_terms === true) {
+          rows.push({
+            user_id: user.id,
+            consent_type: 'bidder_terms',
+            document_version: version,
+            granted: true,
+            source: 'signup'
+          });
+        }
+        if (cv1.privacy_notice === true) {
+          rows.push({
+            user_id: user.id,
+            consent_type: 'privacy_notice',
+            document_version: version,
+            granted: true,
+            source: 'signup'
+          });
+        }
+        if (cv1.binding_bids === true) {
+          rows.push({
+            user_id: user.id,
+            consent_type: 'binding_bids',
+            document_version: version,
+            granted: true,
+            source: 'signup'
+          });
+        }
+
+        // Marketing: record either way (opt-in or opt-out) with timestamp.
+        if (typeof cv1.marketing === 'boolean') {
+          rows.push({
+            user_id: user.id,
+            consent_type: 'marketing',
+            document_version: version,
+            granted: cv1.marketing,
+            source: 'signup'
+          });
+        }
+
+        if (rows.length === 0) return;
+
+        const { error: insertErr } = await supabaseClient
+          .from('consents')
+          .insert(rows);
+
+        if (insertErr) {
+          console.warn('Consent insert failed:', insertErr.message);
+        }
+      } catch (e) {
+        console.warn('Consent persistence error:', e);
+      }
+    }
+
     // Handle login form submission
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      
+
       // Reset error messages
       authError.style.display = 'none';
-      
+
       // Disable button and show loading state
       loginBtn.disabled = true;
       loginBtn.textContent = 'Logging in...';
-      
+
       try {
         // Sign in with Supabase Auth
         const { data, error } = await supabaseClient.auth.signInWithPassword({
           email: email,
           password: password
         });
-        
+
         if (error) throw error;
-        
-      
-        
+
+        // Persist signup consent if this is the first authenticated login.
+        if (data && data.user) {
+          await persistSignupConsentIfNeeded(data.user);
+        }
+
         // Show success message
         successMessage.style.display = 'block';
         loginForm.style.display = 'none';
-        
+
         // Redirect after short delay
         setTimeout(() => {
           const redirect = new URLSearchParams(window.location.search).get('redirect');
@@ -263,14 +360,14 @@
             window.location.href = 'auction.html';
           }
         }, 1500);
-        
+
       } catch (error) {
         console.error('Login error:', error);
-        
+
         // Show error message
         authError.textContent = error.message || 'Invalid email or password';
         authError.style.display = 'block';
-        
+
         // Re-enable button
         loginBtn.disabled = false;
         loginBtn.textContent = 'Login';
@@ -280,7 +377,7 @@
     // Check if user is already logged in
     async function checkExistingSession() {
       const { data: { session }, error } = await supabaseClient.auth.getSession();
-      
+
       if (session) {
         // User is already logged in
         const redirect = new URLSearchParams(window.location.search).get('redirect');
@@ -291,7 +388,7 @@
         }
       }
     }
-    
+
     // Run on page load
     checkExistingSession();
   </script>

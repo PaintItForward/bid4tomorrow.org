@@ -82,6 +82,15 @@
     "status": "Available for Auction"
   },
   {
+    "title": "Still Life 2",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "description": "TBD",
+    "image": "artwork/Still Life 2.jpg",
+    "status": "Available for Auction"
+  },
+  {
     "title": "Color Study With Bust",
     "artist": "Gloria Xu",
     "branch": "Toronto",
@@ -98,6 +107,15 @@
     "dimensions": "38 × 56 cm",
     "description": "This realism bust sketch was created to improve my drawing technique. I focused on accurate proportions, facial structure, and realistic shading using graphite. Through this piece, I practiced creating depth and three-dimensional form while improving my ability to observe and translate realistic features onto paper.",
     "image": "artwork/GloriaXu- Bust Sketch.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Still Life",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "description": "TBD",
+    "image": "artwork/Still Life.jpg",
     "status": "Available for Auction"
   },
   {
@@ -119,6 +137,15 @@
     "status": "Available for Auction"
   },
   {
+    "title": "Tea cup",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Colored pencil on paper",
+    "description": "TBD",
+    "image": "artwork/Tea cup.jpeg",
+    "status": "Available for Auction"
+  },
+  {
     "title": "Study of Rene Vaile's ‘Erratic’",
     "artist": "Gloria Xu",
     "branch": "Toronto",
@@ -137,30 +164,57 @@
     "status": "Available for Auction"
   },
   {
-    "title": "Still Life",
-    "artist": "Brian Lu",
+    "title": "Unbridled",
+    "artist": "Gloria Xu",
     "branch": "Toronto",
-    "medium": "Graphite on paper",
-    "description": "TBD",
-    "image": "artwork/Still Life.jpg",
+    "medium": "Oil on canvas",
+    "description": "A symbol of untamed freedom, the horse embodies the longing to exist without fear or restraint. Through flowing brushstrokes and blurred colours, its form becomes less about the physical and more about the feeling of a spirit that cannot be contained.",
+    "image": "Unbridled_1.jpeg",
     "status": "Available for Auction"
   },
   {
-    "title": "Still Life 2",
-    "artist": "Brian Lu",
+    "title": "Forest Walk",
+    "artist": "Andrea Chanady",
     "branch": "Toronto",
-    "medium": "Graphite on paper",
-    "description": "TBD",
-    "image": "artwork/Still Life 2.jpg",
+    "medium": "Watercolour on paper",
+    "description": "Take a walk through the Oak Ridges Moraine trail during the peak of summer.",
+    "image": "IMG_5522.jpg",
     "status": "Available for Auction"
   },
   {
-    "title": "Tea cup",
-    "artist": "Brian Lu",
+    "title": "Ink",
+    "artist": "Leo Poon",
     "branch": "Toronto",
-    "medium": "Colored pencil on paper",
-    "description": "TBD",
-    "image": "artwork/Tea cup.jpeg",
+    "medium": "Digital (Clip Studio)",
+    "description": "Drawing of original character inspired by artist Mika Pikazo",
+    "image": "Illustration248.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "A Leisurely Stroll",
+    "artist": "Ella Zhao",
+    "branch": "Toronto",
+    "medium": "Watercolour on watercolour paper",
+    "description": "I wanted to communicate the feeling of a quiet and ordinary early evening stroll where the sun is just starting to set. The birds on the wires make a scene not too detached from reality and are likely sights anyone could see while outside. Through my choice of colours and medium I hoped to highlight the simple beauties found in the ordinary.",
+    "image": "image.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Pride",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Digital (Clip Studio)",
+    "description": "Original digital drawing inspired by the artist SG",
+    "image": "Illustration265.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Lolipoppy",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Digital (Clip Studio)",
+    "description": "Original drawing inspired by artist Mika Pikazo",
+    "image": "Lollipoppy.jpeg",
     "status": "Available for Auction"
   }
 ]

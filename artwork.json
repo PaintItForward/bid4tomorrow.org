@@ -180,7 +180,16 @@
     "description": "Take a walk through the Oak Ridges Moraine trail during the peak of summer.",
     "image": "IMG_5522.jpg",
     "status": "Available for Auction"
-   },
+  },
+  {
+    "title": "Ink",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Digital (Clip Studio)",
+    "description": "Drawing of original character inspired by artist Mika Pikazo",
+    "image": "Illustration248.png",
+    "status": "Available for Auction"
+  },
   {
     "title": "A Leisurely Stroll",
     "artist": "Ella Zhao",
@@ -188,6 +197,24 @@
     "medium": "Watercolour on watercolour paper",
     "description": "I wanted to communicate the feeling of a quiet and ordinary early evening stroll where the sun is just starting to set. The birds on the wires make a scene not too detached from reality and are likely sights anyone could see while outside. Through my choice of colours and medium I hoped to highlight the simple beauties found in the ordinary.",
     "image": "image.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Pride",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Digital (Clip Studio)",
+    "description": "Original digital drawing inspired by the artist SG",
+    "image": "Illustration265.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Lolipoppy",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Digital (Clip Studio)",
+    "description": "Original drawing inspired by artist Mika Pikazo",
+    "image": "Lollipoppy.jpeg",
     "status": "Available for Auction"
   }
 ]

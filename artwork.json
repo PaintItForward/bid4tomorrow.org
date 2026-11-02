@@ -1,5 +1,23 @@
 [
   {
+    "title": "Blink Cat",
+    "artist": "Gloria Xu",
+    "branch": "Toronto",
+    "medium": "Acrylic on canvas",
+    "description": "An acrylic painting with thick, expressive brushstrokes depicting a textured orange tabby carrying a fish in its mouth against a dark blue backdrop.",
+    "image": "artwork/GloriaXu- BlinkCat.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Bust Study",
+    "artist": "Gloria Xu",
+    "branch": "Toronto",
+    "medium": "Oil on canvas",
+    "description": "The use of oil paint to analyse hidden colours within light.",
+    "image": "artwork/Gloria Bust Portrait Oil.png",
+    "status": "Available for Auction"
+  },
+  {
     "title": "Pride",
     "artist": "Leo Poon",
     "branch": "Toronto",
@@ -91,24 +109,6 @@
     "status": "Available for Auction"
   },
   {
-    "title": "Blink Cat",
-    "artist": "Gloria Xu",
-    "branch": "Toronto",
-    "medium": "Acrylic on canvas",
-    "description": "An acrylic painting with thick, expressive brushstrokes depicting a textured orange tabby carrying a fish in its mouth against a dark blue backdrop.",
-    "image": "artwork/GloriaXu- BlinkCat.jpg",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Bust Study",
-    "artist": "Gloria Xu",
-    "branch": "Toronto",
-    "medium": "Oil on canvas",
-    "description": "The use of oil paint to analyse hidden colours within light.",
-    "image": "artwork/Gloria Bust Portrait Oil.png",
-    "status": "Available for Auction"
-  },
-  {
     "title": "Still Life 2",
     "artist": "Brian Lu",
     "branch": "Toronto",
@@ -124,6 +124,16 @@
     "medium": "Oil on canvas",
     "description": "TBD",
     "image": "artwork/Gloria Xu- Color Study With Bust.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Lolipoppy",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Print of Digital",
+    "dimensions": "N/A",
+    "description": "Original drawing inspired by artist Mika Pikazo",
+    "image": "artwork/lolipoppy.jpg",
     "status": "Available for Auction"
   },
   {

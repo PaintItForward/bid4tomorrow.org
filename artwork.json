@@ -1,5 +1,84 @@
 [
   {
+    "title": "Pride",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Print of Digital",
+    "dimensions": "N/A",
+    "description": "Original digital drawing inspired by the artist SG",
+    "image": "artwork/Illustration265.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "The Great Catch",
+    "artist": "Amy Ma",
+    "branch": "Lexington",
+    "medium": "Oil on canvas",
+    "dimensions": "N/A",
+    "description": "A male hooded merganser tilts its beak up in victory as it catches a frog to eat after many efforts to scour for food in the murky water.",
+    "image": "artwork/AmyMa-The great catch.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Eye Cast Study",
+    "artist": "Gloria Xu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "description": "A pencil study focusing on form and shadow, carving out the contours of an eye embedded in a block of stone.",
+    "image": "artwork/GloriaXu- Eye Study.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "A Leisurely Stroll",
+    "artist": "Ella Zhao",
+    "branch": "Toronto",
+    "medium": "Watercolour on watercolour paper",
+    "dimensions": "	23x31",
+    "description": "I wanted to communicate the feeling of a quiet and ordinary early evening stroll where the sun is just starting to set. The birds on the wires make a scene not too detached from reality and are likely sights anyone could see while outside. Through my choice of colours and medium I hoped to highlight the simple beauties found in the ordinary.",
+    "image": "artwork/image.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "After Childhood",
+    "artist": "Brian Lu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "dimensions": "N/A",
+    "description": "A graphite composition focusing on different materials-carved wooden joints, fabric folds, paper pages, and wooden blocks- to reflect the passing of time.",
+    "image": "artwork/After Childhood.png",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Filtering The Future",
+    "artist": "Amy Ma",
+    "branch": "Lexington",
+    "medium": "Acrylic and paper collage on canvas",
+    "dimensions": "N/A",
+    "description": "Featuring collaged sustainable architecture research, this artwork depicts Singapore's PARKROYAL building and its air-filtering roof gardens.",
+    "image": "artwork/AmyMa-Filtering the future.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "A Long Story",
+    "artist": "Gloria Xu",
+    "branch": "Toronto",
+    "medium": "Graphite on paper",
+    "dimensions": "N/A",
+    "description": "A detailed graphite portrait capturing subtle skin textures, deep-set wrinkles, and a quiet moment with a cigarette.",
+    "image": "artwork/Gloria Xu- A Long Story.jpg",
+    "status": "Available for Auction"
+  },
+  {
+    "title": "Ink",
+    "artist": "Leo Poon",
+    "branch": "Toronto",
+    "medium": "Print of Digital",
+    "dimensions": "N/A",
+    "description": "Drawing of original character inspired by artist Mika Pikazo",
+    "image": "artwork/Illustration248.png",
+    "status": "Available for Auction"
+  },
+  {
     "title": "Marseille",
     "artist": "Gloria Xu",
     "branch": "Toronto",
@@ -27,16 +106,6 @@
     "dimensions": "N/A",
     "description": "An acrylic painting with thick, expressive brushstrokes depicting a textured orange tabby carrying a fish in its mouth against a dark blue backdrop.",
     "image": "artwork/GloriaXu- BlinkCat.jpg",
-    "status": "Available for Auction"
-  },
-  {
-    "title": "Lolipoppy",
-    "artist": "Leo Poon",
-    "branch": "Toronto",
-    "medium": "Print of Digital",
-    "dimensions": "N/A",
-    "description": "Original drawing inspired by artist Mika Pikazo",
-    "image": "artwork/lolipoppy.jpg",
     "status": "Available for Auction"
   },
   {

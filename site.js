@@ -1,15 +1,15 @@
 function initSite() {
   'use strict';
+  var navOnly = document.currentScript && document.currentScript.hasAttribute('data-nav-only');
 
   /* ═══════════ 1. EDIT THESE ═══════════ */
-  var NAV = [                                   // [label, href, optional extra class]
-    ['About', 'about.html'],
-    ['Branches', 'branches.html'],
-    ['Fall 26 Auction ↗', 'auction.html', 'nav-badge-pill'],
-    ['Volunteer', 'volunteer.html']
+  var NAV = [                                   // Shared primary navigation for every page
+    ['About Us', 'about.html'],
+    ['Our Branches', 'branches.html'],
+    ['Fall 26 Auction', 'auction.html', 'nav-badge-pill']
   ];
   var EXPLORE = [                               // "Explore" dropdown (home-page sections)
-    ['Gallery', 'index.html#artwork'], ['How It Works', 'index.html#how-it-works'],
+    ['Gallery', 'index.html#artwork'], ['Events', 'index.html#auctions'], ['How It Works', 'index.html#how-it-works'],
     ['Impact', 'index.html#impact'], ['Causes', 'index.html#causes'],
     ['FAQ', 'index.html#faq'], ['Contact', 'index.html#contact']
   ];
@@ -61,14 +61,15 @@ function initSite() {
   var oldNav = document.getElementById('main-nav'); if (oldNav) oldNav.remove();   // safety net for un-migrated pages
   var nav = document.createElement('nav');
   nav.id = 'main-nav'; nav.setAttribute('aria-label', 'Main navigation');
+  nav.className = 'bft-site-nav';
   nav.innerHTML =
     '<div class="nav-inner">' +
       '<a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home"><div class="nav-logo-mark" aria-hidden="true">' +
-        '<img src="favicon-180x180.png" alt="" style="width:100%;height:100%;object-fit:cover"></div>Bid For Tomorrow</a>' +
+        '<img src="B4Tlogo.jpg" alt="" style="width:100%;height:100%;object-fit:contain"></div>Bid For Tomorrow</a>' +
       '<ul class="nav-links" id="nav-links">' +
         NAV.map(function (l) { return '<li>' + a(l, l[2]) + '</li>'; }).join('') +
         menu('Explore', EXPLORE) + auth +
-        '<li><a href="index.html#get-involved" class="nav-cta">Get Involved</a></li>' +
+        '<li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>' +
       '</ul>' +
       '<button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation"><span></span><span></span><span></span></button>' +
     '</div>';
@@ -101,6 +102,9 @@ function initSite() {
   };
 
   /* ═══════════ 4. FOOTER ═══════════ */
+  // Pages using data-nav-only keep their own footer and theme controls.
+  if (navOnly) return;
+
   var oldFoot = document.querySelector('body > footer'); if (oldFoot) oldFoot.remove();
   var foot = document.createElement('footer'); foot.setAttribute('role', 'contentinfo');
   foot.innerHTML = '<div class="footer-inner"><div class="footer-top">' +

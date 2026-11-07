@@ -220,36 +220,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
+  <link rel="stylesheet" href="nav.css">
 </head>
 <body>
 
 <!-- ═══════════════════════════ NAVIGATION ═══════════════════════════ -->
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
-      <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-180x180.png" alt="Bid For Tomorrow Logo" style="width: 100%; height: 100%; object-fit: cover;">
-      </div>
-      Bid For Tomorrow
-    </a>
-    <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Our Branches</a></li>
-      <li><a href="auction.html" style="font-weight:600; color:var(--matcha-dark, #3D4D3D);">Fall 26 Auction &nearr;</a></li>
-      <li><a href="index.html#artwork">Gallery</a></li>
-      <li><a href="index.html#auctions">Events</a></li>
-      <li><a href="index.html#how-it-works">How It Works</a></li>
-      <li><a href="index.html#impact">Impact</a></li>
-      <li><a href="index.html#causes">Causes</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="account.html" class="nav-cta">My Account</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
 <!-- ═══════════════════════════ WATCHLIST SECTION ═══════════════════════════ -->
 <main class="watchlist-section">
     <div class="container">
@@ -465,5 +440,6 @@
     // Initial load
     loadWatchlist();
 </script>
+<script src="site.js" data-nav-only></script>
 </body>
 </html>

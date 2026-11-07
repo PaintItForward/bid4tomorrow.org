@@ -145,34 +145,9 @@
     border-top: 1px solid var(--card-border);
   }
 </style>
+  <link rel="stylesheet" href="nav.css">
 </head>
 <body>
-
-<nav id="main-nav" role="navigation" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home">
-      <div class="nav-logo-mark" aria-hidden="true">
-        <img src="favicon-180x180.png" alt="" style="width:100%;height:100%;object-fit:cover;">
-      </div>
-      Bid For Tomorrow
-    </a>
-    <ul class="nav-links" id="nav-links" role="list">
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="branches.html">Branches</a></li>
-      <li><a href="auction.html" class="nav-badge-pill">Fall 26 Auction ↗</a></li>
-      <li><a href="index.html#artwork">Gallery</a></li>
-      <li><a href="index.html#how-it-works">How It Works</a></li>
-      <li><a href="index.html#impact">Impact</a></li>
-      <li><a href="index.html#causes">Causes</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-      <li><a href="volunteer.html" class="nav-current" aria-current="page">Volunteer</a></li>
-      <li><a href="index.html#get-involved" class="nav-cta">Get Involved</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
 
 <header class="page-hero">
   <h1>Volunteer Hours Policy</h1>
@@ -322,5 +297,6 @@ if (dB) dB.addEventListener("click", () => {
   if (iE) iE.innerHTML = document.body.classList.contains("dark") ? sun : moon;
 });
 </script>
+<script src="site.js" data-nav-only></script>
 </body>
 </html>

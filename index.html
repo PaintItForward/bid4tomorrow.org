@@ -68,7 +68,22 @@
     color: var(--ochre-gold-dark);
   }
   body.dark .num-marker { color: var(--sand-gold); }
-
+  /* ═══ Let vertical swipes on the paint canvas scroll the page ═══ */
+  #hero-paint-canvas {
+    touch-action: pan-y pinch-zoom;
+    -ms-touch-action: pan-y pinch-zoom;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Decorative overlays should never swallow a touch */
+  .hero-bg,
+  .hero-canvas-texture,
+  .hero-canvas-weave-detail {
+    pointer-events: none;
+  }
+      
   /* ═══ Money split panel (not in styles.css) ═══ */
   .money-breakdown {
     max-width: 720px;
@@ -875,26 +890,85 @@
   }
   requestAnimationFrame(render);
 
+  /* ── Pointer input ──
+     Touch gestures that are really page scrolls must not paint, and must
+     not hold on to the pointer state, otherwise the hero becomes a dead
+     zone you can't swipe out of. */
+  let gesture = null;         // the pointer gesture in progress
+  let pendingSplash = null;   // deferred first dab (touch only)
+
+  function cancelPendingSplash() {
+    if (pendingSplash) { clearTimeout(pendingSplash); pendingSplash = null; }
+  }
+
+  function endGesture() {
+    isDown = false;
+    last = null;
+    gesture = null;
+    cancelPendingSplash();
+  }
+
   canvas.addEventListener('pointerdown', e => {
-    isDown = true;
-    const r = canvas.getBoundingClientRect();
-    last = {x:e.clientX, y:e.clientY, time:performance.now()};
-    splash(e.clientX-r.left, e.clientY-r.top);
+    const r  = canvas.getBoundingClientRect();
+    const px = e.clientX - r.left;
+    const py = e.clientY - r.top;
+
+    isDown  = true;
+    gesture = { startX: e.clientX, startY: e.clientY, type: e.pointerType };
+    last    = { x: e.clientX, y: e.clientY, time: performance.now() };
+
+    if (e.pointerType === 'mouse') {
+      splash(px, py);
+    } else {
+      // Defer the first dab ~90ms: if the finger turns out to be starting a
+      // scroll, pointercancel fires (or we detect vertical travel) and we
+      // drop the splat instead of painting it.
+      cancelPendingSplash();
+      pendingSplash = setTimeout(() => {
+        pendingSplash = null;
+        if (isDown) splash(px, py);
+      }, 90);
+    }
   });
+
   canvas.addEventListener('pointermove', e => {
-    if (!last) return;
+    if (!last || !gesture) return;
+
     const now = performance.now();
-    const dt = Math.max(1, now - last.time);
-    const sp = Math.hypot(e.clientX-last.x, e.clientY-last.y) / dt;
+    const dt  = Math.max(1, now - last.time);
+    const dx  = e.clientX - last.x;
+    const dy  = e.clientY - last.y;
+
+    // Touch: bail out the moment the gesture is clearly a vertical scroll.
+    if (gesture.type !== 'mouse') {
+      const totalX = Math.abs(e.clientX - gesture.startX);
+      const totalY = Math.abs(e.clientY - gesture.startY);
+      if (totalY > 8 && totalY > totalX * 1.2) {
+        cancelPendingSplash();
+        isDown = false;
+        last = { x: e.clientX, y: e.clientY, time: now };
+        return;
+      }
+    }
+
+    const sp = Math.hypot(dx, dy) / dt;
     if (isDown && (sp > 0.35 || now - lastSplash > 120)) {
+      cancelPendingSplash();
       const r = canvas.getBoundingClientRect();
-      splash(e.clientX-r.left, e.clientY-r.top, {x:(e.clientX-last.x)/dt*16, y:(e.clientY-last.y)/dt*16});
+      splash(e.clientX - r.left, e.clientY - r.top,
+             { x: dx / dt * 16, y: dy / dt * 16 });
       lastSplash = now;
     }
-    last = {x:e.clientX, y:e.clientY, time:now};
-  });
-  window.addEventListener('pointerup', () => { isDown = false; last = null; });
 
+    last = { x: e.clientX, y: e.clientY, time: now };
+  });
+
+  canvas.addEventListener('pointerup', endGesture);
+  canvas.addEventListener('pointerleave', endGesture);
+  canvas.addEventListener('pointercancel', endGesture);   // ← the important one
+  window.addEventListener('pointerup', endGesture);
+  window.addEventListener('pointercancel', endGesture);
+  
   const swatches = document.querySelectorAll('.swatch-btn');
   swatches.forEach(b => b.addEventListener('click', () => {
     swatches.forEach(x => x.classList.remove('active'));
@@ -1210,3 +1284,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
+
+

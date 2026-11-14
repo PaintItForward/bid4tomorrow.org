@@ -40,8 +40,11 @@
 
   <script>
     // ---- CONFIG: paste the exact values from auction.html / db.js ----
-    const SUPABASE_URL = "PASTE_FROM_EXISTING_CLIENT";
-    const SUPABASE_ANON_KEY = "PASTE_FROM_EXISTING_CLIENT";
+    const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    const FALL_2026_AUCTION_ID = '101afb93-7d37-4276-8602-026acbda56ed';
+    const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/your_payment_link_here'; // TODO: Replace with actual Stripe link
 
     // Use a non-conflicting name: the CDN library already owns `window.supabase`.
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

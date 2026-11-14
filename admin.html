@@ -43,7 +43,9 @@
     const SUPABASE_URL = "PASTE_FROM_EXISTING_CLIENT";
     const SUPABASE_ANON_KEY = "PASTE_FROM_EXISTING_CLIENT";
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Use a non-conflicting name: the CDN library already owns `window.supabase`.
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     const el = (id) => document.getElementById(id);
     const show = (id) => { el(id).hidden = false; };
     const hide = (id) => { el(id).hidden = true; };
@@ -62,7 +64,7 @@
 
     async function resolveAdminStatus(user) {
       try {
-        const { data, error } = await supabase.rpc("is_admin");
+        const { data, error } = await sb.rpc("is_admin");
         if (!error && typeof data === "boolean") {
           console.info("[admin] is_admin() ->", data);
           return data;
@@ -71,7 +73,7 @@
       } catch (e) { console.warn("[admin] is_admin() threw:", e); }
 
       try {
-        const { data, error } = await supabase
+        const { data, error } = await sb
           .from("admins").select("*").eq("user_id", user.id).maybeSingle();
         if (error) { console.warn("[admin] admins select error:", error.message); return false; }
         console.info("[admin] admins row ->", data);
@@ -81,23 +83,24 @@
 
     async function boot() {
       setChecking();
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const { data: { session }, error } = await sb.auth.getSession();
       if (error || !session) { setDenied("You are not signed in."); return; }
       const user = session.user;
       const isAdmin = await resolveAdminStatus(user);
       if (!isAdmin) { setDenied("This account does not have administrator access."); return; }
       setAuthorized(user.email);
-      supabase.auth.onAuthStateChange((event, session) => {
+      sb.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_OUT" || !session) setDenied("Your session has ended. Please sign in again.");
       });
     }
 
     el("admin-signout")?.addEventListener("click", async () => {
-      await supabase.auth.signOut();
+      await sb.auth.signOut();
       setDenied("You have been signed out.");
     });
 
     document.addEventListener("DOMContentLoaded", boot);
   </script>
+  
 </body>
 </html>

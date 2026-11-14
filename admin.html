@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Admin — Bid For Tomorrow</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div id="admin-checking" class="admin-panel">Checking authorization…</div>
+
+  <div id="admin-denied" class="admin-panel" hidden>
+    <h1>Not authorized</h1>
+    <p id="admin-denied-reason">You must sign in with an administrator account to view this page.</p>
+    <p><a href="login.html">Sign in</a></p>
+  </div>
+
+  <div id="admin-shell" hidden>
+    <header class="admin-header">
+      <h1>Bid For Tomorrow — Admin</h1>
+      <div class="admin-header-right">
+        <span id="admin-email" class="admin-muted"></span>
+        <button id="admin-signout" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <nav class="admin-tabs" id="admin-tabs">
+      <!-- Tabs added in the next step (Overview, Auctions, Bids, Winners, Consents) -->
+    </nav>
+
+    <main id="admin-main" class="admin-main">
+      <section id="admin-view-overview" class="admin-view">
+        <p class="admin-muted">Authorization passed. Dashboard overview is the next step.</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ---- CONFIG: paste the exact values from auction.html / db.js ----
+    const SUPABASE_URL = "PASTE_FROM_EXISTING_CLIENT";
+    const SUPABASE_ANON_KEY = "PASTE_FROM_EXISTING_CLIENT";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const el = (id) => document.getElementById(id);
+    const show = (id) => { el(id).hidden = false; };
+    const hide = (id) => { el(id).hidden = true; };
+
+    function setChecking() {
+      hide("admin-denied"); hide("admin-shell"); show("admin-checking");
+    }
+    function setDenied(reason) {
+      hide("admin-checking"); hide("admin-shell");
+      el("admin-denied-reason").textContent = reason; show("admin-denied");
+    }
+    function setAuthorized(email) {
+      hide("admin-checking"); hide("admin-denied");
+      el("admin-email").textContent = email || ""; show("admin-shell");
+    }
+
+    async function resolveAdminStatus(user) {
+      try {
+        const { data, error } = await supabase.rpc("is_admin");
+        if (!error && typeof data === "boolean") {
+          console.info("[admin] is_admin() ->", data);
+          return data;
+        }
+        if (error) console.warn("[admin] is_admin() error:", error.message);
+      } catch (e) { console.warn("[admin] is_admin() threw:", e); }
+
+      try {
+        const { data, error } = await supabase
+          .from("admins").select("*").eq("user_id", user.id).maybeSingle();
+        if (error) { console.warn("[admin] admins select error:", error.message); return false; }
+        console.info("[admin] admins row ->", data);
+        return !!data;
+      } catch (e) { console.warn("[admin] admins select threw:", e); return false; }
+    }
+
+    async function boot() {
+      setChecking();
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error || !session) { setDenied("You are not signed in."); return; }
+      const user = session.user;
+      const isAdmin = await resolveAdminStatus(user);
+      if (!isAdmin) { setDenied("This account does not have administrator access."); return; }
+      setAuthorized(user.email);
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT" || !session) setDenied("Your session has ended. Please sign in again.");
+      });
+    }
+
+    el("admin-signout")?.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      setDenied("You have been signed out.");
+    });
+
+    document.addEventListener("DOMContentLoaded", boot);
+  </script>
+</body>
+</html>

@@ -6,6 +6,14 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Admin — Bid For Tomorrow</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .overview-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0 2rem; }
+    .overview-card { background:#fff; border:1px solid #e3e3e6; border-radius:8px; padding:1rem; }
+    .overview-card-value { font-size:1.8rem; font-weight:600; }
+    .overview-card-label { color:#666; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; margin-top:.25rem; }
+    #overview-auction-statuses { padding-left:1.2rem; line-height:1.6; }
+  </style>
+  
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -33,7 +41,11 @@
 
     <main id="admin-main" class="admin-main">
       <section id="admin-view-overview" class="admin-view">
-        <p class="admin-muted">Authorization passed. Dashboard overview is the next step.</p>
+        <h2>Overview</h2>
+        <div id="overview-cards" class="overview-cards">Loading…</div>
+        <h3>Auction counts by status</h3>
+        <ul id="overview-auction-statuses"><li class="admin-muted">Loading…</li></ul>
+        <p class="admin-muted" id="overview-note"></p>
       </section>
     </main>
   </div>
@@ -60,6 +72,7 @@
     function setAuthorized(email) {
       hide("admin-checking"); hide("admin-denied");
       el("admin-email").textContent = email || ""; show("admin-shell");
+      loadOverview().catch((e) => console.error("[overview] failed:", e));
     }
 
     async function resolveAdminStatus(user) {

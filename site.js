@@ -75,6 +75,16 @@ function initSite() {
     '</div>';
   document.body.prepend(nav);
 
+  /* A fixed nav leaves normal document flow, so reserve its current height
+     to keep page content from starting underneath it. */
+  var navSpacer = document.createElement('div');
+  navSpacer.id = 'main-nav-spacer';
+  nav.insertAdjacentElement('afterend', navSpacer);
+  function sizeNavSpacer() { navSpacer.style.height = nav.offsetHeight + 'px'; }
+  sizeNavSpacer();
+  window.addEventListener('resize', sizeNavSpacer, { passive: true });
+  if (window.ResizeObserver) new ResizeObserver(sizeNavSpacer).observe(nav);
+
   var links = document.getElementById('nav-links'), toggle = document.getElementById('nav-toggle');
   function closeMenus() {
     document.querySelectorAll('.has-sub.open').forEach(function (m) {

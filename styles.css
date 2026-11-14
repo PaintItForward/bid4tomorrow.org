@@ -2172,8 +2172,9 @@ body.dark .dark-toggle {
 }
 
 .branches-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 32px;
 }
 
@@ -2181,7 +2182,8 @@ body.dark .dark-toggle {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  flex: 1 1 480px;
+  max-width: 568px;
   padding: 32px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);

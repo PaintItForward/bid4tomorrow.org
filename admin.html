@@ -34,12 +34,22 @@
     .admin-badge.live, .admin-badge.open { background:#d9f2e2; }
     .admin-badge.closed { background:#f7d9d9; }
     .admin-badge.draft, .admin-badge.scheduled, .admin-badge.upcoming { background:#e6e6fa; }
+    .admin-badge.pending { background:#fff3cd; }
+    .admin-badge.approved, .admin-badge.verified { background:#d9f2e2; }
+    .admin-badge.rejected, .admin-badge.denied { background:#f7d9d9; }
     .admin-toast { position:fixed; bottom:1rem; right:1rem; background:#1a1a1a; color:#fff; padding:.75rem 1rem; border-radius:8px; font-size:.9rem; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; max-width:340px; }
     .admin-toast.show { opacity:1; transform:translateY(0); }
     .admin-toast.error { background:#a40000; }
     .admin-toast.info { background:#7a4b00; }
     .admin-error { color:#a40000; }
     button[disabled] { opacity:.55; cursor:not-allowed; }
+    .admin-blocker {
+      background:#fff7e0; border:1px solid #e6c26a; border-radius:8px;
+      padding:.85rem 1rem; margin-bottom:1rem; font-size:.9rem; line-height:1.5;
+    }
+    .admin-blocker strong { display:block; margin-bottom:.35rem; }
+    .admin-blocker ul { margin:.35rem 0 0 1.1rem; padding:0; }
+    .admin-blocker li { margin-bottom:.25rem; }
 
     .admin-form { display:grid; gap:.9rem; max-width:640px; }
     .admin-form label { display:grid; gap:.25rem; font-size:.9rem; }
@@ -75,6 +85,7 @@
       <button type="button" data-view="auctions">Auctions</button>
       <button type="button" data-view="bids">Bids</button>
       <button type="button" data-view="winners">Winners</button>
+      <button type="button" data-view="consents">Consents</button>
     </nav>
 
     <main id="admin-main" class="admin-main">
@@ -134,6 +145,47 @@
           truncated (hover for full UUID). This view is read-only.
         </p>
       </section>
+
+      <section id="admin-view-consents" class="admin-view" hidden>
+        <h2>Consents</h2>
+
+        <div class="admin-blocker">
+          <strong>Two backend gaps are blocking write access on this tab.</strong>
+          <ul>
+            <li><code>consents</code> has no admin SELECT policy — an admin can only see their
+              own artist-agreement rows. Review of other users' agreements is not possible until
+              Person 1 adds an admin SELECT policy or a SECURITY DEFINER RPC.</li>
+            <li><code>guardian_consents</code> has an admin SELECT policy but <strong>no UPDATE policy</strong>.
+              Verification (setting <code>verification_status</code>, <code>verified_by</code>,
+              <code>verified_at</code>) cannot be performed from the client until Person 1 adds an
+              admin UPDATE policy or an <code>admin_verify_guardian_consent</code> RPC.</li>
+            <li><code>guardian_consents</code> also has <strong>no INSERT policy</strong>. The
+              submission side of the guardian-consent workflow (Phase 5) is likewise blocked at
+              the database level.</li>
+          </ul>
+          This tab is <strong>read-only</strong> in the current state. Verify/Reject buttons are
+          disabled with an explanatory tooltip.
+        </div>
+
+        <h3>Guardian consents</h3>
+        <div class="admin-toolbar">
+          <label>Status:
+            <select id="gc-status-filter"><option value="">All</option></select>
+          </label>
+          <button id="gc-refresh" type="button">Refresh</button>
+        </div>
+        <p class="admin-muted" id="gc-summary"></p>
+        <div id="gc-table-wrap">Loading…</div>
+        <p class="admin-muted" style="margin-top:.75rem;">
+          Guardian contact details are shown here because review requires them. They are visible
+          to administrators only (per the <code>guardian_consents_select_admin</code> RLS policy).
+          Do not copy this information outside the dashboard.
+        </p>
+
+        <h3 style="margin-top:2rem;">Artist agreements</h3>
+        <p class="admin-muted" id="ca-note"></p>
+        <div id="ca-table-wrap">Loading…</div>
+      </section>
     </main>
   </div>
 
@@ -183,7 +235,6 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => t.classList.remove("show"), 5000);
     }
-
     async function callAdminRpc(fnName, args) {
       try {
         const { data, error } = await sb.rpc(fnName, args);
@@ -693,7 +744,6 @@
 
       wrap.textContent = "Loading…";
 
-      // populate auction filter from cache
       if (auctionsCache.length === 0) { await loadAuctions(); }
       if (filterEl.options.length <= 1) {
         const currentVal = filterEl.value;
@@ -724,7 +774,6 @@
             })
           : bids;
 
-        // highest amount per lot
         const highestByLot = {};
         for (const b of filtered) {
           const amt = Number(b.amount);
@@ -816,6 +865,161 @@
       }
     }
 
+    // ---------- consents view ----------
+    async function loadGuardianConsents() {
+      const wrap = el("gc-table-wrap");
+      const summary = el("gc-summary");
+      const filterEl = el("gc-status-filter");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
+
+      try {
+        const { data, error } = await sb
+          .from("guardian_consents").select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+
+        const all = data || [];
+
+        // Populate status filter from observed values, preserving selection.
+        const observed = [...new Set(all.map((r) => r.verification_status).filter(Boolean))].sort();
+        const currentVal = filterEl.value;
+        filterEl.innerHTML = `<option value="">All (${all.length})</option>` +
+          observed.map((s) => {
+            const n = all.filter((r) => r.verification_status === s).length;
+            return `<option value="${esc(s)}">${esc(s)} (${n})</option>`;
+          }).join("");
+        if (observed.includes(currentVal) || currentVal === "") filterEl.value = currentVal;
+
+        const selected = filterEl.value || null;
+        const filtered = selected
+          ? all.filter((r) => r.verification_status === selected)
+          : all;
+
+        summary.textContent = selected
+          ? `Showing ${filtered.length} of ${all.length} guardian consent(s) with status "${selected}".`
+          : `${all.length} guardian consent(s) total.`;
+
+        if (!filtered.length) {
+          wrap.innerHTML = `<p class="admin-muted">No guardian consents ${selected ? `with status "${esc(selected)}"` : "yet"}.</p>`;
+          return;
+        }
+
+        const rows = filtered.map((r) => {
+          const verification = r.verified_at || r.verified_by
+            ? `${fmtDate(r.verified_at)} · by <span title="${esc(r.verified_by || "")}">${shortId(r.verified_by)}</span>`
+            : "—";
+          return `<tr>
+            <td>${fmtDate(r.created_at)}</td>
+            <td>${esc(r.artist_legal_name)}</td>
+            <td>${esc(r.guardian_name)}</td>
+            <td>${esc(r.guardian_email)}</td>
+            <td>${esc(r.guardian_phone || "—")}</td>
+            <td>${esc(r.consent_version)}</td>
+            <td>${fmtDate(r.signed_at)}</td>
+            <td>${statusBadge(r.verification_status)}</td>
+            <td>${verification}</td>
+            <td class="actions">
+              <button type="button" data-gc-action="verify" data-id="${esc(r.id)}"
+                disabled title="Blocked: no admin UPDATE policy on guardian_consents and no admin_verify_guardian_consent RPC.">Verify</button>
+              <button type="button" data-gc-action="reject" data-id="${esc(r.id)}"
+                disabled title="Blocked: same as Verify.">Reject</button>
+            </td>
+          </tr>`;
+        }).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Submitted</th>
+                <th>Artist</th>
+                <th>Guardian</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Version</th>
+                <th>Signed</th>
+                <th>Status</th>
+                <th>Verification</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+
+        // Buttons are wired for the moment the backend lands, but reject while it's absent.
+        wrap.querySelectorAll('button[data-gc-action]').forEach((btn) => {
+          btn.addEventListener("click", () => {
+            toast(
+              "Verification backend not available. Person 1 must add " +
+              "an UPDATE policy on guardian_consents or an admin_verify_guardian_consent RPC.",
+              "info"
+            );
+          });
+        });
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load guardian consents: ${esc(e.message)}</p>`;
+        summary.textContent = "";
+      }
+    }
+
+    async function loadArtistAgreements() {
+      const wrap = el("ca-table-wrap");
+      const note = el("ca-note");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
+      note.textContent = "";
+
+      try {
+        const { data, error } = await sb
+          .from("consents").select("*")
+          .eq("consent_type", "artist_agreement")
+          .order("granted_at", { ascending: false });
+        if (error) throw error;
+
+        const rows = data || [];
+
+        // Even if the query returns rows, they are the current admin's own rows
+        // because RLS only has `consents_select_own`.
+        note.innerHTML =
+          `Showing <strong>${rows.length}</strong> artist-agreement consent(s) ` +
+          `visible to this session. <code>consents</code> currently has only a ` +
+          `<code>consents_select_own</code> RLS policy, so an administrator cannot ` +
+          `see other users' agreement rows. If the count looks wrong, that is why — ` +
+          `not an error. A backend change is required for full admin review.`;
+
+        if (!rows.length) {
+          wrap.innerHTML = `<p class="admin-muted">No rows visible (expected under current RLS unless this admin personally signed an artist agreement).</p>`;
+          return;
+        }
+
+        const body = rows.map((r) => `
+          <tr>
+            <td title="${esc(r.user_id)}">${shortId(r.user_id)}</td>
+            <td>${esc(r.consent_type)}</td>
+            <td>${esc(r.document_version)}</td>
+            <td>${r.granted ? "yes" : "no"}</td>
+            <td>${fmtDate(r.granted_at)}</td>
+            <td>${esc(r.source || "—")}</td>
+          </tr>`).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead>
+              <tr><th>User</th><th>Type</th><th>Version</th><th>Granted</th><th>Granted at</th><th>Source</th></tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load artist agreements: ${esc(e.message)}</p>`;
+        note.textContent = "";
+      }
+    }
+
     // ---------- admin resolution ----------
     async function resolveAdminStatus() {
       const { data, error } = await sb.rpc("is_admin");
@@ -846,6 +1050,7 @@
         switchView(btn.dataset.view);
         if (btn.dataset.view === "bids") loadBids();
         else if (btn.dataset.view === "winners") loadWinners();
+        else if (btn.dataset.view === "consents") { loadGuardianConsents(); loadArtistAgreements(); }
       });
     });
     el("admin-signout")?.addEventListener("click", async () => {
@@ -860,6 +1065,8 @@
     el("bids-refresh")?.addEventListener("click", () => { loadBids(); toast("Refreshed."); });
     el("bids-auction-filter")?.addEventListener("change", () => loadBids());
     el("winners-refresh")?.addEventListener("click", () => { loadWinners(); toast("Refreshed."); });
+    el("gc-refresh")?.addEventListener("click", () => { loadGuardianConsents(); toast("Refreshed."); });
+    el("gc-status-filter")?.addEventListener("change", () => loadGuardianConsents());
 
     document.addEventListener("DOMContentLoaded", boot);
   </script>

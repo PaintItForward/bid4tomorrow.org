@@ -35,6 +35,7 @@
     .admin-toast.show { opacity:1; transform:translateY(0); }
     .admin-toast.error { background:#a40000; }
     .admin-error { color:#a40000; }
+    .admin-toast.info { background:#7a4b00; }
     button[disabled] { opacity:.55; cursor:not-allowed; }
   </style>
 </head>
@@ -80,8 +81,9 @@
         <div id="auctions-table-wrap">Loading…</div>
         <div id="auction-detail" class="admin-detail" hidden></div>
         <p class="admin-muted" style="margin-top:1rem;">
-          Create / Open / Close / Delete are disabled until those RPC signatures are confirmed.
-          Reopen is enabled for auctions whose status is <code>closed</code>.
+          Create / Open / Delete are disabled until those RPC signatures are confirmed.
+          Close is enabled for any non-closed auction (it only succeeds after <code>ends_at</code> has passed).
+          Reopen is enabled for <code>closed</code> auctions with no winners.
         </p>
       </section>
     </main>
@@ -120,25 +122,32 @@
              `<div class="overview-card-label">${esc(label)}</div></div>`;
     }
     let toastTimer = null;
-    function toast(message, isError) {
+    function toast(message, level) {
+      // level: "error" | "info" | undefined (default dark = success/neutral)
       const t = el("admin-toast");
       t.textContent = message;
-      t.classList.toggle("error", !!isError);
+      t.classList.toggle("error", level === "error");
+      t.classList.toggle("info", level === "info");
       t.classList.add("show");
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove("show"), 4500);
+      toastTimer = setTimeout(() => t.classList.remove("show"), 5000);
     }
 
-    // Admin RPCs return "SUCCESS: ..." or "ERROR: ..." as text, so success is
-    // decided by the string, not only by the transport-level `error`.
+    // Admin RPCs return one of three shapes:
+    //   "SUCCESS: ..."    -> ok
+    //   "NOT CLOSED: ..." -> informational (close RPC did nothing, and says why)
+    //   "ERROR: ..."      -> hard failure
+    // Transport-level `error` counts as hard failure.
     async function callAdminRpc(fnName, args) {
       try {
         const { data, error } = await sb.rpc(fnName, args);
-        if (error) return { ok: false, message: error.message };
+        if (error) return { ok: false, info: false, message: error.message };
         const text = typeof data === "string" ? data : JSON.stringify(data);
-        return { ok: /^SUCCESS/i.test(text), message: text };
+        if (/^SUCCESS/i.test(text)) return { ok: true, info: false, message: text };
+        if (/^NOT CLOSED/i.test(text)) return { ok: false, info: true, message: text };
+        return { ok: false, info: false, message: text };
       } catch (e) {
-        return { ok: false, message: e.message || String(e) };
+        return { ok: false, info: false, message: e.message || String(e) };
       }
     }
     function confirmAction(message) {
@@ -339,13 +348,43 @@
       `;
 
       el("auction-detail-close").addEventListener("click", () => { panel.hidden = true; panel.innerHTML = ""; });
-      wireAuctionActions(auction);
-    }
-
     function wireAuctionActions(auction) {
       const note = el("auction-actions-note");
+      const closeBtn = el("auction-btn-close");
       const reopenBtn = el("auction-btn-reopen");
 
+      // Close: enabled whenever status is not already "closed" (mirrors the RPC guard).
+      if (auction.status !== "closed") {
+        closeBtn.disabled = false;
+        closeBtn.title = "Close this auction and determine winners (only succeeds if ends_at has passed)";
+        closeBtn.addEventListener("click", async () => {
+          const label = auction.title || "this auction";
+          if (!confirmAction(
+            `Close "${label}"?\n\n` +
+            `This runs the same routine as automatic closing:\n` +
+            `• if ends_at has passed and the auction is live, winners will be determined and recorded;\n` +
+            `• otherwise nothing changes and the reason is reported back.\n\n` +
+            `Winners cannot be removed from this screen, and an auction with winners cannot be reopened.`
+          )) return;
+
+          closeBtn.disabled = true;
+          const res = await callAdminRpc("admin_close_auction", { p_auction_id: auction.id });
+          toast(res.message, res.ok ? undefined : (res.info ? "info" : "error"));
+
+          await loadAuctions();
+          await loadOverview();
+          if (res.ok) {
+            openAuctionDetail(auction.id);
+          } else {
+            closeBtn.disabled = false;
+          }
+        });
+      } else {
+        closeBtn.disabled = true;
+        closeBtn.title = "Already closed.";
+      }
+
+      // Reopen: enabled only when status is "closed".
       if (auction.status === "closed") {
         reopenBtn.disabled = false;
         reopenBtn.title = "Reopen this auction (sets it back to live)";
@@ -355,7 +394,7 @@
 
           reopenBtn.disabled = true;
           const res = await callAdminRpc("admin_reopen_auction", { p_auction_id: auction.id });
-          toast(res.message, !res.ok);
+          toast(res.message, res.ok ? undefined : "error");
 
           await loadAuctions();
           await loadOverview();
@@ -370,11 +409,11 @@
         reopenBtn.title = `Reopen is only available when status is "closed" (currently "${auction.status}").`;
       }
 
-      const pending = ["auction-btn-open", "auction-btn-close", "auction-btn-delete"];
-      const disabledCount = pending.filter((id) => el(id)?.disabled).length;
+      const pending = ["auction-btn-open", "auction-btn-delete"];
+      const stillDisabled = pending.filter((id) => el(id)?.disabled);
       if (note) {
-        note.textContent = disabledCount === pending.length
-          ? "Open, Close, and Delete are disabled until those RPC signatures are confirmed."
+        note.textContent = stillDisabled.length
+          ? "Open and Delete remain disabled until their RPC signatures are confirmed."
           : "";
       }
     }

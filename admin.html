@@ -34,8 +34,8 @@
     .admin-toast { position:fixed; bottom:1rem; right:1rem; background:#1a1a1a; color:#fff; padding:.75rem 1rem; border-radius:8px; font-size:.9rem; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; max-width:340px; }
     .admin-toast.show { opacity:1; transform:translateY(0); }
     .admin-toast.error { background:#a40000; }
-    .admin-error { color:#a40000; }
     .admin-toast.info { background:#7a4b00; }
+    .admin-error { color:#a40000; }
     button[disabled] { opacity:.55; cursor:not-allowed; }
   </style>
 </head>
@@ -81,9 +81,10 @@
         <div id="auctions-table-wrap">Loading…</div>
         <div id="auction-detail" class="admin-detail" hidden></div>
         <p class="admin-muted" style="margin-top:1rem;">
-          Create / Open / Delete are disabled until those RPC signatures are confirmed.
+          Create / Open are disabled until those RPC signatures are confirmed.
           Close is enabled for any non-closed auction (it only succeeds after <code>ends_at</code> has passed).
           Reopen is enabled for <code>closed</code> auctions with no winners.
+          Delete is allowed only when the auction has no bids and no winners — the RPC enforces this.
         </p>
       </section>
     </main>
@@ -123,7 +124,6 @@
     }
     let toastTimer = null;
     function toast(message, level) {
-      // level: "error" | "info" | undefined (default dark = success/neutral)
       const t = el("admin-toast");
       t.textContent = message;
       t.classList.toggle("error", level === "error");
@@ -135,9 +135,9 @@
 
     // Admin RPCs return one of three shapes:
     //   "SUCCESS: ..."    -> ok
-    //   "NOT CLOSED: ..." -> informational (close RPC did nothing, and says why)
+    //   "NOT CLOSED: ..." -> informational
     //   "ERROR: ..."      -> hard failure
-    // Transport-level `error` counts as hard failure.
+    // Transport-level `error` (e.g. RAISE EXCEPTION) also counts as hard failure.
     async function callAdminRpc(fnName, args) {
       try {
         const { data, error } = await sb.rpc(fnName, args);
@@ -292,7 +292,7 @@
     async function openAuctionDetail(id) {
       const panel = el("auction-detail");
       const auction = auctionsCache.find((a) => a.id === id);
-      if (!auction) { toast("Auction not found in cache.", true); return; }
+      if (!auction) { toast("Auction not found in cache.", "error"); return; }
 
       panel.hidden = false;
       panel.innerHTML = `<h3>${esc(auction.title || "(untitled)")}</h3><p class="admin-muted">Loading lots…</p>`;
@@ -328,10 +328,10 @@
 
         <h4>Actions</h4>
         <div class="admin-toolbar">
-          <button type="button" id="auction-btn-open" disabled title="Awaiting RPC signature">Open</button>
-          <button type="button" id="auction-btn-close" disabled title="Awaiting admin_close_auction signature">Close</button>
+          <button type="button" id="auction-btn-open" disabled title="Awaiting open RPC signature">Open</button>
+          <button type="button" id="auction-btn-close" disabled title="Close this auction">Close</button>
           <button type="button" id="auction-btn-reopen" disabled title="Only closed auctions can be reopened">Reopen</button>
-          <button type="button" id="auction-btn-delete" disabled title="Awaiting admin_delete_auction signature">Delete</button>
+          <button type="button" id="auction-btn-delete" disabled title="Permanently delete this auction">Delete</button>
           <button type="button" id="auction-detail-close">Close panel</button>
         </div>
         <p class="admin-muted" id="auction-actions-note"></p>
@@ -348,12 +348,16 @@
       `;
 
       el("auction-detail-close").addEventListener("click", () => { panel.hidden = true; panel.innerHTML = ""; });
+      wireAuctionActions(auction);
+    }
+
     function wireAuctionActions(auction) {
       const note = el("auction-actions-note");
       const closeBtn = el("auction-btn-close");
       const reopenBtn = el("auction-btn-reopen");
+      const deleteBtn = el("auction-btn-delete");
 
-      // Close: enabled whenever status is not already "closed" (mirrors the RPC guard).
+      // ---- Close ----
       if (auction.status !== "closed") {
         closeBtn.disabled = false;
         closeBtn.title = "Close this auction and determine winners (only succeeds if ends_at has passed)";
@@ -384,7 +388,7 @@
         closeBtn.title = "Already closed.";
       }
 
-      // Reopen: enabled only when status is "closed".
+      // ---- Reopen ----
       if (auction.status === "closed") {
         reopenBtn.disabled = false;
         reopenBtn.title = "Reopen this auction (sets it back to live)";
@@ -409,11 +413,39 @@
         reopenBtn.title = `Reopen is only available when status is "closed" (currently "${auction.status}").`;
       }
 
-      const pending = ["auction-btn-open", "auction-btn-delete"];
-      const stillDisabled = pending.filter((id) => el(id)?.disabled);
+      // ---- Delete ----
+      deleteBtn.disabled = false;
+      deleteBtn.title = "Permanently delete this auction (only allowed if it has no bids and no winners)";
+      deleteBtn.addEventListener("click", async () => {
+        const label = auction.title || "this auction";
+        if (!confirmAction(
+          `PERMANENTLY DELETE "${label}"?\n\n` +
+          `The RPC will refuse if this auction has any bids or any winners.\n` +
+          `If it succeeds, the auction row is gone. Depending on the database\n` +
+          `schema, its lots may be removed with it (ON DELETE CASCADE).\n\n` +
+          `This cannot be undone.`
+        )) return;
+
+        deleteBtn.disabled = true;
+        const res = await callAdminRpc("admin_delete_auction", { p_auction_id: auction.id });
+        toast(res.message, res.ok ? undefined : "error");
+
+        await loadAuctions();
+        await loadOverview();
+
+        if (res.ok) {
+          const panel = el("auction-detail");
+          panel.hidden = true;
+          panel.innerHTML = "";
+        } else {
+          deleteBtn.disabled = false;
+        }
+      });
+
+      // ---- Residual note ----
       if (note) {
-        note.textContent = stillDisabled.length
-          ? "Open and Delete remain disabled until their RPC signatures are confirmed."
+        note.textContent = el("auction-btn-open")?.disabled
+          ? "Open remains disabled until its RPC signature is confirmed."
           : "";
       }
     }

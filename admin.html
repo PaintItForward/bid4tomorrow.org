@@ -17,11 +17,14 @@
     .admin-tabs button { background:#fff; border:1px solid #e3e3e6; border-radius:6px; padding:.5rem .9rem; font-size:.9rem; cursor:pointer; }
     .admin-tabs button.active { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
     .admin-toolbar { display:flex; gap:.5rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap; }
+    .admin-toolbar select { padding:.4rem .6rem; border:1px solid #d0d0d4; border-radius:6px; font-size:.9rem; background:#fff; }
+    .admin-toolbar label { display:inline-flex; align-items:center; gap:.35rem; font-size:.9rem; }
     .admin-table { width:100%; border-collapse:collapse; background:#fff; border:1px solid #e3e3e6; border-radius:8px; overflow:hidden; }
     .admin-table th, .admin-table td { text-align:left; padding:.6rem .75rem; border-bottom:1px solid #eee; font-size:.9rem; vertical-align:top; }
     .admin-table th { background:#fafafa; font-weight:600; }
     .admin-table tr:last-child td { border-bottom:none; }
     .admin-table .actions button { margin-right:.35rem; }
+    .admin-table tr.highest td { font-weight:600; }
     .admin-detail { margin-top:1.5rem; background:#fff; border:1px solid #e3e3e6; border-radius:8px; padding:1rem; }
     .admin-detail h3 { margin-top:0; }
     .admin-detail dl { display:grid; grid-template-columns: max-content 1fr; gap:.35rem 1rem; font-size:.9rem; }
@@ -37,6 +40,15 @@
     .admin-toast.info { background:#7a4b00; }
     .admin-error { color:#a40000; }
     button[disabled] { opacity:.55; cursor:not-allowed; }
+
+    .admin-form { display:grid; gap:.9rem; max-width:640px; }
+    .admin-form label { display:grid; gap:.25rem; font-size:.9rem; }
+    .admin-form label > span { color:#666; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; }
+    .admin-form input, .admin-form textarea, .admin-form select {
+      padding:.5rem .6rem; border:1px solid #d0d0d4; border-radius:6px; font:inherit; font-size:.9rem; background:#fff;
+    }
+    .admin-form textarea { resize:vertical; }
+    .admin-form .admin-error { margin:0; font-size:.85rem; }
   </style>
 </head>
 <body>
@@ -61,6 +73,8 @@
     <nav class="admin-tabs" id="admin-tabs">
       <button type="button" data-view="overview" class="active">Overview</button>
       <button type="button" data-view="auctions">Auctions</button>
+      <button type="button" data-view="bids">Bids</button>
+      <button type="button" data-view="winners">Winners</button>
     </nav>
 
     <main id="admin-main" class="admin-main">
@@ -76,15 +90,48 @@
         <h2>Auctions</h2>
         <div class="admin-toolbar">
           <button id="auctions-refresh" type="button">Refresh</button>
-          <button id="auctions-create" type="button" disabled title="Awaiting admin_create_auction signature">Create auction</button>
+          <button id="auctions-create" type="button">Create auction</button>
         </div>
         <div id="auctions-table-wrap">Loading…</div>
         <div id="auction-detail" class="admin-detail" hidden></div>
         <p class="admin-muted" style="margin-top:1rem;">
-          Create / Open are disabled until those RPC signatures are confirmed.
-          Close is enabled for any non-closed auction (it only succeeds after <code>ends_at</code> has passed).
-          Reopen is enabled for <code>closed</code> auctions with no winners.
-          Delete is allowed only when the auction has no bids and no winners — the RPC enforces this.
+          Create always produces a <code>draft</code> auction; use Open to make it <code>live</code>.
+          Edit updates title / description / dates / status (but not status <code>closed</code>).
+          Close determines winners and only succeeds after <code>ends_at</code> has passed.
+          Reopen is available only for <code>closed</code> auctions with no winners.
+          Delete is allowed only when there are no bids and no winners, and it also deletes
+          the auction's lots (cascade). Artworks are not deleted.
+        </p>
+      </section>
+
+      <section id="admin-view-bids" class="admin-view" hidden>
+        <h2>Bids</h2>
+        <div class="admin-toolbar">
+          <label>Auction:
+            <select id="bids-auction-filter"><option value="">All auctions</option></select>
+          </label>
+          <button id="bids-refresh" type="button">Refresh</button>
+        </div>
+        <p class="admin-muted" id="bids-summary"></p>
+        <div id="bids-table-wrap">Loading…</div>
+        <p class="admin-muted" style="margin-top:.75rem;">
+          Bidder identifiers are shown truncated (hover for full UUID). Bids are visible to any
+          authenticated user per the auction-transparency rule; this view is a read-only mirror of that data.
+          Highest bid per lot is highlighted. No modification is possible from this tab.
+        </p>
+      </section>
+
+      <section id="admin-view-winners" class="admin-view" hidden>
+        <h2>Winners</h2>
+        <div class="admin-toolbar">
+          <button id="winners-refresh" type="button">Refresh</button>
+        </div>
+        <p class="admin-muted" id="winners-summary"></p>
+        <div id="winners-table-wrap">Loading…</div>
+        <p class="admin-muted" style="margin-top:.75rem;">
+          Winner records are created by <code>admin_close_auction</code>; there is no separate
+          "determine winners" button here. Winner identifiers are <code>auth.users.id</code>, shown
+          truncated (hover for full UUID). This view is read-only.
         </p>
       </section>
     </main>
@@ -122,6 +169,10 @@
       return `<div class="overview-card"><div class="overview-card-value">${esc(value)}</div>` +
              `<div class="overview-card-label">${esc(label)}</div></div>`;
     }
+    function shortId(uuid) {
+      if (!uuid) return "—";
+      return esc(String(uuid).slice(0, 8)) + "…";
+    }
     let toastTimer = null;
     function toast(message, level) {
       const t = el("admin-toast");
@@ -133,25 +184,38 @@
       toastTimer = setTimeout(() => t.classList.remove("show"), 5000);
     }
 
-    // Admin RPCs return one of three shapes:
-    //   "SUCCESS: ..."    -> ok
-    //   "NOT CLOSED: ..." -> informational
-    //   "ERROR: ..."      -> hard failure
-    // Transport-level `error` (e.g. RAISE EXCEPTION) also counts as hard failure.
     async function callAdminRpc(fnName, args) {
       try {
         const { data, error } = await sb.rpc(fnName, args);
-        if (error) return { ok: false, info: false, message: error.message };
-        const text = typeof data === "string" ? data : JSON.stringify(data);
-        if (/^SUCCESS/i.test(text)) return { ok: true, info: false, message: text };
-        if (/^NOT CLOSED/i.test(text)) return { ok: false, info: true, message: text };
-        return { ok: false, info: false, message: text };
+        if (error) return { ok: false, info: false, message: error.message, data: null };
+        if (typeof data === "string") {
+          if (/^SUCCESS/i.test(data)) return { ok: true, info: false, message: data, data };
+          if (/^NOT CLOSED/i.test(data)) return { ok: false, info: true, message: data, data };
+          return { ok: false, info: false, message: data, data };
+        }
+        return { ok: true, info: false, message: "SUCCESS", data };
       } catch (e) {
-        return { ok: false, info: false, message: e.message || String(e) };
+        return { ok: false, info: false, message: e.message || String(e), data: null };
       }
     }
-    function confirmAction(message) {
-      return window.confirm(message);
+    function confirmAction(message) { return window.confirm(message); }
+
+    function toLocalInput(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return "";
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
+             `T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    function fromLocalInput(v) {
+      if (!v) return null;
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? null : d.toISOString();
+    }
+    function sameTime(aIso, bIso) {
+      if (!aIso || !bIso) return false;
+      return new Date(aIso).getTime() === new Date(bIso).getTime();
     }
 
     // ---------- view state ----------
@@ -328,9 +392,10 @@
 
         <h4>Actions</h4>
         <div class="admin-toolbar">
-          <button type="button" id="auction-btn-open" disabled title="Awaiting open RPC signature">Open</button>
+          <button type="button" id="auction-btn-open" disabled title="Set status to live">Open</button>
           <button type="button" id="auction-btn-close" disabled title="Close this auction">Close</button>
           <button type="button" id="auction-btn-reopen" disabled title="Only closed auctions can be reopened">Reopen</button>
+          <button type="button" id="auction-btn-edit" disabled title="Edit auction fields">Edit</button>
           <button type="button" id="auction-btn-delete" disabled title="Permanently delete this auction">Delete</button>
           <button type="button" id="auction-detail-close">Close panel</button>
         </div>
@@ -352,12 +417,36 @@
     }
 
     function wireAuctionActions(auction) {
-      const note = el("auction-actions-note");
+      const openBtn = el("auction-btn-open");
       const closeBtn = el("auction-btn-close");
       const reopenBtn = el("auction-btn-reopen");
+      const editBtn = el("auction-btn-edit");
       const deleteBtn = el("auction-btn-delete");
 
-      // ---- Close ----
+      if (auction.status !== "live" && auction.status !== "closed") {
+        openBtn.disabled = false;
+        openBtn.title = `Set status from "${auction.status}" to "live"`;
+        openBtn.addEventListener("click", async () => {
+          const label = auction.title || "this auction";
+          if (!confirmAction(
+            `Open "${label}"?\n\n` +
+            `This sets status to "live" via admin_update_auction.\n` +
+            `Note: unlike Reopen, this does NOT set this auction's lots to "open". ` +
+            `If the lots need to be open for bidding, do that in lot administration.\n\n` +
+            `If ends_at is in the past, the next automatic-close check may close it immediately.`
+          )) return;
+          openBtn.disabled = true;
+          const res = await callAdminRpc("admin_update_auction", { p_auction_id: auction.id, p_status: "live" });
+          toast(res.message, res.ok ? undefined : "error");
+          await loadAuctions();
+          await loadOverview();
+          if (res.ok) openAuctionDetail(auction.id); else openBtn.disabled = false;
+        });
+      } else {
+        openBtn.disabled = true;
+        openBtn.title = auction.status === "closed" ? "Already closed — use Reopen instead." : "Already live.";
+      }
+
       if (auction.status !== "closed") {
         closeBtn.disabled = false;
         closeBtn.title = "Close this auction and determine winners (only succeeds if ends_at has passed)";
@@ -370,69 +459,68 @@
             `• otherwise nothing changes and the reason is reported back.\n\n` +
             `Winners cannot be removed from this screen, and an auction with winners cannot be reopened.`
           )) return;
-
           closeBtn.disabled = true;
           const res = await callAdminRpc("admin_close_auction", { p_auction_id: auction.id });
           toast(res.message, res.ok ? undefined : (res.info ? "info" : "error"));
-
           await loadAuctions();
           await loadOverview();
-          if (res.ok) {
-            openAuctionDetail(auction.id);
-          } else {
-            closeBtn.disabled = false;
-          }
+          if (res.ok) openAuctionDetail(auction.id); else closeBtn.disabled = false;
         });
       } else {
         closeBtn.disabled = true;
         closeBtn.title = "Already closed.";
       }
 
-      // ---- Reopen ----
       if (auction.status === "closed") {
         reopenBtn.disabled = false;
-        reopenBtn.title = "Reopen this auction (sets it back to live)";
+        reopenBtn.title = "Reopen this auction (sets it back to live, and its lots to open)";
         reopenBtn.addEventListener("click", async () => {
           const label = auction.title || "this auction";
           if (!confirmAction(`Reopen "${label}"?\n\nStatus will return to "live" and its lots to "open".\n\nThis is blocked if any winners have already been recorded.`)) return;
-
           reopenBtn.disabled = true;
           const res = await callAdminRpc("admin_reopen_auction", { p_auction_id: auction.id });
           toast(res.message, res.ok ? undefined : "error");
-
           await loadAuctions();
           await loadOverview();
-          if (res.ok) {
-            openAuctionDetail(auction.id);
-          } else {
-            reopenBtn.disabled = false;
-          }
+          if (res.ok) openAuctionDetail(auction.id); else reopenBtn.disabled = false;
         });
       } else {
         reopenBtn.disabled = true;
         reopenBtn.title = `Reopen is only available when status is "closed" (currently "${auction.status}").`;
       }
 
-      // ---- Delete ----
+      editBtn.disabled = false;
+      editBtn.title = "Edit title, description, dates, or status";
+      editBtn.addEventListener("click", () => renderAuctionEditForm(auction));
+
       deleteBtn.disabled = false;
       deleteBtn.title = "Permanently delete this auction (only allowed if it has no bids and no winners)";
       deleteBtn.addEventListener("click", async () => {
         const label = auction.title || "this auction";
+        let lotCount = null;
+        try {
+          const { count } = await sb.from("lots")
+            .select("*", { count: "exact", head: true })
+            .eq("auction_id", auction.id);
+          lotCount = count;
+        } catch (_) {}
+        const lotWarning = (lotCount === null)
+          ? "Its lots will also be deleted (cascade) — count unavailable."
+          : (lotCount === 0
+              ? "It has no lots."
+              : `It has ${lotCount} lot(s). Deleting the auction will also delete them (cascade).`);
         if (!confirmAction(
           `PERMANENTLY DELETE "${label}"?\n\n` +
+          lotWarning + `\n\n` +
           `The RPC will refuse if this auction has any bids or any winners.\n` +
-          `If it succeeds, the auction row is gone. Depending on the database\n` +
-          `schema, its lots may be removed with it (ON DELETE CASCADE).\n\n` +
+          `Artworks are NOT deleted — only the auction and its lots.\n\n` +
           `This cannot be undone.`
         )) return;
-
         deleteBtn.disabled = true;
         const res = await callAdminRpc("admin_delete_auction", { p_auction_id: auction.id });
         toast(res.message, res.ok ? undefined : "error");
-
         await loadAuctions();
         await loadOverview();
-
         if (res.ok) {
           const panel = el("auction-detail");
           panel.hidden = true;
@@ -441,12 +529,290 @@
           deleteBtn.disabled = false;
         }
       });
+    }
 
-      // ---- Residual note ----
-      if (note) {
-        note.textContent = el("auction-btn-open")?.disabled
-          ? "Open remains disabled until its RPC signature is confirmed."
-          : "";
+    // ---------- create form ----------
+    function renderCreateAuctionForm() {
+      const panel = el("auction-detail");
+      panel.hidden = false;
+      panel.innerHTML = `
+        <h3>Create auction</h3>
+        <form id="auction-create-form" class="admin-form" novalidate>
+          <label><span>Title</span><input name="title" type="text" maxlength="200" required></label>
+          <label><span>Description (optional)</span><textarea name="description" rows="3"></textarea></label>
+          <label><span>Starts at</span><input name="starts_at" type="datetime-local" required></label>
+          <label><span>Ends at</span><input name="ends_at" type="datetime-local" required></label>
+          <p class="admin-error" id="auction-create-error" hidden></p>
+          <div class="admin-toolbar">
+            <button type="submit" id="auction-create-save">Create draft</button>
+            <button type="button" id="auction-create-cancel">Cancel</button>
+          </div>
+          <p class="admin-muted">
+            New auctions are created with status <code>draft</code>. To make it visible
+            to bidders, create it here, then use <strong>Open</strong> on the detail view.
+          </p>
+        </form>
+      `;
+      el("auction-create-cancel").addEventListener("click", () => { panel.hidden = true; panel.innerHTML = ""; });
+      el("auction-create-form").addEventListener("submit", (e) => { e.preventDefault(); submitCreateAuction(); });
+    }
+
+    async function submitCreateAuction() {
+      const form = el("auction-create-form");
+      const err = el("auction-create-error");
+      const saveBtn = el("auction-create-save");
+      const fail = (m) => { err.textContent = m; err.hidden = false; return false; };
+      err.hidden = true;
+
+      const fd = new FormData(form);
+      const title = String(fd.get("title") || "").trim();
+      const description = String(fd.get("description") || "").trim();
+      const startsIso = fromLocalInput(fd.get("starts_at"));
+      const endsIso = fromLocalInput(fd.get("ends_at"));
+
+      if (!title) return fail("Title is required.");
+      if (!startsIso) return fail("Start date/time is required.");
+      if (!endsIso) return fail("End date/time is required.");
+      if (new Date(endsIso) <= new Date(startsIso)) return fail("End must be after start.");
+
+      const args = {
+        p_title: title,
+        p_starts_at: startsIso,
+        p_ends_at: endsIso,
+        p_description: description || null,
+      };
+
+      saveBtn.disabled = true;
+      const res = await callAdminRpc("admin_create_auction", args);
+      saveBtn.disabled = false;
+
+      if (!res.ok) { toast(res.message, "error"); return fail(res.message); }
+
+      const newId = res.data;
+      await loadAuctions();
+      await loadOverview();
+
+      if (newId && auctionsCache.some((a) => a.id === newId)) {
+        toast(`Created "${title}". Status is draft — use Open to make it live.`, "info");
+        openAuctionDetail(newId);
+      } else {
+        toast(`Created "${title}", but it is not in the local table yet — refresh.`, "info");
+        const panel = el("auction-detail");
+        panel.hidden = true;
+        panel.innerHTML = "";
+      }
+      return true;
+    }
+
+    // ---------- edit form ----------
+    function statusOptionsFor(current) {
+      const set = new Set(["draft", "upcoming", "live"]);
+      for (const a of auctionsCache) if (a.status) set.add(a.status);
+      set.delete("closed");
+      if (current && current !== "closed") set.add(current);
+      return [...set].sort();
+    }
+
+    function renderAuctionEditForm(auction) {
+      const panel = el("auction-detail");
+      panel.hidden = false;
+      const options = statusOptionsFor(auction.status)
+        .map((s) => `<option value="${esc(s)}"${s === auction.status ? " selected" : ""}>${esc(s)}</option>`)
+        .join("");
+      panel.innerHTML = `
+        <h3>Edit — ${esc(auction.title || "(untitled)")}</h3>
+        <form id="auction-edit-form" class="admin-form" novalidate>
+          <label><span>Title</span><input name="title" type="text" maxlength="200" required value="${esc(auction.title || "")}"></label>
+          <label><span>Description</span><textarea name="description" rows="3">${esc(auction.description || "")}</textarea></label>
+          <label><span>Starts at</span><input name="starts_at" type="datetime-local" required value="${esc(toLocalInput(auction.starts_at))}"></label>
+          <label><span>Ends at</span><input name="ends_at" type="datetime-local" required value="${esc(toLocalInput(auction.ends_at))}"></label>
+          <label><span>Status</span><select name="status" required>${options}</select></label>
+          <p class="admin-error" id="auction-edit-error" hidden></p>
+          <div class="admin-toolbar">
+            <button type="submit" id="auction-edit-save">Save changes</button>
+            <button type="button" id="auction-edit-cancel">Cancel</button>
+          </div>
+          <p class="admin-muted">
+            Only fields you change are sent. Clearing a date is not supported by
+            <code>admin_update_auction</code>; status <code>closed</code> must go through the Close button.
+          </p>
+        </form>
+      `;
+      el("auction-edit-cancel").addEventListener("click", () => openAuctionDetail(auction.id));
+      el("auction-edit-form").addEventListener("submit", (e) => { e.preventDefault(); submitAuctionEdit(auction); });
+    }
+
+    async function submitAuctionEdit(auction) {
+      const form = el("auction-edit-form");
+      const err = el("auction-edit-error");
+      const saveBtn = el("auction-edit-save");
+      const fail = (m) => { err.textContent = m; err.hidden = false; return false; };
+      err.hidden = true;
+
+      const fd = new FormData(form);
+      const title = String(fd.get("title") || "").trim();
+      const description = String(fd.get("description") || "");
+      const startsIso = fromLocalInput(fd.get("starts_at"));
+      const endsIso = fromLocalInput(fd.get("ends_at"));
+      const status = String(fd.get("status") || "").trim();
+
+      if (!title) return fail("Title is required.");
+      if (!startsIso) return fail("Start date/time is required.");
+      if (!endsIso) return fail("End date/time is required.");
+      if (new Date(endsIso) <= new Date(startsIso)) return fail("End must be after start.");
+      if (!status) return fail("Status is required.");
+      if (status === "closed") return fail('Status "closed" must be set via the Close button so winners are determined.');
+
+      const args = { p_auction_id: auction.id };
+      if (title !== (auction.title || "")) args.p_title = title;
+      if (description !== (auction.description || "")) args.p_description = description;
+      if (!sameTime(startsIso, auction.starts_at)) args.p_starts_at = startsIso;
+      if (!sameTime(endsIso, auction.ends_at)) args.p_ends_at = endsIso;
+      if (status !== auction.status) args.p_status = status;
+
+      if (Object.keys(args).length === 1) { toast("No changes to save.", "info"); return false; }
+
+      saveBtn.disabled = true;
+      const res = await callAdminRpc("admin_update_auction", args);
+      saveBtn.disabled = false;
+      if (!res.ok) { toast(res.message, "error"); return fail(res.message); }
+
+      toast(res.message);
+      await loadAuctions();
+      await loadOverview();
+      openAuctionDetail(auction.id);
+      return true;
+    }
+
+    // ---------- bids view ----------
+    async function loadBids() {
+      const wrap = el("bids-table-wrap");
+      const filterEl = el("bids-auction-filter");
+      const summary = el("bids-summary");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
+
+      // populate auction filter from cache
+      if (auctionsCache.length === 0) { await loadAuctions(); }
+      if (filterEl.options.length <= 1) {
+        const currentVal = filterEl.value;
+        filterEl.innerHTML = `<option value="">All auctions</option>` +
+          auctionsCache.map((a) => `<option value="${esc(a.id)}">${esc(a.title || a.id)}</option>`).join("");
+        filterEl.value = currentVal;
+      }
+
+      const selectedAuction = filterEl.value || null;
+
+      try {
+        const [bidsRes, lotsRes] = await Promise.all([
+          sb.from("bids").select("*").order("created_at", { ascending: false }),
+          sb.from("lots").select("*"),
+        ]);
+        if (bidsRes.error) throw bidsRes.error;
+        if (lotsRes.error) throw lotsRes.error;
+
+        const bids = bidsRes.data || [];
+        const lots = lotsRes.data || [];
+        const lotMap = new Map(lots.map((l) => [l.id, l]));
+        const auctionMap = new Map(auctionsCache.map((a) => [a.id, a]));
+
+        const filtered = selectedAuction
+          ? bids.filter((b) => {
+              const lot = lotMap.get(b.lot_id);
+              return lot && lot.auction_id === selectedAuction;
+            })
+          : bids;
+
+        // highest amount per lot
+        const highestByLot = {};
+        for (const b of filtered) {
+          const amt = Number(b.amount);
+          if (!(b.lot_id in highestByLot) || amt > Number(highestByLot[b.lot_id])) {
+            highestByLot[b.lot_id] = b.amount;
+          }
+        }
+
+        summary.textContent = `${filtered.length} bid(s) across ${Object.keys(highestByLot).length} lot(s)` +
+          (selectedAuction ? ` in "${auctionMap.get(selectedAuction)?.title || selectedAuction}"` : "");
+
+        if (!filtered.length) {
+          wrap.innerHTML = `<p class="admin-muted">No bids yet${selectedAuction ? " for this auction" : ""}.</p>`;
+          return;
+        }
+
+        const rows = filtered.map((b) => {
+          const lot = lotMap.get(b.lot_id);
+          const auction = lot ? auctionMap.get(lot.auction_id) : null;
+          const isHighest = String(b.amount) === String(highestByLot[b.lot_id]);
+          return `<tr${isHighest ? ' class="highest"' : ''}>
+            <td>${auction ? esc(auction.title || "(untitled)") : "—"}</td>
+            <td>${lot ? esc(lot.lot_number) : "—"}</td>
+            <td title="${esc(b.bidder_id)}">${shortId(b.bidder_id)}</td>
+            <td>${esc(b.amount)}${isHighest ? " ★" : ""}</td>
+            <td>${fmtDate(b.created_at)}</td>
+          </tr>`;
+        }).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead><tr><th>Auction</th><th>Lot #</th><th>Bidder</th><th>Amount</th><th>Time</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load bids: ${esc(e.message)}</p>`;
+      }
+    }
+
+    // ---------- winners view ----------
+    async function loadWinners() {
+      const wrap = el("winners-table-wrap");
+      const summary = el("winners-summary");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
+
+      try {
+        const [winnersRes, lotsRes] = await Promise.all([
+          sb.from("winners").select("*").order("created_at", { ascending: false }),
+          sb.from("lots").select("*"),
+        ]);
+        if (winnersRes.error) throw winnersRes.error;
+        if (lotsRes.error) throw lotsRes.error;
+
+        const winners = winnersRes.data || [];
+        const lots = lotsRes.data || [];
+        const lotMap = new Map(lots.map((l) => [l.id, l]));
+        const auctionMap = new Map(auctionsCache.map((a) => [a.id, a]));
+
+        summary.textContent = `${winners.length} winner record(s).`;
+
+        if (!winners.length) {
+          wrap.innerHTML = `<p class="admin-muted">No winners determined yet. Close an auction whose <code>ends_at</code> has passed to determine winners.</p>`;
+          return;
+        }
+
+        const rows = winners.map((w) => {
+          const lot = lotMap.get(w.lot_id);
+          const auction = lot ? auctionMap.get(lot.auction_id) : null;
+          return `<tr>
+            <td>${auction ? esc(auction.title || "(untitled)") : "—"}</td>
+            <td>${lot ? esc(lot.lot_number) : "—"}</td>
+            <td title="${esc(w.winner_id)}">${shortId(w.winner_id)}</td>
+            <td>${esc(w.final_price)}</td>
+            <td>${fmtDate(w.created_at)}</td>
+          </tr>`;
+        }).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead><tr><th>Auction</th><th>Lot #</th><th>Winner</th><th>Final price</th><th>Determined at</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load winners: ${esc(e.message)}</p>`;
       }
     }
 
@@ -476,13 +842,24 @@
 
     // ---------- wiring ----------
     document.querySelectorAll("#admin-tabs button").forEach((btn) => {
-      btn.addEventListener("click", () => switchView(btn.dataset.view));
+      btn.addEventListener("click", () => {
+        switchView(btn.dataset.view);
+        if (btn.dataset.view === "bids") loadBids();
+        else if (btn.dataset.view === "winners") loadWinners();
+      });
     });
     el("admin-signout")?.addEventListener("click", async () => {
       await sb.auth.signOut();
       setDenied("You have been signed out.");
     });
     el("auctions-refresh")?.addEventListener("click", () => { loadAuctions(); toast("Refreshed."); });
+    el("auctions-create")?.addEventListener("click", () => {
+      switchView("auctions");
+      renderCreateAuctionForm();
+    });
+    el("bids-refresh")?.addEventListener("click", () => { loadBids(); toast("Refreshed."); });
+    el("bids-auction-filter")?.addEventListener("change", () => loadBids());
+    el("winners-refresh")?.addEventListener("click", () => { loadWinners(); toast("Refreshed."); });
 
     document.addEventListener("DOMContentLoaded", boot);
   </script>

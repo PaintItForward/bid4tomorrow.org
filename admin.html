@@ -974,32 +974,33 @@
       note.textContent = "";
 
       try {
+        // No consent_type filter: the table is currently empty and we do not
+        // have a confirmed value for artist agreements. Show every row so
+        // whatever type actually gets written is visible immediately.
         const { data, error } = await sb
           .from("consents").select("*")
-          .eq("consent_type", "artist_agreement")
           .order("granted_at", { ascending: false });
         if (error) throw error;
 
         const rows = data || [];
 
-        // Even if the query returns rows, they are the current admin's own rows
-        // because RLS only has `consents_select_own`.
         note.innerHTML =
-          `Showing <strong>${rows.length}</strong> artist-agreement consent(s) ` +
-          `visible to this session. <code>consents</code> currently has only a ` +
-          `<code>consents_select_own</code> RLS policy, so an administrator cannot ` +
-          `see other users' agreement rows. If the count looks wrong, that is why — ` +
-          `not an error. A backend change is required for full admin review.`;
+          `Showing <strong>${rows.length}</strong> consent row(s) visible to this session. ` +
+          `Two facts limit this view: (1) <code>consents</code> has only a ` +
+          `<code>consents_select_own</code> RLS policy, so an administrator cannot see ` +
+          `other users' rows; (2) the table is currently <strong>empty</strong>, so no ` +
+          `artist agreement has been recorded yet. The <code>consent_type</code> column ` +
+          `is shown so the actual value becomes visible the first time a submission is made.`;
 
         if (!rows.length) {
-          wrap.innerHTML = `<p class="admin-muted">No rows visible (expected under current RLS unless this admin personally signed an artist agreement).</p>`;
+          wrap.innerHTML = `<p class="admin-muted">No consent rows exist. Once artist-agreement submissions are recorded, they will appear here (subject to the RLS limitation above).</p>`;
           return;
         }
 
         const body = rows.map((r) => `
           <tr>
             <td title="${esc(r.user_id)}">${shortId(r.user_id)}</td>
-            <td>${esc(r.consent_type)}</td>
+            <td>${esc(r.consent_type || "—")}</td>
             <td>${esc(r.document_version)}</td>
             <td>${r.granted ? "yes" : "no"}</td>
             <td>${fmtDate(r.granted_at)}</td>
@@ -1015,11 +1016,10 @@
           </table>
         `;
       } catch (e) {
-        wrap.innerHTML = `<p class="admin-error">Could not load artist agreements: ${esc(e.message)}</p>`;
+        wrap.innerHTML = `<p class="admin-error">Could not load consents: ${esc(e.message)}</p>`;
         note.textContent = "";
       }
     }
-
     // ---------- admin resolution ----------
     async function resolveAdminStatus() {
       const { data, error } = await sb.rpc("is_admin");

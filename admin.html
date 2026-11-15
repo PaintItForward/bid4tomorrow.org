@@ -6,15 +6,37 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Admin — Bid For Tomorrow</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .overview-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0 2rem; }
     .overview-card { background:#fff; border:1px solid #e3e3e6; border-radius:8px; padding:1rem; }
     .overview-card-value { font-size:1.8rem; font-weight:600; }
     .overview-card-label { color:#666; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; margin-top:.25rem; }
     #overview-auction-statuses { padding-left:1.2rem; line-height:1.6; }
+
+    .admin-tabs button { background:#fff; border:1px solid #e3e3e6; border-radius:6px; padding:.5rem .9rem; font-size:.9rem; cursor:pointer; }
+    .admin-tabs button.active { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+    .admin-toolbar { display:flex; gap:.5rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap; }
+    .admin-table { width:100%; border-collapse:collapse; background:#fff; border:1px solid #e3e3e6; border-radius:8px; overflow:hidden; }
+    .admin-table th, .admin-table td { text-align:left; padding:.6rem .75rem; border-bottom:1px solid #eee; font-size:.9rem; vertical-align:top; }
+    .admin-table th { background:#fafafa; font-weight:600; }
+    .admin-table tr:last-child td { border-bottom:none; }
+    .admin-table .actions button { margin-right:.35rem; }
+    .admin-detail { margin-top:1.5rem; background:#fff; border:1px solid #e3e3e6; border-radius:8px; padding:1rem; }
+    .admin-detail h3 { margin-top:0; }
+    .admin-detail dl { display:grid; grid-template-columns: max-content 1fr; gap:.35rem 1rem; font-size:.9rem; }
+    .admin-detail dt { color:#666; }
+    .admin-detail dd { margin:0; }
+    .admin-badge { display:inline-block; padding:.15rem .45rem; border-radius:999px; background:#eee; font-size:.75rem; }
+    .admin-badge.live, .admin-badge.open { background:#d9f2e2; }
+    .admin-badge.closed { background:#f7d9d9; }
+    .admin-badge.draft, .admin-badge.scheduled, .admin-badge.upcoming { background:#e6e6fa; }
+    .admin-toast { position:fixed; bottom:1rem; right:1rem; background:#1a1a1a; color:#fff; padding:.75rem 1rem; border-radius:8px; font-size:.9rem; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; max-width:340px; }
+    .admin-toast.show { opacity:1; transform:translateY(0); }
+    .admin-toast.error { background:#a40000; }
+    .admin-error { color:#a40000; }
+    button[disabled] { opacity:.55; cursor:not-allowed; }
   </style>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -36,7 +58,8 @@
     </header>
 
     <nav class="admin-tabs" id="admin-tabs">
-      <!-- Tabs added in the next step (Overview, Auctions, Bids, Winners, Consents) -->
+      <button type="button" data-view="overview" class="active">Overview</button>
+      <button type="button" data-view="auctions">Auctions</button>
     </nav>
 
     <main id="admin-main" class="admin-main">
@@ -47,15 +70,30 @@
         <ul id="overview-auction-statuses"><li class="admin-muted">Loading…</li></ul>
         <p class="admin-muted" id="overview-note"></p>
       </section>
+
+      <section id="admin-view-auctions" class="admin-view" hidden>
+        <h2>Auctions</h2>
+        <div class="admin-toolbar">
+          <button id="auctions-refresh" type="button">Refresh</button>
+          <button id="auctions-create" type="button" disabled title="Awaiting admin_create_auction signature">Create auction</button>
+        </div>
+        <div id="auctions-table-wrap">Loading…</div>
+        <div id="auction-detail" class="admin-detail" hidden></div>
+        <p class="admin-muted" style="margin-top:1rem;">
+          Create / Open / Close / Delete are disabled until those RPC signatures are confirmed.
+          Reopen is enabled for auctions whose status is <code>closed</code>.
+        </p>
+      </section>
     </main>
   </div>
+
+  <div id="admin-toast" class="admin-toast"></div>
 
   <script>
     // ---- CONFIG ----
     const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
 
-    // Single client, named `sb` so it does not collide with the library's global `supabase`.
     const sb = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     const el = (id) => document.getElementById(id);
@@ -64,12 +102,47 @@
 
     // ---------- helpers ----------
     function esc(s) {
-      return String(s).replace(/[&<>"']/g, (c) =>
+      return String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+    function fmtDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return esc(iso);
+      return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+    }
+    function statusBadge(status) {
+      const s = status == null ? "" : String(status);
+      return `<span class="admin-badge ${esc(s)}">${esc(s || "—")}</span>`;
     }
     function overviewCard(label, value) {
       return `<div class="overview-card"><div class="overview-card-value">${esc(value)}</div>` +
              `<div class="overview-card-label">${esc(label)}</div></div>`;
+    }
+    let toastTimer = null;
+    function toast(message, isError) {
+      const t = el("admin-toast");
+      t.textContent = message;
+      t.classList.toggle("error", !!isError);
+      t.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove("show"), 4500);
+    }
+
+    // Admin RPCs return "SUCCESS: ..." or "ERROR: ..." as text, so success is
+    // decided by the string, not only by the transport-level `error`.
+    async function callAdminRpc(fnName, args) {
+      try {
+        const { data, error } = await sb.rpc(fnName, args);
+        if (error) return { ok: false, message: error.message };
+        const text = typeof data === "string" ? data : JSON.stringify(data);
+        return { ok: /^SUCCESS/i.test(text), message: text };
+      } catch (e) {
+        return { ok: false, message: e.message || String(e) };
+      }
+    }
+    function confirmAction(message) {
+      return window.confirm(message);
     }
 
     // ---------- view state ----------
@@ -84,16 +157,24 @@
       hide("admin-checking"); hide("admin-denied");
       el("admin-email").textContent = email || "";
       show("admin-shell");
-      // fire-and-forget; errors are surfaced inside loadOverview
       loadOverview();
+      loadAuctions();
+    }
+    function switchView(name) {
+      document.querySelectorAll("#admin-main .admin-view").forEach((v) => { v.hidden = true; });
+      const target = el("admin-view-" + name);
+      if (target) target.hidden = false;
+      document.querySelectorAll("#admin-tabs button").forEach((b) => {
+        b.classList.toggle("active", b.dataset.view === name);
+      });
     }
 
-    // ---------- overview (read-only) ----------
+    // ---------- overview ----------
     async function loadOverview() {
       const cards = el("overview-cards");
       const statusList = el("overview-auction-statuses");
       const note = el("overview-note");
-      if (!cards) return; // overview section not present
+      if (!cards) return;
 
       const errors = [];
       let auctions = null;
@@ -103,7 +184,6 @@
         const { data, error } = await sb.from("auctions").select("*");
         if (error) throw error;
         auctions = data || [];
-        if (auctions[0]) console.info("[schema] auctions columns:", Object.keys(auctions[0]));
       } catch (e) { errors.push("auctions: " + e.message); }
 
       for (const table of ["lots", "bids", "artworks", "winners"]) {
@@ -113,13 +193,6 @@
           if (error) throw error;
           counts[table] = count ?? 0;
         } catch (e) { errors.push(`${table}: ${e.message}`); }
-
-        try {
-          const probe = await sb.from(table).select("*").limit(1);
-          if (!probe.error && probe.data && probe.data[0]) {
-            console.info(`[schema] ${table} columns:`, Object.keys(probe.data[0]));
-          }
-        } catch (_) { /* probe is best-effort */ }
       }
 
       cards.innerHTML = [
@@ -153,24 +226,164 @@
       }
     }
 
-    // ---------- admin resolution ----------
-    async function resolveAdminStatus(user) {
-      try {
-        const { data, error } = await sb.rpc("is_admin");
-        if (!error && typeof data === "boolean") {
-          console.info("[admin] is_admin() ->", data);
-          return data;
-        }
-        if (error) console.warn("[admin] is_admin() error:", error.message);
-      } catch (e) { console.warn("[admin] is_admin() threw:", e); }
+    // ---------- auctions ----------
+    let auctionsCache = [];
 
+    async function loadAuctions() {
+      const wrap = el("auctions-table-wrap");
+      if (!wrap) return;
+      wrap.textContent = "Loading…";
+      try {
+        const { data, error } = await sb.from("auctions").select("*");
+        if (error) throw error;
+        auctionsCache = (data || []).slice().sort((a, b) => {
+          const ak = a.starts_at || a.created_at || "";
+          const bk = b.starts_at || b.created_at || "";
+          return new Date(bk) - new Date(ak);
+        });
+        renderAuctionsTable();
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load auctions: ${esc(e.message)}</p>`;
+      }
+    }
+
+    function renderAuctionsTable() {
+      const wrap = el("auctions-table-wrap");
+      if (!auctionsCache.length) {
+        wrap.innerHTML = `<p class="admin-muted">No auctions yet.</p>`;
+        return;
+      }
+      const rows = auctionsCache.map((a) => `
+        <tr>
+          <td>${esc(a.title || "(untitled)")}</td>
+          <td>${statusBadge(a.status)}</td>
+          <td>${fmtDate(a.starts_at)}</td>
+          <td>${fmtDate(a.ends_at)}</td>
+          <td>${fmtDate(a.created_at)}</td>
+          <td class="actions">
+            <button type="button" data-action="view" data-id="${esc(a.id)}">View</button>
+          </td>
+        </tr>`).join("");
+
+      wrap.innerHTML = `
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th><th>Status</th><th>Starts</th><th>Ends</th><th>Created</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+
+      wrap.querySelectorAll('button[data-action="view"]').forEach((btn) => {
+        btn.addEventListener("click", () => openAuctionDetail(btn.dataset.id));
+      });
+    }
+
+    async function openAuctionDetail(id) {
+      const panel = el("auction-detail");
+      const auction = auctionsCache.find((a) => a.id === id);
+      if (!auction) { toast("Auction not found in cache.", true); return; }
+
+      panel.hidden = false;
+      panel.innerHTML = `<h3>${esc(auction.title || "(untitled)")}</h3><p class="admin-muted">Loading lots…</p>`;
+
+      let lots = [];
+      let lotsError = null;
       try {
         const { data, error } = await sb
-          .from("admins").select("*").eq("user_id", user.id).maybeSingle();
-        if (error) { console.warn("[admin] admins select error:", error.message); return false; }
-        console.info("[admin] admins row ->", data);
-        return !!data;
-      } catch (e) { console.warn("[admin] admins select threw:", e); return false; }
+          .from("lots").select("*").eq("auction_id", id).order("lot_number", { ascending: true });
+        if (error) throw error;
+        lots = data || [];
+      } catch (e) { lotsError = e.message; }
+
+      const lotRows = lots.map((l) => `
+        <tr>
+          <td>${esc(l.lot_number)}</td>
+          <td>${esc(l.artwork_id)}</td>
+          <td>${esc(l.starting_bid)}</td>
+          <td>${esc(l.bid_increment)}</td>
+          <td>${statusBadge(l.status)}</td>
+        </tr>`).join("");
+
+      panel.innerHTML = `
+        <h3>${esc(auction.title || "(untitled)")}</h3>
+        <dl>
+          <dt>ID</dt><dd><code>${esc(auction.id)}</code></dd>
+          <dt>Status</dt><dd>${statusBadge(auction.status)}</dd>
+          <dt>Starts</dt><dd>${fmtDate(auction.starts_at)}</dd>
+          <dt>Ends</dt><dd>${fmtDate(auction.ends_at)}</dd>
+          <dt>Created</dt><dd>${fmtDate(auction.created_at)}</dd>
+          <dt>Description</dt><dd>${esc(auction.description || "—")}</dd>
+        </dl>
+
+        <h4>Actions</h4>
+        <div class="admin-toolbar">
+          <button type="button" id="auction-btn-open" disabled title="Awaiting RPC signature">Open</button>
+          <button type="button" id="auction-btn-close" disabled title="Awaiting admin_close_auction signature">Close</button>
+          <button type="button" id="auction-btn-reopen" disabled title="Only closed auctions can be reopened">Reopen</button>
+          <button type="button" id="auction-btn-delete" disabled title="Awaiting admin_delete_auction signature">Delete</button>
+          <button type="button" id="auction-detail-close">Close panel</button>
+        </div>
+        <p class="admin-muted" id="auction-actions-note"></p>
+
+        <h4>Lots (${lots.length})</h4>
+        ${lotsError
+          ? `<p class="admin-error">Could not load lots: ${esc(lotsError)}</p>`
+          : lots.length
+            ? `<table class="admin-table">
+                 <thead><tr><th>#</th><th>Artwork ID</th><th>Starting bid</th><th>Increment</th><th>Status</th></tr></thead>
+                 <tbody>${lotRows}</tbody>
+               </table>`
+            : `<p class="admin-muted">No lots assigned to this auction.</p>`}
+      `;
+
+      el("auction-detail-close").addEventListener("click", () => { panel.hidden = true; panel.innerHTML = ""; });
+      wireAuctionActions(auction);
+    }
+
+    function wireAuctionActions(auction) {
+      const note = el("auction-actions-note");
+      const reopenBtn = el("auction-btn-reopen");
+
+      if (auction.status === "closed") {
+        reopenBtn.disabled = false;
+        reopenBtn.title = "Reopen this auction (sets it back to live)";
+        reopenBtn.addEventListener("click", async () => {
+          const label = auction.title || "this auction";
+          if (!confirmAction(`Reopen "${label}"?\n\nStatus will return to "live" and its lots to "open".\n\nThis is blocked if any winners have already been recorded.`)) return;
+
+          reopenBtn.disabled = true;
+          const res = await callAdminRpc("admin_reopen_auction", { p_auction_id: auction.id });
+          toast(res.message, !res.ok);
+
+          await loadAuctions();
+          await loadOverview();
+          if (res.ok) {
+            openAuctionDetail(auction.id);
+          } else {
+            reopenBtn.disabled = false;
+          }
+        });
+      } else {
+        reopenBtn.disabled = true;
+        reopenBtn.title = `Reopen is only available when status is "closed" (currently "${auction.status}").`;
+      }
+
+      const pending = ["auction-btn-open", "auction-btn-close", "auction-btn-delete"];
+      const disabledCount = pending.filter((id) => el(id)?.disabled).length;
+      if (note) {
+        note.textContent = disabledCount === pending.length
+          ? "Open, Close, and Delete are disabled until those RPC signatures are confirmed."
+          : "";
+      }
+    }
+
+    // ---------- admin resolution ----------
+    async function resolveAdminStatus() {
+      const { data, error } = await sb.rpc("is_admin");
+      if (error) throw new Error("is_admin() failed: " + error.message);
+      return data === true;
     }
 
     // ---------- boot ----------
@@ -178,23 +391,30 @@
       setChecking();
       const { data: { session }, error } = await sb.auth.getSession();
       if (error || !session) { setDenied("You are not signed in."); return; }
-      const user = session.user;
-      const isAdmin = await resolveAdminStatus(user);
-      if (!isAdmin) { setDenied("This account does not have administrator access."); return; }
-      setAuthorized(user.email);
+      try {
+        const isAdmin = await resolveAdminStatus();
+        if (!isAdmin) { setDenied("This account does not have administrator access."); return; }
+      } catch (e) {
+        setDenied(e.message); return;
+      }
+      setAuthorized(session.user.email);
       sb.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_OUT" || !session) setDenied("Your session has ended. Please sign in again.");
       });
     }
 
+    // ---------- wiring ----------
+    document.querySelectorAll("#admin-tabs button").forEach((btn) => {
+      btn.addEventListener("click", () => switchView(btn.dataset.view));
+    });
     el("admin-signout")?.addEventListener("click", async () => {
       await sb.auth.signOut();
       setDenied("You have been signed out.");
     });
+    el("auctions-refresh")?.addEventListener("click", () => { loadAuctions(); toast("Refreshed."); });
 
     document.addEventListener("DOMContentLoaded", boot);
   </script>
-  
-  
+
 </body>
 </html>

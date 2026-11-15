@@ -7,6 +7,59 @@
   <title>Admin — Bid For Tomorrow</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .overview-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0 2rem; }
+    .overview-card { background:#fff; border:1px solid #e3e3e6; border-radius:8px; padding:1rem; }
+    .overview-card-value { font-size:1.8rem; font-weight:600; }
+    .overview-card-label { color:#666; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; margin-top:.25rem; }
+    #overview-auction-statuses { padding-left:1.2rem; line-height:1.6; }
+
+    .admin-tabs button { background:#fff; border:1px solid #e3e3e6; border-radius:6px; padding:.5rem .9rem; font-size:.9rem; cursor:pointer; }
+    .admin-tabs button.active { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+    .admin-toolbar { display:flex; gap:.5rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap; }
+    .admin-toolbar select { padding:.4rem .6rem; border:1px solid #d0d0d4; border-radius:6px; font-size:.9rem; background:#fff; }
+    .admin-toolbar label { display:inline-flex; align-items:center; gap:.35rem; font-size:.9rem; }
+    .admin-table { width:100%; border-collapse:collapse; background:#fff; border:1px solid #e3e3e6; border-radius:8px; overflow:hidden; }
+    .admin-table th, .admin-table td { text-align:left; padding:.6rem .75rem; border-bottom:1px solid #eee; font-size:.9rem; vertical-align:top; }
+    .admin-table th { background:#fafafa; font-weight:600; }
+    .admin-table tr:last-child td { border-bottom:none; }
+    .admin-table .actions button { margin-right:.35rem; }
+    .admin-table tr.highest td { font-weight:600; }
+    .admin-detail { margin-top:1.5rem; background:#fff; border:1px solid #e3e3e6; border-radius:8px; padding:1rem; }
+    .admin-detail h3 { margin-top:0; }
+    .admin-detail dl { display:grid; grid-template-columns: max-content 1fr; gap:.35rem 1rem; font-size:.9rem; }
+    .admin-detail dt { color:#666; }
+    .admin-detail dd { margin:0; }
+    .admin-badge { display:inline-block; padding:.15rem .45rem; border-radius:999px; background:#eee; font-size:.75rem; }
+    .admin-badge.live, .admin-badge.open { background:#d9f2e2; }
+    .admin-badge.closed { background:#f7d9d9; }
+    .admin-badge.draft, .admin-badge.scheduled, .admin-badge.upcoming { background:#e6e6fa; }
+    .admin-badge.pending { background:#fff3cd; }
+    .admin-badge.approved, .admin-badge.verified { background:#d9f2e2; }
+    .admin-badge.rejected, .admin-badge.denied { background:#f7d9d9; }
+    .admin-toast { position:fixed; bottom:1rem; right:1rem; background:#1a1a1a; color:#fff; padding:.75rem 1rem; border-radius:8px; font-size:.9rem; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; max-width:340px; }
+    .admin-toast.show { opacity:1; transform:translateY(0); }
+    .admin-toast.error { background:#a40000; }
+    .admin-toast.info { background:#7a4b00; }
+    .admin-error { color:#a40000; }
+    button[disabled] { opacity:.55; cursor:not-allowed; }
+    .admin-blocker {
+      background:#fff7e0; border:1px solid #e6c26a; border-radius:8px;
+      padding:.85rem 1rem; margin-bottom:1rem; font-size:.9rem; line-height:1.5;
+    }
+    .admin-blocker strong { display:block; margin-bottom:.35rem; }
+    .admin-blocker ul { margin:.35rem 0 0 1.1rem; padding:0; }
+    .admin-blocker li { margin-bottom:.25rem; }
+
+    .admin-form { display:grid; gap:.9rem; max-width:640px; }
+    .admin-form label { display:grid; gap:.25rem; font-size:.9rem; }
+    .admin-form label > span { color:#666; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; }
+    .admin-form input, .admin-form textarea, .admin-form select {
+      padding:.5rem .6rem; border:1px solid #d0d0d4; border-radius:6px; font:inherit; font-size:.9rem; background:#fff;
+    }
+    .admin-form textarea { resize:vertical; }
+    .admin-form .admin-error { margin:0; font-size:.85rem; }
+  </style>
 </head>
 <body>
 
@@ -28,28 +81,195 @@
     </header>
 
     <nav class="admin-tabs" id="admin-tabs">
-      <!-- Tabs added in the next step (Overview, Auctions, Bids, Winners, Consents) -->
+      <button type="button" data-view="overview" class="active">Overview</button>
+      <button type="button" data-view="auctions">Auctions</button>
+      <button type="button" data-view="bids">Bids</button>
+      <button type="button" data-view="winners">Winners</button>
+      <button type="button" data-view="consents">Consents</button>
     </nav>
 
     <main id="admin-main" class="admin-main">
       <section id="admin-view-overview" class="admin-view">
-        <p class="admin-muted">Authorization passed. Dashboard overview is the next step.</p>
+        <h2>Overview</h2>
+        <div id="overview-cards" class="overview-cards">Loading…</div>
+        <h3>Auction counts by status</h3>
+        <ul id="overview-auction-statuses"><li class="admin-muted">Loading…</li></ul>
+        <p class="admin-muted" id="overview-note"></p>
+      </section>
+
+      <section id="admin-view-auctions" class="admin-view" hidden>
+        <h2>Auctions</h2>
+        <div class="admin-toolbar">
+          <button id="auctions-refresh" type="button">Refresh</button>
+          <button id="auctions-create" type="button">Create auction</button>
+        </div>
+        <div id="auctions-table-wrap">Loading…</div>
+        <div id="auction-detail" class="admin-detail" hidden></div>
+        <p class="admin-muted" style="margin-top:1rem;">
+          Create always produces a <code>draft</code> auction; use Open to make it <code>live</code>.
+          Edit updates title / description / dates / status (but not status <code>closed</code>).
+          Close determines winners and only succeeds after <code>ends_at</code> has passed.
+          Reopen is available only for <code>closed</code> auctions with no winners.
+          Delete is allowed only when there are no bids and no winners, and it also deletes
+          the auction's lots (cascade). Artworks are not deleted.
+        </p>
+      </section>
+
+      <section id="admin-view-bids" class="admin-view" hidden>
+        <h2>Bids</h2>
+        <div class="admin-toolbar">
+          <label>Auction:
+            <select id="bids-auction-filter"><option value="">All auctions</option></select>
+          </label>
+          <button id="bids-refresh" type="button">Refresh</button>
+        </div>
+        <p class="admin-muted" id="bids-summary"></p>
+        <div id="bids-table-wrap">Loading…</div>
+        <p class="admin-muted" style="margin-top:.75rem;">
+          Bidder identifiers are shown truncated (hover for full UUID). Bids are visible to any
+          authenticated user per the auction-transparency rule; this view is a read-only mirror of that data.
+          Highest bid per lot is highlighted. No modification is possible from this tab.
+        </p>
+      </section>
+
+      <section id="admin-view-winners" class="admin-view" hidden>
+        <h2>Winners</h2>
+        <div class="admin-toolbar">
+          <button id="winners-refresh" type="button">Refresh</button>
+        </div>
+        <p class="admin-muted" id="winners-summary"></p>
+        <div id="winners-table-wrap">Loading…</div>
+        <p class="admin-muted" style="margin-top:.75rem;">
+          Winner records are created by <code>admin_close_auction</code>; there is no separate
+          "determine winners" button here. Winner identifiers are <code>auth.users.id</code>, shown
+          truncated (hover for full UUID). This view is read-only.
+        </p>
+      </section>
+
+      <section id="admin-view-consents" class="admin-view" hidden>
+        <h2>Consents</h2>
+
+        <div class="admin-blocker">
+          <strong>Two backend gaps are blocking write access on this tab.</strong>
+          <ul>
+            <li><code>consents</code> has no admin SELECT policy — an admin can only see their
+              own artist-agreement rows. Review of other users' agreements is not possible until
+              Person 1 adds an admin SELECT policy or a SECURITY DEFINER RPC.</li>
+            <li><code>guardian_consents</code> has an admin SELECT policy but <strong>no UPDATE policy</strong>.
+              Verification (setting <code>verification_status</code>, <code>verified_by</code>,
+              <code>verified_at</code>) cannot be performed from the client until Person 1 adds an
+              admin UPDATE policy or an <code>admin_verify_guardian_consent</code> RPC.</li>
+            <li><code>guardian_consents</code> also has <strong>no INSERT policy</strong>. The
+              submission side of the guardian-consent workflow (Phase 5) is likewise blocked at
+              the database level.</li>
+          </ul>
+          This tab is <strong>read-only</strong> in the current state. Verify/Reject buttons are
+          disabled with an explanatory tooltip.
+        </div>
+
+        <h3>Guardian consents</h3>
+        <div class="admin-toolbar">
+          <label>Status:
+            <select id="gc-status-filter"><option value="">All</option></select>
+          </label>
+          <button id="gc-refresh" type="button">Refresh</button>
+        </div>
+        <p class="admin-muted" id="gc-summary"></p>
+        <div id="gc-table-wrap">Loading…</div>
+        <p class="admin-muted" style="margin-top:.75rem;">
+          Guardian contact details are shown here because review requires them. They are visible
+          to administrators only (per the <code>guardian_consents_select_admin</code> RLS policy).
+          Do not copy this information outside the dashboard.
+        </p>
+
+        <h3 style="margin-top:2rem;">Artist agreements</h3>
+        <p class="admin-muted" id="ca-note"></p>
+        <div id="ca-table-wrap">Loading…</div>
       </section>
     </main>
   </div>
 
+  <div id="admin-toast" class="admin-toast"></div>
+
   <script>
-    // ---- CONFIG: values copied from auction.html / db.js ----
+    // ---- CONFIG ----
     const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
 
-    // Single client. Named `sb` to avoid colliding with the library's global `supabase`.
     const sb = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     const el = (id) => document.getElementById(id);
     const show = (id) => { el(id).hidden = false; };
     const hide = (id) => { el(id).hidden = true; };
 
+    // ---------- helpers ----------
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+    function fmtDate(iso) {
+      if (!iso) return "—";
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return esc(iso);
+      return d.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+    }
+    function statusBadge(status) {
+      const s = status == null ? "" : String(status);
+      return `<span class="admin-badge ${esc(s)}">${esc(s || "—")}</span>`;
+    }
+    function overviewCard(label, value) {
+      return `<div class="overview-card"><div class="overview-card-value">${esc(value)}</div>` +
+             `<div class="overview-card-label">${esc(label)}</div></div>`;
+    }
+    function shortId(uuid) {
+      if (!uuid) return "—";
+      return esc(String(uuid).slice(0, 8)) + "…";
+    }
+    let toastTimer = null;
+    function toast(message, level) {
+      const t = el("admin-toast");
+      t.textContent = message;
+      t.classList.toggle("error", level === "error");
+      t.classList.toggle("info", level === "info");
+      t.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove("show"), 5000);
+    }
+    async function callAdminRpc(fnName, args) {
+      try {
+        const { data, error } = await sb.rpc(fnName, args);
+        if (error) return { ok: false, info: false, message: error.message, data: null };
+        if (typeof data === "string") {
+          if (/^SUCCESS/i.test(data)) return { ok: true, info: false, message: data, data };
+          if (/^NOT CLOSED/i.test(data)) return { ok: false, info: true, message: data, data };
+          return { ok: false, info: false, message: data, data };
+        }
+        return { ok: true, info: false, message: "SUCCESS", data };
+      } catch (e) {
+        return { ok: false, info: false, message: e.message || String(e), data: null };
+      }
+    }
+    function confirmAction(message) { return window.confirm(message); }
+
+    function toLocalInput(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return "";
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
+             `T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    function fromLocalInput(v) {
+      if (!v) return null;
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? null : d.toISOString();
+    }
+    function sameTime(aIso, bIso) {
+      if (!aIso || !bIso) return false;
+      return new Date(aIso).getTime() === new Date(bIso).getTime();
+    }
+
+    // ---------- view state ----------
     function setChecking() {
       hide("admin-denied"); hide("admin-shell"); show("admin-checking");
     }
@@ -59,49 +279,797 @@
     }
     function setAuthorized(email) {
       hide("admin-checking"); hide("admin-denied");
-      el("admin-email").textContent = email || ""; show("admin-shell");
+      el("admin-email").textContent = email || "";
+      show("admin-shell");
+      loadOverview();
+      loadAuctions();
+    }
+    function switchView(name) {
+      document.querySelectorAll("#admin-main .admin-view").forEach((v) => { v.hidden = true; });
+      const target = el("admin-view-" + name);
+      if (target) target.hidden = false;
+      document.querySelectorAll("#admin-tabs button").forEach((b) => {
+        b.classList.toggle("active", b.dataset.view === name);
+      });
     }
 
-    async function resolveAdminStatus(user) {
+    // ---------- overview ----------
+    async function loadOverview() {
+      const cards = el("overview-cards");
+      const statusList = el("overview-auction-statuses");
+      const note = el("overview-note");
+      if (!cards) return;
+
+      const errors = [];
+      let auctions = null;
+      const counts = { lots: null, bids: null, artworks: null, winners: null };
+
       try {
-        const { data, error } = await sb.rpc("is_admin");
-        if (!error && typeof data === "boolean") {
-          console.info("[admin] is_admin() ->", data);
-          return data;
+        const { data, error } = await sb.from("auctions").select("*");
+        if (error) throw error;
+        auctions = data || [];
+      } catch (e) { errors.push("auctions: " + e.message); }
+
+      for (const table of ["lots", "bids", "artworks", "winners"]) {
+        try {
+          const { count, error } = await sb
+            .from(table).select("*", { count: "exact", head: true });
+          if (error) throw error;
+          counts[table] = count ?? 0;
+        } catch (e) { errors.push(`${table}: ${e.message}`); }
+      }
+
+      cards.innerHTML = [
+        overviewCard("Auctions", auctions ? auctions.length : "?"),
+        overviewCard("Lots", counts.lots ?? "?"),
+        overviewCard("Bids", counts.bids ?? "?"),
+        overviewCard("Artworks", counts.artworks ?? "?"),
+        overviewCard("Winners", counts.winners ?? "?"),
+      ].join("");
+
+      if (Array.isArray(auctions) && auctions.length) {
+        const tally = {};
+        for (const a of auctions) {
+          const key = ("status" in a) ? String(a.status) : "(no status column)";
+          tally[key] = (tally[key] || 0) + 1;
         }
-        if (error) console.warn("[admin] is_admin() error:", error.message);
-      } catch (e) { console.warn("[admin] is_admin() threw:", e); }
+        statusList.innerHTML = Object.entries(tally)
+          .sort((a, b) => a[0].localeCompare(b[0]))
+          .map(([k, v]) => `<li>${esc(k)} — <strong>${v}</strong></li>`)
+          .join("");
+      } else if (auctions) {
+        statusList.innerHTML = `<li class="admin-muted">No auctions yet.</li>`;
+      } else {
+        statusList.innerHTML = `<li class="admin-muted">Could not load.</li>`;
+      }
+
+      if (note) {
+        note.textContent = errors.length
+          ? "Partial data — errors: " + errors.join("; ")
+          : "All counts loaded from live database.";
+      }
+    }
+
+    // ---------- auctions ----------
+    let auctionsCache = [];
+
+    async function loadAuctions() {
+      const wrap = el("auctions-table-wrap");
+      if (!wrap) return;
+      wrap.textContent = "Loading…";
+      try {
+        const { data, error } = await sb.from("auctions").select("*");
+        if (error) throw error;
+        auctionsCache = (data || []).slice().sort((a, b) => {
+          const ak = a.starts_at || a.created_at || "";
+          const bk = b.starts_at || b.created_at || "";
+          return new Date(bk) - new Date(ak);
+        });
+        renderAuctionsTable();
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load auctions: ${esc(e.message)}</p>`;
+      }
+    }
+
+    function renderAuctionsTable() {
+      const wrap = el("auctions-table-wrap");
+      if (!auctionsCache.length) {
+        wrap.innerHTML = `<p class="admin-muted">No auctions yet.</p>`;
+        return;
+      }
+      const rows = auctionsCache.map((a) => `
+        <tr>
+          <td>${esc(a.title || "(untitled)")}</td>
+          <td>${statusBadge(a.status)}</td>
+          <td>${fmtDate(a.starts_at)}</td>
+          <td>${fmtDate(a.ends_at)}</td>
+          <td>${fmtDate(a.created_at)}</td>
+          <td class="actions">
+            <button type="button" data-action="view" data-id="${esc(a.id)}">View</button>
+          </td>
+        </tr>`).join("");
+
+      wrap.innerHTML = `
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th><th>Status</th><th>Starts</th><th>Ends</th><th>Created</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+
+      wrap.querySelectorAll('button[data-action="view"]').forEach((btn) => {
+        btn.addEventListener("click", () => openAuctionDetail(btn.dataset.id));
+      });
+    }
+
+    async function openAuctionDetail(id) {
+      const panel = el("auction-detail");
+      const auction = auctionsCache.find((a) => a.id === id);
+      if (!auction) { toast("Auction not found in cache.", "error"); return; }
+
+      panel.hidden = false;
+      panel.innerHTML = `<h3>${esc(auction.title || "(untitled)")}</h3><p class="admin-muted">Loading lots…</p>`;
+
+      let lots = [];
+      let lotsError = null;
+      try {
+        const { data, error } = await sb
+          .from("lots").select("*").eq("auction_id", id).order("lot_number", { ascending: true });
+        if (error) throw error;
+        lots = data || [];
+      } catch (e) { lotsError = e.message; }
+
+      const lotRows = lots.map((l) => `
+        <tr>
+          <td>${esc(l.lot_number)}</td>
+          <td>${esc(l.artwork_id)}</td>
+          <td>${esc(l.starting_bid)}</td>
+          <td>${esc(l.bid_increment)}</td>
+          <td>${statusBadge(l.status)}</td>
+        </tr>`).join("");
+
+      panel.innerHTML = `
+        <h3>${esc(auction.title || "(untitled)")}</h3>
+        <dl>
+          <dt>ID</dt><dd><code>${esc(auction.id)}</code></dd>
+          <dt>Status</dt><dd>${statusBadge(auction.status)}</dd>
+          <dt>Starts</dt><dd>${fmtDate(auction.starts_at)}</dd>
+          <dt>Ends</dt><dd>${fmtDate(auction.ends_at)}</dd>
+          <dt>Created</dt><dd>${fmtDate(auction.created_at)}</dd>
+          <dt>Description</dt><dd>${esc(auction.description || "—")}</dd>
+        </dl>
+
+        <h4>Actions</h4>
+        <div class="admin-toolbar">
+          <button type="button" id="auction-btn-open" disabled title="Set status to live">Open</button>
+          <button type="button" id="auction-btn-close" disabled title="Close this auction">Close</button>
+          <button type="button" id="auction-btn-reopen" disabled title="Only closed auctions can be reopened">Reopen</button>
+          <button type="button" id="auction-btn-edit" disabled title="Edit auction fields">Edit</button>
+          <button type="button" id="auction-btn-delete" disabled title="Permanently delete this auction">Delete</button>
+          <button type="button" id="auction-detail-close">Close panel</button>
+        </div>
+        <p class="admin-muted" id="auction-actions-note"></p>
+
+        <h4>Lots (${lots.length})</h4>
+        ${lotsError
+          ? `<p class="admin-error">Could not load lots: ${esc(lotsError)}</p>`
+          : lots.length
+            ? `<table class="admin-table">
+                 <thead><tr><th>#</th><th>Artwork ID</th><th>Starting bid</th><th>Increment</th><th>Status</th></tr></thead>
+                 <tbody>${lotRows}</tbody>
+               </table>`
+            : `<p class="admin-muted">No lots assigned to this auction.</p>`}
+      `;
+
+      el("auction-detail-close").addEventListener("click", () => { panel.hidden = true; panel.innerHTML = ""; });
+      wireAuctionActions(auction);
+    }
+
+    function wireAuctionActions(auction) {
+      const openBtn = el("auction-btn-open");
+      const closeBtn = el("auction-btn-close");
+      const reopenBtn = el("auction-btn-reopen");
+      const editBtn = el("auction-btn-edit");
+      const deleteBtn = el("auction-btn-delete");
+
+      if (auction.status !== "live" && auction.status !== "closed") {
+        openBtn.disabled = false;
+        openBtn.title = `Set status from "${auction.status}" to "live"`;
+        openBtn.addEventListener("click", async () => {
+          const label = auction.title || "this auction";
+          if (!confirmAction(
+            `Open "${label}"?\n\n` +
+            `This sets status to "live" via admin_update_auction.\n` +
+            `Note: unlike Reopen, this does NOT set this auction's lots to "open". ` +
+            `If the lots need to be open for bidding, do that in lot administration.\n\n` +
+            `If ends_at is in the past, the next automatic-close check may close it immediately.`
+          )) return;
+          openBtn.disabled = true;
+          const res = await callAdminRpc("admin_update_auction", { p_auction_id: auction.id, p_status: "live" });
+          toast(res.message, res.ok ? undefined : "error");
+          await loadAuctions();
+          await loadOverview();
+          if (res.ok) openAuctionDetail(auction.id); else openBtn.disabled = false;
+        });
+      } else {
+        openBtn.disabled = true;
+        openBtn.title = auction.status === "closed" ? "Already closed — use Reopen instead." : "Already live.";
+      }
+
+      if (auction.status !== "closed") {
+        closeBtn.disabled = false;
+        closeBtn.title = "Close this auction and determine winners (only succeeds if ends_at has passed)";
+        closeBtn.addEventListener("click", async () => {
+          const label = auction.title || "this auction";
+          if (!confirmAction(
+            `Close "${label}"?\n\n` +
+            `This runs the same routine as automatic closing:\n` +
+            `• if ends_at has passed and the auction is live, winners will be determined and recorded;\n` +
+            `• otherwise nothing changes and the reason is reported back.\n\n` +
+            `Winners cannot be removed from this screen, and an auction with winners cannot be reopened.`
+          )) return;
+          closeBtn.disabled = true;
+          const res = await callAdminRpc("admin_close_auction", { p_auction_id: auction.id });
+          toast(res.message, res.ok ? undefined : (res.info ? "info" : "error"));
+          await loadAuctions();
+          await loadOverview();
+          if (res.ok) openAuctionDetail(auction.id); else closeBtn.disabled = false;
+        });
+      } else {
+        closeBtn.disabled = true;
+        closeBtn.title = "Already closed.";
+      }
+
+      if (auction.status === "closed") {
+        reopenBtn.disabled = false;
+        reopenBtn.title = "Reopen this auction (sets it back to live, and its lots to open)";
+        reopenBtn.addEventListener("click", async () => {
+          const label = auction.title || "this auction";
+          if (!confirmAction(`Reopen "${label}"?\n\nStatus will return to "live" and its lots to "open".\n\nThis is blocked if any winners have already been recorded.`)) return;
+          reopenBtn.disabled = true;
+          const res = await callAdminRpc("admin_reopen_auction", { p_auction_id: auction.id });
+          toast(res.message, res.ok ? undefined : "error");
+          await loadAuctions();
+          await loadOverview();
+          if (res.ok) openAuctionDetail(auction.id); else reopenBtn.disabled = false;
+        });
+      } else {
+        reopenBtn.disabled = true;
+        reopenBtn.title = `Reopen is only available when status is "closed" (currently "${auction.status}").`;
+      }
+
+      editBtn.disabled = false;
+      editBtn.title = "Edit title, description, dates, or status";
+      editBtn.addEventListener("click", () => renderAuctionEditForm(auction));
+
+      deleteBtn.disabled = false;
+      deleteBtn.title = "Permanently delete this auction (only allowed if it has no bids and no winners)";
+      deleteBtn.addEventListener("click", async () => {
+        const label = auction.title || "this auction";
+        let lotCount = null;
+        try {
+          const { count } = await sb.from("lots")
+            .select("*", { count: "exact", head: true })
+            .eq("auction_id", auction.id);
+          lotCount = count;
+        } catch (_) {}
+        const lotWarning = (lotCount === null)
+          ? "Its lots will also be deleted (cascade) — count unavailable."
+          : (lotCount === 0
+              ? "It has no lots."
+              : `It has ${lotCount} lot(s). Deleting the auction will also delete them (cascade).`);
+        if (!confirmAction(
+          `PERMANENTLY DELETE "${label}"?\n\n` +
+          lotWarning + `\n\n` +
+          `The RPC will refuse if this auction has any bids or any winners.\n` +
+          `Artworks are NOT deleted — only the auction and its lots.\n\n` +
+          `This cannot be undone.`
+        )) return;
+        deleteBtn.disabled = true;
+        const res = await callAdminRpc("admin_delete_auction", { p_auction_id: auction.id });
+        toast(res.message, res.ok ? undefined : "error");
+        await loadAuctions();
+        await loadOverview();
+        if (res.ok) {
+          const panel = el("auction-detail");
+          panel.hidden = true;
+          panel.innerHTML = "";
+        } else {
+          deleteBtn.disabled = false;
+        }
+      });
+    }
+
+    // ---------- create form ----------
+    function renderCreateAuctionForm() {
+      const panel = el("auction-detail");
+      panel.hidden = false;
+      panel.innerHTML = `
+        <h3>Create auction</h3>
+        <form id="auction-create-form" class="admin-form" novalidate>
+          <label><span>Title</span><input name="title" type="text" maxlength="200" required></label>
+          <label><span>Description (optional)</span><textarea name="description" rows="3"></textarea></label>
+          <label><span>Starts at</span><input name="starts_at" type="datetime-local" required></label>
+          <label><span>Ends at</span><input name="ends_at" type="datetime-local" required></label>
+          <p class="admin-error" id="auction-create-error" hidden></p>
+          <div class="admin-toolbar">
+            <button type="submit" id="auction-create-save">Create draft</button>
+            <button type="button" id="auction-create-cancel">Cancel</button>
+          </div>
+          <p class="admin-muted">
+            New auctions are created with status <code>draft</code>. To make it visible
+            to bidders, create it here, then use <strong>Open</strong> on the detail view.
+          </p>
+        </form>
+      `;
+      el("auction-create-cancel").addEventListener("click", () => { panel.hidden = true; panel.innerHTML = ""; });
+      el("auction-create-form").addEventListener("submit", (e) => { e.preventDefault(); submitCreateAuction(); });
+    }
+
+    async function submitCreateAuction() {
+      const form = el("auction-create-form");
+      const err = el("auction-create-error");
+      const saveBtn = el("auction-create-save");
+      const fail = (m) => { err.textContent = m; err.hidden = false; return false; };
+      err.hidden = true;
+
+      const fd = new FormData(form);
+      const title = String(fd.get("title") || "").trim();
+      const description = String(fd.get("description") || "").trim();
+      const startsIso = fromLocalInput(fd.get("starts_at"));
+      const endsIso = fromLocalInput(fd.get("ends_at"));
+
+      if (!title) return fail("Title is required.");
+      if (!startsIso) return fail("Start date/time is required.");
+      if (!endsIso) return fail("End date/time is required.");
+      if (new Date(endsIso) <= new Date(startsIso)) return fail("End must be after start.");
+
+      const args = {
+        p_title: title,
+        p_starts_at: startsIso,
+        p_ends_at: endsIso,
+        p_description: description || null,
+      };
+
+      saveBtn.disabled = true;
+      const res = await callAdminRpc("admin_create_auction", args);
+      saveBtn.disabled = false;
+
+      if (!res.ok) { toast(res.message, "error"); return fail(res.message); }
+
+      const newId = res.data;
+      await loadAuctions();
+      await loadOverview();
+
+      if (newId && auctionsCache.some((a) => a.id === newId)) {
+        toast(`Created "${title}". Status is draft — use Open to make it live.`, "info");
+        openAuctionDetail(newId);
+      } else {
+        toast(`Created "${title}", but it is not in the local table yet — refresh.`, "info");
+        const panel = el("auction-detail");
+        panel.hidden = true;
+        panel.innerHTML = "";
+      }
+      return true;
+    }
+
+    // ---------- edit form ----------
+    function statusOptionsFor(current) {
+      const set = new Set(["draft", "upcoming", "live"]);
+      for (const a of auctionsCache) if (a.status) set.add(a.status);
+      set.delete("closed");
+      if (current && current !== "closed") set.add(current);
+      return [...set].sort();
+    }
+
+    function renderAuctionEditForm(auction) {
+      const panel = el("auction-detail");
+      panel.hidden = false;
+      const options = statusOptionsFor(auction.status)
+        .map((s) => `<option value="${esc(s)}"${s === auction.status ? " selected" : ""}>${esc(s)}</option>`)
+        .join("");
+      panel.innerHTML = `
+        <h3>Edit — ${esc(auction.title || "(untitled)")}</h3>
+        <form id="auction-edit-form" class="admin-form" novalidate>
+          <label><span>Title</span><input name="title" type="text" maxlength="200" required value="${esc(auction.title || "")}"></label>
+          <label><span>Description</span><textarea name="description" rows="3">${esc(auction.description || "")}</textarea></label>
+          <label><span>Starts at</span><input name="starts_at" type="datetime-local" required value="${esc(toLocalInput(auction.starts_at))}"></label>
+          <label><span>Ends at</span><input name="ends_at" type="datetime-local" required value="${esc(toLocalInput(auction.ends_at))}"></label>
+          <label><span>Status</span><select name="status" required>${options}</select></label>
+          <p class="admin-error" id="auction-edit-error" hidden></p>
+          <div class="admin-toolbar">
+            <button type="submit" id="auction-edit-save">Save changes</button>
+            <button type="button" id="auction-edit-cancel">Cancel</button>
+          </div>
+          <p class="admin-muted">
+            Only fields you change are sent. Clearing a date is not supported by
+            <code>admin_update_auction</code>; status <code>closed</code> must go through the Close button.
+          </p>
+        </form>
+      `;
+      el("auction-edit-cancel").addEventListener("click", () => openAuctionDetail(auction.id));
+      el("auction-edit-form").addEventListener("submit", (e) => { e.preventDefault(); submitAuctionEdit(auction); });
+    }
+
+    async function submitAuctionEdit(auction) {
+      const form = el("auction-edit-form");
+      const err = el("auction-edit-error");
+      const saveBtn = el("auction-edit-save");
+      const fail = (m) => { err.textContent = m; err.hidden = false; return false; };
+      err.hidden = true;
+
+      const fd = new FormData(form);
+      const title = String(fd.get("title") || "").trim();
+      const description = String(fd.get("description") || "");
+      const startsIso = fromLocalInput(fd.get("starts_at"));
+      const endsIso = fromLocalInput(fd.get("ends_at"));
+      const status = String(fd.get("status") || "").trim();
+
+      if (!title) return fail("Title is required.");
+      if (!startsIso) return fail("Start date/time is required.");
+      if (!endsIso) return fail("End date/time is required.");
+      if (new Date(endsIso) <= new Date(startsIso)) return fail("End must be after start.");
+      if (!status) return fail("Status is required.");
+      if (status === "closed") return fail('Status "closed" must be set via the Close button so winners are determined.');
+
+      const args = { p_auction_id: auction.id };
+      if (title !== (auction.title || "")) args.p_title = title;
+      if (description !== (auction.description || "")) args.p_description = description;
+      if (!sameTime(startsIso, auction.starts_at)) args.p_starts_at = startsIso;
+      if (!sameTime(endsIso, auction.ends_at)) args.p_ends_at = endsIso;
+      if (status !== auction.status) args.p_status = status;
+
+      if (Object.keys(args).length === 1) { toast("No changes to save.", "info"); return false; }
+
+      saveBtn.disabled = true;
+      const res = await callAdminRpc("admin_update_auction", args);
+      saveBtn.disabled = false;
+      if (!res.ok) { toast(res.message, "error"); return fail(res.message); }
+
+      toast(res.message);
+      await loadAuctions();
+      await loadOverview();
+      openAuctionDetail(auction.id);
+      return true;
+    }
+
+    // ---------- bids view ----------
+    async function loadBids() {
+      const wrap = el("bids-table-wrap");
+      const filterEl = el("bids-auction-filter");
+      const summary = el("bids-summary");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
+
+      if (auctionsCache.length === 0) { await loadAuctions(); }
+      if (filterEl.options.length <= 1) {
+        const currentVal = filterEl.value;
+        filterEl.innerHTML = `<option value="">All auctions</option>` +
+          auctionsCache.map((a) => `<option value="${esc(a.id)}">${esc(a.title || a.id)}</option>`).join("");
+        filterEl.value = currentVal;
+      }
+
+      const selectedAuction = filterEl.value || null;
+
+      try {
+        const [bidsRes, lotsRes] = await Promise.all([
+          sb.from("bids").select("*").order("created_at", { ascending: false }),
+          sb.from("lots").select("*"),
+        ]);
+        if (bidsRes.error) throw bidsRes.error;
+        if (lotsRes.error) throw lotsRes.error;
+
+        const bids = bidsRes.data || [];
+        const lots = lotsRes.data || [];
+        const lotMap = new Map(lots.map((l) => [l.id, l]));
+        const auctionMap = new Map(auctionsCache.map((a) => [a.id, a]));
+
+        const filtered = selectedAuction
+          ? bids.filter((b) => {
+              const lot = lotMap.get(b.lot_id);
+              return lot && lot.auction_id === selectedAuction;
+            })
+          : bids;
+
+        const highestByLot = {};
+        for (const b of filtered) {
+          const amt = Number(b.amount);
+          if (!(b.lot_id in highestByLot) || amt > Number(highestByLot[b.lot_id])) {
+            highestByLot[b.lot_id] = b.amount;
+          }
+        }
+
+        summary.textContent = `${filtered.length} bid(s) across ${Object.keys(highestByLot).length} lot(s)` +
+          (selectedAuction ? ` in "${auctionMap.get(selectedAuction)?.title || selectedAuction}"` : "");
+
+        if (!filtered.length) {
+          wrap.innerHTML = `<p class="admin-muted">No bids yet${selectedAuction ? " for this auction" : ""}.</p>`;
+          return;
+        }
+
+        const rows = filtered.map((b) => {
+          const lot = lotMap.get(b.lot_id);
+          const auction = lot ? auctionMap.get(lot.auction_id) : null;
+          const isHighest = String(b.amount) === String(highestByLot[b.lot_id]);
+          return `<tr${isHighest ? ' class="highest"' : ''}>
+            <td>${auction ? esc(auction.title || "(untitled)") : "—"}</td>
+            <td>${lot ? esc(lot.lot_number) : "—"}</td>
+            <td title="${esc(b.bidder_id)}">${shortId(b.bidder_id)}</td>
+            <td>${esc(b.amount)}${isHighest ? " ★" : ""}</td>
+            <td>${fmtDate(b.created_at)}</td>
+          </tr>`;
+        }).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead><tr><th>Auction</th><th>Lot #</th><th>Bidder</th><th>Amount</th><th>Time</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load bids: ${esc(e.message)}</p>`;
+      }
+    }
+
+    // ---------- winners view ----------
+    async function loadWinners() {
+      const wrap = el("winners-table-wrap");
+      const summary = el("winners-summary");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
+
+      try {
+        const [winnersRes, lotsRes] = await Promise.all([
+          sb.from("winners").select("*").order("created_at", { ascending: false }),
+          sb.from("lots").select("*"),
+        ]);
+        if (winnersRes.error) throw winnersRes.error;
+        if (lotsRes.error) throw lotsRes.error;
+
+        const winners = winnersRes.data || [];
+        const lots = lotsRes.data || [];
+        const lotMap = new Map(lots.map((l) => [l.id, l]));
+        const auctionMap = new Map(auctionsCache.map((a) => [a.id, a]));
+
+        summary.textContent = `${winners.length} winner record(s).`;
+
+        if (!winners.length) {
+          wrap.innerHTML = `<p class="admin-muted">No winners determined yet. Close an auction whose <code>ends_at</code> has passed to determine winners.</p>`;
+          return;
+        }
+
+        const rows = winners.map((w) => {
+          const lot = lotMap.get(w.lot_id);
+          const auction = lot ? auctionMap.get(lot.auction_id) : null;
+          return `<tr>
+            <td>${auction ? esc(auction.title || "(untitled)") : "—"}</td>
+            <td>${lot ? esc(lot.lot_number) : "—"}</td>
+            <td title="${esc(w.winner_id)}">${shortId(w.winner_id)}</td>
+            <td>${esc(w.final_price)}</td>
+            <td>${fmtDate(w.created_at)}</td>
+          </tr>`;
+        }).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead><tr><th>Auction</th><th>Lot #</th><th>Winner</th><th>Final price</th><th>Determined at</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load winners: ${esc(e.message)}</p>`;
+      }
+    }
+
+    // ---------- consents view ----------
+    async function loadGuardianConsents() {
+      const wrap = el("gc-table-wrap");
+      const summary = el("gc-summary");
+      const filterEl = el("gc-status-filter");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
 
       try {
         const { data, error } = await sb
-          .from("admins").select("*").eq("user_id", user.id).maybeSingle();
-        if (error) { console.warn("[admin] admins select error:", error.message); return false; }
-        console.info("[admin] admins row ->", data);
-        return !!data;
-      } catch (e) { console.warn("[admin] admins select threw:", e); return false; }
+          .from("guardian_consents").select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+
+        const all = data || [];
+
+        // Populate status filter from observed values, preserving selection.
+        const observed = [...new Set(all.map((r) => r.verification_status).filter(Boolean))].sort();
+        const currentVal = filterEl.value;
+        filterEl.innerHTML = `<option value="">All (${all.length})</option>` +
+          observed.map((s) => {
+            const n = all.filter((r) => r.verification_status === s).length;
+            return `<option value="${esc(s)}">${esc(s)} (${n})</option>`;
+          }).join("");
+        if (observed.includes(currentVal) || currentVal === "") filterEl.value = currentVal;
+
+        const selected = filterEl.value || null;
+        const filtered = selected
+          ? all.filter((r) => r.verification_status === selected)
+          : all;
+
+        summary.textContent = selected
+          ? `Showing ${filtered.length} of ${all.length} guardian consent(s) with status "${selected}".`
+          : `${all.length} guardian consent(s) total.`;
+
+        if (!filtered.length) {
+          wrap.innerHTML = `<p class="admin-muted">No guardian consents ${selected ? `with status "${esc(selected)}"` : "yet"}.</p>`;
+          return;
+        }
+
+        const rows = filtered.map((r) => {
+          const verification = r.verified_at || r.verified_by
+            ? `${fmtDate(r.verified_at)} · by <span title="${esc(r.verified_by || "")}">${shortId(r.verified_by)}</span>`
+            : "—";
+          return `<tr>
+            <td>${fmtDate(r.created_at)}</td>
+            <td>${esc(r.artist_legal_name)}</td>
+            <td>${esc(r.guardian_name)}</td>
+            <td>${esc(r.guardian_email)}</td>
+            <td>${esc(r.guardian_phone || "—")}</td>
+            <td>${esc(r.consent_version)}</td>
+            <td>${fmtDate(r.signed_at)}</td>
+            <td>${statusBadge(r.verification_status)}</td>
+            <td>${verification}</td>
+            <td class="actions">
+              <button type="button" data-gc-action="verify" data-id="${esc(r.id)}"
+                disabled title="Blocked: no admin UPDATE policy on guardian_consents and no admin_verify_guardian_consent RPC.">Verify</button>
+              <button type="button" data-gc-action="reject" data-id="${esc(r.id)}"
+                disabled title="Blocked: same as Verify.">Reject</button>
+            </td>
+          </tr>`;
+        }).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Submitted</th>
+                <th>Artist</th>
+                <th>Guardian</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Version</th>
+                <th>Signed</th>
+                <th>Status</th>
+                <th>Verification</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+
+        // Buttons are wired for the moment the backend lands, but reject while it's absent.
+        wrap.querySelectorAll('button[data-gc-action]').forEach((btn) => {
+          btn.addEventListener("click", () => {
+            toast(
+              "Verification backend not available. Person 1 must add " +
+              "an UPDATE policy on guardian_consents or an admin_verify_guardian_consent RPC.",
+              "info"
+            );
+          });
+        });
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load guardian consents: ${esc(e.message)}</p>`;
+        summary.textContent = "";
+      }
     }
 
+    async function loadArtistAgreements() {
+      const wrap = el("ca-table-wrap");
+      const note = el("ca-note");
+      if (!wrap) return;
+
+      wrap.textContent = "Loading…";
+      note.textContent = "";
+
+      try {
+        // No consent_type filter: the table is currently empty and we do not
+        // have a confirmed value for artist agreements. Show every row so
+        // whatever type actually gets written is visible immediately.
+        const { data, error } = await sb
+          .from("consents").select("*")
+          .order("granted_at", { ascending: false });
+        if (error) throw error;
+
+        const rows = data || [];
+
+        note.innerHTML =
+          `Showing <strong>${rows.length}</strong> consent row(s) visible to this session. ` +
+          `Two facts limit this view: (1) <code>consents</code> has only a ` +
+          `<code>consents_select_own</code> RLS policy, so an administrator cannot see ` +
+          `other users' rows; (2) the table is currently <strong>empty</strong>, so no ` +
+          `artist agreement has been recorded yet. The <code>consent_type</code> column ` +
+          `is shown so the actual value becomes visible the first time a submission is made.`;
+
+        if (!rows.length) {
+          wrap.innerHTML = `<p class="admin-muted">No consent rows exist. Once artist-agreement submissions are recorded, they will appear here (subject to the RLS limitation above).</p>`;
+          return;
+        }
+
+        const body = rows.map((r) => `
+          <tr>
+            <td title="${esc(r.user_id)}">${shortId(r.user_id)}</td>
+            <td>${esc(r.consent_type || "—")}</td>
+            <td>${esc(r.document_version)}</td>
+            <td>${r.granted ? "yes" : "no"}</td>
+            <td>${fmtDate(r.granted_at)}</td>
+            <td>${esc(r.source || "—")}</td>
+          </tr>`).join("");
+
+        wrap.innerHTML = `
+          <table class="admin-table">
+            <thead>
+              <tr><th>User</th><th>Type</th><th>Version</th><th>Granted</th><th>Granted at</th><th>Source</th></tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        wrap.innerHTML = `<p class="admin-error">Could not load consents: ${esc(e.message)}</p>`;
+        note.textContent = "";
+      }
+    }
+    // ---------- admin resolution ----------
+    async function resolveAdminStatus() {
+      const { data, error } = await sb.rpc("is_admin");
+      if (error) throw new Error("is_admin() failed: " + error.message);
+      return data === true;
+    }
+
+    // ---------- boot ----------
     async function boot() {
       setChecking();
       const { data: { session }, error } = await sb.auth.getSession();
       if (error || !session) { setDenied("You are not signed in."); return; }
-      const user = session.user;
-      const isAdmin = await resolveAdminStatus(user);
-      if (!isAdmin) { setDenied("This account does not have administrator access."); return; }
-      setAuthorized(user.email);
+      try {
+        const isAdmin = await resolveAdminStatus();
+        if (!isAdmin) { setDenied("This account does not have administrator access."); return; }
+      } catch (e) {
+        setDenied(e.message); return;
+      }
+      setAuthorized(session.user.email);
       sb.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_OUT" || !session) setDenied("Your session has ended. Please sign in again.");
       });
     }
 
+    // ---------- wiring ----------
+    document.querySelectorAll("#admin-tabs button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        switchView(btn.dataset.view);
+        if (btn.dataset.view === "bids") loadBids();
+        else if (btn.dataset.view === "winners") loadWinners();
+        else if (btn.dataset.view === "consents") { loadGuardianConsents(); loadArtistAgreements(); }
+      });
+    });
     el("admin-signout")?.addEventListener("click", async () => {
       await sb.auth.signOut();
       setDenied("You have been signed out.");
     });
+    el("auctions-refresh")?.addEventListener("click", () => { loadAuctions(); toast("Refreshed."); });
+    el("auctions-create")?.addEventListener("click", () => {
+      switchView("auctions");
+      renderCreateAuctionForm();
+    });
+    el("bids-refresh")?.addEventListener("click", () => { loadBids(); toast("Refreshed."); });
+    el("bids-auction-filter")?.addEventListener("change", () => loadBids());
+    el("winners-refresh")?.addEventListener("click", () => { loadWinners(); toast("Refreshed."); });
+    el("gc-refresh")?.addEventListener("click", () => { loadGuardianConsents(); toast("Refreshed."); });
+    el("gc-status-filter")?.addEventListener("change", () => loadGuardianConsents());
 
     document.addEventListener("DOMContentLoaded", boot);
   </script>
-  
-  
+
 </body>
 </html>

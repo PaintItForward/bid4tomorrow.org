@@ -233,3 +233,7 @@
   #main-nav .nav-logo { gap: 9px !important; font-size: 1.05rem !important; }
   #main-nav .nav-logo-mark { width: 32px !important; height: 32px !important; flex-basis: 32px !important; }
 }
+/* Logo text color in dark mode */
+body.dark #main-nav .nav-logo {
+  color: var(--sand-gold) !important;
+}

@@ -13,16 +13,21 @@ function initSite() {
     ['Impact', 'index.html#impact'], ['Causes', 'index.html#causes'],
     ['FAQ', 'index.html#faq'], ['Contact', 'index.html#contact']
   ];
+  var BRANCHES = [
+    ['Toronto', 'branches.html#toronto'],
+    ['Lexington', 'branches.html#lexington'],
+    ['Shanghai', 'branches.html#shanghai']
+  ];
   var ACCOUNT = [                               // shown when signed in (and in the footer)
     ['My Account', 'account.html'], ['My Bids', 'my-bids.html'],
     ['Winning Bids', 'winning-bids.html'], ['Watchlist', 'watchlist.html']
   ];
   var FOOTER = {                                // footer columns: every page should appear somewhere here or in NAV
     'Explore': [['About Us', 'about.html'], ['Our Branches', 'branches.html'], ['Fall 26 Auction', 'auction.html'],
-                ['Gallery', 'index.html#artwork'], ['Causes We Support', 'index.html#causes'], ['FAQ', 'index.html#faq']],
+    ['Gallery', 'index.html#artwork'], ['Causes We Support', 'index.html#causes'], ['FAQ', 'index.html#faq']],
     'Get Involved': [['Submit Artwork', 'https://form.jotform.com/261786048210052'], ['Bid on Artwork', 'auction.html'],
-                     ['Volunteer With Us', 'volunteer.html'], ['Volunteer Hours Policy', 'volunteer-hours-policy.html'],
-                     ['Contact Us', 'index.html#contact']],
+    ['Volunteer With Us', 'volunteer.html'], ['Volunteer Hours Policy', 'volunteer-hours-policy.html'],
+    ['Contact Us', 'index.html#contact']],
     'Account': [['Log in', 'login.html'], ['Sign up', 'signup.html']].concat(ACCOUNT),
     'Connect': [['Email Us', 'mailto:bid4tomorrow@gmail.com'], ['Instagram', 'https://www.instagram.com/bid4tomorrow/']]
   };
@@ -52,11 +57,11 @@ function initSite() {
 
   /* ═══════════ 3. NAV ═══════════ */
   var user = null;
-  try { var s = JSON.parse(localStorage.getItem(SB_KEY)); user = s && s.user; } catch (e) {}
+  try { var s = JSON.parse(localStorage.getItem(SB_KEY)); user = s && s.user; } catch (e) { }
   var who = user && ((user.user_metadata && user.user_metadata.full_name) || (user.email || 'Account').split('@')[0]);
   if (who && who.length > 14) who = who.slice(0, 13) + '…';
   var auth = user ? menu(esc(who), ACCOUNT, '<li><a href="#" id="sign-out">Sign out</a></li>')
-                  : '<li>' + a(['Log in', 'login.html']) + '</li>';
+    : '<li>' + a(['Log in', 'login.html']) + '</li>';
 
   var oldNav = document.getElementById('main-nav'); if (oldNav) oldNav.remove();   // safety net for un-migrated pages
   var nav = document.createElement('nav');
@@ -64,14 +69,16 @@ function initSite() {
   nav.className = 'bft-site-nav';
   nav.innerHTML =
     '<div class="nav-inner">' +
-      '<a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home"><div class="nav-logo-mark" aria-hidden="true">' +
-        '<img src="B4Tlogo.jpg" alt="" style="width:100%;height:100%;object-fit:contain"></div>Bid For Tomorrow</a>' +
-      '<ul class="nav-links" id="nav-links">' +
-        NAV.map(function (l) { return '<li>' + a(l, l[2]) + '</li>'; }).join('') +
-        menu('Explore', EXPLORE) + auth +
-        '<li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>' +
-      '</ul>' +
-      '<button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation"><span></span><span></span><span></span></button>' +
+    '<a href="index.html" class="nav-logo" aria-label="Bid For Tomorrow home"><div class="nav-logo-mark" aria-hidden="true">' +
+    '<img src="B4Tlogo.jpg" alt="" style="width:100%;height:100%;object-fit:contain"></div>Bid For Tomorrow</a>' +
+    '<ul class="nav-links" id="nav-links">' +
+    NAV.filter(function (l) { return l[0] !== 'Our Branches'; })
+      .map(function (l) { return '<li>' + a(l, l[2]) + '</li>'; }).join('') +
+    menu('Branches', BRANCHES) +
+    menu('Explore', EXPLORE) + auth +
+    '<li><a href="index.html#contact" class="nav-cta">Get Involved</a></li>' +
+    '</ul>' +
+    '<button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation"><span></span><span></span><span></span></button>' +
     '</div>';
   document.body.prepend(nav);
 
@@ -107,7 +114,7 @@ function initSite() {
   var so = document.getElementById('sign-out');
   if (so) so.onclick = function (e) {
     e.preventDefault();
-    var done = function () { try { localStorage.removeItem(SB_KEY); } catch (x) {} location.href = 'index.html'; };
+    var done = function () { try { localStorage.removeItem(SB_KEY); } catch (x) { } location.href = 'index.html'; };
     if (window.supabaseClient) window.supabaseClient.auth.signOut().then(done, done); else done();
   };
 
@@ -128,7 +135,7 @@ function initSite() {
     ' Bid For Tomorrow. All rights reserved. Nonprofit, Greater Toronto Area &amp; Massachusetts.</p></div></div>';
   document.body.appendChild(foot);
 
-   /* ═══════════ 5. DARK MODE (dark by default; saved preference wins) ═══════════ */
+  /* ═══════════ 5. DARK MODE (dark by default; saved preference wins) ═══════════ */
   document.querySelectorAll('.dark-toggle').forEach(function (b) { b.remove(); });
   var KEY = 'bft-theme', dark = true;
   try {
@@ -146,7 +153,7 @@ function initSite() {
     document.body.classList.toggle('dark', dark);       // styles.css uses body.dark
     tb.firstChild.innerHTML = dark ? SUN : MOON;
   }
-  tb.onclick = function () { dark = !dark; try { localStorage.setItem(KEY, dark ? 'dark' : 'light'); } catch (e) {} paint(); };
+  tb.onclick = function () { dark = !dark; try { localStorage.setItem(KEY, dark ? 'dark' : 'light'); } catch (e) { } paint(); };
   paint();
 
   /* ═══════════ 6. FADE-UP REVEAL (any element with class "fade-up") ═══════════ */

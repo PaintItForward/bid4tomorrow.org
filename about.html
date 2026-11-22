@@ -128,10 +128,14 @@
   .page-about .team-card-flipper.flipped .team-card-back {
     z-index: 2; pointer-events: auto; box-shadow: var(--shadow-md);
   }
-  .page-about .team-image-container {
-    width: 100%; aspect-ratio: 3/4; position: relative; overflow: hidden;
-    background: var(--section-alt);
-  }
+.page-about .team-image-container {
+  width: 100%;
+  height: 400px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--section-alt);
+}
   .page-about .team-image-container img {
     width: 100%; height: 100%; object-fit: cover; object-position: top center;
   }
@@ -420,54 +424,8 @@
               </div>
             </div>
           </div>
-
-          <!-- simon -->
-          <div class="team-card-flipper" id="card-member-4" role="button" tabindex="0">
-            <div class="team-card-inner">
-              <div class="team-card-front">
-                <div class="team-image-container">
-                  <img src="photos/team/simon_photo.jpg" alt="Simon Xia" style="object-position: top center;">
-                  <div class="team-flip-indicator">
-                    <span>Click to read bio</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
-                  </div>
-                </div>
-                <div class="team-info-front">
-                  <div>
-                    <span class="role">Director of Technology</span>
-                    <h3>Simon Xia</h3>
-                    <p>Manages Bid for Tomorrow's digital infrastructure, platform maintenance, and software integrations to ensure a seamless and secure online experience for artists and bidders.</p>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.7rem; border-top:1px solid var(--border-subtle);">
-                    <span style="font-size:0.7rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Toronto</span>
-                    <span style="font-size:0.7rem; color:var(--text-muted);">↻ Tap</span>
-                  </div>
-                </div>
-              </div>
-              <div class="team-card-back">
-                <div>
-                  <div class="team-back-header">
-                    <span class="eyebrow" style="margin-bottom:0.2rem;">Self Introduction</span>
-                    <h3>Simon Xia</h3>
-                    <span style="font-size:0.8rem; color:var(--terracotta); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Director of Technology</span>
-                  </div>
-                  <p class="team-bio-text">"Technology is the invisible bridge that connects creative vision with a global audience. Through Bid for Tomorrow, I strive to build seamless digital platforms that empower artists and make supporting the arts effortless for everyone."</p>
-                  <ul class="team-focus-points">
-                    <li>Digital Infrastructure & Platform Maintenance</li>
-                    <li>Software Integration & Security Oversight</li>
-                    <li>Technical Support & User Experience Optimization</li>
-                  </ul>
-                </div>
-                <div class="team-back-footer">
-                  <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Toronto</span>
-                  <button type="button" class="btn-flip-back"><span>← Return</span></button>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- lisa -->
-          <div class="team-card-flipper" id="card-member-5" role="button" tabindex="0">
+          <div class="team-card-flipper" id="card-member-4" role="button" tabindex="0">
             <div class="team-card-inner">
               <div class="team-card-front">
                 <div class="team-image-container">
@@ -501,6 +459,94 @@
                     <li>Key Focus / Responsibility 1</li>
                     <li>Key Focus / Responsibility 2</li>
                     <li>Key Focus / Responsibility 3</li>
+                  </ul>
+                </div>
+                <div class="team-back-footer">
+                  <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Toronto</span>
+                  <button type="button" class="btn-flip-back"><span>← Return</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- steve vu -->
+          <div class="team-card-flipper" id="card-member-5" role="button" tabindex="0">
+            <div class="team-card-inner">
+              <div class="team-card-front">
+                <div class="team-image-container">
+                  <img src="photos/team/steve_photo.png" alt="Steve Vu" style="object-position: top center;">
+                  <div class="team-flip-indicator">
+                    <span>Click to read bio</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+                  </div>
+                </div>
+                <div class="team-info-front">
+                  <div>
+                    <span class="role">Backend Director of Technology</span>
+                    <h3>Steve Vu</h3>
+                    <p>Oversees Bid for Tomorrow's server infrastructure, databases, and API integrations to ensure secure, reliable, and high-performing auction operations behind the scenes.</p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.7rem; border-top:1px solid var(--border-subtle);">
+                    <span style="font-size:0.7rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Toronto</span>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">↻ Tap</span>
+                  </div>
+                </div>
+              </div>
+              <div class="team-card-back">
+                <div>
+                  <div class="team-back-header">
+                    <span class="eyebrow" style="margin-bottom:0.2rem;">Self Introduction</span>
+                    <h3>Steve Vu</h3>
+                    <span style="font-size:0.8rem; color:var(--terracotta); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Backend Director of Technology</span>
+                  </div>
+                  <p class="team-bio-text">"Strong engineering happens behind the scenes so creativity can take center stage. Through Bid for Tomorrow, I focus on building reliable, secure systems that keep our auctions running smoothly from the first bid to the final sale."</p>
+                  <ul class="team-focus-points">
+                    <li>Server & Database Architecture</li>
+                    <li>API Integration & System Security</li>
+                    <li>Backend Performance & Data Management</li>
+                  </ul>
+                </div>
+                <div class="team-back-footer">
+                  <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Toronto</span>
+                  <button type="button" class="btn-flip-back"><span>← Return</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- simon -->
+          <div class="team-card-flipper" id="card-member-6" role="button" tabindex="0">
+            <div class="team-card-inner">
+              <div class="team-card-front">
+                <div class="team-image-container">
+                  <img src="photos/team/simon_photo.jpg" alt="Simon Xia" style="object-position: top center;">
+                  <div class="team-flip-indicator">
+                    <span>Click to read bio</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+                  </div>
+                </div>
+                <div class="team-info-front">
+                  <div>
+                    <span class="role">Frontend Director of Technology</span>
+                    <h3>Simon Xia</h3>
+                    <p>Designs and builds Bid for Tomorrow's user interface, visual layout, and interactive web features to deliver a smooth, accessible experience for artists and bidders.</p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.7rem; border-top:1px solid var(--border-subtle);">
+                    <span style="font-size:0.7rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Toronto</span>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">↻ Tap</span>
+                  </div>
+                </div>
+              </div>
+              <div class="team-card-back">
+                <div>
+                  <div class="team-back-header">
+                    <span class="eyebrow" style="margin-bottom:0.2rem;">Self Introduction</span>
+                    <h3>Simon Xia</h3>
+                    <span style="font-size:0.8rem; color:var(--terracotta); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Director of Technology</span>
+                  </div>
+                  <p class="team-bio-text">"Great design turns a digital platform into an inspiring gallery experience. Through Bid for Tomorrow, I aim to craft intuitive, responsive interfaces that showcase artists' work beautifully and make bidding effortless for everyone."</p>
+                  <ul class="team-focus-points">
+                    <li>User Interface & Visual Design</li>
+                    <li>Interactive Web & Auction Development</li>
+                    <li>Responsive Layout & User Experience</li>
                   </ul>
                 </div>
                 <div class="team-back-footer">

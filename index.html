@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <link rel="canonical" href="https://bid4tomorrow.org/">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPN4QVF0X0"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -1171,70 +1172,265 @@ function toggleFaq(btn) {
 
 
 /* ── GALLERY ── */
+
+/* ── GALLERY ── */
 (function() {
   let artworks = [], idx = 0, auto = null;
+
   const track = document.getElementById('carouselTrack');
   const dotsC = document.getElementById('carouselDots');
   const prev = document.getElementById('prevBtn');
   const next = document.getElementById('nextBtn');
 
+  // SUPABASE CONFIGURATION
+  // Copy the same URL and ANON key from auction.html.
+  const supabaseUrl = 'https://zezgamocqdkqfaqzompd.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplemdhbW9jcWRrcWZhcXpvbXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzA5NzgsImV4cCI6MjEwMzM0Njk3OH0.Wqvn694Nxg1MtF9orvXeCeNTGN2facW-Lxp5T7qzewQ';
+
+  const supabaseClient = window.supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+  );
+
+  // Current auction containing the 21 lots.
+  const FALL_2026_AUCTION_ID =
+    '61c4e02a-d3c7-4cbd-94d7-f7bcb893303b';
+
+  // Escape database text before inserting it into HTML.
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[char]);
+  }
+function resolveArtworkImageUrl(imagePath) {
+  const path = String(imagePath || '').trim();
+
+  if (!path) return '';
+
+  // Keep externally hosted images unchanged.
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  // Resolve local artwork paths relative to index.html.
+  // This also handles spaces and special characters.
+  return new URL(
+    path.replace(/^\/+/, ''),
+    document.baseURI
+  ).href;
+}
+  function formatPrice(amount) {
+    const value = Number(amount);
+    if (!Number.isFinite(value)) return '';
+
+    return '$' + value.toLocaleString('en-CA', {
+      maximumFractionDigits: 2
+    }) + ' CAD';
+  }
+
+  // GET ARTWORK AND LOTS FROM SUPABASE
   async function load() {
     try {
-      const r = await fetch("artwork.json");
-      if (!r.ok) throw new Error("Could not load artwork.json");
-      artworks = await r.json();
+      // First: retrieve all lots belonging to this auction.
+      const { data: lots, error: lotsError } = await supabaseClient
+        .from('lots')
+        .select('id, lot_number, artwork_id, starting_bid, status')
+        .eq('auction_id', FALL_2026_AUCTION_ID)
+        .order('lot_number', { ascending: true });
+
+      if (lotsError) throw lotsError;
+
+      if (!lots || lots.length === 0) {
+        artworks = [];
+      } else {
+        // Collect the artwork IDs associated with these lots.
+        const artworkIds = [...new Set(
+          lots.map(lot => lot.artwork_id).filter(Boolean)
+        )];
+
+        // Second: retrieve all corresponding artwork records.
+        const { data: artworkRows, error: artworkError } =
+          await supabaseClient
+            .from('artworks')
+            .select(`
+              id,
+              title,
+              artist_name,
+              branch,
+              medium,
+              dimensions,
+              description,
+              image_url
+            `)
+            .in('id', artworkIds);
+
+        if (artworkError) throw artworkError;
+
+        // Create a lookup so each lot gets its matching artwork.
+        const artworkMap = new Map(
+          (artworkRows || []).map(art => [art.id, art])
+        );
+
+        // Combine the lot information with the artwork information.
+        artworks = lots.map(lot => {
+          const art = artworkMap.get(lot.artwork_id);
+
+          if (!art) {
+            console.warn('Missing artwork record for lot:', lot.id);
+            return null;
+          }
+
+
+          return {
+            lotId: lot.id,
+            lotNumber: lot.lot_number,
+            title: art.title || 'Untitled',
+            artist: art.artist_name || 'Unknown Artist',
+            branch: art.branch || 'GTA',
+            medium: art.medium || 'Original Medium',
+            dimensions: art.dimensions || '',
+            description:
+              art.description && art.description.trim().toUpperCase() !== 'TBD'
+                ? art.description
+                : 'Description coming soon.',
+            image: resolveArtworkImageUrl(art.image_url),
+            startingBid: lot.starting_bid,
+            status: lot.status === 'open'
+              ? 'Live Auction'
+              : lot.status === 'closed'
+                ? 'Auction Closed'
+                : 'Preview'
+          };
+        }).filter(Boolean);
+      }
+
     } catch (err) {
-      console.error("Gallery load failed:", err);
+      console.error('Gallery loading failed:', err);
       artworks = [];
     }
+
     render();
     start();
   }
 
-  /* Pull dimensions straight from the JSON entry. Treat N/A, TBD, and
-     empty strings as "no dimensions recorded" so the row can be omitted. */
   function getDimensions(art) {
-    const raw = art.dimensions ?? art.dimension ?? art.size ?? art.dims;
-    if (raw == null) return "";
-    const v = String(raw).trim();
-    if (!v) return "";
-    const upper = v.toUpperCase();
-    if (upper === "N/A" || upper === "TBD" || upper === "NA") return "";
-    return v;
+    const raw = art.dimensions;
+    if (!raw) return '';
+
+    const value = String(raw).trim();
+
+    if (['N/A', 'TBD', 'NA'].includes(value.toUpperCase())) {
+      return '';
+    }
+
+    return value;
   }
 
+  // DISPLAY THE ARTWORK
   function render() {
     if (!track || !dotsC) return;
+
     track.innerHTML = '';
     dotsC.innerHTML = '';
 
+    if (!artworks.length) {
+      track.innerHTML = `
+        <div class="artwork-slide">
+          <div class="artwork-details">
+            <h3>Artwork catalogue unavailable</h3>
+            <p>Please try again later.</p>
+          </div>
+        </div>
+      `;
+      stop();
+      return;
+    }
+
     artworks.forEach(art => {
-      const dim = getDimensions(art);                 // <- variable from artwork.json
+      const dim = getDimensions(art);
       const dimShort = dim.replace(/\s*\(.*?\)\s*/g, '').trim();
-      const med = art.medium || "Original Medium";
+
+      const detailUrl =
+        'artwork-detail.html?lot_id=' +
+        encodeURIComponent(art.lotId);
 
       track.innerHTML += `
         <div class="artwork-slide">
+
           <div class="artwork-image">
-            <img src="${art.image}" alt="${art.title}">
-            ${dimShort ? `<span class="artwork-dim-badge">${dimShort}</span>` : ''}
+            <img
+              src="${escapeHtml(art.image)}"
+              alt="${escapeHtml(art.title)}"
+              loading="lazy"
+            />
+
+            ${dimShort
+              ? `<span class="artwork-dim-badge">${escapeHtml(dimShort)}</span>`
+              : ''}
           </div>
+
           <div class="artwork-details">
+
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <span class="branch">${art.branch ?? 'GTA'} Chapter</span>
-              <span class="status-badge">${art.status || 'Upcoming Lot'}</span>
+              <span class="branch">
+                ${escapeHtml(art.branch)} Chapter
+              </span>
+
+              <span class="status-badge">
+                ${escapeHtml(art.status)} · ${escapeHtml(art.lotNumber)}
+              </span>
             </div>
-            <h3>${art.title}</h3>
-            <p class="artist">By ${art.artist}</p>
+
+            <h3>${escapeHtml(art.title)}</h3>
+
+            <p class="artist">
+              By ${escapeHtml(art.artist)}
+            </p>
+
             <div class="artwork-specs-table">
-              <div class="artwork-specs-row"><span class="artwork-specs-label">Medium</span><span class="artwork-specs-val">${med}</span></div>
-              ${dim ? `<div class="artwork-specs-row"><span class="artwork-specs-label">Dimensions</span><span class="artwork-specs-val">${dim}</span></div>` : ''}
-              ${art.startingBid ? `<div class="artwork-specs-row"><span class="artwork-specs-label">Starting Estimate</span><span class="artwork-specs-val" style="color:var(--crimson);">${art.startingBid}</span></div>` : ''}
+
+              <div class="artwork-specs-row">
+                <span class="artwork-specs-label">Medium</span>
+                <span class="artwork-specs-val">
+                  ${escapeHtml(art.medium)}
+                </span>
+              </div>
+
+              ${dim
+                ? `<div class="artwork-specs-row">
+                    <span class="artwork-specs-label">Dimensions</span>
+                    <span class="artwork-specs-val">${escapeHtml(dim)}</span>
+                   </div>`
+                : ''}
+
+              <div class="artwork-specs-row">
+                <span class="artwork-specs-label">Starting Bid</span>
+                <span class="artwork-specs-val" style="color:var(--crimson);">
+                  ${escapeHtml(formatPrice(art.startingBid))}
+                </span>
+              </div>
+
             </div>
-            <p class="artwork-description">${art.description}</p>
-            <a href="auction.html" class="btn btn-primary" style="margin-top:1.25rem; width:100%;">View Lot in Fall Auction &rarr;</a>
+
+            <p class="artwork-description">
+              ${escapeHtml(art.description)}
+            </p>
+
+            <a
+              href="${escapeHtml(detailUrl)}"
+              class="btn btn-primary"
+              style="margin-top:1.25rem; width:100%;"
+            >
+              View Artwork &amp; Lot Details &rarr;
+            </a>
+
           </div>
-        </div>`;
+        </div>
+      `;
     });
 
     artworks.forEach((_, i) => {
@@ -1245,21 +1441,54 @@ function toggleFaq(btn) {
     });
   }
 
+  // CAROUSEL CONTROLS
   function go(i) {
     if (!artworks.length || !track) return;
-    idx = i < 0 ? artworks.length - 1 : i >= artworks.length ? 0 : i;
+
+    idx = i < 0
+      ? artworks.length - 1
+      : i >= artworks.length
+        ? 0
+        : i;
+
     track.style.transform = `translateX(-${idx * 100}%)`;
-    document.querySelectorAll('.dot').forEach((d, k) => d.classList.toggle('active', k === idx));
+
+    dotsC.querySelectorAll('.dot').forEach((d, k) => {
+      d.classList.toggle('active', k === idx);
+    });
+
     restart();
   }
-  const nxt = () => go(idx + 1), prv = () => go(idx - 1);
-  function start()   { stop(); if (artworks.length > 1) auto = setInterval(nxt, 5500); }
-  function stop()    { if (auto) { clearInterval(auto); auto = null; } }
-  function restart() { stop(); start(); }
+
+  const nxt = () => go(idx + 1);
+  const prv = () => go(idx - 1);
+
+  function start() {
+    stop();
+    if (artworks.length > 1) {
+      auto = setInterval(nxt, 5500);
+    }
+  }
+
+  function stop() {
+    if (auto) {
+      clearInterval(auto);
+      auto = null;
+    }
+  }
+
+  function restart() {
+    stop();
+    start();
+  }
+
   prev?.addEventListener('click', prv);
   next?.addEventListener('click', nxt);
+
   load();
+
 })();
+
 
 /* ── FADE-UP ── */
 document.addEventListener('DOMContentLoaded', () => {

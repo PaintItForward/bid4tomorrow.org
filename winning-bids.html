@@ -408,16 +408,29 @@
     // ─────────────────────────────────────────────────────────────
     // Mobile nav
     // ─────────────────────────────────────────────────────────────
-    const navToggleBtn = document.getElementById('nav-toggle');
+
+// ─────────────────────────────────────────────────────────────
+// Mobile nav
+// ─────────────────────────────────────────────────────────────
+const navToggleBtn = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+
+if (navToggleBtn && navLinks) {
     navToggleBtn.addEventListener('click', function () {
-        const links = document.getElementById('nav-links');
-        links.classList.toggle('open');
-        this.setAttribute('aria-expanded', links.classList.contains('open'));
+        navLinks.classList.toggle('open');
+        this.setAttribute(
+            'aria-expanded',
+            navLinks.classList.contains('open')
+        );
     });
 
-    document.querySelectorAll('.nav-links a').forEach(a => {
-        a.addEventListener('click', () => document.getElementById('nav-links')?.classList.remove('open'));
+    navLinks.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+            navToggleBtn.setAttribute('aria-expanded', 'false');
+        });
     });
+}
 
     // ─────────────────────────────────────────────────────────────
     // Payments — one delegated listener for every "Pay Now" button

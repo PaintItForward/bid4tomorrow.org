@@ -601,7 +601,7 @@
 
     .lot-card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
+      border: 0px solid var(--border);
       border-radius: var(--radius-md);
       overflow: hidden;
       display: flex;
@@ -624,7 +624,7 @@
     .lot-image-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
     .lot-card:hover .lot-image-wrap img {
